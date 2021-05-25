@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Components">
+      <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Controllers">
+      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Models">
+      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{e2a8a314-b6ba-4f17-97c9-b5afbb2228f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Views">
+      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{942ad244-e602-49ae-bf02-2f5c8699f04f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Constants">
+      <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vertices">
+      <UniqueIdentifier>{ea733c97-fd7b-47d0-a9bc-b58d996ad340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{f64835f3-042c-4738-8a95-2d9a18aab783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WindowCanvas">
+      <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{cad2dbe6-3b29-4f4b-b9f1-1a7ff5896056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{a83f9b7e-72a8-4475-81ca-3d23d4526eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{6ca18f1c-bba7-4260-8db4-d8007b53a12b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PrecompiledHeaders">
+      <UniqueIdentifier>{44a9aa32-bca8-4ef0-b563-f1109763be4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{311127b4-4016-4200-9344-897dd5349d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factory">
+      <UniqueIdentifier>{bdfa4e65-c1b1-4ee8-ba22-1e9dbc4d90f9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerC.h">
+      <Filter>Components\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformMC.h">
+      <Filter>Components\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelC.h">
+      <Filter>Components\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="AngleUnit.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewC.h">
+      <Filter>Components\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshVC.h">
+      <Filter>Components\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadrilateral.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="UploadBuffer.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasConstantBuffer.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshVCConstantBuffer.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexPNC.h">
+      <Filter>Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneThread.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>WindowCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>WindowCanvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>PrecompiledHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMC.h">
+      <Filter>Components\Models</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformMC.cpp">
+      <Filter>Components\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelC.cpp">
+      <Filter>Components\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerC.cpp">
+      <Filter>Components\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewC.cpp">
+      <Filter>Components\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="UploadBuffer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexPNC.cpp">
+      <Filter>Vertices</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>WindowCanvas</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>WindowCanvas</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>PrecompiledHeaders</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshVC.cpp">
+      <Filter>Components\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMC.cpp">
+      <Filter>Components\Models</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd">
+      <Filter>Documentation</Filter>
+    </None>
+  </ItemGroup>
+</Project>

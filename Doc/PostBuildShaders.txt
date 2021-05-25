@@ -1,0 +1,11 @@
+cd $(SolutionDir)Resources\Shaders
+for /r %%i in (*.hlsl) do (
+  fxc "%%i" /Od /Zi /T vs_5_1 /E "VS" /Fo "$(TargetDir)%%~ni_vs.cso" /Fc "$(TargetDir)%%~ni_vs.asm"
+  fxc "%%i" /Od /Zi /T ps_5_1 /E "PS" /Fo "$(TargetDir)%%~ni_ps.cso" /Fc "$(TargetDir)%%~ni_ps.asm"
+)
+
+cd $(SolutionDir)Resources\Shaders
+for /r %%i in (*.hlsl) do (
+  fxc "%%i" /T vs_5_1 /E "VS" /Fo "$(TargetDir)%%~ni_vs.cso" /Fc "$(TargetDir)%%~ni_vs.asm"
+  fxc "%%i" /T ps_5_1 /E "PS" /Fo "$(TargetDir)%%~ni_ps.cso" /Fc "$(TargetDir)%%~ni_ps.asm"
+)
