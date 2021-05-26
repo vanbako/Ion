@@ -8,9 +8,7 @@ namespace Ion
 		class Scene;
 		class ModelC;
 		class ControllerC;
-#ifdef IonView
 		class ViewC;
-#endif
 
 		class Object final
 		{
@@ -86,7 +84,6 @@ namespace Ion
 			void ModelCSwitch();
 			void ControllerCInitialize();
 			void ControllerCUpdate(float delta);
-#ifdef IonView
 			template<class T>
 			T* AddViewC(bool isActive)
 			{
@@ -110,8 +107,6 @@ namespace Ion
 			}
 			void ViewCInitialize();
 			void ViewCUpdate(float delta);
-			//void ViewCRender();
-#endif
 		private:
 			bool mIsActive;
 			Scene* mpScene;
@@ -119,9 +114,7 @@ namespace Ion
 			TransformMC* mpTransformMC;
 			std::list<ModelC*> mpModelCs;
 			std::list<ControllerC*> mpControllerCs;
-#ifdef IonView
 			std::list<ViewC*> mpViewCs;
-#endif
 		};
 	}
 }

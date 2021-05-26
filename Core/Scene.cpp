@@ -42,6 +42,11 @@ const bool Scene::GetIsActive() const
 	return mIsActive.load();
 }
 
+void Scene::SetIsEnd(bool isEnd)
+{
+	mIsEnd.store(isEnd);
+}
+
 const bool Ion::Core::Scene::GetIsEnd() const
 {
 	return mIsEnd.load();

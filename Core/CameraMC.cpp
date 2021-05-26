@@ -24,6 +24,8 @@ void CameraMC::Initialize()
 void CameraMC::Update(float delta)
 {
 	(delta);
+	if (!mIsActive)
+		return;
 	if (mpCanvas == nullptr)
 		return;
 	using namespace DirectX;
@@ -41,6 +43,8 @@ void CameraMC::Update(float delta)
 
 void CameraMC::Switch()
 {
+	if (!mIsActive)
+		return;
 }
 
 void CameraMC::SetCanvas(Canvas* pCanvas)

@@ -1,9 +1,7 @@
 #include "../Core/pch.h"
 #include "../Core/Object.h"
 #include "../Core/ControllerC.h"
-#ifdef IonView
 #include "../Core/ViewC.h"
-#endif
 
 using namespace Ion::Core;
 
@@ -14,9 +12,7 @@ Object::Object(bool isActive, Scene* pScene)
 	, mpTransformMC{ nullptr }
 	, mpModelCs{}
 	, mpControllerCs{}
-#ifdef IonView
 	, mpViewCs{}
-#endif
 {
 }
 
@@ -26,10 +22,8 @@ Object::~Object()
 		delete pModelC;
 	for (ControllerC* pControllerC : mpControllerCs)
 		delete pControllerC;
-#ifdef IonView
 	for (ViewC* pViewC : mpViewCs)
 		delete pViewC;
-#endif
 }
 
 void Object::SetIsActive(bool isActive)
@@ -77,8 +71,6 @@ void Object::ControllerCUpdate(float delta)
 		pControllerC->Update(delta);
 }
 
-#ifdef IonView
-
 void Object::ViewCInitialize()
 {
 	for (ViewC* pViewC : mpViewCs)
@@ -90,11 +82,3 @@ void Object::ViewCUpdate(float delta)
 	for (ViewC* pViewC : mpViewCs)
 		pViewC->Update(delta);
 }
-
-//void Object::ViewCRender()
-//{
-//	for (ViewC* pViewC : mpViewCs)
-//		pViewC->Render();
-//}
-
-#endif

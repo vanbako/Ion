@@ -2,10 +2,6 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define DX12
-#define IonView
-#define fp float
-
 #include <typeindex>
 #include <typeinfo>
 #include <vector>
@@ -17,7 +13,6 @@
 #include <shared_mutex>
 #include <fstream>
 
-#ifdef IonView
 #include <Windows.h>
 #include <DirectXMath.h>
 #include <DirectXColors.h>
@@ -26,7 +21,6 @@
 #include <dxgi.h>
 #include <d3d12.h>
 #include <d3d12sdklayers.h>
-#endif
 
 #include "../Core/Vector.h"
 #include "../Core/Rectangle.h"

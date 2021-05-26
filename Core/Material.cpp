@@ -15,16 +15,22 @@ Material::Material(Application* pApplication, const std::string& name)
 	, mPS{}
 	, mpRootSignature{}
 	, mpPipelineState{}
+	, mpInputElementDescs{ nullptr }
+	, mCount{ 0 }
 {
 }
 
 Material::~Material()
 {
+	if (mpInputElementDescs != nullptr)
+		delete[] mpInputElementDescs;
 }
 
 void Material::Initialize()
 {
 	if (mIsInitialized)
+		return;
+	if (mpInputElementDescs == nullptr)
 		return;
 	auto pDxgiFactory{ mpApplication->GetDxgiFactory() };
 	auto pDevice{ mpApplication->GetDevice() };
@@ -35,12 +41,11 @@ void Material::Initialize()
 #else
 	std::string dir{ "Release" };
 #endif
-	std::string name{ "PosNormCol" };
 
 	// Build Root Signature
 	{
 		Microsoft::WRL::ComPtr<ID3DBlob> signature{};
-		std::string str{ "../x64/" + dir + "/" + name + "_rs.cso" };
+		std::string str{ "../x64/" + dir + "/" + mName + "_rs.cso" };
 		std::wstring wstr(str.begin(), str.end());
 		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &signature));
 		ThrowIfFailed(pDevice->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&mpRootSignature)));
@@ -48,27 +53,20 @@ void Material::Initialize()
 
 	// Shaders
 	{
-		std::string str{ "../x64/" + dir + "/" + name + "_vs.cso" };
+		std::string str{ "../x64/" + dir + "/" + mName + "_vs.cso" };
 		std::wstring wstr(str.begin(), str.end());
 		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mVS));
 	}
 	{
-		std::string str{ "../x64/" + dir + "/" + name + "_ps.cso" };
+		std::string str{ "../x64/" + dir + "/" + mName + "_ps.cso" };
 		std::wstring wstr(str.begin(), str.end());
 		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mPS));
 	}
 
-	// Input Layout
+	// Build Pipeline State
 	{
-		D3D12_INPUT_ELEMENT_DESC inputElementDescs[]
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-		};
-		// Build Pipeline State
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
-		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+		psoDesc.InputLayout = { mpInputElementDescs, mCount };
 		psoDesc.pRootSignature = mpRootSignature.Get();
 		psoDesc.VS = CD3DX12_SHADER_BYTECODE(mVS.Get());
 		psoDesc.PS = CD3DX12_SHADER_BYTECODE(mPS.Get());
@@ -83,7 +81,6 @@ void Material::Initialize()
 		psoDesc.SampleDesc.Count = 1;
 		ThrowIfFailed(pDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mpPipelineState)));
 	}
-
 	mIsInitialized = true;
 }
 
@@ -109,6 +106,12 @@ const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Material::GetRootSignature()
 const Microsoft::WRL::ComPtr<ID3D12PipelineState>& Material::GetPipelineState()
 {
 	return mpPipelineState;
+}
+
+void Material::SetInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, UINT count)
+{
+	mpInputElementDescs = inputElementDescs;
+	mCount = count;
 }
 
 void Material::AddViewC(ViewC* pViewC)

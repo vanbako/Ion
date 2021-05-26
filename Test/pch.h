@@ -2,10 +2,6 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define DX12
-#define IonView
-#define fp float
-
 #include <typeindex>
 #include <typeinfo>
 #include <vector>

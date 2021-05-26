@@ -26,6 +26,14 @@ MeshVC::MeshVC(bool isActive, Object* pObject)
 	, mpCanvases{}
 {
 	mpMaterial->AddViewC(this);
+	D3D12_INPUT_ELEMENT_DESC* inputElementDescs{ new D3D12_INPUT_ELEMENT_DESC[]
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	} };
+	mpMaterial->SetInputLayout(inputElementDescs, 3);
+	mpMaterial->Initialize();
 }
 
 MeshVC::~MeshVC()
@@ -117,6 +125,8 @@ void MeshVC::Initialize()
 void MeshVC::Update(float delta)
 {
 	(delta);
+	if (!mIsActive)
+		return;
 	if (mMeshChanged)
 	{
 		const UINT vertexBufferSize{ UINT(mVertexCount * sizeof(VertexPNC)) };
@@ -131,6 +141,8 @@ void MeshVC::Update(float delta)
 void MeshVC::Render(Canvas* pCanvas, Material* pMaterial)
 {
 	(pMaterial);
+	if (!mIsActive)
+		return;
 	if (mVertexCount == 0)
 		return;
 

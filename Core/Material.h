@@ -22,6 +22,7 @@ namespace Ion
 			void Render(Canvas* pCanvas);
 			const Microsoft::WRL::ComPtr<ID3D12RootSignature>& GetRootSignature();
 			const Microsoft::WRL::ComPtr<ID3D12PipelineState>& GetPipelineState();
+			void SetInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, UINT count);
 
 			void AddViewC(ViewC* pViewC);
 		private:
@@ -33,6 +34,8 @@ namespace Ion
 				mPS;
 			Microsoft::WRL::ComPtr<ID3D12RootSignature> mpRootSignature;
 			Microsoft::WRL::ComPtr<ID3D12PipelineState> mpPipelineState;
+			D3D12_INPUT_ELEMENT_DESC* mpInputElementDescs;
+			UINT mCount;
 			std::vector<ViewC*> mpViewCs;
 		};
 	}

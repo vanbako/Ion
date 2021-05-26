@@ -28,6 +28,7 @@ namespace Ion
 
 			void SetIsActive(bool isActive);
 			const bool GetIsActive() const;
+			void SetIsEnd(bool isEnd);
 			const bool GetIsEnd() const;
 			std::list<Object>& GetObjects();
 			Application* GetApplication();

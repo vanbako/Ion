@@ -51,6 +51,7 @@ int main()
 		}
 		pScene->SetIsActive(false);
 		std::cout << "App is shutting down" << std::endl;
+		pScene->SetIsEnd(true);
 	}
 	std::cout << "Done" << std::endl;
 	//std::string str{};
