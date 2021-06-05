@@ -5,8 +5,6 @@ using namespace Ion::Core;
 
 TransformMC::TransformMC(bool isActive, Object* pObject)
 	: ModelC(isActive, pObject)
-	, mHasChanged{ true }
-	, mCurrent{ 0 }
 	, mPosition{ { 0.f, 0.f, 0.f }, { 0.f, 0.f, 0.f } }
 	, mWorldPosition{}
 	, mForward{}
@@ -94,7 +92,7 @@ const DirectX::XMFLOAT4X4& TransformMC::GetWorld() const
 	return mWorld[mCurrent];
 }
 
-void Ion::Core::TransformMC::InternalUpdate(float delta)
+void TransformMC::InternalUpdate(float delta)
 {
 	(delta);
 	DirectX::XMVECTOR rotation{ DirectX::XMLoadFloat4(&mRotation[mCurrent]) };

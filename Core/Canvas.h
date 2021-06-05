@@ -1,7 +1,7 @@
 #pragma once
 #include "../Core/Rectangle.h"
 #include "../Core/CanvasConstantBuffer.h"
-#include "../Core/UploadBuffer.h"
+#include "../Core/d3dx12.h"
 
 namespace Ion
 {
@@ -27,7 +27,6 @@ namespace Ion
 			float GetRatio();
 
 			D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView();
-			D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilView();
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& GetGraphicsCommandList();
 
 			void AddMaterial(Material* pMaterial);

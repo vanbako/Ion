@@ -24,7 +24,7 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID3D12PipelineState>& GetPipelineState();
 			void SetInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, UINT count);
 
-			void AddViewC(ViewC* pViewC);
+			void AddViewC(Canvas* pCanvas, ViewC* pViewC);
 		private:
 			bool mIsInitialized;
 			Application* mpApplication;
@@ -36,7 +36,7 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID3D12PipelineState> mpPipelineState;
 			D3D12_INPUT_ELEMENT_DESC* mpInputElementDescs;
 			UINT mCount;
-			std::vector<ViewC*> mpViewCs;
+			std::map<Canvas*,std::vector<ViewC*>> mpCanvasViewCs;
 		};
 	}
 }

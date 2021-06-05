@@ -57,7 +57,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../Core/pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>../Core/pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -90,53 +90,80 @@
   <ItemGroup>
     <ClInclude Include="AngleUnit.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="CameraMC.h" />
+    <ClInclude Include="CameraRMC.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CanvasConstantBuffer.h" />
+    <ClInclude Include="CharacterRMC.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControllerC.h" />
+    <ClInclude Include="ControllerST.h" />
     <ClInclude Include="d3dx12.h" />
-    <ClInclude Include="Helpers.h" />
+    <ClInclude Include="InputCC.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MeshVC.h" />
     <ClInclude Include="MeshVCConstantBuffer.h" />
     <ClInclude Include="ModelC.h" />
+    <ClInclude Include="ModelST.h" />
+    <ClInclude Include="MoveBackCmd.h" />
+    <ClInclude Include="MoveDownCmd.h" />
+    <ClInclude Include="MoveForwardCmd.h" />
+    <ClInclude Include="MoveLeftCmd.h" />
+    <ClInclude Include="MoveRightCmd.h" />
+    <ClInclude Include="MoveUpCmd.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Quadrilateral.h" />
+    <ClInclude Include="ReceiverMC.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="RotateLeftCmd.h" />
+    <ClInclude Include="RotateRightCmd.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneThread.h" />
     <ClInclude Include="TransformMC.h" />
     <ClInclude Include="Triangle.h" />
-    <ClInclude Include="UploadBuffer.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VertexPNC.h" />
     <ClInclude Include="ViewC.h" />
+    <ClInclude Include="ViewST.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="CameraMC.cpp" />
+    <ClCompile Include="CameraRMC.cpp" />
     <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="CharacterRMC.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
-    <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="ControllerST.cpp" />
+    <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshVC.cpp" />
     <ClCompile Include="ModelC.cpp" />
+    <ClCompile Include="ModelST.cpp" />
+    <ClCompile Include="MoveBackCmd.cpp" />
+    <ClCompile Include="MoveDownCmd.cpp" />
+    <ClCompile Include="MoveForwardCmd.cpp" />
+    <ClCompile Include="MoveLeftCmd.cpp" />
+    <ClCompile Include="MoveRightCmd.cpp" />
+    <ClCompile Include="MoveUpCmd.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Factory.cpp" />
+    <ClCompile Include="ReceiverMC.cpp" />
+    <ClCompile Include="RotateLeftCmd.cpp" />
+    <ClCompile Include="RotateRightCmd.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="TransformMC.cpp" />
-    <ClCompile Include="UploadBuffer.cpp" />
     <ClCompile Include="VertexPNC.cpp" />
     <ClCompile Include="ViewC.cpp" />
+    <ClCompile Include="ViewST.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

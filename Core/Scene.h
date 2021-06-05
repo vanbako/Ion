@@ -11,8 +11,9 @@ namespace Ion
 	namespace Core
 	{
 		class Application;
-		template<class T>
-		class SceneThread;
+		class ModelST;
+		class ControllerST;
+		class ViewST;
 
 		class Scene final
 		{
@@ -32,6 +33,7 @@ namespace Ion
 			const bool GetIsEnd() const;
 			std::list<Object>& GetObjects();
 			Application* GetApplication();
+			ControllerST* GetControllerST();
 
 			void Initialize();
 			Object* AddObject(bool isActive);
@@ -51,9 +53,9 @@ namespace Ion
 				mIsEnd;
 			std::shared_timed_mutex mObjectsMutex;
 			std::list<Object> mObjects;
-			SceneThread<ModelC>* mpSceneThreadModelC;
-			SceneThread<ControllerC>* mpSceneThreadControllerC;
-			SceneThread<ViewC>* mpSceneThreadViewC;
+			ModelST* mpModelST;
+			ControllerST* mpControllerST;
+			ViewST* mpViewST;
 			std::set<Canvas*> mpCanvases;
 		};
 	}

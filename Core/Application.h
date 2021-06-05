@@ -22,7 +22,8 @@ namespace Ion
 			const bool GetIsActive() const;
 
 			Scene* AddScene();
-			Window* AddWindow(const std::wstring& title, Rectangle<int> rectangle = Rectangle{ 0, 0, 1280, 720 });
+			Window* AddWindow(const std::wstring& title, Ion::Core::Rectangle<int> rectangle = Ion::Core::Rectangle{ 0, 0, 1280, 720 });
+			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			const Microsoft::WRL::ComPtr<IDXGIFactory>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device>& GetDevice();
 			const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& GetCommandQueue();

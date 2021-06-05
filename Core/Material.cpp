@@ -72,12 +72,12 @@ void Material::Initialize()
 		psoDesc.PS = CD3DX12_SHADER_BYTECODE(mPS.Get());
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-		psoDesc.DepthStencilState.DepthEnable = FALSE;
-		psoDesc.DepthStencilState.StencilEnable = FALSE;
+		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 		psoDesc.SampleMask = UINT_MAX;
 		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 		psoDesc.NumRenderTargets = 1;
 		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 		psoDesc.SampleDesc.Count = 1;
 		ThrowIfFailed(pDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mpPipelineState)));
 	}
@@ -94,7 +94,7 @@ void Material::Render(Canvas* pCanvas)
 
 	pCanvas->SetDescriptor();
 
-	for (auto pViewC : mpViewCs)
+	for (auto pViewC : mpCanvasViewCs[pCanvas])
 		pViewC->Render(pCanvas, this);
 }
 
@@ -114,7 +114,7 @@ void Material::SetInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, UINT 
 	mCount = count;
 }
 
-void Material::AddViewC(ViewC* pViewC)
+void Material::AddViewC(Canvas* pCanvas, ViewC* pViewC)
 {
-	mpViewCs.emplace_back(pViewC);
+	mpCanvasViewCs[pCanvas].emplace_back(pViewC);
 }

@@ -18,7 +18,7 @@ Window::Window(Application* pApplication, const std::wstring title, Ion::Core::R
 		HWND{},
 		HMENU{},
 		GetModuleHandle(nullptr),
-		LPVOID{}
+		pApplication
 	);
 	ShowWindow(mhWindow, SW_SHOWNORMAL);
 	UpdateWindow(mhWindow);

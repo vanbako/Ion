@@ -49,6 +49,12 @@
     <Filter Include="Factory">
       <UniqueIdentifier>{bdfa4e65-c1b1-4ee8-ba22-1e9dbc4d90f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{808bb631-bc16-4bcc-bcac-6c0875879cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Models\Receivers">
+      <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -83,12 +89,6 @@
     </ClInclude>
     <ClInclude Include="Triangle.h">
       <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="UploadBuffer.h">
-      <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="CanvasConstantBuffer.h">
       <Filter>Constants</Filter>
@@ -129,8 +129,53 @@
     <ClInclude Include="pch.h">
       <Filter>PrecompiledHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="CameraMC.h">
-      <Filter>Components\Models</Filter>
+    <ClInclude Include="InputCC.h">
+      <Filter>Components\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveLeftCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ReceiverMC.h">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterRMC.h">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraRMC.h">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveRightCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveForwardCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveBackCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateLeftCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateRightCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUpCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDownCmd.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelST.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerST.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewST.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,12 +193,6 @@
     </ClCompile>
     <ClCompile Include="ViewC.cpp">
       <Filter>Components\Views</Filter>
-    </ClCompile>
-    <ClCompile Include="Helpers.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="UploadBuffer.cpp">
-      <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="VertexPNC.cpp">
       <Filter>Vertices</Filter>
@@ -185,8 +224,56 @@
     <ClCompile Include="MeshVC.cpp">
       <Filter>Components\Views</Filter>
     </ClCompile>
-    <ClCompile Include="CameraMC.cpp">
-      <Filter>Components\Models</Filter>
+    <ClCompile Include="InputCC.cpp">
+      <Filter>Components\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveLeftCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ReceiverMC.cpp">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterRMC.cpp">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraRMC.cpp">
+      <Filter>Components\Models\Receivers</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveRightCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveForwardCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveBackCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateLeftCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateRightCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveUpCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDownCmd.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneThread.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerST.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelST.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewST.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

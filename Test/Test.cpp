@@ -5,6 +5,8 @@
 
 using namespace Ion::Core;
 
+static const std::chrono::microseconds gMainSleep{ 500 };
+
 int main()
 {
 	{
@@ -35,10 +37,8 @@ int main()
 		pScene->SetIsActive(true);
 
 		std::cout << "App is running" << std::endl;
-		//std::string str{};
-		//std::cin >> str;
-		std::chrono::microseconds sleep{ 1000 };
-		MSG msg{ 0 };
+
+		MSG msg{};
 		while (msg.message != WM_QUIT)
 		{
 			if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -47,13 +47,11 @@ int main()
 				DispatchMessage(&msg);
 			}
 			else
-				std::this_thread::sleep_for(sleep);
+				std::this_thread::sleep_for(gMainSleep);
 		}
 		pScene->SetIsActive(false);
 		std::cout << "App is shutting down" << std::endl;
 		pScene->SetIsEnd(true);
 	}
 	std::cout << "Done" << std::endl;
-	//std::string str{};
-	//std::cin >> str;
 }

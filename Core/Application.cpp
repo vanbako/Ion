@@ -5,11 +5,16 @@ using namespace Ion::Core;
 
 LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (msg)
+	if (msg == WM_CREATE)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
+		CREATESTRUCT* pCS{ (CREATESTRUCT*)lParam };
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, LONG_PTR(pCS->lpCreateParams));
+	}
+	else
+	{
+		Application* pApplication{ (Application*)(GetWindowLongPtrW(hWnd, GWLP_USERDATA)) };
+		if (pApplication != nullptr)
+			return pApplication->WindowsProcedure(hWnd, msg, wParam, lParam);
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
@@ -84,7 +89,6 @@ bool Application::Initialize()
 
 		mIsInitialized = true;
 	}
-
 	return true;
 }
 
@@ -106,10 +110,21 @@ Scene* Application::AddScene()
 	return &mScenes.back();
 }
 
-Window* Application::AddWindow(const std::wstring& title, Rectangle<int> rectangle)
+Window* Application::AddWindow(const std::wstring& title, Ion::Core::Rectangle<int> rectangle)
 {
 	mWindows.emplace_back(this, title, rectangle);
 	return &mWindows.back();
+}
+
+LRESULT Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
 const Microsoft::WRL::ComPtr<IDXGIFactory>& Application::GetDxgiFactory()

@@ -1,6 +1,8 @@
 #include "../Core/pch.h"
 #include "../Core/Scene.h"
-#include "../Core/SceneThread.h"
+#include "../Core/ModelST.h"
+#include "../Core/ControllerST.h"
+#include "../Core/ViewST.h"
 
 using namespace Ion::Core;
 
@@ -18,18 +20,18 @@ Scene::Scene(Application* pApplication)
 	, mIsEnd{ false }
 	, mObjectsMutex{}
 	, mObjects{}
-	, mpSceneThreadModelC{ new SceneThread<ModelC>{ this } }
-	, mpSceneThreadControllerC{ new SceneThread<ControllerC>{ this} }
-	, mpSceneThreadViewC{ new SceneThread<ViewC>{ this } }
+	, mpModelST{ new ModelST{ this } }
+	, mpControllerST{ new ControllerST{ this } }
+	, mpViewST{ new ViewST{ this } }
 	, mpCanvases{}
 {
 }
 
 Scene::~Scene()
 {
-	delete mpSceneThreadModelC;
-	delete mpSceneThreadControllerC;
-	delete mpSceneThreadViewC;
+	delete mpModelST;
+	delete mpControllerST;
+	delete mpViewST;
 }
 
 void Scene::SetIsActive(bool isActive)
@@ -47,12 +49,12 @@ void Scene::SetIsEnd(bool isEnd)
 	mIsEnd.store(isEnd);
 }
 
-const bool Ion::Core::Scene::GetIsEnd() const
+const bool Scene::GetIsEnd() const
 {
 	return mIsEnd.load();
 }
 
-std::list<Object>& Ion::Core::Scene::GetObjects()
+std::list<Object>& Scene::GetObjects()
 {
 	return mObjects;
 }
@@ -60,6 +62,11 @@ std::list<Object>& Ion::Core::Scene::GetObjects()
 Application* Scene::GetApplication()
 {
 	return mpApplication;
+}
+
+ControllerST* Scene::GetControllerST()
+{
+	return mpControllerST;
 }
 
 void Scene::Initialize()
@@ -105,12 +112,12 @@ void Scene::UnlockExclusiveObjects()
 	mObjectsMutex.unlock();
 }
 
-void Ion::Core::Scene::AddCanvas(Canvas* pCanvas)
+void Scene::AddCanvas(Canvas* pCanvas)
 {
 	mpCanvases.emplace(pCanvas);
 }
 
-void Ion::Core::Scene::Render()
+void Scene::Render()
 {
 	for (Canvas* pCanvas : mpCanvases)
 		pCanvas->Render();

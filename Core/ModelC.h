@@ -20,6 +20,9 @@ namespace Ion
 
 			virtual void Update(float) override = 0;
 			virtual void Switch() = 0;
+		protected:
+			int mCurrent;
+			bool mHasChanged;
 		};
 	}
 }

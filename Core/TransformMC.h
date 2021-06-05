@@ -36,8 +36,6 @@ namespace Ion
 			void InternalUpdate(float delta);
 			void InternalSwitch();
 
-			bool mHasChanged;
-			int mCurrent;
 			DirectX::XMFLOAT3
 				mPosition[2],
 				mWorldPosition[2],

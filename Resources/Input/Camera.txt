@@ -1,0 +1,8 @@
+MoveForward VK_Z
+MoveBack VK_S
+MoveLeft VK_Q
+MoveRight VK_D
+MoveUp VK_R
+MoveDown VK_F
+RotateLeft VK_A
+RotateRight VK_E

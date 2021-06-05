@@ -1,11 +1,10 @@
 #include "../Core/pch.h"
 #include "../Core/MeshVC.h"
 #include "../Core/Application.h"
-#include "../Core/Helpers.h"
 #include "../Core/Material.h"
 #include "../Core/Object.h"
 #include "../Core/Scene.h"
-#include "../Core/CameraMC.h"
+#include "../Core/CameraRMC.h"
 #include "../Core/d3dx12.h"
 
 using namespace Ion::Core;
@@ -25,7 +24,6 @@ MeshVC::MeshVC(bool isActive, Object* pObject)
 	, mpObjectCbvDataBegin{ nullptr }
 	, mpCanvases{}
 {
-	mpMaterial->AddViewC(this);
 	D3D12_INPUT_ELEMENT_DESC* inputElementDescs{ new D3D12_INPUT_ELEMENT_DESC[]
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
@@ -42,6 +40,7 @@ MeshVC::~MeshVC()
 
 void MeshVC::AddCanvas(Canvas* pCanvas)
 {
+	mpMaterial->AddViewC(pCanvas, this);
 	mpCanvases.emplace(pCanvas);
 	pCanvas->AddMaterial(mpMaterial);
 }
@@ -154,7 +153,7 @@ void MeshVC::Render(Canvas* pCanvas, Material* pMaterial)
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
-	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraMC>()->GetViewProjection()) };
+	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);

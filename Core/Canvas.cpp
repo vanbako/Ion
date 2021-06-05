@@ -2,8 +2,7 @@
 #include "../Core/Canvas.h"
 #include "../Core/Application.h"
 #include "../Core/Material.h"
-#include "../Core/Helpers.h"
-#include "../Core/CameraMC.h"
+#include "../Core/CameraRMC.h"
 #include "../Core/d3dx12.h"
 
 using namespace Ion::Core;
@@ -74,15 +73,15 @@ void Canvas::Initialize()
 		rtvHeapDesc.NodeMask = 0;
 		ThrowIfFailed(pDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mpRtvHeap)));
 	}
-	//mDsvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-	//{
-	//	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	//	dsvHeapDesc.NumDescriptors = 1;
-	//	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	//	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	//	dsvHeapDesc.NodeMask = 0;
-	//	ThrowIfFailed(pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mpDsvHeap)));
-	//}
+	mDsvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	{
+		D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+		dsvHeapDesc.NumDescriptors = 1;
+		dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+		dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		dsvHeapDesc.NodeMask = 0;
+		ThrowIfFailed(pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mpDsvHeap)));
+	}
 	mCbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
@@ -102,39 +101,36 @@ void Canvas::Initialize()
 		pDevice->CreateRenderTargetView(mpRenderTargets[1].Get(), nullptr, rtvHeapHandle);
 		rtvHeapHandle.Offset(1, mRtvDescriptorSize);
 	}
+
 	// Depth Stencil
-	//{
-	//	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle{ mpRtvHeap->GetCPUDescriptorHandleForHeapStart() };
-	//	ThrowIfFailed(mpSwapChain->GetBuffer(0, IID_PPV_ARGS(&mpRenderTargets[0])));
-	//	pDevice->CreateRenderTargetView(mpRenderTargets[0].Get(), nullptr, rtvHeapHandle);
-	//}
+	{
+		D3D12_RESOURCE_DESC dsDesc{};
+		dsDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+		dsDesc.Alignment = 0;
+		dsDesc.Width = mRectangle.GetWidth();
+		dsDesc.Height = mRectangle.GetHeight();
+		dsDesc.DepthOrArraySize = 1;
+		dsDesc.MipLevels = 1;
+		dsDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		dsDesc.SampleDesc.Count = 1;
+		dsDesc.SampleDesc.Quality = 0;
+		dsDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+		dsDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
-	//D3D12_RESOURCE_DESC dsDesc{};
-	//dsDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	//dsDesc.Alignment = 0;
-	//dsDesc.Width = mRectangle.GetWidth();
-	//dsDesc.Height = mRectangle.GetHeight();
-	//dsDesc.DepthOrArraySize = 1;
-	//dsDesc.MipLevels = 1;
-	//dsDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	//dsDesc.SampleDesc.Count = 1;
-	//dsDesc.SampleDesc.Quality = 0;
-	//dsDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-	//dsDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-
-	//D3D12_CLEAR_VALUE clearValue{};
-	//clearValue.Format = DXGI_FORMAT_D32_FLOAT;
-	//clearValue.DepthStencil.Depth = 1.0f;
-	//clearValue.DepthStencil.Stencil = 0;
-	//D3D12_HEAP_PROPERTIES heapProps{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT) };
-	//ThrowIfFailed(pDevice->CreateCommittedResource(
-	//	&heapProps,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&dsDesc,
-	//	D3D12_RESOURCE_STATE_COMMON,
-	//	&clearValue,
-	//	IID_PPV_ARGS(mpDepthStencilBuffer.GetAddressOf())));
-	//pDevice->CreateDepthStencilView(mpDepthStencilBuffer.Get(), nullptr, GetDepthStencilView());
+		D3D12_CLEAR_VALUE clearValue{};
+		clearValue.Format = DXGI_FORMAT_D32_FLOAT;
+		clearValue.DepthStencil.Depth = 1.0f;
+		clearValue.DepthStencil.Stencil = 0;
+		D3D12_HEAP_PROPERTIES heapProps{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT) };
+		ThrowIfFailed(pDevice->CreateCommittedResource(
+			&heapProps,
+			D3D12_HEAP_FLAG_NONE,
+			&dsDesc,
+			D3D12_RESOURCE_STATE_COMMON,
+			&clearValue,
+			IID_PPV_ARGS(mpDepthStencilBuffer.GetAddressOf())));
+		pDevice->CreateDepthStencilView(mpDepthStencilBuffer.Get(), nullptr, mpDsvHeap->GetCPUDescriptorHandleForHeapStart());
+	}
 
 	// Constant Buffer
 	{
@@ -186,7 +182,7 @@ void Canvas::SetCamera(Object* pCamera)
 {
 	mpCamera = pCamera;
 	if (pCamera != nullptr)
-	pCamera->GetModelC<CameraMC>()->SetCanvas(this);
+	pCamera->GetModelC<CameraRMC>()->SetCanvas(this);
 }
 
 Object* Canvas::GetCamera()
@@ -205,11 +201,6 @@ D3D12_CPU_DESCRIPTOR_HANDLE Canvas::GetCurrentBackBufferView()
 		mpRtvHeap->GetCPUDescriptorHandleForHeapStart(),
 		mCurrentBackBuffer,
 		mRtvDescriptorSize };
-}
-
-D3D12_CPU_DESCRIPTOR_HANDLE Canvas::GetDepthStencilView()
-{
-	return mpDsvHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& Canvas::GetGraphicsCommandList()
@@ -255,9 +246,11 @@ void Canvas::Render()
 	mpGraphicsCommandList->ResourceBarrier(1, &rbTransition1);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mpRtvHeap->GetCPUDescriptorHandleForHeapStart(), mCurrentBackBuffer, mRtvDescriptorSize);
-	mpGraphicsCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle{ mpDsvHeap->GetCPUDescriptorHandleForHeapStart() };
+	mpGraphicsCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
 
 	mpGraphicsCommandList->ClearRenderTargetView(rtvHandle, DirectX::Colors::Black, 0, nullptr);
+	mpGraphicsCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 	for (Material* pMaterial : mpMaterials)
 		pMaterial->Render(this);
