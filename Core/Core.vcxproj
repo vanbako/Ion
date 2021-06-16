@@ -89,7 +89,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AngleUnit.h" />
+    <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="AnimationKey.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BinIfstream.h" />
     <ClInclude Include="CameraRMC.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CanvasConstantBuffer.h" />
@@ -100,11 +103,15 @@
     <ClInclude Include="ControllerST.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="InputCC.h" />
+    <ClInclude Include="InputSemantic.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MeshType.h" />
     <ClInclude Include="MeshVC.h" />
     <ClInclude Include="MeshVCConstantBuffer.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelC.h" />
     <ClInclude Include="ModelST.h" />
+    <ClInclude Include="ModelVC.h" />
     <ClInclude Include="MoveBackCmd.h" />
     <ClInclude Include="MoveDownCmd.h" />
     <ClInclude Include="MoveForwardCmd.h" />
@@ -130,7 +137,10 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="AnimationKey.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BinIfstream.cpp" />
     <ClCompile Include="CameraRMC.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CharacterRMC.cpp" />
@@ -141,8 +151,10 @@
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshVC.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelC.cpp" />
     <ClCompile Include="ModelST.cpp" />
+    <ClCompile Include="ModelVC.cpp" />
     <ClCompile Include="MoveBackCmd.cpp" />
     <ClCompile Include="MoveDownCmd.cpp" />
     <ClCompile Include="MoveForwardCmd.cpp" />

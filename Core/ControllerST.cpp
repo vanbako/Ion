@@ -230,8 +230,8 @@ const std::map<std::string, int> ControllerST::mKeyNames{
 	{ "VK_OEM_CLEAR", VK_OEM_CLEAR }
 };
 
-ControllerST::ControllerST(Scene* pScene)
-	: SceneThread(pScene)
+ControllerST::ControllerST(Scene* pScene, std::chrono::microseconds updateTime)
+	: SceneThread(pScene, updateTime)
 	, mCommands{}
 {
 }

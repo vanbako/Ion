@@ -4,17 +4,8 @@
     <Filter Include="Components">
       <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Controllers">
-      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Models">
-      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{e2a8a314-b6ba-4f17-97c9-b5afbb2228f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Views">
-      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Helpers">
       <UniqueIdentifier>{942ad244-e602-49ae-bf02-2f5c8699f04f}</UniqueIdentifier>
@@ -52,8 +43,20 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{808bb631-bc16-4bcc-bcac-6c0875879cac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Models\Receivers">
+    <Filter Include="Components\ModelComponents">
+      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\ModelComponents\Receivers">
       <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\ControllerComponents">
+      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\ViewComponents">
+      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,13 +64,13 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ControllerC.h">
-      <Filter>Components\Controllers</Filter>
+      <Filter>Components\ControllerComponents</Filter>
     </ClInclude>
     <ClInclude Include="TransformMC.h">
-      <Filter>Components\Models</Filter>
+      <Filter>Components\ModelComponents</Filter>
     </ClInclude>
     <ClInclude Include="ModelC.h">
-      <Filter>Components\Models</Filter>
+      <Filter>Components\ModelComponents</Filter>
     </ClInclude>
     <ClInclude Include="Rectangle.h">
       <Filter>Math</Filter>
@@ -79,10 +82,10 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="ViewC.h">
-      <Filter>Components\Views</Filter>
+      <Filter>Components\ViewComponents</Filter>
     </ClInclude>
     <ClInclude Include="MeshVC.h">
-      <Filter>Components\Views</Filter>
+      <Filter>Components\ViewComponents</Filter>
     </ClInclude>
     <ClInclude Include="Quadrilateral.h">
       <Filter>Math</Filter>
@@ -130,7 +133,7 @@
       <Filter>PrecompiledHeaders</Filter>
     </ClInclude>
     <ClInclude Include="InputCC.h">
-      <Filter>Components\Controllers</Filter>
+      <Filter>Components\ControllerComponents</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Commands</Filter>
@@ -139,13 +142,13 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="ReceiverMC.h">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClInclude>
     <ClInclude Include="CharacterRMC.h">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClInclude>
     <ClInclude Include="CameraRMC.h">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClInclude>
     <ClInclude Include="MoveRightCmd.h">
       <Filter>Commands</Filter>
@@ -177,22 +180,43 @@
     <ClInclude Include="ViewST.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="ModelVC.h">
+      <Filter>Components\ViewComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshType.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationKey.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="BinIfstream.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSemantic.h">
+      <Filter>Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="TransformMC.cpp">
-      <Filter>Components\Models</Filter>
+      <Filter>Components\ModelComponents</Filter>
     </ClCompile>
     <ClCompile Include="ModelC.cpp">
-      <Filter>Components\Models</Filter>
+      <Filter>Components\ModelComponents</Filter>
     </ClCompile>
     <ClCompile Include="ControllerC.cpp">
-      <Filter>Components\Controllers</Filter>
+      <Filter>Components\ControllerComponents</Filter>
     </ClCompile>
     <ClCompile Include="ViewC.cpp">
-      <Filter>Components\Views</Filter>
+      <Filter>Components\ViewComponents</Filter>
     </ClCompile>
     <ClCompile Include="VertexPNC.cpp">
       <Filter>Vertices</Filter>
@@ -222,10 +246,10 @@
       <Filter>PrecompiledHeaders</Filter>
     </ClCompile>
     <ClCompile Include="MeshVC.cpp">
-      <Filter>Components\Views</Filter>
+      <Filter>Components\ViewComponents</Filter>
     </ClCompile>
     <ClCompile Include="InputCC.cpp">
-      <Filter>Components\Controllers</Filter>
+      <Filter>Components\ControllerComponents</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Commands</Filter>
@@ -234,13 +258,13 @@
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="ReceiverMC.cpp">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClCompile>
     <ClCompile Include="CharacterRMC.cpp">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClCompile>
     <ClCompile Include="CameraRMC.cpp">
-      <Filter>Components\Models\Receivers</Filter>
+      <Filter>Components\ModelComponents\Receivers</Filter>
     </ClCompile>
     <ClCompile Include="MoveRightCmd.cpp">
       <Filter>Commands</Filter>
@@ -274,6 +298,21 @@
     </ClCompile>
     <ClCompile Include="ViewST.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelVC.cpp">
+      <Filter>Components\ViewComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationKey.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="BinIfstream.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

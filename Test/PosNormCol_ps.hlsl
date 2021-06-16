@@ -1,8 +1,10 @@
 cbuffer CanvasConstantBuffer : register(b0)
 {
 	float3 gLightDirection;
-	float padding0;
-	float4 padding1[15];
+	float4 gColorDiffuse;
+	float4 gColorAmbient;
+	float gAmbientIntensity;
+	float4 padding1[13];
 };
 
 struct PSInput {

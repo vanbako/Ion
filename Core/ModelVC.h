@@ -2,10 +2,9 @@
 #include "../Core/ViewC.h"
 #include "../Core/Triangle.h"
 #include "../Core/VertexPNC.h"
-#include "../Core/Quadrilateral.h"
 #include "../Core/MeshVCConstantBuffer.h"
 
-// Mesh View Component
+// Model View Component
 
 namespace Ion
 {
@@ -14,32 +13,35 @@ namespace Ion
 		class Object;
 		class Material;
 		class Canvas;
+		class Model;
 
-		class MeshVC
+		class ModelVC
 			: public ViewC
 		{
 		public:
-			explicit MeshVC(bool isActive, Object* pObject);
-			virtual ~MeshVC();
-			MeshVC(const MeshVC& other) = default;
-			MeshVC(MeshVC&& other) noexcept = default;
-			MeshVC& operator=(const MeshVC& other) = default;
-			MeshVC& operator=(MeshVC&& other) noexcept = default;
+			explicit ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Object* pObject);
+			virtual ~ModelVC();
+			ModelVC(const ModelVC& other) = default;
+			ModelVC(ModelVC&& other) noexcept = default;
+			ModelVC& operator=(const ModelVC& other) = default;
+			ModelVC& operator=(ModelVC&& other) noexcept = default;
 
 			void AddCanvas(Canvas* pCanvas);
-			void AddTriangle(const VertexPNC& a, const VertexPNC& b, const VertexPNC& c);
-			void AddQuadrilateral(const Quadrilateral<VertexPNC>& quadrilateral);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
 			virtual void Render(Canvas* pCanvas, Material* pMaterial) override;
 		private:
-			static const size_t mMaxVertices{ 900 };
-
-			bool mMeshChanged;
-			VertexPNC mVertices[mMaxVertices];
-			size_t mVertexCount;
+			Model* mpModel;
 			Material* mpMaterial;
+			char* mpVertices;
+			size_t
+				mIndexCount,
+				mVertexCount;
+
+			Microsoft::WRL::ComPtr<ID3D12Resource> mIndexBuffer;
+			D3D12_INDEX_BUFFER_VIEW mIndexBufferView;
+			UINT8* mpIndexDataBegin;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mVertexBuffer;
 			D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;

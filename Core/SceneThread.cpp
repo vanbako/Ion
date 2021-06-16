@@ -3,9 +3,9 @@
 
 using namespace Ion::Core;
 
-SceneThread::SceneThread(Scene* pScene)
+SceneThread::SceneThread(Scene* pScene, std::chrono::microseconds updateTime)
 	: mpScene{ pScene }
-	, mUpdateTime{ mUpdateTimeDefault }
+	, mUpdateTime{ updateTime }
 	, mThread{}
 	, mStats{}
 	, mStatsMutex{}
@@ -44,7 +44,7 @@ void SceneThread::Loop(SceneThread* pSceneThread)
 		start{ std::chrono::steady_clock::now() },
 		end{};
 	std::chrono::duration<float> sleep{};
-	float delta{};
+	float delta{ 0.f };
 	while (!pScene->GetIsEnd())
 	{
 		sleep = std::chrono::duration<float>(start + pSceneThread->mUpdateTime.load() - std::chrono::steady_clock::now());

@@ -3,8 +3,8 @@
 
 using namespace Ion::Core;
 
-ViewST::ViewST(Scene* pScene)
-	: SceneThread(pScene)
+ViewST::ViewST(Scene* pScene, std::chrono::microseconds updateTime)
+	: SceneThread(pScene, updateTime)
 {
 }
 

@@ -25,6 +25,7 @@ Application::Application()
 	, mScenes{}
 	, mWindows{}
 	, mMaterials{}
+	, mModels{}
 	, mpDxgiFactory{}
 	, mpD3d12Device{ }
 	, mpCommandQueue{}
@@ -42,11 +43,6 @@ Application::Application()
 	wndClass.lpszMenuName = 0;
 	wndClass.lpszClassName = L"IonEngineWindowClass";
 	RegisterClass(&wndClass);
-}
-
-Application::~Application()
-{
-	mScenes.clear();
 }
 
 bool Application::Initialize()
@@ -153,4 +149,12 @@ Material* Application::AddMaterial(const std::string& name)
 	Material* pMaterial{ &((*(ret.first)).second) };
 	pMaterial->Initialize();
 	return pMaterial;
+}
+
+Model* Application::AddModel(const std::string& name)
+{
+	auto ret{ mModels.try_emplace(name, this, name) };
+	Model* pModel{ &((*(ret.first)).second) };
+	pModel->Initialize();
+	return pModel;
 }

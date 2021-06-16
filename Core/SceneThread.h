@@ -13,7 +13,7 @@ namespace Ion
 		class SceneThread
 		{
 		public:
-			explicit SceneThread(Scene* pScene);
+			explicit SceneThread(Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~SceneThread();
 			SceneThread(const SceneThread& other) = delete;
 			SceneThread(SceneThread&& other) noexcept = delete;
@@ -24,7 +24,6 @@ namespace Ion
 			void setUpdateTime(std::chrono::microseconds updateTime);
 			const std::chrono::microseconds GetUpdateTime() const;
 		protected:
-			static inline std::chrono::microseconds mUpdateTimeDefault{ 5000 };
 			static void Loop(SceneThread* pSceneThread);
 
 			virtual void Inner(float delta) = 0;

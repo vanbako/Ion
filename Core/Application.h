@@ -1,6 +1,7 @@
 #pragma once
 #include "../Core/Scene.h"
 #include "../Core/Material.h"
+#include "../Core/Model.h"
 #include "../Core/Window.h"
 
 namespace Ion
@@ -11,7 +12,7 @@ namespace Ion
 		{
 		public:
 			explicit Application();
-			~Application();
+			~Application() = default;
 			Application(const Application& other) = delete;
 			Application(Application&& other) noexcept = delete;
 			Application& operator=(const Application& other) = delete;
@@ -30,6 +31,7 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& GetCommandAllocator();
 
 			Material* AddMaterial(const std::string& name);
+			Model* AddModel(const std::string& name);
 		private:
 			bool
 				mIsInitialized,
@@ -37,6 +39,7 @@ namespace Ion
 			std::list<Scene> mScenes;
 			std::list<Window> mWindows;
 			std::map<std::string, Material> mMaterials;
+			std::map<std::string, Model> mModels;
 			Microsoft::WRL::ComPtr<IDXGIFactory> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;

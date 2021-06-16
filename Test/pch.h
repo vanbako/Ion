@@ -8,7 +8,7 @@
 #include <list>
 #include <map>
 #include <set>
-#include <queue>
+#include <bitset>
 #include <chrono>
 #include <thread>
 #include <shared_mutex>
@@ -21,6 +21,7 @@
 #include <wrl.h>
 #include <dxgi.h>
 #include <d3d12.h>
+#include <d3d12shader.h>
 #include <d3d12sdklayers.h>
 
 #include "../Core/Application.h"

@@ -9,7 +9,7 @@ namespace Ion
 			: public SceneThread
 		{
 		public:
-			explicit ViewST(Scene* pScene);
+			explicit ViewST(Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~ViewST() = default;
 			ViewST(const ViewST& other) = delete;
 			ViewST(ViewST&& other) noexcept = delete;

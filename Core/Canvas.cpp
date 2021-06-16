@@ -154,6 +154,9 @@ void Canvas::Initialize()
 		CD3DX12_RANGE readRange(0, 0);
 		ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
 		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
+		mCanvasConstantBufferData.mColorDiffuse = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
+		mCanvasConstantBufferData.mColorAmbient = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
+		mCanvasConstantBufferData.mAmbientIntensity = 1.f;
 		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(mCanvasConstantBufferData));
 	}
 	// Graphics Command List

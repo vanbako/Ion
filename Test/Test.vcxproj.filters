@@ -38,6 +38,15 @@
     <FxCompile Include="PosNormCol_rs.hlsl">
       <Filter>Shaders\RootSignature</Filter>
     </FxCompile>
+    <FxCompile Include="Shader_ps.hlsl">
+      <Filter>Shaders\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader_rs.hlsl">
+      <Filter>Shaders\RootSignature</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader_vs.hlsl">
+      <Filter>Shaders\Vertex</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

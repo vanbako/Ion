@@ -9,7 +9,7 @@ namespace Ion
 			: public SceneThread
 		{
 		public:
-			explicit ModelST(Scene* pScene);
+			explicit ModelST(Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~ModelST() = default;
 			ModelST(const ModelST& other) = delete;
 			ModelST(ModelST&& other) noexcept = delete;

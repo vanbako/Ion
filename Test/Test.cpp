@@ -1,5 +1,6 @@
 #include "../Test/pch.h"
 #include "../Core/MeshVC.h"
+#include "../Core/ModelVC.h"
 #include "../Core/Object.h"
 #include <iostream>
 
@@ -23,10 +24,16 @@ int main()
 
 		Object* pCube{ Factory::AddCube(pScene) };
 		pCube->GetViewC<MeshVC>()->AddCanvas(pCanvas);
+		pCube->GetModelC<TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 4.f, 0.5f, 0.f, 0.f });
+
+		Object* pFlower{ pScene->AddObject(false) };
+		pFlower->AddModelC<TransformMC>(false);
+		ModelVC* pFlowerModel{ pFlower->AddViewC<ModelVC>("Flower", "Shader", false)};
+		pFlowerModel->AddCanvas(pCanvas);
 
 		Object* pCamera{ Factory::AddCamera(pScene) };
 		TransformMC* pCameraTransform{ pCamera->GetModelC<TransformMC>() };
-		pCameraTransform->SetPosition(DirectX::XMFLOAT3{ 0.f, 0.f, -10.f });
+		pCameraTransform->SetPosition(DirectX::XMFLOAT4{ 0.f, 10.f, -40.f, 0.f });
 		pCameraTransform->SetRotation(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, AngleUnit::Degree);
 		pCanvas->SetCamera(pCamera);
 
@@ -34,6 +41,10 @@ int main()
 
 		Factory::SetCameraActive(pCamera);
 		Factory::SetCubeActive(pCube);
+		pFlower->GetModelC<TransformMC>()->SetIsActive(true);
+		pFlower->GetViewC<ModelVC>()->SetIsActive(true);
+		pFlower->SetIsActive(true);
+
 		pScene->SetIsActive(true);
 
 		std::cout << "App is running" << std::endl;

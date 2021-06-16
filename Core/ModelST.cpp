@@ -3,8 +3,8 @@
 
 using namespace Ion::Core;
 
-ModelST::ModelST(Scene* pScene)
-	: SceneThread(pScene)
+ModelST::ModelST(Scene* pScene, std::chrono::microseconds updateTime)
+	: SceneThread(pScene, updateTime)
 {
 }
 

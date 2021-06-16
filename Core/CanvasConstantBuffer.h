@@ -7,7 +7,10 @@ namespace Ion
 		struct CanvasConstantBuffer final
 		{
 			DirectX::XMFLOAT3 mLightDirection;
-			float mPadding[61]; // Total 256 bytes
+			DirectX::XMFLOAT4 mColorDiffuse;
+			DirectX::XMFLOAT4 mColorAmbient;
+			float mAmbientIntensity;
+			float mPadding[52]; // Total 256 bytes
 		};
 	}
 }

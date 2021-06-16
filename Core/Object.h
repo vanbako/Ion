@@ -1,5 +1,6 @@
 #pragma once
 #include "../Core/TransformMC.h"
+#include "../Core/ModelVC.h"
 
 namespace Ion
 {
@@ -13,7 +14,7 @@ namespace Ion
 		class Object final
 		{
 		public:
-			explicit Object(bool isActive, Scene* pScene);
+			explicit Object(bool isActive, Scene* pScene, Object* pParent = nullptr);
 			~Object();
 			Object(const Object& other) = delete;
 			Object(Object&& other) noexcept = delete;
@@ -24,6 +25,9 @@ namespace Ion
 			const bool GetIsActive() const;
 			Scene* GetScene();
 
+			Object* GetParent();
+			Object* AddChildObject(bool isActive);
+
 			template<class T>
 			T* AddModelC(bool isActive)
 			{
@@ -31,10 +35,10 @@ namespace Ion
 				return (T*)mpModelCs.back();
 			}
 			template<>
-			Core::TransformMC* AddModelC(bool isActive)
+			TransformMC* AddModelC(bool isActive)
 			{
 				if (mpTransformMC == nullptr)
-					mpTransformMC = new Core::TransformMC{ isActive, this };
+					mpTransformMC = new TransformMC{ isActive, this };
 				mpModelCs.emplace_back(mpTransformMC);
 				return mpTransformMC;
 			}
@@ -47,7 +51,7 @@ namespace Ion
 				return nullptr;
 			}
 			template<>
-			Core::TransformMC* GetModelC()
+			TransformMC* GetModelC()
 			{
 				return mpTransformMC;
 			}
@@ -91,6 +95,16 @@ namespace Ion
 				return (T*)mpViewCs.back();
 			}
 			template<class T>
+			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive)
+			{
+			}
+			template<>
+			ModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive)
+			{
+				mpViewCs.emplace_back(new ModelVC{ modelName, materialName, isActive, this });
+				return (ModelVC*)mpViewCs.back();
+			}
+			template<class T>
 			T* GetViewC()
 			{
 				for (auto pViewC : mpViewCs)
@@ -110,7 +124,8 @@ namespace Ion
 		private:
 			bool mIsActive;
 			Scene* mpScene;
-			Object* mpObject;
+			Object* mpParentObject;
+			std::list<Object> mChildObjects;
 			TransformMC* mpTransformMC;
 			std::list<ModelC*> mpModelCs;
 			std::list<ControllerC*> mpControllerCs;

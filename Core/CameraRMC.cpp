@@ -73,29 +73,80 @@ void CameraRMC::Update(float delta)
 	if (!mHasChanged)
 		return;
 
-	DirectX::XMFLOAT3 pos{ mpTransform->GetWorldPosition() };
-	if (mMoveForward[mCurrent])
-		pos.z += 0.1f;
-	if (mMoveBack[mCurrent])
-		pos.z -= 0.1f;
-	if (mMoveLeft[mCurrent])
-		pos.x += 0.1f;
-	if (mMoveRight[mCurrent])
-		pos.x -= 0.1f;
-	if (mMoveUp[mCurrent])
-		pos.y += 0.1f;
-	if (mMoveDown[mCurrent])
-		pos.y -= 0.1f;
-	mpTransform->SetPosition(pos);
+	{
+		DirectX::XMFLOAT4 pos{ mpTransform->GetWorldPosition() };
+		DirectX::XMFLOAT4 forward{ mpTransform->GetForward() };
+		DirectX::XMFLOAT4 up{ mpTransform->GetUp() };
+		DirectX::XMFLOAT4 right{ mpTransform->GetRight() };
+		float walkSpeed{ 10.f };
+		float rotateSpeed{ 1.f };
+		float moveDelta{ walkSpeed * delta };
+		float rotateDelta{ rotateSpeed * delta };
+		if (mMoveForward[mCurrent])
+		{
+			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(moveDelta) };
+			DirectX::XMVECTOR l{ DirectX::XMLoadFloat4(&forward) };
+			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
+			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, l, p));
+		}
+		if (mMoveBack[mCurrent])
+		{
+			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(-moveDelta) };
+			DirectX::XMVECTOR l{ DirectX::XMLoadFloat4(&forward) };
+			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
+			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, l, p));
+		}
+		if (mMoveLeft[mCurrent])
+		{
+			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(-moveDelta) };
+			DirectX::XMVECTOR r{ DirectX::XMLoadFloat4(&right) };
+			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
+			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, r, p));
+		}
+		if (mMoveRight[mCurrent])
+		{
+			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(moveDelta) };
+			DirectX::XMVECTOR r{ DirectX::XMLoadFloat4(&right) };
+			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
+			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, r, p));
+		}
+		// MoveUp & Down can be quite simple, as long as the up vector aligns with the y-axis
+		if (mMoveUp[mCurrent])
+			pos.y += moveDelta;
+		if (mMoveDown[mCurrent])
+			pos.y -= moveDelta;
+		if (mRotateLeft[mCurrent])
+		{
+			DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(rotateDelta) };
+			DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
+			DirectX::XMStoreFloat4(&up, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&up), R));
+			DirectX::XMStoreFloat4(&forward, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&forward), R));
+			mpTransform->SetForward(forward);
+			mpTransform->SetUp(up);
+			mpTransform->SetRight(right);
+		}
+		if (mRotateRight[mCurrent])
+		{
+			DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(-rotateDelta) };
+			DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
+			DirectX::XMStoreFloat4(&up, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&up), R));
+			DirectX::XMStoreFloat4(&forward, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&forward), R));
+			mpTransform->SetForward(forward);
+			mpTransform->SetUp(up);
+			mpTransform->SetRight(right);
+		}
+		mpTransform->SetPosition(pos);
+	}
+	{
+		DirectX::XMMATRIX projection{ DirectX::XMMatrixPerspectiveFovLH(mFOV, mpCanvas->GetRatio(), mNearPlane, mFarPlane) };
+		const DirectX::XMVECTOR worldPosition{ DirectX::XMLoadFloat4(&mpTransform->GetWorldPosition()) };
+		const DirectX::XMVECTOR forward{ DirectX::XMLoadFloat4(&mpTransform->GetForward()) };
+		const DirectX::XMVECTOR up{ DirectX::XMLoadFloat4(&mpTransform->GetUp()) };
 
-	DirectX::XMMATRIX projection{ DirectX::XMMatrixPerspectiveFovLH(mFOV, mpCanvas->GetRatio(), mNearPlane, mFarPlane) };
-	const DirectX::XMVECTOR worldPosition{ DirectX::XMLoadFloat3(&mpTransform->GetWorldPosition()) };
-	const DirectX::XMVECTOR forward{ DirectX::XMLoadFloat3(&mpTransform->GetForward()) };
-	const DirectX::XMVECTOR up{ DirectX::XMLoadFloat3(&mpTransform->GetUp()) };
+		const DirectX::XMMATRIX view{ DirectX::XMMatrixLookAtLH(worldPosition, worldPosition + forward, up) };
 
-	const DirectX::XMMATRIX view{ DirectX::XMMatrixLookAtLH(worldPosition, worldPosition + forward, up) };
-
-	DirectX::XMStoreFloat4x4(&mViewProjection, view * projection);
+		DirectX::XMStoreFloat4x4(&mViewProjection, view * projection);
+	}
 }
 
 void CameraRMC::Switch()
