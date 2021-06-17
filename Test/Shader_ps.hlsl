@@ -22,8 +22,8 @@ struct PSInput
 {
 	float4 position: SV_POSITION;
 	float3 normal: NORMAL;
-	//float3 tangent: TANGENT;
-	//float2 texCoord: TEXCOORD;
+	float3 tangent: TANGENT;
+	float2 texCoord: TEXCOORD;
 };
 
 //float3 CalculateDiffuse(float3 normal, float2 texCoord)

@@ -45,6 +45,15 @@ Application::Application()
 	RegisterClass(&wndClass);
 }
 
+Application::~Application()
+{
+	// It is important to remove the scenes first
+	mScenes.clear();
+	mWindows.clear();
+	mMaterials.clear();
+	mModels.clear();
+}
+
 bool Application::Initialize()
 {
 	if (!mIsInitialized)

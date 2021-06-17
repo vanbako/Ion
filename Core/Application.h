@@ -12,7 +12,7 @@ namespace Ion
 		{
 		public:
 			explicit Application();
-			~Application() = default;
+			~Application();
 			Application(const Application& other) = delete;
 			Application(Application&& other) noexcept = delete;
 			Application& operator=(const Application& other) = delete;
