@@ -1,6 +1,6 @@
 #pragma once
-#include "../Core/InputSemantic.h"
 #include "../Core/TextureType.h"
+#include "../Core/SemanticInfo.h"
 
 namespace Ion
 {
@@ -9,13 +9,6 @@ namespace Ion
 		class Application;
 		class Canvas;
 		class ViewC;
-
-		struct SemanticInfo
-		{
-			InputSemantic inputSemantic;
-			DXGI_FORMAT format;
-			UINT offset;
-		};
 
 		class Material final
 		{

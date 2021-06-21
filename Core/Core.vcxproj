@@ -136,6 +136,7 @@
     <ClInclude Include="RotateRightCmd.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneThread.h" />
+    <ClInclude Include="SemanticInfo.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureType.h" />
     <ClInclude Include="TransformMC.h" />

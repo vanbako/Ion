@@ -240,6 +240,9 @@
     <ClInclude Include="TextureType.h">
       <Filter>Texture</Filter>
     </ClInclude>
+    <ClInclude Include="SemanticInfo.h">
+      <Filter>Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
