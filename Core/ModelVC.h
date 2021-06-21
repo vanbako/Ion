@@ -1,4 +1,5 @@
 #pragma once
+#include "../Core/TextureType.h"
 #include "../Core/ViewC.h"
 #include "../Core/Triangle.h"
 #include "../Core/VertexPNC.h"
@@ -14,6 +15,7 @@ namespace Ion
 		class Material;
 		class Canvas;
 		class Model;
+		class Texture;
 
 		class ModelVC
 			: public ViewC
@@ -27,6 +29,7 @@ namespace Ion
 			ModelVC& operator=(ModelVC&& other) noexcept = default;
 
 			void AddCanvas(Canvas* pCanvas);
+			void AddTexture(TextureType textureType, const std::string& name);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
@@ -34,6 +37,7 @@ namespace Ion
 		private:
 			Model* mpModel;
 			Material* mpMaterial;
+			std::map<TextureType,Texture*> mpTextures;
 			char* mpVertices;
 			size_t
 				mIndexCount,
@@ -51,6 +55,8 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
 			MeshVCConstantBuffer mObjectConstantBufferData;
 			UINT8* mpObjectCbvDataBegin;
+
+			std::map<TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 
 			std::set<Canvas*> mpCanvases;
 		};

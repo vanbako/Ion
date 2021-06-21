@@ -102,8 +102,14 @@
     <ClInclude Include="ControllerC.h" />
     <ClInclude Include="ControllerST.h" />
     <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="DDS.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DirectXHelpers.h" />
+    <ClInclude Include="GraphicsMemory.h" />
     <ClInclude Include="InputCC.h" />
     <ClInclude Include="InputSemantic.h" />
+    <ClInclude Include="LinearAllocator.h" />
+    <ClInclude Include="LoaderHelpers.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MeshType.h" />
     <ClInclude Include="MeshVC.h" />
@@ -121,19 +127,24 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Factory.h" />
+    <ClInclude Include="PlatformHelpers.h" />
     <ClInclude Include="Quadrilateral.h" />
     <ClInclude Include="ReceiverMC.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="ResourceUploadBatch.h" />
     <ClInclude Include="RotateLeftCmd.h" />
     <ClInclude Include="RotateRightCmd.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneThread.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureType.h" />
     <ClInclude Include="TransformMC.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VertexPNC.h" />
     <ClInclude Include="ViewC.h" />
     <ClInclude Include="ViewST.h" />
+    <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +159,10 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
     <ClCompile Include="ControllerST.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="GraphicsMemory.cpp" />
     <ClCompile Include="InputCC.cpp" />
+    <ClCompile Include="LinearAllocator.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshVC.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -168,18 +182,22 @@
     </ClCompile>
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="ReceiverMC.cpp" />
+    <ClCompile Include="ResourceUploadBatch.cpp" />
     <ClCompile Include="RotateLeftCmd.cpp" />
     <ClCompile Include="RotateRightCmd.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="VertexPNC.cpp" />
     <ClCompile Include="ViewC.cpp" />
     <ClCompile Include="ViewST.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="Shaders\Compiled\GenerateMips_main.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

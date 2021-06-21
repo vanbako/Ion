@@ -8,7 +8,8 @@
 using namespace Ion::Core;
 
 const UINT Material::mMaxInputParam{ 20 };
-const std::map<std::string, SemanticInfo> Material::mSemanticStrings{
+const std::map<std::string, SemanticInfo> Material::mSemanticStrings
+{
 	{ "POSITION", SemanticInfo{ InputSemantic::Position, DXGI_FORMAT_R32G32B32_FLOAT, 12 } },
 	{ "POSITION0", SemanticInfo{ InputSemantic::Position0, DXGI_FORMAT_R32G32B32_FLOAT, 12 } },
 	{ "POSITION1", SemanticInfo{ InputSemantic::Position1, DXGI_FORMAT_R32G32B32_FLOAT, 12 } },
@@ -41,6 +42,19 @@ const std::map<std::string, SemanticInfo> Material::mSemanticStrings{
 	{ "BLENDWEIGHT0", SemanticInfo{ InputSemantic::BlendWeight0, DXGI_FORMAT_R32G32B32A32_FLOAT, 16 } },
 	{ "BLENDWEIGHT1", SemanticInfo{ InputSemantic::BlendWeight1, DXGI_FORMAT_R32G32B32A32_FLOAT, 16 } },
 	{ "BLENDWEIGHT2", SemanticInfo{ InputSemantic::BlendWeight2, DXGI_FORMAT_R32G32B32A32_FLOAT, 16 } }
+};
+const std::map<std::string, TextureType> Material::mTextureTypeStrings
+{
+	{ "gTextureAlbedo", TextureType::Albedo },
+	{ "gTextureNormal", TextureType::Normal },
+	{ "gTextureRoughness", TextureType::Roughness },
+	{ "gTextureMetalness", TextureType::Metalness },
+	{ "gTextureSpecular", TextureType::Specular },
+	{ "gTextureHeight", TextureType::Height },
+	{ "gTextureOpacity", TextureType::Opacity },
+	{ "gTextureAmbientOcclusion", TextureType::AmbientOcclusion },
+	{ "gTextureRefraction", TextureType::Refraction },
+	{ "gTextureSelfIllumination", TextureType::SelfIllumination }
 };
 
 Material::Material(Application* pApplication, const std::string& name)
@@ -88,6 +102,13 @@ Material::Material(Application* pApplication, const std::string& name)
 
 	ID3D12ShaderReflection* pVSReflector{ nullptr };
 	ThrowIfFailed(D3DReflect(mVS->GetBufferPointer(), mVS->GetBufferSize(), IID_PPV_ARGS(&pVSReflector)));
+	// Build texture types set supported by shader
+	ID3D12ShaderReflection* pPSReflector{ nullptr };
+	ThrowIfFailed(D3DReflect(mPS->GetBufferPointer(), mPS->GetBufferSize(), IID_PPV_ARGS(&pPSReflector)));
+	D3D12_SHADER_INPUT_BIND_DESC shaderBindDesc{};
+	for (auto& pair : mTextureTypeStrings)
+		if (pPSReflector->GetResourceBindingDescByName(pair.first.c_str(), &shaderBindDesc) == S_OK)
+			mTextureTypes.emplace(pair.second);
 	// Read & build Input layout from Vertex shader
 	while (pVSReflector->GetInputParameterDesc(mInputElementCount, &mSigParDescs[mInputElementCount]) == S_OK)
 		++mInputElementCount;
@@ -180,6 +201,11 @@ UINT Material::GetInputElementCount() const
 UINT Material::GetLayoutSize() const
 {
 	return mLayoutSize;
+}
+
+const std::set<TextureType>& Material::GetTextureTypeSet() const
+{
+	return mTextureTypes;
 }
 
 void Material::AddViewC(Canvas* pCanvas, ViewC* pViewC)

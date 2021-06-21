@@ -31,6 +31,8 @@ Application::Application()
 	, mpCommandQueue{}
 	, mpCommandAllocator{}
 {
+	//Windows::Foundation::Initialize(RO_INIT_MULTITHREADED);
+
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc = AppWinProc;
@@ -47,7 +49,7 @@ Application::Application()
 
 Application::~Application()
 {
-	// It is important to remove the scenes first
+	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
 	mWindows.clear();
 	mMaterials.clear();
@@ -166,4 +168,11 @@ Model* Application::AddModel(const std::string& name)
 	Model* pModel{ &((*(ret.first)).second) };
 	pModel->Initialize();
 	return pModel;
+}
+
+Texture* Application::AddTexture(const std::string& name)
+{
+	auto ret{ mTextures.try_emplace(name, this, name) };
+	Texture* pTexture{ &((*(ret.first)).second) };
+	return pTexture;
 }

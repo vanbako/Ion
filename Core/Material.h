@@ -1,5 +1,6 @@
 #pragma once
-#include "InputSemantic.h"
+#include "../Core/InputSemantic.h"
+#include "../Core/TextureType.h"
 
 namespace Ion
 {
@@ -33,6 +34,7 @@ namespace Ion
 			D3D12_INPUT_ELEMENT_DESC* GetInputElementDescs();
 			UINT GetInputElementCount() const;
 			UINT GetLayoutSize() const;
+			const std::set<TextureType>& GetTextureTypeSet() const;
 
 			void AddViewC(Canvas* pCanvas, ViewC* pViewC);
 
@@ -40,6 +42,7 @@ namespace Ion
 		private:
 			static const UINT mMaxInputParam;
 			static const std::map<std::string, SemanticInfo> mSemanticStrings;
+			static const std::map<std::string, TextureType> mTextureTypeStrings;
 
 			bool mIsInitialized;
 			Application* mpApplication;
@@ -57,6 +60,7 @@ namespace Ion
 				mInputElementCount,
 				mLayoutSize;
 			std::map<Canvas*,std::vector<ViewC*>> mpCanvasViewCs;
+			std::set<TextureType> mTextureTypes;
 		};
 	}
 }

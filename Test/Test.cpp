@@ -27,9 +27,10 @@ int main()
 		pCube->GetModelC<TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 4.f, 0.5f, 0.f, 0.f });
 
 		Object* pFlower{ pScene->AddObject(false) };
-		pFlower->AddModelC<TransformMC>(false);
-		ModelVC* pFlowerModel{ pFlower->AddViewC<ModelVC>("Flower", "Shader", false)};
-		pFlowerModel->AddCanvas(pCanvas);
+		TransformMC* pFlowerTransformMC{ pFlower->AddModelC<TransformMC>(false) };
+		ModelVC* pFlowerModelVC{ pFlower->AddViewC<ModelVC>("Flower", "Shader", false)};
+		pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
+		pFlowerModelVC->AddCanvas(pCanvas);
 
 		Object* pCamera{ Factory::AddCamera(pScene) };
 		TransformMC* pCameraTransform{ pCamera->GetModelC<TransformMC>() };
@@ -41,8 +42,8 @@ int main()
 
 		Factory::SetCameraActive(pCamera);
 		Factory::SetCubeActive(pCube);
-		pFlower->GetModelC<TransformMC>()->SetIsActive(true);
-		pFlower->GetViewC<ModelVC>()->SetIsActive(true);
+		pFlowerTransformMC->SetIsActive(true);
+		pFlowerModelVC->SetIsActive(true);
 		pFlower->SetIsActive(true);
 
 		pScene->SetIsActive(true);

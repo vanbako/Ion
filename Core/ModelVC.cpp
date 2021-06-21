@@ -14,6 +14,7 @@ ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, 
 	: ViewC(isActive, pObject)
 	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName) }
 	, mpMaterial{ pObject->GetScene()->GetApplication()->AddMaterial(materialName) }
+	, mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}
 	, mIndexBufferView{}
@@ -27,6 +28,7 @@ ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, 
 	, mpObjectConstantBuffer{}
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
+	, mpTextureSrvHeaps{}
 	, mpCanvases{}
 {
 	mpMaterial->Initialize();
@@ -43,6 +45,37 @@ void ModelVC::AddCanvas(Canvas* pCanvas)
 	mpMaterial->AddViewC(pCanvas, this);
 	mpCanvases.emplace(pCanvas);
 	pCanvas->AddMaterial(mpMaterial);
+}
+
+void ModelVC::AddTexture(TextureType textureType, const std::string& name)
+{
+	if (mpTextures.contains(textureType))
+		return;
+	if (!mpMaterial->GetTextureTypeSet().contains(textureType))
+		return;
+	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	auto pDevice{ pApplication->GetDevice() };
+	Texture* pTexture{ mpObject->GetScene()->GetApplication()->AddTexture(name) };
+	mpTextures[textureType] = pTexture;
+	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
+	{
+		D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+		srvHeapDesc.NumDescriptors = 1;
+		srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		ThrowIfFailed(pDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mpTextureSrvHeaps[textureType])));
+
+		auto& texture{ pTexture->GetTexture() };
+		CD3DX12_CPU_DESCRIPTOR_HANDLE hDesc{ mpTextureSrvHeaps[textureType]->GetCPUDescriptorHandleForHeapStart() };
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.Format = texture->GetDesc().Format;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = texture->GetDesc().MipLevels;
+		srvDesc.Texture2D.ResourceMinLODClamp = 0.f;
+		pDevice->CreateShaderResourceView(texture.Get(), &srvDesc, hDesc);
+	}
 }
 
 void ModelVC::Initialize()
@@ -207,13 +240,20 @@ void ModelVC::Render(Canvas* pCanvas, Material* pMaterial)
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorldViewProj, wvp);
 
+	for (auto& pair : mpTextureSrvHeaps)
+	{
+		// TODO: Put texture in correct descriptor table
+		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
+		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
+		pGraphicsCommandList->SetGraphicsRootDescriptorTable(UINT(pair.first) + 2, tex);
+	}
 	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
 	{
 		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
 	}
-
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);

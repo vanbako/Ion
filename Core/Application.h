@@ -2,6 +2,7 @@
 #include "../Core/Scene.h"
 #include "../Core/Material.h"
 #include "../Core/Model.h"
+#include "../Core/Texture.h"
 #include "../Core/Window.h"
 
 namespace Ion
@@ -32,6 +33,7 @@ namespace Ion
 
 			Material* AddMaterial(const std::string& name);
 			Model* AddModel(const std::string& name);
+			Texture* AddTexture(const std::string& name);
 		private:
 			bool
 				mIsInitialized,
@@ -40,6 +42,7 @@ namespace Ion
 			std::list<Window> mWindows;
 			std::map<std::string, Material> mMaterials;
 			std::map<std::string, Model> mModels;
+			std::map<std::string, Texture> mTextures;
 			Microsoft::WRL::ComPtr<IDXGIFactory> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
