@@ -126,7 +126,8 @@ void Canvas::Initialize()
 			&heapProps,
 			D3D12_HEAP_FLAG_NONE,
 			&dsDesc,
-			D3D12_RESOURCE_STATE_COMMON,
+			//D3D12_RESOURCE_STATE_COMMON,
+			D3D12_RESOURCE_STATE_DEPTH_WRITE,
 			&clearValue,
 			IID_PPV_ARGS(mpDepthStencilBuffer.GetAddressOf())));
 		pDevice->CreateDepthStencilView(mpDepthStencilBuffer.Get(), nullptr, mpDsvHeap->GetCPUDescriptorHandleForHeapStart());
