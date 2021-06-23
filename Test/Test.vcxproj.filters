@@ -4,20 +4,11 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{c1ca3bf5-3a5a-44c3-9a05-a63f9f3c9d4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Pixel">
-      <UniqueIdentifier>{fd5c331b-9a85-4360-bc01-47fa833721fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Vertex">
-      <UniqueIdentifier>{78a6e47f-ff95-4fd5-8bd6-2c516beb091a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PrecompiledHeaders">
       <UniqueIdentifier>{7c5b86b8-8c6a-446b-b4ac-440dcdeb6fe9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{3fdab4fb-ab17-4093-b70c-5f00340d75ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\RootSignature">
-      <UniqueIdentifier>{a87b179b-eef1-4e17-820c-a7772516e037}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,26 +18,6 @@
     <ClCompile Include="Test.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PosNormCol_ps.hlsl">
-      <Filter>Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PosNormCol_vs.hlsl">
-      <Filter>Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="PosNormCol_rs.hlsl">
-      <Filter>Shaders\RootSignature</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader_ps.hlsl">
-      <Filter>Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader_rs.hlsl">
-      <Filter>Shaders\RootSignature</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader_vs.hlsl">
-      <Filter>Shaders\Vertex</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

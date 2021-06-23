@@ -1,9 +1,4 @@
-cbuffer ObjectConstantBuffer : register(b1)
-{
-	float4x4 gWorld;
-	float4x4 gWorldViewProj;
-	float4 padding3[8];
-}
+#include "../../Core/Shaders/ObjectConstantBuffer.hlsli"
 
 struct VSInput
 {

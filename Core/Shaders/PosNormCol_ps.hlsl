@@ -1,11 +1,4 @@
-cbuffer CanvasConstantBuffer : register(b0)
-{
-	float3 gLightDirection;
-	float4 gColorDiffuse;
-	float4 gColorAmbient;
-	float gAmbientIntensity;
-	float4 padding1[13];
-};
+#include "../../Core/Shaders/CanvasConstantBuffer.hlsli"
 
 struct PSInput {
 	float4 position : SV_POSITION;

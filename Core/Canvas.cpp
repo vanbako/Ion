@@ -154,11 +154,12 @@ void Canvas::Initialize()
 
 		CD3DX12_RANGE readRange(0, 0);
 		ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
-		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
+		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ 0.577f, 0.577f, -0.577f };
+		//mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ 0.f, 0.f, -1.f };
 		mCanvasConstantBufferData.mColorDiffuse = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
 		mCanvasConstantBufferData.mColorAmbient = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
-		mCanvasConstantBufferData.mAmbientIntensity = 1.f;
-		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(mCanvasConstantBufferData));
+		mCanvasConstantBufferData.mAmbientIntensity = 0.1f;
+		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, canvasConstantBufferSize);
 	}
 	// Graphics Command List
 	{
@@ -233,12 +234,10 @@ void Canvas::Render()
 	auto pCmdAlloc{ pApp->GetCommandAllocator() };
 	auto pCmdQueue{ pApp->GetCommandQueue() };
 
-	mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
-
 	ThrowIfFailed(pCmdAlloc->Reset());
 	ThrowIfFailed(mpGraphicsCommandList->Reset(pCmdAlloc.Get(), nullptr));
 
-	memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(mCanvasConstantBufferData));
+	memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(CanvasConstantBuffer));
 
 	mpGraphicsCommandList->RSSetViewports(1, &mViewport);
 	mpGraphicsCommandList->RSSetScissorRects(1, &mScissorRect);

@@ -28,7 +28,7 @@ int main()
 
 		Object* pFlower{ pScene->AddObject(false) };
 		TransformMC* pFlowerTransformMC{ pFlower->AddModelC<TransformMC>(false) };
-		ModelVC* pFlowerModelVC{ pFlower->AddViewC<ModelVC>("Flower", "Shader", false)};
+		ModelVC* pFlowerModelVC{ pFlower->AddViewC<ModelVC>("Flower", "PosNormTanTex_A", false)};
 		pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
 		pFlowerModelVC->AddCanvas(pCanvas);
 

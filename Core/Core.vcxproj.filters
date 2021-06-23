@@ -64,6 +64,15 @@
     <Filter Include="DirectXTK12">
       <UniqueIdentifier>{3c0b96d9-bd5a-4ad0-8880-5bef9d83763b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{1799dd8c-33f1-466e-9eb1-7c133a972161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormCol">
+      <UniqueIdentifier>{97211dc8-f071-437d-9078-5ee904bdb5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormTanTex">
+      <UniqueIdentifier>{12d1a4c6-f0db-47ed-b911-7971aa3d70cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -382,5 +391,49 @@
     <None Include="Shaders\Compiled\GenerateMips_main.inc">
       <Filter>DirectXTK12</Filter>
     </None>
+    <None Include="Shaders\CanvasConstantBuffer.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\PosNormTanTex_PSInput.hlsli">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </None>
+    <None Include="Shaders\CalculateAlbedo.hlsli">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </None>
+    <None Include="Shaders\CalculateNormal.hlsli">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </None>
+    <None Include="Shaders\ObjectConstantBuffer.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
+      <Filter>Shaders\PosNormCol</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormCol_rs.hlsl">
+      <Filter>Shaders\PosNormCol</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormCol_vs.hlsl">
+      <Filter>Shaders\PosNormCol</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_A_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_A_rs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_A_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_AN_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_AN_rs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_AN_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
