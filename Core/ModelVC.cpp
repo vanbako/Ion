@@ -102,35 +102,43 @@ void ModelVC::Initialize()
 			switch (pInputSemantics[j])
 			{
 			case InputSemantic::Position:
-				*((DirectX::XMFLOAT3*)pPos) = mpModel->GetPositions()[i];
+				std::memcpy(pPos, &mpModel->GetPositions()[i], sizeof(DirectX::XMFLOAT3));
+				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetPositions()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Normal:
-				*((DirectX::XMFLOAT3*)pPos) = mpModel->GetNormals()[i];
+				std::memcpy(pPos, &mpModel->GetNormals()[i], sizeof(DirectX::XMFLOAT3));
+				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetNormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Tangent:
-				*((DirectX::XMFLOAT3*)pPos) = mpModel->GetTangents()[i];
+				std::memcpy(pPos, &mpModel->GetTangents()[i], sizeof(DirectX::XMFLOAT3));
+				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetTangents()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Binormal:
-				*((DirectX::XMFLOAT3*)pPos) = mpModel->GetBinormals()[i];
+				std::memcpy(pPos, &mpModel->GetBinormals()[i], sizeof(DirectX::XMFLOAT3));
+				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetBinormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::TexCoord:
-				*((DirectX::XMFLOAT2*)pPos) = mpModel->GetTexCoords()[i];
+				std::memcpy(pPos, &mpModel->GetTexCoords()[i], sizeof(DirectX::XMFLOAT2));
+				//*((DirectX::XMFLOAT2*)pPos) = mpModel->GetTexCoords()[i];
 				pPos += sizeof(DirectX::XMFLOAT2);
 				break;
 			case InputSemantic::Color:
-				*((DirectX::XMFLOAT4*)pPos) = mpModel->GetColors()[i];
+				std::memcpy(pPos, &mpModel->GetColors()[i], sizeof(DirectX::XMFLOAT4));
+				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetColors()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case InputSemantic::BlendIndices:
-				*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendIndices()[i];
+				std::memcpy(pPos, &mpModel->GetBlendIndices()[i], sizeof(DirectX::XMFLOAT4));
+				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendIndices()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case InputSemantic::BlendWeight:
-				*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendWeights()[i];
+				std::memcpy(pPos, &mpModel->GetBlendWeights()[i], sizeof(DirectX::XMFLOAT4));
+				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendWeights()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			}
@@ -242,7 +250,6 @@ void ModelVC::Render(Canvas* pCanvas, Material* pMaterial)
 
 	for (auto& pair : mpTextureSrvHeaps)
 	{
-		// TODO: Put texture in correct descriptor table
 		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };

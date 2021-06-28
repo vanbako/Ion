@@ -18,14 +18,12 @@ namespace Ion
 			Factory& operator=(Factory&& other) noexcept = delete;
 
 			static Object* AddCamera(Scene* pScene);
-			static void SetCameraActive(Object* pCamera);
 			static Object* AddCube(
 				Scene* pScene,
 				float width = 1.f,
 				float height = 1.f,
 				float depth = 1.f,
 				DirectX::XMFLOAT4 color = (DirectX::XMFLOAT4)DirectX::Colors::White);
-			static void SetCubeActive(Object* pCube);
 		};
 	}
 }

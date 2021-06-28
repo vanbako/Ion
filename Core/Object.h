@@ -21,7 +21,7 @@ namespace Ion
 			Object& operator=(const Object& other) = delete;
 			Object& operator=(Object&& other) noexcept = delete;
 
-			void SetIsActive(bool isActive);
+			void SetIsActive(bool isActive, bool includeComponents = false);
 			const bool GetIsActive() const;
 			Scene* GetScene();
 

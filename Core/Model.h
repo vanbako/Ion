@@ -36,6 +36,7 @@ namespace Ion
 		private:
 			bool mIsInitialized;
 			Application* mpApplication;
+			std::string mFileName;
 			std::wstring mName;
 			size_t
 				mTexCoordCount,

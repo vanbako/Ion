@@ -122,7 +122,8 @@ Material::Material(Application* pApplication, const std::string& name)
 			semanticInfo.format,
 			0,
 			mLayoutSize,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0 };
 		mLayoutSize += semanticInfo.offset;
 	}
 }
@@ -145,12 +146,15 @@ void Material::Initialize()
 
 	// Build Pipeline State
 	{
+		D3D12_RASTERIZER_DESC rasDesc{};
+		rasDesc.FillMode = D3D12_FILL_MODE_SOLID;
+		rasDesc.CullMode = D3D12_CULL_MODE_NONE;
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 		psoDesc.InputLayout = { mpInputElementDescs, mInputElementCount };
 		psoDesc.pRootSignature = mpRootSignature.Get();
 		psoDesc.VS = CD3DX12_SHADER_BYTECODE(mVS.Get());
 		psoDesc.PS = CD3DX12_SHADER_BYTECODE(mPS.Get());
-		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		psoDesc.RasterizerState = rasDesc;
 		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 		psoDesc.SampleMask = UINT_MAX;

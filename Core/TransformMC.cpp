@@ -68,8 +68,11 @@ void TransformMC::SetRotation(const DirectX::XMFLOAT3& rotation, AngleUnit unit)
 {
 	switch (unit)
 	{
-	case AngleUnit::Degree:
+	case AngleUnit::Radian:
 		DirectX::XMStoreFloat4(&mRotation[mCurrent], DirectX::XMQuaternionRotationRollPitchYaw(rotation.x, rotation.y, rotation.z));
+		break;
+	case AngleUnit::Degree:
+		DirectX::XMStoreFloat4(&mRotation[mCurrent], DirectX::XMQuaternionRotationRollPitchYaw(DirectX::XMConvertToRadians(rotation.x), DirectX::XMConvertToRadians(rotation.y), DirectX::XMConvertToRadians(rotation.z)));
 		break;
 	}
 	DirectX::XMVECTOR rot{ DirectX::XMLoadFloat4(&mRotation[mCurrent]) };

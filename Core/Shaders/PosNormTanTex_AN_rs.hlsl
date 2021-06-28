@@ -6,5 +6,6 @@
   "DENY_GEOMETRY_SHADER_ROOT_ACCESS), " \
 "DescriptorTable(CBV(b0, numDescriptors = 1)), " \
 "DescriptorTable(CBV(b1, numDescriptors = 1)), " \
-"DescriptorTable(SRV(t0), SRV(t1), visibility = SHADER_VISIBILITY_PIXEL), " \
+"DescriptorTable(SRV(t0), visibility = SHADER_VISIBILITY_PIXEL), " \
+"DescriptorTable(SRV(t1), visibility = SHADER_VISIBILITY_PIXEL), " \
 "StaticSampler(s0, Filter = FILTER_MIN_MAG_MIP_LINEAR, AddressU = TEXTURE_ADDRESS_WRAP, AddressV = TEXTURE_ADDRESS_WRAP, AddressW = TEXTURE_ADDRESS_WRAP)"

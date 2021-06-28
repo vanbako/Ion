@@ -9,8 +9,9 @@ using namespace Ion::Core;
 Model::Model(Application* pApplication, const std::string& name)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
+	, mFileName{ name }
 	, mName{}
-	, mTexCoordCount{}
+	, mTexCoordCount{ 0 }
 	, mBoneCount{ 0 }
 	, mIndices{}
 	, mPositions{}

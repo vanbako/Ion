@@ -78,8 +78,8 @@ void CameraRMC::Update(float delta)
 		DirectX::XMFLOAT4 forward{ mpTransform->GetForward() };
 		DirectX::XMFLOAT4 up{ mpTransform->GetUp() };
 		DirectX::XMFLOAT4 right{ mpTransform->GetRight() };
-		float walkSpeed{ 10.f };
-		float rotateSpeed{ 1.f };
+		float walkSpeed{ 100.f };
+		float rotateSpeed{ 10.f };
 		float moveDelta{ walkSpeed * delta };
 		float rotateDelta{ rotateSpeed * delta };
 		if (mMoveForward[mCurrent])

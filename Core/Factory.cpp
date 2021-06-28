@@ -22,13 +22,6 @@ Object* Factory::AddCamera(Scene* pScene)
 	return pObject;
 }
 
-void Factory::SetCameraActive(Object* pCamera)
-{
-	pCamera->GetModelC<TransformMC>()->SetIsActive(true);
-	pCamera->GetModelC<CameraRMC>()->SetIsActive(true);
-	pCamera->SetIsActive(true);
-}
-
 Object* Factory::AddCube(Scene* pScene, float width, float height, float depth, DirectX::XMFLOAT4 color)
 {
 	float halfWidth{ width / 2.f };
@@ -88,11 +81,4 @@ Object* Factory::AddCube(Scene* pScene, float width, float height, float depth, 
 			VertexPNC{ DirectX::XMFLOAT3{ -halfWidth, -halfHeight, halfDepth }, DirectX::XMFLOAT3{ 0.f, -1.f, 0.f }, color } });
 
 	return pObject;
-}
-
-void Factory::SetCubeActive(Object* pCube)
-{
-	pCube->GetModelC<TransformMC>()->SetIsActive(true);
-	pCube->GetViewC<MeshVC>()->SetIsActive(true);
-	pCube->SetIsActive(true);
 }

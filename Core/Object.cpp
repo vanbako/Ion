@@ -27,11 +27,20 @@ Object::~Object()
 		delete pViewC;
 }
 
-void Object::SetIsActive(bool isActive)
+void Object::SetIsActive(bool isActive, bool includeComponents)
 {
 	mIsActive = isActive;
 	for (auto& childObject : mChildObjects)
 		childObject.SetIsActive(isActive);
+	if (includeComponents)
+	{
+		for (auto& pModelC : mpModelCs)
+			pModelC->SetIsActive(isActive);
+		for (auto& pControllerC : mpControllerCs)
+			pControllerC->SetIsActive(isActive);
+		for (auto& pViewC : mpViewCs)
+			pViewC->SetIsActive(isActive);
+	}
 }
 
 const bool Object::GetIsActive() const
