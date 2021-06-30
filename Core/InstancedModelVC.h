@@ -5,6 +5,8 @@
 #include "../Core/VertexPNC.h"
 #include "../Core/MeshVCConstantBuffer.h"
 #include "../Core/Winding.h"
+#include "../Core/InstanceBuffer.h"
+#include "../Core/TransformMC.h"
 
 // Model View Component
 
@@ -18,16 +20,16 @@ namespace Ion
 		class Model;
 		class Texture;
 
-		class ModelVC
+		class InstancedModelVC
 			: public ViewC
 		{
 		public:
-			explicit ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject);
-			virtual ~ModelVC();
-			ModelVC(const ModelVC& other) = default;
-			ModelVC(ModelVC&& other) noexcept = default;
-			ModelVC& operator=(const ModelVC& other) = default;
-			ModelVC& operator=(ModelVC&& other) noexcept = default;
+			explicit InstancedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject);
+			virtual ~InstancedModelVC();
+			InstancedModelVC(const InstancedModelVC& other) = default;
+			InstancedModelVC(InstancedModelVC&& other) noexcept = default;
+			InstancedModelVC& operator=(const InstancedModelVC& other) = default;
+			InstancedModelVC& operator=(InstancedModelVC&& other) noexcept = default;
 
 			void AddCanvas(Canvas* pCanvas);
 			void AddTexture(TextureType textureType, const std::string& name);
@@ -36,6 +38,7 @@ namespace Ion
 			virtual void Update(float delta) override;
 			virtual void Render(Canvas* pCanvas, Material* pMaterial) override;
 		private:
+			static const size_t mMaxInstances;
 			Model* mpModel;
 			Material* mpMaterial;
 			std::map<TextureType,Texture*> mpTextures;
@@ -43,6 +46,7 @@ namespace Ion
 			size_t
 				mIndexCount,
 				mVertexCount;
+			std::vector<TransformMC> mTransforms;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mIndexBuffer;
 			D3D12_INDEX_BUFFER_VIEW mIndexBufferView;
@@ -52,10 +56,9 @@ namespace Ion
 			D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
 			UINT8* mpVertexDataBegin;
 
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpObjectCbvHeap;
-			Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
-			MeshVCConstantBuffer mObjectConstantBufferData;
-			UINT8* mpObjectCbvDataBegin;
+			Microsoft::WRL::ComPtr<ID3D12Resource> mpInstanceBuffer;
+			std::vector<InstanceBuffer> mInstanceBufferData;
+			UINT8* mpInstanceDataBegin;
 
 			std::map<TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 

@@ -6,10 +6,11 @@
 
 using namespace Ion::Core;
 
-Model::Model(Application* pApplication, const std::string& name)
+Model::Model(Application* pApplication, const std::string& name, Winding winding)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mFileName{ name }
+	, mWinding{ winding }
 	, mName{}
 	, mTexCoordCount{ 0 }
 	, mBoneCount{ 0 }
@@ -134,9 +135,31 @@ void Model::Read(BinIfstream& file)
 			}
 			break;
 		case MeshType::Indices:
-			for (size_t i{ 0 }; i < indexCount; ++i)
-				mIndices.push_back(file.Read<DWORD>());
+		{
+			size_t cnt{ indexCount / 3 };
+			switch (mWinding)
+			{
+			case Winding::CW:
+				for (size_t i{ 0 }; i < cnt; ++i)
+				{
+					mIndices.push_back(file.Read<DWORD>());
+					mIndices.push_back(file.Read<DWORD>());
+					mIndices.push_back(file.Read<DWORD>());
+				}
+				break;
+			case Winding::CCW:
+				DWORD two{};
+				for (size_t i{ 0 }; i < cnt; ++i)
+				{
+					mIndices.push_back(file.Read<DWORD>());
+					two = file.Read<DWORD>();
+					mIndices.push_back(file.Read<DWORD>());
+					mIndices.push_back(two);
+				}
+				break;
+			}
 			break;
+		}
 		case MeshType::Normals:
 			mElem[size_t(InputSemantic::Normal)] = 1;
 			for (size_t i{ 0 }; i < vertexCount; ++i)

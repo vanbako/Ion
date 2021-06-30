@@ -32,7 +32,7 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& GetCommandAllocator();
 
 			Material* AddMaterial(const std::string& name);
-			Model* AddModel(const std::string& name);
+			Model* AddModel(const std::string& name, Winding winding);
 			Texture* AddTexture(const std::string& name);
 		private:
 			bool

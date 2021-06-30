@@ -1,6 +1,7 @@
 #include "../Test/pch.h"
 #include "../Core/MeshVC.h"
 #include "../Core/ModelVC.h"
+#include "../Core/InstancedModelVC.h"
 #include "../Core/Object.h"
 #include <iostream>
 
@@ -72,7 +73,7 @@ Object* AddFlower(Scene* pScene, Canvas* pCanvas)
 	Object* pFlower{ pScene->AddObject(false) };
 	TransformMC* pFlowerTransformMC{ pFlower->AddModelC<TransformMC>(false) };
 	pFlowerTransformMC->SetPosition(DirectX::XMFLOAT4{ -15.f, 5.f, 0.f, 0.f });
-	ModelVC* pFlowerModelVC{ pFlower->AddViewC<ModelVC>("Flower", "PosNormTanTex_A", false) };
+	InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<InstancedModelVC>("Flower", "PosNormTanTex_iA", false, Winding::CCW) };
 	pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
 	return pFlower;
@@ -82,9 +83,9 @@ Object* AddWizard(Scene* pScene, Canvas* pCanvas)
 {
 	Object* pWizard{ pScene->AddObject(false) };
 	TransformMC* pWizardTransformMC{ pWizard->AddModelC<TransformMC>(false) };
-	pWizardTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
+	//pWizardTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
 	pWizardTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	ModelVC* pWizardModelVC{ pWizard->AddViewC<ModelVC>("Wizard", "PosNormTanTex_AN", false) };
+	ModelVC* pWizardModelVC{ pWizard->AddViewC<ModelVC>("Wizard", "PosNormTanTex_AN", false, Winding::CCW) };
 	pWizardModelVC->AddTexture(TextureType::Albedo, "Wizard_Blue_A.png");
 	pWizardModelVC->AddTexture(TextureType::Normal, "Wizard_Blue_N.png");
 	pWizardModelVC->AddCanvas(pCanvas);

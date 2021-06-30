@@ -192,7 +192,7 @@ void CameraRMC::SetCanvas(Canvas* pCanvas)
 	mpCanvas = pCanvas;
 }
 
-const DirectX::XMFLOAT4X4& CameraRMC::GetViewProjection()
+const DirectX::XMFLOAT4X4& CameraRMC::GetViewProjection() const
 {
 	return mViewProjection;
 }

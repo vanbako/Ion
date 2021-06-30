@@ -162,9 +162,9 @@ Material* Application::AddMaterial(const std::string& name)
 	return pMaterial;
 }
 
-Model* Application::AddModel(const std::string& name)
+Model* Application::AddModel(const std::string& name, Winding winding)
 {
-	auto ret{ mModels.try_emplace(name, this, name) };
+	auto ret{ mModels.try_emplace(name, this, name, winding) };
 	Model* pModel{ &((*(ret.first)).second) };
 	pModel->Initialize();
 	return pModel;

@@ -1,6 +1,8 @@
 #pragma once
 #include "../Core/TransformMC.h"
 #include "../Core/ModelVC.h"
+#include "../Core/InstancedModelVC.h"
+#include "../Core/Winding.h"
 
 namespace Ion
 {
@@ -95,14 +97,20 @@ namespace Ion
 				return (T*)mpViewCs.back();
 			}
 			template<class T>
-			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive)
+			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding = Winding::CW)
 			{
 			}
 			template<>
-			ModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive)
+			ModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding)
 			{
-				mpViewCs.emplace_back(new ModelVC{ modelName, materialName, isActive, this });
+				mpViewCs.emplace_back(new ModelVC{ modelName, materialName, isActive, winding, this });
 				return (ModelVC*)mpViewCs.back();
+			}
+			template<>
+			InstancedModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding)
+			{
+				mpViewCs.emplace_back(new InstancedModelVC{ modelName, materialName, isActive, winding, this });
+				return (InstancedModelVC*)mpViewCs.back();
 			}
 			template<class T>
 			T* GetViewC()

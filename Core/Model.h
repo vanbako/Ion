@@ -3,6 +3,7 @@
 #include "../Core/AnimationClip.h"
 #include "../Core/BinIfstream.h"
 #include "../Core/InputSemantic.h"
+#include "../Core/Winding.h"
 
 namespace Ion
 {
@@ -13,7 +14,7 @@ namespace Ion
 		class Model final
 		{
 		public:
-			explicit Model(Application* pApplication, const std::string& name);
+			explicit Model(Application* pApplication, const std::string& name, Winding winding);
 			~Model() = default;
 			Model(const Model& other) = delete;
 			Model(Model&& other) noexcept = delete;
@@ -37,6 +38,7 @@ namespace Ion
 			bool mIsInitialized;
 			Application* mpApplication;
 			std::string mFileName;
+			Winding mWinding;
 			std::wstring mName;
 			size_t
 				mTexCoordCount,

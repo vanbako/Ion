@@ -34,9 +34,6 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{942ad244-e602-49ae-bf02-2f5c8699f04f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Constant">
-      <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="Shaders\PosNormTanTex">
       <UniqueIdentifier>{12d1a4c6-f0db-47ed-b911-7971aa3d70cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,10 +109,10 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CanvasConstantBuffer.h">
-      <Filter>Constant</Filter>
+      <Filter>Buffers</Filter>
     </ClInclude>
     <ClInclude Include="MeshVCConstantBuffer.h">
-      <Filter>Constant</Filter>
+      <Filter>Buffers</Filter>
     </ClInclude>
     <ClInclude Include="VertexPNC.h">
       <Filter>Vertex</Filter>
@@ -252,6 +252,15 @@
     <ClInclude Include="SemanticInfo.h">
       <Filter>Material</Filter>
     </ClInclude>
+    <ClInclude Include="Winding.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedModelVC.h">
+      <Filter>Component\ViewComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="InstanceBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -383,6 +392,9 @@
     <ClCompile Include="LinearAllocator.cpp">
       <Filter>DirectXTK12</Filter>
     </ClCompile>
+    <ClCompile Include="InstancedModelVC.cpp">
+      <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
@@ -404,6 +416,12 @@
       <Filter>Shaders\PosNormTanTex</Filter>
     </None>
     <None Include="Shaders\ObjectConstantBuffer.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\PosNormTanTex_VSInput.hlsli">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </None>
+    <None Include="Shaders\InstanceBuffer.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
@@ -433,6 +451,15 @@
       <Filter>Shaders\PosNormTanTex</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_rs.hlsl">
       <Filter>Shaders\PosNormTanTex</Filter>
     </FxCompile>
   </ItemGroup>

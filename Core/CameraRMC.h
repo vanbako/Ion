@@ -28,7 +28,7 @@ namespace Ion
 			virtual const std::string& GetName() const override;
 
 			void SetCanvas(Canvas* pCanvas);
-			const DirectX::XMFLOAT4X4& GetViewProjection();
+			const DirectX::XMFLOAT4X4& GetViewProjection() const;
 
 			virtual void MoveForward() override;
 			virtual void MoveBack() override;

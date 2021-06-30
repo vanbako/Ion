@@ -1,13 +1,5 @@
 #include "../../Core/Shaders/ObjectConstantBuffer.hlsli"
-
-struct VSInput
-{
-	float3 position: POSITION;
-	float3 normal: NORMAL;
-	float3 tangent: TANGENT;
-	float2 texcoord: TEXCOORD;
-};
-
+#include "../../Core/Shaders/PosNormTanTex_VSInput.hlsli"
 #include "../../Core/Shaders/PosNormTanTex_PSInput.hlsli"
 
 PSInput main(VSInput input)

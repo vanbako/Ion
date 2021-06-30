@@ -108,6 +108,8 @@
     <ClInclude Include="GraphicsMemory.h" />
     <ClInclude Include="InputCC.h" />
     <ClInclude Include="InputSemantic.h" />
+    <ClInclude Include="InstanceBuffer.h" />
+    <ClInclude Include="InstancedModelVC.h" />
     <ClInclude Include="LinearAllocator.h" />
     <ClInclude Include="LoaderHelpers.h" />
     <ClInclude Include="Material.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="ViewC.h" />
     <ClInclude Include="ViewST.h" />
     <ClInclude Include="WICTextureLoader.h" />
+    <ClInclude Include="Winding.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +166,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="GraphicsMemory.cpp" />
     <ClCompile Include="InputCC.cpp" />
+    <ClCompile Include="InstancedModelVC.cpp" />
     <ClCompile Include="LinearAllocator.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshVC.cpp" />
@@ -202,8 +206,10 @@
     <None Include="Shaders\CalculateNormal.hlsli" />
     <None Include="Shaders\CanvasConstantBuffer.hlsli" />
     <None Include="Shaders\Compiled\GenerateMips_main.inc" />
+    <None Include="Shaders\InstanceBuffer.hlsli" />
     <None Include="Shaders\ObjectConstantBuffer.hlsli" />
     <None Include="Shaders\PosNormTanTex_PSInput.hlsli" />
+    <None Include="Shaders\PosNormTanTex_VSInput.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
@@ -241,6 +247,18 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_rs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

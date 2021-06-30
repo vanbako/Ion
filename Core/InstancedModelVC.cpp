@@ -1,5 +1,5 @@
 #include "../Core/pch.h"
-#include "../Core/ModelVC.h"
+#include "../Core/InstancedModelVC.h"
 #include "../Core/Application.h"
 #include "../Core/Material.h"
 #include "../Core/Object.h"
@@ -10,7 +10,9 @@
 
 using namespace Ion::Core;
 
-ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject)
+const size_t InstancedModelVC::mMaxInstances{ 1024 };
+
+InstancedModelVC::InstancedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject)
 	: ViewC(isActive, pObject)
 	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, winding) }
 	, mpMaterial{ pObject->GetScene()->GetApplication()->AddMaterial(materialName) }
@@ -21,33 +23,33 @@ ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, 
 	, mpIndexDataBegin{ nullptr }
 	, mIndexCount{ 0 }
 	, mVertexCount{ 0 }
+	, mTransforms{}
 	, mVertexBuffer{}
 	, mVertexBufferView{}
 	, mpVertexDataBegin{ nullptr }
-	, mpObjectCbvHeap{}
-	, mpObjectConstantBuffer{}
-	, mObjectConstantBufferData{}
-	, mpObjectCbvDataBegin{ nullptr }
+	, mpInstanceBuffer{}
+	, mInstanceBufferData{}
+	, mpInstanceDataBegin{ nullptr }
 	, mpTextureSrvHeaps{}
 	, mpCanvases{}
 {
 	mpMaterial->Initialize();
 }
 
-ModelVC::~ModelVC()
+InstancedModelVC::~InstancedModelVC()
 {
 	if (mpVertices != nullptr)
 		delete[] mpVertices;
 }
 
-void ModelVC::AddCanvas(Canvas* pCanvas)
+void InstancedModelVC::AddCanvas(Canvas* pCanvas)
 {
 	mpMaterial->AddViewC(pCanvas, this);
 	mpCanvases.emplace(pCanvas);
 	pCanvas->AddMaterial(mpMaterial);
 }
 
-void ModelVC::AddTexture(TextureType textureType, const std::string& name)
+void InstancedModelVC::AddTexture(TextureType textureType, const std::string& name)
 {
 	if (mpTextures.contains(textureType))
 		return;
@@ -78,7 +80,7 @@ void ModelVC::AddTexture(TextureType textureType, const std::string& name)
 	}
 }
 
-void ModelVC::Initialize()
+void InstancedModelVC::Initialize()
 {
 	Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
@@ -103,55 +105,39 @@ void ModelVC::Initialize()
 			{
 			case InputSemantic::Position:
 				std::memcpy(pPos, &mpModel->GetPositions()[i], sizeof(DirectX::XMFLOAT3));
-				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetPositions()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Normal:
 				std::memcpy(pPos, &mpModel->GetNormals()[i], sizeof(DirectX::XMFLOAT3));
-				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetNormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Tangent:
 				std::memcpy(pPos, &mpModel->GetTangents()[i], sizeof(DirectX::XMFLOAT3));
-				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetTangents()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::Binormal:
 				std::memcpy(pPos, &mpModel->GetBinormals()[i], sizeof(DirectX::XMFLOAT3));
-				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetBinormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case InputSemantic::TexCoord:
 				std::memcpy(pPos, &mpModel->GetTexCoords()[i], sizeof(DirectX::XMFLOAT2));
-				//*((DirectX::XMFLOAT2*)pPos) = mpModel->GetTexCoords()[i];
 				pPos += sizeof(DirectX::XMFLOAT2);
 				break;
 			case InputSemantic::Color:
 				std::memcpy(pPos, &mpModel->GetColors()[i], sizeof(DirectX::XMFLOAT4));
-				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetColors()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case InputSemantic::BlendIndices:
 				std::memcpy(pPos, &mpModel->GetBlendIndices()[i], sizeof(DirectX::XMFLOAT4));
-				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendIndices()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case InputSemantic::BlendWeight:
 				std::memcpy(pPos, &mpModel->GetBlendWeights()[i], sizeof(DirectX::XMFLOAT4));
-				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendWeights()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			}
 		}
 	delete[] pInputSemantics;
-
-	{
-		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-		cbvHeapDesc.NumDescriptors = 1;
-		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpObjectCbvHeap)));
-	}
 
 	mIndexCount = mpModel->GetIndices().size();
 	{
@@ -189,45 +175,47 @@ void ModelVC::Initialize()
 		CD3DX12_RANGE readRange(0, 0);
 		ThrowIfFailed(mVertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpVertexDataBegin)));
 		memcpy(mpVertexDataBegin, mpVertices, vertexBufferSize);
-		//mVertexBuffer->Unmap(0, nullptr);
 
 		mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
 		mVertexBufferView.StrideInBytes = UINT(layoutSize);
 		mVertexBufferView.SizeInBytes = vertexBufferSize;
 	}
 	{
-		const UINT objectConstantBufferSize{ sizeof(MeshVCConstantBuffer) };
-
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
-		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(objectConstantBufferSize) };
+		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(sizeof(InstanceBuffer) * mMaxInstances) };
 		ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
 			&resDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&mpObjectConstantBuffer)));
-
-		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc{};
-		cbvDesc.BufferLocation = mpObjectConstantBuffer->GetGPUVirtualAddress();
-		cbvDesc.SizeInBytes = objectConstantBufferSize;
-		pDevice->CreateConstantBufferView(&cbvDesc, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart());
+			IID_PPV_ARGS(&mpInstanceBuffer)));
 
 		CD3DX12_RANGE readRange(0, 0);
-		ThrowIfFailed(mpObjectConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpObjectCbvDataBegin)));
-		memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+		ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
+		memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(InstanceBuffer) * mInstanceBufferData.size());
 	}
+
+	// Test
+	for (int i{ 0 }; i < mMaxInstances; ++i)
+	{
+		mTransforms.emplace_back(true, mpObject);
+		mTransforms[i].SetPosition(DirectX::XMFLOAT4{ 5.f * float(i + 1), 0.f, 0.f, 0.f });
+		mTransforms[i].Update(0.f);
+		mInstanceBufferData.emplace_back(mTransforms[i].GetWorld());
+	}
+
 	mIsInitialized = true;
 }
 
-void ModelVC::Update(float delta)
+void InstancedModelVC::Update(float delta)
 {
 	(delta);
-	//if (!mIsActive)
-	//	return;
+	if (!mIsActive)
+		return;
 }
 
-void ModelVC::Render(Canvas* pCanvas, Material* pMaterial)
+void InstancedModelVC::Render(Canvas* pCanvas, Material* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)
@@ -240,28 +228,21 @@ void ModelVC::Render(Canvas* pCanvas, Material* pMaterial)
 	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
-	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
-	DirectX::XMMATRIX wvp{ world * viewProjection };
-
-	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);
-	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorldViewProj, wvp);
-
+	UINT dsTable{ 1 };
 	for (auto& pair : mpTextureSrvHeaps)
 	{
 		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(UINT(pair.first) + 2, tex);
+		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
+		++dsTable;
 	}
-	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
-	}
+	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(InstanceBuffer) * mInstanceBufferData.size());
+	pGraphicsCommandList->SetGraphicsRootShaderResourceView(dsTable, mpInstanceBuffer->GetGPUVirtualAddress());
+	++dsTable;
+
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), 1, 0, 0, 0);
+	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), UINT(mInstanceBufferData.size()), 0, 0, 0);
 }
