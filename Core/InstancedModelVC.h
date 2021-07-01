@@ -33,6 +33,9 @@ namespace Ion
 
 			void AddCanvas(Canvas* pCanvas);
 			void AddTexture(TextureType textureType, const std::string& name);
+			void AddInstance(const TransformMC& transform);
+			void AddInstances(const std::vector<TransformMC>& transforms);
+			std::vector<TransformMC>& GetInstances();
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;

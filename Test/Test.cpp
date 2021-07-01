@@ -76,6 +76,13 @@ Object* AddFlower(Scene* pScene, Canvas* pCanvas)
 	InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<InstancedModelVC>("Flower", "PosNormTanTex_iA", false, Winding::CCW) };
 	pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
+	std::vector<TransformMC> transforms{};
+	for (size_t i{ 0 }; i < 100; ++i)
+	{
+		transforms.emplace_back(true, pFlower);
+		transforms.back().SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 10 + 1), 0.f, 10.f * float(i % 10 + 1), 0.f });
+	}
+	pFlowerModelVC->AddInstances(transforms);
 	return pFlower;
 }
 

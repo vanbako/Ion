@@ -10,7 +10,7 @@
 
 using namespace Ion::Core;
 
-const size_t InstancedModelVC::mMaxInstances{ 1024 };
+const size_t InstancedModelVC::mMaxInstances{ 40960 };
 
 InstancedModelVC::InstancedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject)
 	: ViewC(isActive, pObject)
@@ -78,6 +78,24 @@ void InstancedModelVC::AddTexture(TextureType textureType, const std::string& na
 		srvDesc.Texture2D.ResourceMinLODClamp = 0.f;
 		pDevice->CreateShaderResourceView(texture.Get(), &srvDesc, hDesc);
 	}
+}
+
+void InstancedModelVC::AddInstance(const TransformMC& transform)
+{
+	mTransforms.emplace_back(transform);
+	mTransforms.back().Update(0.f);
+	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
+}
+
+void InstancedModelVC::AddInstances(const std::vector<TransformMC>& transforms)
+{
+	for (auto& transform : transforms)
+		AddInstance(transform);
+}
+
+std::vector<TransformMC>& InstancedModelVC::GetInstances()
+{
+	return mTransforms;
 }
 
 void InstancedModelVC::Initialize()
@@ -197,13 +215,13 @@ void InstancedModelVC::Initialize()
 	}
 
 	// Test
-	for (int i{ 0 }; i < mMaxInstances; ++i)
-	{
-		mTransforms.emplace_back(true, mpObject);
-		mTransforms[i].SetPosition(DirectX::XMFLOAT4{ 5.f * float(i + 1), 0.f, 0.f, 0.f });
-		mTransforms[i].Update(0.f);
-		mInstanceBufferData.emplace_back(mTransforms[i].GetWorld());
-	}
+	//for (int i{ 0 }; i < mMaxInstances; ++i)
+	//{
+	//	mTransforms.emplace_back(true, mpObject);
+	//	mTransforms[i].SetPosition(DirectX::XMFLOAT4{ 5.f * float(i + 1), 0.f, 0.f, 0.f });
+	//	mTransforms[i].Update(0.f);
+	//	mInstanceBufferData.emplace_back(mTransforms[i].GetWorld());
+	//}
 
 	mIsInitialized = true;
 }
