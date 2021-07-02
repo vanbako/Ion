@@ -19,9 +19,14 @@ LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
+const std::chrono::microseconds Application::mRunSleep{ 4000 };
+const std::chrono::microseconds Application::mKeyboardMutexDuration{ 1000 };
+
 Application::Application()
 	: mIsInitialized{ false }
 	, mIsActive{ false }
+	, mKeyboard{}
+	, mKeyboardMutex{}
 	, mScenes{}
 	, mWindows{}
 	, mMaterials{}
@@ -99,6 +104,22 @@ bool Application::Initialize()
 	return true;
 }
 
+void Application::Run()
+{
+	MSG msg{};
+	while (msg.message != WM_QUIT)
+	{
+		KeyboardState();
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+			std::this_thread::sleep_for(mRunSleep);
+	}
+}
+
 const bool Application::SetIsActive(bool isActive)
 {
 	if (mIsInitialized)
@@ -109,6 +130,21 @@ const bool Application::SetIsActive(bool isActive)
 const bool Application::GetIsActive() const
 {
 	return mIsActive;
+}
+
+bool Application::TryLockSharedKeyboard()
+{
+	return mKeyboardMutex.try_lock_shared_for(mKeyboardMutexDuration);
+}
+
+void Application::UnlockSharedKeyboard()
+{
+	mKeyboardMutex.unlock_shared();
+}
+
+PBYTE Application::GetKeyboard()
+{
+	return mKeyboard;
 }
 
 Scene* Application::AddScene()
@@ -175,4 +211,15 @@ Texture* Application::AddTexture(const std::string& name)
 	auto ret{ mTextures.try_emplace(name, this, name) };
 	Texture* pTexture{ &((*(ret.first)).second) };
 	return pTexture;
+}
+
+void Application::KeyboardState()
+{
+	BOOL ret{};
+	if (mKeyboardMutex.try_lock_for(mKeyboardMutexDuration))
+	{
+		ret = GetKeyboardState(mKeyboard);
+		mKeyboardMutex.unlock();
+	}
+	(ret);
 }

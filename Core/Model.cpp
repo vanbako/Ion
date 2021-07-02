@@ -27,8 +27,7 @@ Model::Model(Application* pApplication, const std::string& name, Winding winding
 	, mElem{ 0x0 }
 	, mHasAnimation{ false }
 {
-	BinIfstream file{ "../Resources/Model/" + name + ".ovm" };
-	Read(file);
+	ReadModel();
 }
 
 void Model::Initialize()
@@ -101,8 +100,26 @@ bool Model::HasInputElem(const std::string& inputSemantic)
 	return HasInputElem(Material::GetSemanticStrings().at(inputSemantic).inputSemantic);
 }
 
-void Model::Read(BinIfstream& file)
+const std::vector<Transform>& Model::ReadInstances()
 {
+	if (mInstances.empty())
+	{
+		BinIfstream file{ "../Resources/Instances/" + mFileName + ".ins" };
+		size_t cnt{ file.Read<size_t>() };
+		for (size_t i{ 0 }; i < cnt; ++i)
+			mInstances.emplace_back(file.Read<Transform>());
+	}
+	return mInstances;
+}
+
+const std::vector<Transform>& Model::GetInstances() const
+{
+	return mInstances;
+}
+
+void Model::ReadModel()
+{
+	BinIfstream file{ "../Resources/Model/" + mFileName + ".ovm" };
 	const char majorVersion{ file.Read<char>() };
 	const char minorVersion{ file.Read<char>() };
 	

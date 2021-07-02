@@ -48,7 +48,9 @@ void SceneThread::Loop(SceneThread* pSceneThread)
 	while (!pScene->GetIsEnd())
 	{
 		sleep = std::chrono::duration<float>(start + pSceneThread->mUpdateTime.load() - std::chrono::steady_clock::now());
-		std::this_thread::sleep_for(sleep);
+		// TODO: Fix this!
+		//std::this_thread::sleep_for(sleep);
+		std::this_thread::sleep_for(pSceneThread->mUpdateTime.load());
 		end = std::chrono::steady_clock::now();
 		delta = std::chrono::duration<float>(end - start).count();
 		start = end;

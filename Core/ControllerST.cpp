@@ -1,4 +1,5 @@
 #include "../Core/pch.h"
+#include "../Core/Application.h"
 #include "../Core/ControllerST.h"
 #include "../Core/Command.h"
 #include "../Core/InputCC.h"
@@ -275,10 +276,12 @@ void ControllerST::Inner(float delta)
 
 void ControllerST::Input()
 {
+	if (!mpScene->GetApplication()->TryLockSharedKeyboard())
+		return;
+	PBYTE keyboard{ mpScene->GetApplication()->GetKeyboard() };
 	for (auto& outer : mCommands)
-	{
-		if (GetAsyncKeyState(outer.first) & 0x01)
+		if ((keyboard[outer.first] & 0x80) == 0x80)
 			for (auto& inner : outer.second)
 				inner.second->Queue(inner.first);
-	}
+	mpScene->GetApplication()->UnlockSharedKeyboard();
 }

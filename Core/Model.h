@@ -4,6 +4,7 @@
 #include "../Core/BinIfstream.h"
 #include "../Core/InputSemantic.h"
 #include "../Core/Winding.h"
+#include "../Core/Transform.h"
 
 namespace Ion
 {
@@ -34,6 +35,8 @@ namespace Ion
 			size_t GetElementCount();
 			bool HasInputElem(InputSemantic inputSemantic);
 			bool HasInputElem(const std::string& inputSemantic);
+			const std::vector<Transform>& ReadInstances();
+			const std::vector<Transform>& GetInstances() const;
 		private:
 			bool mIsInitialized;
 			Application* mpApplication;
@@ -53,10 +56,11 @@ namespace Ion
 			std::vector<DirectX::XMFLOAT4> mBlendIndices;
 			std::vector<DirectX::XMFLOAT4> mBlendWeights;
 			std::vector<AnimationClip> mAnimationClips;
+			std::vector<Transform> mInstances;
 			std::bitset<size_t(InputSemantic::Count)> mElem;
 			bool mHasAnimation;
 
-			void Read(BinIfstream& file);
+			void ReadModel();
 		};
 	}
 }

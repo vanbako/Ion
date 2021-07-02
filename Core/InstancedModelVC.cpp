@@ -80,17 +80,32 @@ void InstancedModelVC::AddTexture(TextureType textureType, const std::string& na
 	}
 }
 
-void InstancedModelVC::AddInstance(const TransformMC& transform)
+void InstancedModelVC::AddInstance(const TransformMC& transformMC)
 {
-	mTransforms.emplace_back(transform);
+	mTransforms.push_back(transformMC);
 	mTransforms.back().Update(0.f);
 	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
 }
 
-void InstancedModelVC::AddInstances(const std::vector<TransformMC>& transforms)
+void InstancedModelVC::AddInstances(const std::vector<TransformMC>& transformMCs)
 {
+	for (auto& transformMC : transformMCs)
+		AddInstance(transformMC);
+}
+
+void InstancedModelVC::ReadInstances()
+{
+	if (!mTransforms.empty())
+		return;
+	const std::vector<Transform>& transforms{ mpModel->ReadInstances() };
+	TransformMC transformMC{ true, mpObject };
 	for (auto& transform : transforms)
-		AddInstance(transform);
+	{
+		transformMC.SetPosition(transform.mPosition);
+		transformMC.SetScale(transform.mScale);
+		transformMC.SetRotation(transform.mRotation);
+		AddInstance(transformMC);
+	}
 }
 
 std::vector<TransformMC>& InstancedModelVC::GetInstances()

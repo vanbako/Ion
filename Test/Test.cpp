@@ -7,7 +7,7 @@
 
 using namespace Ion::Core;
 
-static const std::chrono::microseconds gMainSleep{ 500 };
+
 
 Object* AddFlower(Scene* pScene, Canvas* pCanvas);
 Object* AddWizard(Scene* pScene, Canvas* pCanvas);
@@ -50,17 +50,8 @@ int main()
 
 		std::cout << "App is running" << std::endl;
 
-		MSG msg{};
-		while (msg.message != WM_QUIT)
-		{
-			if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-			else
-				std::this_thread::sleep_for(gMainSleep);
-		}
+		application.Run();
+
 		pScene->SetIsActive(false);
 		std::cout << "App is shutting down" << std::endl;
 		pScene->SetIsEnd(true);
@@ -71,8 +62,9 @@ int main()
 Object* AddFlower(Scene* pScene, Canvas* pCanvas)
 {
 	Object* pFlower{ pScene->AddObject(false) };
-	TransformMC* pFlowerTransformMC{ pFlower->AddModelC<TransformMC>(false) };
-	pFlowerTransformMC->SetPosition(DirectX::XMFLOAT4{ -15.f, 5.f, 0.f, 0.f });
+	TransformMC* pTransformMC{ pFlower->AddModelC<TransformMC>(false) };
+	(pTransformMC);
+	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ -15.f, 5.f, 0.f, 0.f });
 	InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<InstancedModelVC>("Flower", "PosNormTanTex_iA", false, Winding::CCW) };
 	pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
@@ -89,12 +81,28 @@ Object* AddFlower(Scene* pScene, Canvas* pCanvas)
 Object* AddWizard(Scene* pScene, Canvas* pCanvas)
 {
 	Object* pWizard{ pScene->AddObject(false) };
-	TransformMC* pWizardTransformMC{ pWizard->AddModelC<TransformMC>(false) };
-	//pWizardTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
-	pWizardTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	ModelVC* pWizardModelVC{ pWizard->AddViewC<ModelVC>("Wizard", "PosNormTanTex_AN", false, Winding::CCW) };
+	TransformMC* pTransformMC{ pWizard->AddModelC<TransformMC>(false) };
+	(pTransformMC);
+	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
+	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+	InstancedModelVC* pWizardModelVC{ pWizard->AddViewC<InstancedModelVC>("Wizard", "PosNormTanTex_iAN", false, Winding::CCW) };
 	pWizardModelVC->AddTexture(TextureType::Albedo, "Wizard_Blue_A.png");
 	pWizardModelVC->AddTexture(TextureType::Normal, "Wizard_Blue_N.png");
 	pWizardModelVC->AddCanvas(pCanvas);
+	//TransformMC transformMC{ true, pWizard };
+	//transformMC.SetPosition(DirectX::XMFLOAT4{ 10.f, 0.f, 0.f, 0.f });
+	//transformMC.SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+	//pWizardModelVC->AddInstance(transformMC);
+	//transformMC.SetPosition(DirectX::XMFLOAT4{ -10.f, 0.f, 0.f, 0.f });
+	//transformMC.SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+	//pWizardModelVC->AddInstance(transformMC);
+	std::vector<TransformMC> transforms{};
+	for (size_t i{ 0 }; i < 20; ++i)
+	{
+		transforms.emplace_back(true, pWizard);
+		transforms.back().SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 10), 0.f, 0.f, 0.f });
+		transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+	}
+	pWizardModelVC->AddInstances(transforms);
 	return pWizard;
 }

@@ -20,8 +20,12 @@ namespace Ion
 			Application& operator=(Application&& other) noexcept = delete;
 
 			bool Initialize();
+			void Run();
 			const bool SetIsActive(bool isActive);
 			const bool GetIsActive() const;
+			bool TryLockSharedKeyboard();
+			void UnlockSharedKeyboard();
+			PBYTE GetKeyboard();
 
 			Scene* AddScene();
 			Window* AddWindow(const std::wstring& title, Ion::Core::Rectangle<int> rectangle = Ion::Core::Rectangle{ 0, 0, 1280, 720 });
@@ -35,9 +39,14 @@ namespace Ion
 			Model* AddModel(const std::string& name, Winding winding);
 			Texture* AddTexture(const std::string& name);
 		private:
+			static const std::chrono::microseconds mRunSleep;
+			static const std::chrono::microseconds mKeyboardMutexDuration;
+			
 			bool
 				mIsInitialized,
 				mIsActive;
+			BYTE mKeyboard[256];
+			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Scene> mScenes;
 			std::list<Window> mWindows;
 			std::map<std::string, Material> mMaterials;
@@ -47,6 +56,8 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
+
+			void KeyboardState();
 		};
 	}
 }

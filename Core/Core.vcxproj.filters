@@ -70,8 +70,23 @@
     <Filter Include="Shaders\PosNormTanTex">
       <UniqueIdentifier>{12d1a4c6-f0db-47ed-b911-7971aa3d70cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Buffers">
+    <Filter Include="Structs">
+      <UniqueIdentifier>{92d6c182-0827-49c9-a21f-4c1609d72490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structs\Buffers">
       <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormTanTex\AN">
+      <UniqueIdentifier>{bc0cf431-791b-4e29-9e28-1cb532682b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormTanTex\A">
+      <UniqueIdentifier>{c9f225b4-a018-4348-9e5c-8a736b498a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormTanTex\iA">
+      <UniqueIdentifier>{c8a48c2b-61d6-44c5-9d48-9dcb04d664f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNormTanTex\iAN">
+      <UniqueIdentifier>{5934c40d-5410-4c45-80e6-fc9698d46476}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,10 +124,10 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CanvasConstantBuffer.h">
-      <Filter>Buffers</Filter>
+      <Filter>Structs\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="MeshVCConstantBuffer.h">
-      <Filter>Buffers</Filter>
+      <Filter>Structs\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="VertexPNC.h">
       <Filter>Vertex</Filter>
@@ -259,7 +274,10 @@
       <Filter>Component\ViewComponents</Filter>
     </ClInclude>
     <ClInclude Include="InstanceBuffer.h">
-      <Filter>Buffers</Filter>
+      <Filter>Structs\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Structs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,31 +454,40 @@
       <Filter>Shaders\PosNormCol</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\PosNormTanTex_iA_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iA_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\iA</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iA_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\PosNormTanTex\iA</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iA_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex\iA</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iAN_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex\iAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iAN_rs.hlsl">
+      <Filter>Shaders\PosNormTanTex\iAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iAN_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex\iAN</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

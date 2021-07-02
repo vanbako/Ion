@@ -21,7 +21,7 @@ Scene::Scene(Application* pApplication)
 	, mObjectsMutex{}
 	, mObjects{}
 	, mpModelST{ new ModelST{ this, (std::chrono::microseconds)5000 } }
-	, mpControllerST{ new ControllerST{ this, (std::chrono::microseconds)15000 } }
+	, mpControllerST{ new ControllerST{ this, (std::chrono::microseconds)8000 } }
 	, mpViewST{ new ViewST{ this, (std::chrono::microseconds)15000 } }
 	, mpCanvases{}
 {
