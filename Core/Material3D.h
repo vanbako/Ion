@@ -10,15 +10,15 @@ namespace Ion
 		class Canvas;
 		class ViewC;
 
-		class Material final
+		class Material3D final
 		{
 		public:
-			explicit Material(Application* pApplication, const std::string& name);
-			~Material();
-			Material(const Material& other) = delete;
-			Material(Material&& other) noexcept = delete;
-			Material& operator=(const Material& other) = delete;
-			Material& operator=(Material&& other) noexcept = delete;
+			explicit Material3D(Application* pApplication, const std::string& name);
+			~Material3D();
+			Material3D(const Material3D& other) = delete;
+			Material3D(Material3D&& other) noexcept = delete;
+			Material3D& operator=(const Material3D& other) = delete;
+			Material3D& operator=(Material3D&& other) noexcept = delete;
 
 			void Initialize();
 			void Render(Canvas* pCanvas);

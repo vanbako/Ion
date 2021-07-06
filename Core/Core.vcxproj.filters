@@ -25,9 +25,6 @@
     <Filter Include="Vertex">
       <UniqueIdentifier>{ea733c97-fd7b-47d0-a9bc-b58d996ad340}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Window&amp;Canvas">
-      <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Material">
       <UniqueIdentifier>{a83f9b7e-72a8-4475-81ca-3d23d4526eaf}</UniqueIdentifier>
     </Filter>
@@ -88,6 +85,12 @@
     <Filter Include="Shaders\PosNormTanTex\iAN">
       <UniqueIdentifier>{5934c40d-5410-4c45-80e6-fc9698d46476}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Canvas">
+      <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -101,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="ModelC.h">
       <Filter>Component\ModelComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectangle.h">
-      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Math</Filter>
@@ -142,15 +142,12 @@
       <Filter>Factory</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>Window&amp;Canvas</Filter>
-    </ClInclude>
-    <ClInclude Include="Canvas.h">
-      <Filter>Window&amp;Canvas</Filter>
+      <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
+    <ClInclude Include="Material3D.h">
       <Filter>Material</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
@@ -279,6 +276,15 @@
     <ClInclude Include="Transform.h">
       <Filter>Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Material2D.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleVC.h">
+      <Filter>Component\ViewComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -305,16 +311,13 @@
     <ClCompile Include="Factory.cpp">
       <Filter>Factory</Filter>
     </ClCompile>
-    <ClCompile Include="Canvas.cpp">
-      <Filter>Window&amp;Canvas</Filter>
-    </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Window&amp;Canvas</Filter>
+      <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
+    <ClCompile Include="Material3D.cpp">
       <Filter>Material</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
@@ -411,6 +414,15 @@
       <Filter>DirectXTK12</Filter>
     </ClCompile>
     <ClCompile Include="InstancedModelVC.cpp">
+      <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="Material2D.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleVC.cpp">
       <Filter>Component\ViewComponents</Filter>
     </ClCompile>
   </ItemGroup>

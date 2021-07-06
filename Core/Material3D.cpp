@@ -1,5 +1,5 @@
 #include "../Core/pch.h"
-#include "../Core/Material.h"
+#include "../Core/Material3D.h"
 #include "../Core/Application.h"
 #include "../Core/Canvas.h"
 #include "../Core/d3dx12.h"
@@ -7,8 +7,8 @@
 
 using namespace Ion::Core;
 
-const UINT Material::mMaxInputParam{ 20 };
-const std::map<std::string, SemanticInfo> Material::mSemanticStrings
+const UINT Material3D::mMaxInputParam{ 20 };
+const std::map<std::string, SemanticInfo> Material3D::mSemanticStrings
 {
 	{ "POSITION", SemanticInfo{ InputSemantic::Position, DXGI_FORMAT_R32G32B32_FLOAT, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
 	{ "NORMAL", SemanticInfo{ InputSemantic::Normal, DXGI_FORMAT_R32G32B32_FLOAT, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
@@ -20,7 +20,7 @@ const std::map<std::string, SemanticInfo> Material::mSemanticStrings
 	{ "BLENDWEIGHT", SemanticInfo{ InputSemantic::BlendWeight, DXGI_FORMAT_R32G32B32A32_FLOAT, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
 	{ "WORLD", SemanticInfo{ InputSemantic::World, DXGI_FORMAT_R32G32B32A32_FLOAT, 16, D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA } }
 };
-const std::map<std::string, TextureType> Material::mTextureTypeStrings
+const std::map<std::string, TextureType> Material3D::mTextureTypeStrings
 {
 	{ "gTextureAlbedo", TextureType::Albedo },
 	{ "gTextureNormal", TextureType::Normal },
@@ -34,7 +34,7 @@ const std::map<std::string, TextureType> Material::mTextureTypeStrings
 	{ "gTextureSelfIllumination", TextureType::SelfIllumination }
 };
 
-Material::Material(Application* pApplication, const std::string& name)
+Material3D::Material3D(Application* pApplication, const std::string& name)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mName{ name }
@@ -113,13 +113,13 @@ Material::Material(Application* pApplication, const std::string& name)
 	mInputElementCount -= svInstanceID;
 }
 
-Material::~Material()
+Material3D::~Material3D()
 {
 	if (mpInputElementDescs != nullptr)
 		delete[] mpInputElementDescs;
 }
 
-void Material::Initialize()
+void Material3D::Initialize()
 {
 	if (mIsInitialized)
 		return;
@@ -153,7 +153,7 @@ void Material::Initialize()
 	mIsInitialized = true;
 }
 
-void Material::Render(Canvas* pCanvas)
+void Material3D::Render(Canvas* pCanvas)
 {
 	auto pCommandAllocator{ mpApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
@@ -167,42 +167,42 @@ void Material::Render(Canvas* pCanvas)
 		pViewC->Render(pCanvas, this);
 }
 
-const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Material::GetRootSignature()
+const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Material3D::GetRootSignature()
 {
 	return mpRootSignature;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12PipelineState>& Material::GetPipelineState()
+const Microsoft::WRL::ComPtr<ID3D12PipelineState>& Material3D::GetPipelineState()
 {
 	return mpPipelineState;
 }
 
-D3D12_INPUT_ELEMENT_DESC* Material::GetInputElementDescs()
+D3D12_INPUT_ELEMENT_DESC* Material3D::GetInputElementDescs()
 {
 	return mpInputElementDescs;
 }
 
-UINT Material::GetInputElementCount() const
+UINT Material3D::GetInputElementCount() const
 {
 	return mInputElementCount;
 }
 
-UINT Material::GetLayoutSize() const
+UINT Material3D::GetLayoutSize() const
 {
 	return mLayoutSize;
 }
 
-const std::set<TextureType>& Material::GetTextureTypeSet() const
+const std::set<TextureType>& Material3D::GetTextureTypeSet() const
 {
 	return mTextureTypes;
 }
 
-void Material::AddViewC(Canvas* pCanvas, ViewC* pViewC)
+void Material3D::AddViewC(Canvas* pCanvas, ViewC* pViewC)
 {
 	mpCanvasViewCs[pCanvas].emplace_back(pViewC);
 }
 
-const std::map<std::string, SemanticInfo>& Material::GetSemanticStrings()
+const std::map<std::string, SemanticInfo>& Material3D::GetSemanticStrings()
 {
 	return mSemanticStrings;
 }

@@ -1,7 +1,7 @@
 #include "../Core/pch.h"
 #include "../Core/MeshVC.h"
 #include "../Core/Application.h"
-#include "../Core/Material.h"
+#include "../Core/Material3D.h"
 #include "../Core/Object.h"
 #include "../Core/Scene.h"
 #include "../Core/CameraRMC.h"
@@ -10,11 +10,10 @@
 using namespace Ion::Core;
 
 MeshVC::MeshVC(bool isActive, Object* pObject)
-	: ViewC(isActive, pObject)
+	: ViewC(isActive, pObject, "PosNormCol", "")
 	, mMeshChanged{ false }
 	, mVertices{}
 	, mVertexCount{ 0 }
-	, mpMaterial{ pObject->GetScene()->GetApplication()->AddMaterial("PosNormCol") }
 	, mVertexBuffer{}
 	, mVertexBufferView{}
 	, mpVertexDataBegin{ nullptr }
@@ -22,20 +21,7 @@ MeshVC::MeshVC(bool isActive, Object* pObject)
 	, mpObjectConstantBuffer{}
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
-	, mpCanvases{}
 {
-	mpMaterial->Initialize();
-}
-
-MeshVC::~MeshVC()
-{
-}
-
-void MeshVC::AddCanvas(Canvas* pCanvas)
-{
-	mpMaterial->AddViewC(pCanvas, this);
-	mpCanvases.emplace(pCanvas);
-	pCanvas->AddMaterial(mpMaterial);
 }
 
 void MeshVC::AddTriangle(const VertexPNC& a, const VertexPNC& b, const VertexPNC& c)
@@ -130,7 +116,7 @@ void MeshVC::Update(float delta)
 	}
 }
 
-void MeshVC::Render(Canvas* pCanvas, Material* pMaterial)
+void MeshVC::Render(Canvas* pCanvas, Material3D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)

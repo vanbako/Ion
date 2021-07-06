@@ -1,6 +1,7 @@
 #pragma once
 #include "../Core/Scene.h"
-#include "../Core/Material.h"
+#include "../Core/Material3D.h"
+#include "../Core/Material2D.h"
 #include "../Core/Model.h"
 #include "../Core/Texture.h"
 #include "../Core/Window.h"
@@ -28,14 +29,22 @@ namespace Ion
 			PBYTE GetKeyboard();
 
 			Scene* AddScene();
-			Window* AddWindow(const std::wstring& title, Ion::Core::Rectangle<int> rectangle = Ion::Core::Rectangle{ 0, 0, 1280, 720 });
+			Window* AddWindow(const std::wstring& title, RECT rectangle = RECT{ 0, 0, 1280, 720 });
 			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-			const Microsoft::WRL::ComPtr<IDXGIFactory>& GetDxgiFactory();
+			const Microsoft::WRL::ComPtr<IDXGIFactory4>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device>& GetDevice();
 			const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& GetCommandQueue();
 			const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& GetCommandAllocator();
+			const Microsoft::WRL::ComPtr<ID2D1Factory3>& GetD2d1Factory();
+			const Microsoft::WRL::ComPtr<IDXGIDevice>& GetDxgiDevice();
+			const Microsoft::WRL::ComPtr<ID3D11On12Device>& GetD3D11On12Device();
+			const Microsoft::WRL::ComPtr<ID2D1Device2>& GetD2d1Device();
+			const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetD3d11DeviceContext();
+			const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& GetD2d1DeviceContext();
+			//const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
 
-			Material* AddMaterial(const std::string& name);
+			Material3D* AddMaterial3D(const std::string& name);
+			Material2D* AddMaterial2D(const std::string& name);
 			Model* AddModel(const std::string& name, Winding winding);
 			Texture* AddTexture(const std::string& name);
 		private:
@@ -49,13 +58,21 @@ namespace Ion
 			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Scene> mScenes;
 			std::list<Window> mWindows;
-			std::map<std::string, Material> mMaterials;
+			std::map<std::string, Material3D> mMaterials3D;
+			std::map<std::string, Material2D> mMaterials2D;
 			std::map<std::string, Model> mModels;
 			std::map<std::string, Texture> mTextures;
-			Microsoft::WRL::ComPtr<IDXGIFactory> mpDxgiFactory;
+			Microsoft::WRL::ComPtr<IDXGIFactory4> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
+			Microsoft::WRL::ComPtr<IDXGIDevice> mpDxgiDevice;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
+			Microsoft::WRL::ComPtr<ID3D11On12Device> mpD3d11On12Device;
+			Microsoft::WRL::ComPtr<ID3D11DeviceContext> mpD3d11DeviceContext;
+			Microsoft::WRL::ComPtr<ID2D1Device2> mpD2d1Device;
+			Microsoft::WRL::ComPtr<ID2D1DeviceContext2> mpD2d1DeviceContext;
+			Microsoft::WRL::ComPtr<ID2D1Factory3> mpD2d1Factory;
+			//Microsoft::WRL::ComPtr<IDWriteFactory> mpDWriteFactory;
 
 			void KeyboardState();
 		};

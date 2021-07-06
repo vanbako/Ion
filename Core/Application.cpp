@@ -29,15 +29,22 @@ Application::Application()
 	, mKeyboardMutex{}
 	, mScenes{}
 	, mWindows{}
-	, mMaterials{}
+	, mMaterials3D{}
+	, mMaterials2D{}
 	, mModels{}
+	, mTextures{}
 	, mpDxgiFactory{}
-	, mpD3d12Device{ }
+	, mpD3d12Device{}
+	, mpDxgiDevice{}
 	, mpCommandQueue{}
 	, mpCommandAllocator{}
+	, mpD3d11On12Device{}
+	, mpD3d11DeviceContext{}
+	, mpD2d1Device{}
+	, mpD2d1DeviceContext{}
+	, mpD2d1Factory{}
+	//, mpDWriteFactory{}
 {
-	//Windows::Foundation::Initialize(RO_INIT_MULTITHREADED);
-
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc = AppWinProc;
@@ -57,7 +64,8 @@ Application::~Application()
 	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
 	mWindows.clear();
-	mMaterials.clear();
+	mMaterials2D.clear();
+	mMaterials3D.clear();
 	mModels.clear();
 }
 
@@ -65,21 +73,31 @@ bool Application::Initialize()
 {
 	if (!mIsInitialized)
 	{
+		// 3D
 		// Factory
-#ifdef _DEBUG
+		UINT dxgiFactoryFlags{ 0 };
+		UINT d3d11DeviceFlags{ D3D11_CREATE_DEVICE_BGRA_SUPPORT };
+		D2D1_FACTORY_OPTIONS d2dFactoryOptions{};
+
+#if defined(_DEBUG)
 		{
-			Microsoft::WRL::ComPtr<ID3D12Debug> pDebugController{};
+			Microsoft::WRL::ComPtr<ID3D12Debug> pDebugController;
 			if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
+			{
 				pDebugController->EnableDebugLayer();
+
+				// Enable additional debug layers.
+				dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+				d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+				d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+			}
 		}
 #endif
-		ThrowIfFailed(CreateDXGIFactory(IID_PPV_ARGS(&mpDxgiFactory)));
-		
+		ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mpDxgiFactory)));
 		// Device
 		{
 			ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&mpD3d12Device)));
 		}
-
 		// CommandQueue
 		{
 			D3D12_COMMAND_QUEUE_DESC queueDesc{};
@@ -91,14 +109,38 @@ bool Application::Initialize()
 				&queueDesc,
 				IID_PPV_ARGS(&mpCommandQueue)));
 		}
-
 		// Command Allocator
 		{
 			ThrowIfFailed(mpD3d12Device->CreateCommandAllocator(
 				D3D12_COMMAND_LIST_TYPE_DIRECT,
 				IID_PPV_ARGS(&mpCommandAllocator)));
 		}
+		// 2D & D3D11On12
+		// Device & Factory
+		{
 
+			Microsoft::WRL::ComPtr<ID3D11Device> pD3d11Device{};
+			ThrowIfFailed(D3D11On12CreateDevice(
+				mpD3d12Device.Get(),
+				d3d11DeviceFlags,
+				nullptr,
+				0,
+				reinterpret_cast<IUnknown**>(mpCommandQueue.GetAddressOf()),
+				1,
+				0,
+				&pD3d11Device,
+				&mpD3d11DeviceContext,
+				nullptr
+			));
+			ThrowIfFailed(pD3d11Device.As(&mpD3d11On12Device));
+
+			D2D1_DEVICE_CONTEXT_OPTIONS deviceOptions{ D2D1_DEVICE_CONTEXT_OPTIONS_NONE };
+			ThrowIfFailed(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory3), &d2dFactoryOptions, &mpD2d1Factory));
+			ThrowIfFailed(mpD3d11On12Device.As(&mpDxgiDevice));
+			ThrowIfFailed(mpD2d1Factory->CreateDevice(mpDxgiDevice.Get(), &mpD2d1Device));
+			ThrowIfFailed(mpD2d1Device->CreateDeviceContext(deviceOptions, &mpD2d1DeviceContext));
+			//ThrowIfFailed(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &mpDWriteFactory));
+		}
 		mIsInitialized = true;
 	}
 	return true;
@@ -153,7 +195,7 @@ Scene* Application::AddScene()
 	return &mScenes.back();
 }
 
-Window* Application::AddWindow(const std::wstring& title, Ion::Core::Rectangle<int> rectangle)
+Window* Application::AddWindow(const std::wstring& title, RECT rectangle)
 {
 	mWindows.emplace_back(this, title, rectangle);
 	return &mWindows.back();
@@ -170,7 +212,7 @@ LRESULT Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-const Microsoft::WRL::ComPtr<IDXGIFactory>& Application::GetDxgiFactory()
+const Microsoft::WRL::ComPtr<IDXGIFactory4>& Application::GetDxgiFactory()
 {
 	return mpDxgiFactory;
 }
@@ -190,10 +232,53 @@ const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& Application::GetCommandAll
 	return mpCommandAllocator;
 }
 
-Material* Application::AddMaterial(const std::string& name)
+const Microsoft::WRL::ComPtr<ID2D1Factory3>& Application::GetD2d1Factory()
 {
-	auto ret{ mMaterials.try_emplace(name, this, name) };
-	Material* pMaterial{ &((*(ret.first)).second) };
+	return mpD2d1Factory;
+}
+
+const Microsoft::WRL::ComPtr<IDXGIDevice>& Application::GetDxgiDevice()
+{
+	return mpDxgiDevice;
+}
+
+const Microsoft::WRL::ComPtr<ID3D11On12Device>& Application::GetD3D11On12Device()
+{
+	return mpD3d11On12Device;
+}
+
+const Microsoft::WRL::ComPtr<ID2D1Device2>& Application::GetD2d1Device()
+{
+	return mpD2d1Device;
+}
+
+const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& Application::GetD3d11DeviceContext()
+{
+	return mpD3d11DeviceContext;
+}
+
+const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Application::GetD2d1DeviceContext()
+{
+	return mpD2d1DeviceContext;
+}
+
+//const Microsoft::WRL::ComPtr<IDWriteFactory>& Application::GetDWriteFactory()
+//{
+//	return mpDWriteFactory;
+//}
+
+Material3D* Application::AddMaterial3D(const std::string& name)
+{
+	auto ret{ mMaterials3D.try_emplace(name, this, name) };
+	Material3D* pMaterial{ &((*(ret.first)).second) };
+	pMaterial->Initialize();
+	return pMaterial;
+}
+
+Material2D* Application::AddMaterial2D(const std::string& name)
+{
+	auto ret{ mMaterials2D.try_emplace(name, this, name) };
+	Material2D* pMaterial{ &((*(ret.first)).second) };
 	pMaterial->Initialize();
 	return pMaterial;
 }

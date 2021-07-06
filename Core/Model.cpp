@@ -2,7 +2,7 @@
 #include "../Core/Model.h"
 #include "../Core/Application.h"
 #include "../Core/MeshType.h"
-#include "../Core/Material.h"
+#include "../Core/Material3D.h"
 
 using namespace Ion::Core;
 
@@ -97,7 +97,7 @@ bool Model::HasInputElem(InputSemantic inputSemantic)
 
 bool Model::HasInputElem(const std::string& inputSemantic)
 {
-	return HasInputElem(Material::GetSemanticStrings().at(inputSemantic).inputSemantic);
+	return HasInputElem(Material3D::GetSemanticStrings().at(inputSemantic).inputSemantic);
 }
 
 const std::vector<Transform>& Model::ReadInstances()

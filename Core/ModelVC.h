@@ -13,7 +13,7 @@ namespace Ion
 	namespace Core
 	{
 		class Object;
-		class Material;
+		class Material3D;
 		class Canvas;
 		class Model;
 		class Texture;
@@ -29,15 +29,14 @@ namespace Ion
 			ModelVC& operator=(const ModelVC& other) = default;
 			ModelVC& operator=(ModelVC&& other) noexcept = default;
 
-			void AddCanvas(Canvas* pCanvas);
 			void AddTexture(TextureType textureType, const std::string& name);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material* pMaterial) override;
+			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
+			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
 			Model* mpModel;
-			Material* mpMaterial;
 			std::map<TextureType,Texture*> mpTextures;
 			char* mpVertices;
 			size_t
@@ -58,8 +57,6 @@ namespace Ion
 			UINT8* mpObjectCbvDataBegin;
 
 			std::map<TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
-
-			std::set<Canvas*> mpCanvases;
 		};
 	}
 }

@@ -15,8 +15,8 @@ namespace Ion
 	namespace Core
 	{
 		class Object;
-		class Material;
-		class Canvas;
+		class Material3D;
+		class Canvas3D;
 		class Model;
 		class Texture;
 
@@ -31,7 +31,6 @@ namespace Ion
 			InstancedModelVC& operator=(const InstancedModelVC& other) = default;
 			InstancedModelVC& operator=(InstancedModelVC&& other) noexcept = default;
 
-			void AddCanvas(Canvas* pCanvas);
 			void AddTexture(TextureType textureType, const std::string& name);
 			void AddInstance(const TransformMC& transform);
 			void AddInstances(const std::vector<TransformMC>& transforms);
@@ -40,11 +39,11 @@ namespace Ion
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material* pMaterial) override;
+			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
+			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
 			static const size_t mMaxInstances;
 			Model* mpModel;
-			Material* mpMaterial;
 			std::map<TextureType,Texture*> mpTextures;
 			char* mpVertices;
 			size_t
@@ -65,8 +64,6 @@ namespace Ion
 			UINT8* mpInstanceDataBegin;
 
 			std::map<TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
-
-			std::set<Canvas*> mpCanvases;
 		};
 	}
 }

@@ -1,36 +1,39 @@
 #include "../Core/pch.h"
 #include "../Core/Canvas.h"
 #include "../Core/Application.h"
-#include "../Core/Material.h"
 #include "../Core/CameraRMC.h"
-#include "../Core/d3dx12.h"
 
 using namespace Ion::Core;
 
-Canvas::Canvas(Window* pWindow, Ion::Core::Rectangle<int> rectangle)
+Canvas::Canvas(Window* pWindow, RECT rectangle)
 	: mpWindow{ pWindow }
 	, mRectangle{ rectangle }
-	, mRatio{ float(rectangle.GetWidth()) / float(rectangle.GetHeight()) }
+	, mRatio{ float(rectangle.right - rectangle.left) / float(rectangle.bottom - rectangle.top) }
 	, mpCamera{ nullptr }
 	, mpSwapChain{}
+	, mpRenderTargets{}
+	, mpWrappedBackBuffers{}
+	, mpDepthStencilBuffer{}
+	, mpBitmaps{}
 	, mpRtvHeap{}
 	, mpDsvHeap{}
 	, mpCanvasCbvHeap{}
-	, mpCanvasConstantBuffer{}
-	, mpCanvasCbvDataBegin{}
-	, mCanvasConstantBufferData{}
+	, mpGraphicsCommandList{}
+	, mpBrush{}
 	, mCurrentBackBuffer{ 0 }
 	, mRtvDescriptorSize{ 0 }
 	, mDsvDescriptorSize{ 0 }
 	, mCbvDescriptorSize{ 0 }
-	, mViewport{ 0.f, 0.f, float(rectangle.GetWidth()), float(rectangle.GetHeight()), 0.f, 1.f }
-	, mScissorRect{ 0, 0, rectangle.GetWidth(), rectangle.GetHeight() }
-	, mpRenderTargets{}
-	, mpDepthStencilBuffer{}
+	, mViewport{ 0.f, 0.f, float(rectangle.right - rectangle.left), float(rectangle.bottom - rectangle.top), 0.f, 1.f }
+	, mScissorRect{ 0, 0, rectangle.right - rectangle.left, rectangle.bottom - rectangle.top }
 	, mFenceEvent{}
 	, mpFence{}
 	, mFenceValue{ 0 }
-	, mpMaterials{}
+	, mpCanvasConstantBuffer{}
+	, mpCanvasCbvDataBegin{}
+	, mCanvasConstantBufferData{}
+	, mpMaterials3D{}
+	, mpMaterials2D{}
 {
 }
 
@@ -38,15 +41,19 @@ void Canvas::Initialize()
 {
 	Application* pApp{ mpWindow->GetApplication() };
 	auto pDxgiFactory{ pApp->GetDxgiFactory() };
+	auto pD2d1Factory{ pApp->GetD2d1Factory() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCommandQueue{ pApp->GetCommandQueue() };
 	auto pCommandAllocator{ pApp->GetCommandAllocator() };
+	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
+	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
 
 	// Swap Chain
 	{
+		Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
 		DXGI_SWAP_CHAIN_DESC scd{};
-		scd.BufferDesc.Width = mRectangle.GetWidth();
-		scd.BufferDesc.Height = mRectangle.GetHeight();
+		scd.BufferDesc.Width = mRectangle.right - mRectangle.left;
+		scd.BufferDesc.Height = mRectangle.bottom - mRectangle.top;
 		scd.BufferDesc.RefreshRate.Numerator = 60;
 		scd.BufferDesc.RefreshRate.Denominator = 1;
 		scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -60,7 +67,8 @@ void Canvas::Initialize()
 		scd.Windowed = true;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		ThrowIfFailed(pDxgiFactory->CreateSwapChain(pCommandQueue.Get(), &scd, &mpSwapChain));
+		ThrowIfFailed(pDxgiFactory->CreateSwapChain(pCommandQueue.Get(), &scd, &pSwapChain));
+		ThrowIfFailed(pSwapChain.As(&mpSwapChain));
 	}
 
 	// Descriptor Heaps
@@ -93,13 +101,38 @@ void Canvas::Initialize()
 
 	// Render Targets
 	{
+		UINT dpi{ GetDpiForWindow(mpWindow->GetHandle()) };
+
+		D2D1_BITMAP_PROPERTIES1 bmProp{
+			D2D1::BitmapProperties1(
+			D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
+			D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED),
+			float(dpi),
+			float(dpi))
+		};
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle{ mpRtvHeap->GetCPUDescriptorHandleForHeapStart() };
-		ThrowIfFailed(mpSwapChain->GetBuffer(0, IID_PPV_ARGS(&mpRenderTargets[0])));
-		pDevice->CreateRenderTargetView(mpRenderTargets[0].Get(), nullptr, rtvHeapHandle);
-		rtvHeapHandle.Offset(1, mRtvDescriptorSize);
-		ThrowIfFailed(mpSwapChain->GetBuffer(1, IID_PPV_ARGS(&mpRenderTargets[1])));
-		pDevice->CreateRenderTargetView(mpRenderTargets[1].Get(), nullptr, rtvHeapHandle);
-		rtvHeapHandle.Offset(1, mRtvDescriptorSize);
+		for (size_t i{ 0 }; i < 2; ++i)
+		{
+			ThrowIfFailed(mpSwapChain->GetBuffer(UINT(i), IID_PPV_ARGS(&mpRenderTargets[i])));
+			pDevice->CreateRenderTargetView(mpRenderTargets[i].Get(), nullptr, rtvHeapHandle);
+			D3D11_RESOURCE_FLAGS d3d11Flags{ D3D11_BIND_RENDER_TARGET };
+			ThrowIfFailed(pD3D11On12Device->CreateWrappedResource(
+				mpRenderTargets[i].Get(),
+				&d3d11Flags,
+				D3D12_RESOURCE_STATE_RENDER_TARGET,
+				D3D12_RESOURCE_STATE_PRESENT,
+				IID_PPV_ARGS(&mpWrappedBackBuffers[i])
+			));
+			Microsoft::WRL::ComPtr<IDXGISurface> surface;
+			ThrowIfFailed(mpWrappedBackBuffers[i].As(&surface));
+			ThrowIfFailed(pD2d1DeviceContext->CreateBitmapFromDxgiSurface(
+				surface.Get(),
+				&bmProp,
+				&mpBitmaps[i]
+			));
+			rtvHeapHandle.Offset(1, mRtvDescriptorSize);
+			//ThrowIfFailed(pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mpCommandAllocator[i])));
+		}
 	}
 
 	// Depth Stencil
@@ -107,8 +140,8 @@ void Canvas::Initialize()
 		D3D12_RESOURCE_DESC dsDesc{};
 		dsDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 		dsDesc.Alignment = 0;
-		dsDesc.Width = mRectangle.GetWidth();
-		dsDesc.Height = mRectangle.GetHeight();
+		dsDesc.Width = mRectangle.right - mRectangle.left;;
+		dsDesc.Height = mRectangle.bottom - mRectangle.top;
 		dsDesc.DepthOrArraySize = 1;
 		dsDesc.MipLevels = 1;
 		dsDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -171,7 +204,6 @@ void Canvas::Initialize()
 			IID_PPV_ARGS(&mpGraphicsCommandList)));
 		mpGraphicsCommandList->Close();
 	}
-
 	// Fence
 	{
 		ThrowIfFailed(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mpFence)));
@@ -180,6 +212,10 @@ void Canvas::Initialize()
 		if (mFenceEvent == nullptr)
 			ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
 		WaitForPreviousFrame();
+	}
+	// Brush
+	{
+		ThrowIfFailed(pD2d1DeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &mpBrush));
 	}
 }
 
@@ -200,6 +236,11 @@ float Canvas::GetRatio()
 	return mRatio;
 }
 
+const Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>& Canvas::GetBrush()
+{
+	return mpBrush;
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE Canvas::GetCurrentBackBufferView()
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE{
@@ -213,9 +254,14 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& Canvas::GetGraphicsCommandLis
 	return mpGraphicsCommandList;
 }
 
-void Canvas::AddMaterial(Material* pMaterial)
+void Canvas::AddMaterial(Material3D* pMaterial)
 {
-	mpMaterials.emplace(pMaterial);
+	mpMaterials3D.emplace(pMaterial);
+}
+
+void Canvas::AddMaterial(Material2D* pMaterial)
+{
+	mpMaterials2D.emplace(pMaterial);
 }
 
 void Canvas::SetDescriptor()
@@ -227,18 +273,26 @@ void Canvas::SetDescriptor()
 
 void Canvas::Render()
 {
-	if (mpMaterials.size() == 0)
+	if ((mpCamera == nullptr) && (!mpMaterials3D.empty()))
+		return;
+	if (mpMaterials2D.empty() && mpMaterials3D.empty())
 		return;
 	Application* pApp{ mpWindow->GetApplication() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCmdAlloc{ pApp->GetCommandAllocator() };
 	auto pCmdQueue{ pApp->GetCommandQueue() };
+	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
+	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
+	auto pD3d11DeviceContext{ pApp->GetD3d11DeviceContext() };
 
 	ThrowIfFailed(pCmdAlloc->Reset());
 	ThrowIfFailed(mpGraphicsCommandList->Reset(pCmdAlloc.Get(), nullptr));
 
-	mCanvasConstantBufferData.mViewProj = mpCamera->GetModelC<CameraRMC>()->GetViewProjection();
-	memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(CanvasConstantBuffer));
+	if (!mpMaterials3D.empty())
+	{
+		mCanvasConstantBufferData.mViewProj = mpCamera->GetModelC<CameraRMC>()->GetViewProjection();
+		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(CanvasConstantBuffer));
+	}
 
 	mpGraphicsCommandList->RSSetViewports(1, &mViewport);
 	mpGraphicsCommandList->RSSetScissorRects(1, &mScissorRect);
@@ -256,18 +310,34 @@ void Canvas::Render()
 	mpGraphicsCommandList->ClearRenderTargetView(rtvHandle, DirectX::Colors::Black, 0, nullptr);
 	mpGraphicsCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
-	for (Material* pMaterial : mpMaterials)
+	for (Material3D* pMaterial : mpMaterials3D)
 		pMaterial->Render(this);
 
-	D3D12_RESOURCE_BARRIER rbTransition2{ CD3DX12_RESOURCE_BARRIER::Transition(
-		mpRenderTargets[mCurrentBackBuffer].Get(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET,
-		D3D12_RESOURCE_STATE_PRESENT) };
-	mpGraphicsCommandList->ResourceBarrier(1, &rbTransition2);
-	ThrowIfFailed(mpGraphicsCommandList->Close());
-
-	ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
-	pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
+	if (mpMaterials2D.empty())
+	{
+		D3D12_RESOURCE_BARRIER rbTransition2{ CD3DX12_RESOURCE_BARRIER::Transition(
+			mpRenderTargets[mCurrentBackBuffer].Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET,
+			D3D12_RESOURCE_STATE_PRESENT) };
+		mpGraphicsCommandList->ResourceBarrier(1, &rbTransition2);
+		ThrowIfFailed(mpGraphicsCommandList->Close());
+		ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
+		pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
+	}
+	else
+	{
+		ThrowIfFailed(mpGraphicsCommandList->Close());
+		ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
+		pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
+		pD3D11On12Device->AcquireWrappedResources(mpWrappedBackBuffers[mCurrentBackBuffer].GetAddressOf(), 1);
+		pD2d1DeviceContext->SetTarget(mpBitmaps[mCurrentBackBuffer].Get());
+		pD2d1DeviceContext->BeginDraw();
+		for (Material2D* pMaterial : mpMaterials2D)
+			pMaterial->Render(this);
+		ThrowIfFailed(pD2d1DeviceContext->EndDraw());
+		pD3D11On12Device->ReleaseWrappedResources(mpWrappedBackBuffers[mCurrentBackBuffer].GetAddressOf(), 1);
+		pD3d11DeviceContext->Flush();
+	}
 
 	ThrowIfFailed(mpSwapChain->Present(1, 0));
 

@@ -3,6 +3,7 @@
 #include "../Core/Scene.h"
 #include "../Core/CameraRMC.h"
 #include "../Core/MeshVC.h"
+#include "../Core/TriangleVC.h"
 #include "../Core/CharacterRMC.h"
 #include "../Core/InputCC.h"
 #include "../Core/VertexPNC.h"
@@ -31,6 +32,7 @@ Object* Factory::AddCube(Scene* pScene, float width, float height, float depth, 
 	Object* pObject{ pScene->AddObject(false) };
 	pObject->AddModelC<TransformMC>(false);
 	MeshVC* pMeshVC{ pObject->AddViewC<MeshVC>(false) };
+	pObject->AddViewC<TriangleVC>(false);
 
 	// Front
 	pMeshVC->AddQuadrilateral(

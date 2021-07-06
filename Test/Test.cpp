@@ -1,43 +1,44 @@
 #include "../Test/pch.h"
+#include "../Core/Application.h"
+#include "../Core/Factory.h"
 #include "../Core/MeshVC.h"
 #include "../Core/ModelVC.h"
+#include "../Core/TriangleVC.h"
 #include "../Core/InstancedModelVC.h"
 #include "../Core/Object.h"
 #include <iostream>
 
 using namespace Ion::Core;
 
-
-
+Object* AddCamera(Scene* pScene, Canvas* pCanvas);
+Object* AddCube(Scene* pScene, Canvas* pCanvas3D, Canvas* pCanvas2D);
 Object* AddFlower(Scene* pScene, Canvas* pCanvas);
 Object* AddWizard(Scene* pScene, Canvas* pCanvas);
 
 int main()
 {
 	{
-		Ion::Core::Rectangle<int> rectangle{ 0, 0, 1280, 720 };
+		RECT rectangle{ 0, 0, 1280, 720 };
 		Application application{};
 		Scene* pScene{ application.AddScene() };
 
 		application.Initialize();
 
-		Window* pWindow{ application.AddWindow(L"Main Render Window", rectangle) };
-		Canvas* pCanvas{ pWindow->AddCanvas(rectangle) };
-		pScene->AddCanvas(pCanvas);
-		pCanvas->Initialize();
+		// 3D
+		Window* pWindow3D{ application.AddWindow(L"Main 3D Render Window", rectangle) };
+		Canvas* pCanvas3D{ pWindow3D->AddCanvas(rectangle) };
+		pScene->AddCanvas(pCanvas3D);
+		pCanvas3D->Initialize();
+		// 2D
+		Window* pWindow2D{ application.AddWindow(L"Main 2D Render Window", rectangle) };
+		Canvas* pCanvas2D{ pWindow2D->AddCanvas(rectangle) };
+		pScene->AddCanvas(pCanvas2D);
+		pCanvas2D->Initialize();
 
-		Object* pCube{ Factory::AddCube(pScene) };
-		pCube->GetViewC<MeshVC>()->AddCanvas(pCanvas);
-		pCube->GetModelC<TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 20.f, 0.5f, 0.f, 0.f });
-
-		Object* pFlower{ AddFlower(pScene, pCanvas) };
-		Object* pWizard{ AddWizard(pScene, pCanvas) };
-
-		Object* pCamera{ Factory::AddCamera(pScene) };
-		TransformMC* pCameraTransform{ pCamera->GetModelC<TransformMC>() };
-		pCameraTransform->SetPosition(DirectX::XMFLOAT4{ 0.f, 20.f, -100.f, 0.f });
-		pCameraTransform->SetRotation(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, AngleUnit::Degree);
-		pCanvas->SetCamera(pCamera);
+		Object* pCube{ AddCube(pScene, pCanvas3D, pCanvas2D) };
+		Object* pFlower{ AddFlower(pScene, pCanvas3D) };
+		Object* pWizard{ AddWizard(pScene, pCanvas3D) };
+		Object* pCamera{ AddCamera(pScene, pCanvas3D) };
 
 		pScene->Initialize();
 
@@ -47,16 +48,40 @@ int main()
 		pWizard->SetIsActive(true, true);
 
 		pScene->SetIsActive(true);
-
+#ifdef _DEBUG
 		std::cout << "App is running" << std::endl;
-
+#endif
 		application.Run();
 
 		pScene->SetIsActive(false);
+#ifdef _DEBUG
 		std::cout << "App is shutting down" << std::endl;
+#endif
 		pScene->SetIsEnd(true);
 	}
+#ifdef _DEBUG
 	std::cout << "Done" << std::endl;
+#endif
+}
+
+Object* AddCamera(Scene* pScene, Canvas* pCanvas)
+{
+	Object* pCamera{ Factory::AddCamera(pScene) };
+	TransformMC* pCameraTransform{ pCamera->GetModelC<TransformMC>() };
+	pCameraTransform->SetPosition(DirectX::XMFLOAT4{ 0.f, 20.f, -100.f, 0.f });
+	pCameraTransform->SetRotation(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, AngleUnit::Degree);
+	pCanvas->SetCamera(pCamera);
+	return pCamera;
+}
+
+Object* AddCube(Scene* pScene, Canvas* pCanvas3D, Canvas* pCanvas2D)
+{
+	Object* pCube{ Factory::AddCube(pScene) };
+	pCube->GetViewC<MeshVC>()->AddCanvas(pCanvas3D);
+	pCube->GetModelC<TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 20.f, 0.5f, 0.f, 0.f });
+	pCube->GetViewC<TriangleVC>()->AddCanvas(pCanvas3D);
+	pCube->GetViewC<TriangleVC>()->AddCanvas(pCanvas2D);
+	return pCube;
 }
 
 Object* AddFlower(Scene* pScene, Canvas* pCanvas)

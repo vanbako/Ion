@@ -1,11 +1,12 @@
 #include "../Core/pch.h"
 #include "../Core/InstancedModelVC.h"
 #include "../Core/Application.h"
-#include "../Core/Material.h"
+#include "../Core/Material3D.h"
 #include "../Core/Object.h"
 #include "../Core/Scene.h"
 #include "../Core/CameraRMC.h"
 #include "../Core/Model.h"
+#include "../Core/Canvas.h"
 #include "../Core/d3dx12.h"
 
 using namespace Ion::Core;
@@ -13,9 +14,8 @@ using namespace Ion::Core;
 const size_t InstancedModelVC::mMaxInstances{ 40960 };
 
 InstancedModelVC::InstancedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject)
-	: ViewC(isActive, pObject)
+	: ViewC(isActive, pObject, materialName, "")
 	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, winding) }
-	, mpMaterial{ pObject->GetScene()->GetApplication()->AddMaterial(materialName) }
 	, mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}
@@ -31,9 +31,7 @@ InstancedModelVC::InstancedModelVC(const std::string& modelName, const std::stri
 	, mInstanceBufferData{}
 	, mpInstanceDataBegin{ nullptr }
 	, mpTextureSrvHeaps{}
-	, mpCanvases{}
 {
-	mpMaterial->Initialize();
 }
 
 InstancedModelVC::~InstancedModelVC()
@@ -42,18 +40,11 @@ InstancedModelVC::~InstancedModelVC()
 		delete[] mpVertices;
 }
 
-void InstancedModelVC::AddCanvas(Canvas* pCanvas)
-{
-	mpMaterial->AddViewC(pCanvas, this);
-	mpCanvases.emplace(pCanvas);
-	pCanvas->AddMaterial(mpMaterial);
-}
-
 void InstancedModelVC::AddTexture(TextureType textureType, const std::string& name)
 {
 	if (mpTextures.contains(textureType))
 		return;
-	if (!mpMaterial->GetTextureTypeSet().contains(textureType))
+	if (!mpMaterial3D->GetTextureTypeSet().contains(textureType))
 		return;
 	Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
@@ -119,18 +110,18 @@ void InstancedModelVC::Initialize()
 	auto pDevice{ pApplication->GetDevice() };
 
 	// Build vertex buffer
-	D3D12_INPUT_ELEMENT_DESC* pInputElementDescs{ mpMaterial->GetInputElementDescs() };
-	UINT inputElementCount{ mpMaterial->GetInputElementCount() };
+	D3D12_INPUT_ELEMENT_DESC* pInputElementDescs{ mpMaterial3D->GetInputElementDescs() };
+	UINT inputElementCount{ mpMaterial3D->GetInputElementCount() };
 	for (UINT i{ 0 }; i < inputElementCount; ++i)
 		if (!mpModel->HasInputElem(pInputElementDescs[i].SemanticName))
 			return;
-	size_t layoutSize{ mpMaterial->GetLayoutSize() };
+	size_t layoutSize{ mpMaterial3D->GetLayoutSize() };
 	mVertexCount = mpModel->GetPositions().size();
 	mpVertices = new char[mVertexCount * layoutSize];
 	char* pPos{ mpVertices };
 	InputSemantic* pInputSemantics{ new InputSemantic[inputElementCount]{} };
 	for (UINT j{ 0 }; j < inputElementCount; ++j)
-		pInputSemantics[j] = Material::GetSemanticStrings().at(pInputElementDescs[j].SemanticName).inputSemantic;
+		pInputSemantics[j] = Material3D::GetSemanticStrings().at(pInputElementDescs[j].SemanticName).inputSemantic;
 	for (size_t i{ 0 }; i < mVertexCount; ++i)
 		for (UINT j{ 0 }; j < inputElementCount; ++j)
 		{
@@ -248,7 +239,7 @@ void InstancedModelVC::Update(float delta)
 		return;
 }
 
-void InstancedModelVC::Render(Canvas* pCanvas, Material* pMaterial)
+void InstancedModelVC::Render(Canvas* pCanvas, Material3D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)

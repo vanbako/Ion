@@ -112,7 +112,8 @@
     <ClInclude Include="InstancedModelVC.h" />
     <ClInclude Include="LinearAllocator.h" />
     <ClInclude Include="LoaderHelpers.h" />
-    <ClInclude Include="Material.h" />
+    <ClInclude Include="Material2D.h" />
+    <ClInclude Include="Material3D.h" />
     <ClInclude Include="MeshType.h" />
     <ClInclude Include="MeshVC.h" />
     <ClInclude Include="MeshVCConstantBuffer.h" />
@@ -132,7 +133,6 @@
     <ClInclude Include="PlatformHelpers.h" />
     <ClInclude Include="Quadrilateral.h" />
     <ClInclude Include="ReceiverMC.h" />
-    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="ResourceUploadBatch.h" />
     <ClInclude Include="RotateLeftCmd.h" />
     <ClInclude Include="RotateRightCmd.h" />
@@ -144,6 +144,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformMC.h" />
     <ClInclude Include="Triangle.h" />
+    <ClInclude Include="TriangleVC.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VertexPNC.h" />
     <ClInclude Include="ViewC.h" />
@@ -169,7 +170,8 @@
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
     <ClCompile Include="LinearAllocator.cpp" />
-    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Material2D.cpp" />
+    <ClCompile Include="Material3D.cpp" />
     <ClCompile Include="MeshVC.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelC.cpp" />
@@ -195,6 +197,7 @@
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformMC.cpp" />
+    <ClCompile Include="TriangleVC.cpp" />
     <ClCompile Include="VertexPNC.cpp" />
     <ClCompile Include="ViewC.cpp" />
     <ClCompile Include="ViewST.cpp" />
