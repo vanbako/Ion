@@ -14,6 +14,7 @@ namespace Ion
 		class ModelST;
 		class ControllerST;
 		class ViewST;
+		class PhysicsST;
 
 		class Scene final
 		{
@@ -34,6 +35,7 @@ namespace Ion
 			std::list<Object>& GetObjects();
 			Application* GetApplication();
 			ControllerST* GetControllerST();
+			physx::PxScene* GetPxScene();
 
 			void Initialize();
 			Object* AddObject(bool isActive);
@@ -56,7 +58,11 @@ namespace Ion
 			ModelST* mpModelST;
 			ControllerST* mpControllerST;
 			ViewST* mpViewST;
+			PhysicsST* mpPhysicsST;
 			std::set<Canvas*> mpCanvases;
+			physx::PxScene* mpPxScene;
+			std::mutex mMutex;
+			std::condition_variable mConditionVar;
 		};
 	}
 }

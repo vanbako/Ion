@@ -91,6 +91,9 @@
     <Filter Include="Window">
       <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PhysX">
+      <UniqueIdentifier>{7a337638-d083-45a3-bec0-a6bf415ffcdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -285,6 +288,18 @@
     <ClInclude Include="TriangleVC.h">
       <Filter>Component\ViewComponents</Filter>
     </ClInclude>
+    <ClInclude Include="PxIonAllocatorCallback.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PxIonErrorCallback.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadAction.h">
+      <Filter>Canvas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -424,6 +439,15 @@
     </ClCompile>
     <ClCompile Include="TriangleVC.cpp">
       <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="PxIonAllocatorCallback.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="PxIonErrorCallback.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsST.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

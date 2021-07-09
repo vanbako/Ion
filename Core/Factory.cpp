@@ -84,3 +84,15 @@ Object* Factory::AddCube(Scene* pScene, float width, float height, float depth, 
 
 	return pObject;
 }
+
+void Factory::CreatePhysicsPlane(physx::PxPhysics* pPxPhysics, physx::PxScene* pPxScene)
+{
+	physx::PxRigidStatic* pPxRigidStatic{ pPxPhysics->createRigidStatic(physx::PxTransform{ physx::PxVec3{ 0.f, 0.f, 0.f } }) };
+	physx::PxMaterial* pPxMaterial{ pPxPhysics->createMaterial(0.5f, 0.5f, 0.1f) };
+	physx::PxShape* pShape{ pPxPhysics->createShape(physx::PxPlaneGeometry{}, *pPxMaterial) };
+	physx::PxPlane pxPlane{ {0.0f, 1.0f, 0.0f}, 0.0f };
+	physx::PxTransform pxTransformPlane{ PxTransformFromPlaneEquation(pxPlane) };
+	pShape->setLocalPose(pxTransformPlane);
+	pPxRigidStatic->attachShape(*pShape);
+	pPxScene->addActor(*pPxRigidStatic);
+}

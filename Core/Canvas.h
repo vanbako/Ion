@@ -1,5 +1,6 @@
 #pragma once
 #include "../Core/CanvasConstantBuffer.h"
+#include "../Core/ThreadAction.h"
 #include "../Core/d3dx12.h"
 
 namespace Ion
@@ -15,7 +16,7 @@ namespace Ion
 		{
 		public:
 			explicit Canvas(Window* pWindow, RECT rectangle);
-			~Canvas() = default;
+			~Canvas();
 			Canvas(const Canvas& other) = delete;
 			Canvas(Canvas&& other) noexcept = delete;
 			Canvas& operator=(const Canvas& other) = delete;
@@ -33,8 +34,10 @@ namespace Ion
 			void AddMaterial(Material3D* pMaterial);
 			void AddMaterial(Material2D* pMaterial);
 			void SetDescriptor();
-			void Render();
 			void WaitForPreviousFrame();
+
+			void RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex);
+			void SetThreadAction(ThreadAction threadAction);
 		private:
 			Window* mpWindow;
 			RECT mRectangle;
@@ -67,6 +70,14 @@ namespace Ion
 			CanvasConstantBuffer mCanvasConstantBufferData;
 			std::set<Material3D*> mpMaterials3D;
 			std::set<Material2D*> mpMaterials2D;
+			std::thread mThread;
+			std::mutex* mpMutex;
+			std::condition_variable* mpConditionVar;
+			ThreadAction mThreadAction;
+			std::atomic<bool> mRunThread;
+
+			void Render();
+			static void ThreadRender(Canvas* pCanvas);
 		};
 	}
 }

@@ -34,7 +34,20 @@ Canvas::Canvas(Window* pWindow, RECT rectangle)
 	, mCanvasConstantBufferData{}
 	, mpMaterials3D{}
 	, mpMaterials2D{}
+	, mThread{}
+	, mpMutex{ nullptr }
+	, mpConditionVar{ nullptr }
+	, mThreadAction{}
+	, mRunThread{ false }
 {
+	if (mThread.get_id() == std::thread::id{})
+		mThread = std::thread{ &ThreadRender, this };
+}
+
+Canvas::~Canvas()
+{
+	if (mThread.joinable())
+		mThread.join();
 }
 
 void Canvas::Initialize()
@@ -364,5 +377,42 @@ void Canvas::WaitForPreviousFrame()
 	{
 		ThrowIfFailed(mpFence->SetEventOnCompletion(fence, mFenceEvent));
 		WaitForSingleObject(mFenceEvent, INFINITE);
+	}
+}
+
+void Canvas::RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex)
+{
+	if (mRunThread.load())
+		return;
+	mpConditionVar = pConditionVar;
+	mpMutex = pMutex;
+	mRunThread.store(true);
+}
+
+void Canvas::SetThreadAction(ThreadAction threadAction)
+{
+	mThreadAction = threadAction;
+}
+
+void Canvas::ThreadRender(Canvas* pCanvas)
+{
+	bool close{ false };
+	while (!close)
+	{
+		if (!pCanvas->mRunThread.load())
+			std::this_thread::sleep_for(std::chrono::milliseconds{ 16 });
+		std::unique_lock<std::mutex> lk{ *pCanvas->mpMutex };
+		pCanvas->mpConditionVar->wait(lk);
+		switch (pCanvas->mThreadAction)
+		{
+		case ThreadAction::Render:
+			pCanvas->Render();
+			break;
+		case ThreadAction::Close:
+			close = true;
+			break;
+		}
+		pCanvas->mThreadAction = ThreadAction::Sleep;
+		lk.unlock();
 	}
 }

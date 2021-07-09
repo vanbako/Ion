@@ -24,6 +24,7 @@ namespace Ion
 				float height = 1.f,
 				float depth = 1.f,
 				DirectX::XMFLOAT4 color = (DirectX::XMFLOAT4)DirectX::Colors::White);
+			static void CreatePhysicsPlane(physx::PxPhysics* pPxPhysics, physx::PxScene* pPxScene);
 		};
 	}
 }

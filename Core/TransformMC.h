@@ -30,6 +30,7 @@ namespace Ion
 			void SetForward(const DirectX::XMFLOAT4& forward);
 			void SetUp(const DirectX::XMFLOAT4& up);
 			void SetRight(const DirectX::XMFLOAT4& right);
+			void SetPxRigidActor(physx::PxRigidActor* pPxRigidActor);
 
 			const DirectX::XMFLOAT4& GetWorldPosition() const;
 			const DirectX::XMFLOAT4& GetForward() const;
@@ -49,6 +50,7 @@ namespace Ion
 				mScale[2],
 				mRotation[2];
 			DirectX::XMFLOAT4X4 mWorld[2];
+			physx::PxRigidActor* mPxRigidActor;
 		};
 	}
 }

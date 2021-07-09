@@ -5,6 +5,8 @@
 #include "../Core/Model.h"
 #include "../Core/Texture.h"
 #include "../Core/Window.h"
+#include "../Core/PxIonAllocatorCallback.h"
+#include "../Core/PxIonErrorCallback.h"
 
 namespace Ion
 {
@@ -42,6 +44,8 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetD3d11DeviceContext();
 			const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& GetD2d1DeviceContext();
 			//const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
+			physx::PxPhysics* GetPhysics();
+			const physx::PxTolerancesScale& GetToleranceScale();
 
 			Material3D* AddMaterial3D(const std::string& name);
 			Material2D* AddMaterial2D(const std::string& name);
@@ -73,7 +77,10 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID2D1DeviceContext2> mpD2d1DeviceContext;
 			Microsoft::WRL::ComPtr<ID2D1Factory3> mpD2d1Factory;
 			//Microsoft::WRL::ComPtr<IDWriteFactory> mpDWriteFactory;
-
+			physx::PxPhysics* mpPhysics;
+			physx::PxTolerancesScale mPxToleranceScale;
+			physx::PxIonAllocatorCallback mIonAllocatorCallback;
+			physx::PxIonErrorCallback mIonErrorCallback;
 			void KeyboardState();
 		};
 	}

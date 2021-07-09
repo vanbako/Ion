@@ -44,6 +44,10 @@ Application::Application()
 	, mpD2d1DeviceContext{}
 	, mpD2d1Factory{}
 	//, mpDWriteFactory{}
+	, mpPhysics{ nullptr }
+	, mPxToleranceScale{}
+	, mIonAllocatorCallback{}
+	, mIonErrorCallback{}
 {
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
@@ -57,6 +61,10 @@ Application::Application()
 	wndClass.lpszMenuName = 0;
 	wndClass.lpszClassName = L"IonEngineWindowClass";
 	RegisterClass(&wndClass);
+
+	physx::PxFoundation* pFoundation{ PxCreateFoundation(PX_PHYSICS_VERSION, mIonAllocatorCallback, mIonErrorCallback) };
+
+	mpPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *pFoundation, mPxToleranceScale, false);
 }
 
 Application::~Application()
@@ -67,6 +75,10 @@ Application::~Application()
 	mMaterials2D.clear();
 	mMaterials3D.clear();
 	mModels.clear();
+
+	physx::PxFoundation& foundation{ mpPhysics->getFoundation() };
+	mpPhysics->release();
+	foundation.release();
 }
 
 bool Application::Initialize()
@@ -260,6 +272,16 @@ const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& Application::GetD3d11DeviceCo
 const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Application::GetD2d1DeviceContext()
 {
 	return mpD2d1DeviceContext;
+}
+
+physx::PxPhysics* Application::GetPhysics()
+{
+	return mpPhysics;
+}
+
+const physx::PxTolerancesScale& Application::GetToleranceScale()
+{
+	return mPxToleranceScale;
 }
 
 //const Microsoft::WRL::ComPtr<IDWriteFactory>& Application::GetDWriteFactory()

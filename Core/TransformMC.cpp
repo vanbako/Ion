@@ -1,6 +1,7 @@
 #include "../Core/pch.h"
 #include "../Core/TransformMC.h"
 #include "../Core/Object.h"
+#include "../Core/Scene.h"
 
 using namespace Ion::Core;
 
@@ -14,6 +15,7 @@ TransformMC::TransformMC(bool isActive, Object* pObject)
 	, mScale{ { 1.f, 1.f, 1.f, 0.f }, { 1.f, 1.f, 1.f, 0.f } }
 	, mRotation{ { 0.f, 0.f, 0.f, 1.f }, { 0.f, 0.f, 0.f, 1.f } }
 	, mWorld{}
+	, mPxRigidActor{ nullptr }
 {
 }
 
@@ -33,8 +35,16 @@ void TransformMC::Update(float delta)
 	(delta);
 	if (!mIsActive)
 		return;
-	if (!mHasChanged)
+	if ((!mHasChanged) && (mPxRigidActor == nullptr))
 		return;
+ 	if (mPxRigidActor != nullptr)
+	{
+		mpObject->GetScene()->GetPxScene()->lockRead();
+		const physx::PxTransform& pxTransform{ mPxRigidActor->getGlobalPose()};
+		mPosition[mCurrent] = DirectX::XMFLOAT4{ pxTransform.p.x, pxTransform.p.y, pxTransform.p.z, 0.f };
+		mRotation[mCurrent] = DirectX::XMFLOAT4{ pxTransform.q.x, pxTransform.q.y, pxTransform.q.z, pxTransform.q.w };
+		mpObject->GetScene()->GetPxScene()->unlockRead();
+	}
 	InternalUpdate(delta);
 	mHasChanged = false;
 }
@@ -99,6 +109,11 @@ void TransformMC::SetRight(const DirectX::XMFLOAT4& right)
 	mRight[mCurrent] = right;
 }
 
+void TransformMC::SetPxRigidActor(physx::PxRigidActor* pPxRigidActor)
+{
+	mPxRigidActor = pPxRigidActor;
+}
+
 const DirectX::XMFLOAT4& TransformMC::GetWorldPosition() const
 {
 	return mWorldPosition[mCurrent];
@@ -114,7 +129,7 @@ const DirectX::XMFLOAT4& TransformMC::GetUp() const
 	return mUp[mCurrent];
 }
 
-const DirectX::XMFLOAT4& Ion::Core::TransformMC::GetRight() const
+const DirectX::XMFLOAT4& TransformMC::GetRight() const
 {
 	return mRight[mCurrent];
 }
