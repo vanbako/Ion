@@ -8,11 +8,6 @@ NVidia Physx 4.1<br>
 <br>
 Upcoming: Sound (probably FMOD)<br>
 <br>
-Todo's:<br>
-More and better error handling<br>
-Logger<br>
-Tool for converting FBX to internal format<br>
-Deferred Rendering<br>
-And many more...<br>
+You can upvote enhancements in the Github Issue Tracker<br>
 <br>
-Don't use it for production (yet)!<br>
+Let me know if you're interested in contributing<br>
