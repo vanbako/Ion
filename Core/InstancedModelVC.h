@@ -1,12 +1,12 @@
 #pragma once
-#include "../Core/TextureType.h"
-#include "../Core/ViewC.h"
-#include "../Core/Triangle.h"
-#include "../Core/VertexPNC.h"
-#include "../Core/MeshVCConstantBuffer.h"
-#include "../Core/Winding.h"
-#include "../Core/InstanceBuffer.h"
-#include "../Core/TransformMC.h"
+#include "TextureType.h"
+#include "ViewC.h"
+#include "Triangle.h"
+#include "VertexPNC.h"
+#include "MeshVCConstantBuffer.h"
+#include "Winding.h"
+#include "InstanceBuffer.h"
+#include "TransformMC.h"
 
 // Model View Component
 

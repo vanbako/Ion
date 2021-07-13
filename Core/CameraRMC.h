@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/ReceiverMC.h"
+#include "ReceiverMC.h"
 
 // Camera Model Component
 

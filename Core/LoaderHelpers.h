@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "../Core/DDS.h"
-#include "../Core/DDSTextureLoader.h"
-#include "../Core/PlatformHelpers.h"
+#include "DDS.h"
+#include "DDSTextureLoader.h"
+#include "PlatformHelpers.h"
 #include <wincodec.h>
 
 namespace DirectX

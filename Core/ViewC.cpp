@@ -1,11 +1,11 @@
-#include "../Core/pch.h"
-#include "../Core/ViewC.h"
-#include "../Core/Object.h"
-#include "../Core/Scene.h"
-#include "../Core/Application.h"
-#include "../Core/Material3D.h"
-#include "../Core/Material2D.h"
-#include "../Core/Canvas.h"
+#include "pch.h"
+#include "ViewC.h"
+#include "Object.h"
+#include "Scene.h"
+#include "Application.h"
+#include "Material3D.h"
+#include "Material2D.h"
+#include "Canvas.h"
 
 using namespace Ion::Core;
 

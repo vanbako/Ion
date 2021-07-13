@@ -1,7 +1,7 @@
-#include "../Core/pch.h"
-#include "../Core/Canvas.h"
-#include "../Core/Application.h"
-#include "../Core/CameraRMC.h"
+#include "pch.h"
+#include "Canvas.h"
+#include "Application.h"
+#include "CameraRMC.h"
 
 using namespace Ion::Core;
 

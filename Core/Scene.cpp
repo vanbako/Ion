@@ -1,10 +1,10 @@
-#include "../Core/pch.h"
-#include "../Core/Scene.h"
-#include "../Core/ModelST.h"
-#include "../Core/ControllerST.h"
-#include "../Core/ViewST.h"
-#include "../Core/PhysicsST.h"
-#include "../Core/Application.h"
+#include "pch.h"
+#include "Scene.h"
+#include "ModelST.h"
+#include "ControllerST.h"
+#include "ViewST.h"
+#include "PhysicsST.h"
+#include "Application.h"
 #include <extensions/PxExtensionsAPI.h>
 
 using namespace Ion::Core;

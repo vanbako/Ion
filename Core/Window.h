@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/Canvas.h"
+#include "Canvas.h"
 
 namespace Ion
 {

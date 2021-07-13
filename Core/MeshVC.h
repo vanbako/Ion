@@ -1,9 +1,9 @@
 #pragma once
-#include "../Core/ViewC.h"
-#include "../Core/Triangle.h"
-#include "../Core/VertexPNC.h"
-#include "../Core/Quadrilateral.h"
-#include "../Core/MeshVCConstantBuffer.h"
+#include "ViewC.h"
+#include "Triangle.h"
+#include "VertexPNC.h"
+#include "Quadrilateral.h"
+#include "MeshVCConstantBuffer.h"
 
 // Mesh View Component
 

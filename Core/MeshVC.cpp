@@ -1,11 +1,11 @@
-#include "../Core/pch.h"
-#include "../Core/MeshVC.h"
-#include "../Core/Application.h"
-#include "../Core/Material3D.h"
-#include "../Core/Object.h"
-#include "../Core/Scene.h"
-#include "../Core/CameraRMC.h"
-#include "../Core/d3dx12.h"
+#include "pch.h"
+#include "MeshVC.h"
+#include "Application.h"
+#include "Material3D.h"
+#include "Object.h"
+#include "Scene.h"
+#include "CameraRMC.h"
+#include "d3dx12.h"
 
 using namespace Ion::Core;
 

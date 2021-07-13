@@ -1,13 +1,13 @@
-#include "../Core/pch.h"
-#include "../Core/Factory.h"
-#include "../Core/Scene.h"
-#include "../Core/CameraRMC.h"
-#include "../Core/MeshVC.h"
-#include "../Core/TriangleVC.h"
-#include "../Core/CharacterRMC.h"
-#include "../Core/InputCC.h"
-#include "../Core/VertexPNC.h"
-#include "../Core/ControllerST.h"
+#include "pch.h"
+#include "Factory.h"
+#include "Scene.h"
+#include "CameraRMC.h"
+#include "MeshVC.h"
+#include "TriangleVC.h"
+#include "CharacterRMC.h"
+#include "InputCC.h"
+#include "VertexPNC.h"
+#include "ControllerST.h"
 
 using namespace Ion::Core;
 

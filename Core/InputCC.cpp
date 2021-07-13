@@ -1,6 +1,6 @@
-#include "../Core/pch.h"
-#include "../Core/InputCC.h"
-#include "../Core/Command.h"
+#include "pch.h"
+#include "InputCC.h"
+#include "Command.h"
 
 using namespace Ion::Core;
 

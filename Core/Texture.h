@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/ResourceUploadBatch.h"
+#include "ResourceUploadBatch.h"
 
 namespace Ion
 {

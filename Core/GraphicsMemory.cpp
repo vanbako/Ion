@@ -7,10 +7,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "../Core/pch.h"
-#include "../Core/GraphicsMemory.h"
-#include "../Core/PlatformHelpers.h"
-#include "../Core/LinearAllocator.h"
+#include "pch.h"
+#include "GraphicsMemory.h"
+#include "PlatformHelpers.h"
+#include "LinearAllocator.h"
 
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;

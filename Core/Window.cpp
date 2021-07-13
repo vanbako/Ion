@@ -1,5 +1,5 @@
-#include "../Core/pch.h"
-#include "../Core/Window.h"
+#include "pch.h"
+#include "Window.h"
 
 using namespace Ion::Core;
 

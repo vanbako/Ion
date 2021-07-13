@@ -1,6 +1,6 @@
-#include "../Core/pch.h"
-#include "../Core/Application.h"
-#include "../Core/PhysicsST.h"
+#include "pch.h"
+#include "Application.h"
+#include "PhysicsST.h"
 
 using namespace Ion::Core;
 

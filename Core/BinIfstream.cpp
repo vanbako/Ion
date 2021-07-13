@@ -1,5 +1,5 @@
-#include "../Core/pch.h"
-#include "../Core/BinIfstream.h"
+#include "pch.h"
+#include "BinIfstream.h"
 
 using namespace Ion::Core;
 

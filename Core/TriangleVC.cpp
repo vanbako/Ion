@@ -1,9 +1,9 @@
-#include "../Core/pch.h"
-#include "../Core/TriangleVC.h"
-#include "../Core/Application.h"
-#include "../Core/Material2D.h"
-#include "../Core/Object.h"
-#include "../Core/Scene.h"
+#include "pch.h"
+#include "TriangleVC.h"
+#include "Application.h"
+#include "Material2D.h"
+#include "Object.h"
+#include "Scene.h"
 
 using namespace Ion::Core;
 

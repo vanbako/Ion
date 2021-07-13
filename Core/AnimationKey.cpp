@@ -1,5 +1,5 @@
-#include "../Core/pch.h"
-#include "../Core/AnimationKey.h"
+#include "pch.h"
+#include "AnimationKey.h"
 
 using namespace Ion::Core;
 

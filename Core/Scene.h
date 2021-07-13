@@ -1,10 +1,10 @@
 #pragma once
-#include "../Core/Object.h"
-#include "../Core/ModelC.h"
-#include "../Core/ControllerC.h"
-#include "../Core/ViewC.h"
-#include "../Core/Canvas.h"
-#include "../Core/Window.h"
+#include "Object.h"
+#include "ModelC.h"
+#include "ControllerC.h"
+#include "ViewC.h"
+#include "Canvas.h"
+#include "Window.h"
 
 namespace Ion
 {

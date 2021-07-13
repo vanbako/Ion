@@ -1,6 +1,6 @@
 #pragma once
-#include "../Core/ModelC.h"
-#include "../Core/AngleUnit.h"
+#include "ModelC.h"
+#include "AngleUnit.h"
 
 // Transform Model Component
 

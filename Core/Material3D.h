@@ -1,6 +1,6 @@
 #pragma once
-#include "../Core/TextureType.h"
-#include "../Core/SemanticInfo.h"
+#include "TextureType.h"
+#include "SemanticInfo.h"
 
 namespace Ion
 {

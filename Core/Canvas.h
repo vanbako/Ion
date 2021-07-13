@@ -1,7 +1,7 @@
 #pragma once
-#include "../Core/CanvasConstantBuffer.h"
-#include "../Core/ThreadAction.h"
-#include "../Core/d3dx12.h"
+#include "CanvasConstantBuffer.h"
+#include "ThreadAction.h"
+#include "d3dx12.h"
 
 namespace Ion
 {

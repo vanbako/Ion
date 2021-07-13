@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/InputSemantic.h"
+#include "InputSemantic.h"
 
 namespace Ion
 {

@@ -1,8 +1,8 @@
-#include "../Core/pch.h"
-#include "../Core/Material3D.h"
-#include "../Core/Application.h"
-#include "../Core/Canvas.h"
-#include "../Core/d3dx12.h"
+#include "pch.h"
+#include "Material3D.h"
+#include "Application.h"
+#include "Canvas.h"
+#include "d3dx12.h"
 #include <d3dcompiler.h>
 
 using namespace Ion::Core;

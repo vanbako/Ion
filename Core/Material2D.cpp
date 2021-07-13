@@ -1,7 +1,7 @@
-#include "../Core/pch.h"
-#include "../Core/Material2D.h"
-#include "../Core/Application.h"
-#include "../Core/Canvas.h"
+#include "pch.h"
+#include "Material2D.h"
+#include "Application.h"
+#include "Canvas.h"
 
 using namespace Ion::Core;
 

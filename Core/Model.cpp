@@ -1,8 +1,8 @@
-#include "../Core/pch.h"
-#include "../Core/Model.h"
-#include "../Core/Application.h"
-#include "../Core/MeshType.h"
-#include "../Core/Material3D.h"
+#include "pch.h"
+#include "Model.h"
+#include "Application.h"
+#include "MeshType.h"
+#include "Material3D.h"
 
 using namespace Ion::Core;
 

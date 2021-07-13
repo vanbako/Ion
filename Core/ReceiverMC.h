@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/ModelC.h"
+#include "ModelC.h"
 
 // Receiver Model Component
 

@@ -7,11 +7,11 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "../Core/pch.h"
-#include "../Core/DirectXHelpers.h"
-#include "../Core/PlatformHelpers.h"
-#include "../Core/LinearAllocator.h"
-#include "../Core/d3dx12.h"
+#include "pch.h"
+#include "DirectXHelpers.h"
+#include "PlatformHelpers.h"
+#include "LinearAllocator.h"
+#include "d3dx12.h"
 
 // Set this to 1 to enable some additional debug validation
 #define VALIDATE_LISTS 0

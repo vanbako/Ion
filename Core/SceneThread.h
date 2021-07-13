@@ -1,8 +1,8 @@
 #pragma once
-#include "../Core/ModelC.h"
-#include "../Core/ControllerC.h"
-#include "../Core/ViewC.h"
-#include "../Core/Scene.h"
+#include "ModelC.h"
+#include "ControllerC.h"
+#include "ViewC.h"
+#include "Scene.h"
 
 namespace Ion
 {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Core/AnimationClip.h"
-#include "../Core/BinIfstream.h"
-#include "../Core/InputSemantic.h"
-#include "../Core/Winding.h"
-#include "../Core/Transform.h"
+#include "AnimationClip.h"
+#include "BinIfstream.h"
+#include "InputSemantic.h"
+#include "Winding.h"
+#include "Transform.h"
 
 namespace Ion
 {

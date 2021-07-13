@@ -1,8 +1,8 @@
-#include "../Core/pch.h"
-#include "../Core/Application.h"
-#include "../Core/ControllerST.h"
-#include "../Core/Command.h"
-#include "../Core/InputCC.h"
+#include "pch.h"
+#include "Application.h"
+#include "ControllerST.h"
+#include "Command.h"
+#include "InputCC.h"
 
 using namespace Ion::Core;
 

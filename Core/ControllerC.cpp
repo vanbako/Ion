@@ -1,5 +1,5 @@
-#include "../Core/pch.h"
-#include "../Core/ControllerC.h"
+#include "pch.h"
+#include "ControllerC.h"
 
 using namespace Ion::Core;
 

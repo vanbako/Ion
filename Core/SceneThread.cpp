@@ -1,5 +1,5 @@
-#include "../Core/pch.h"
-#include "../Core/SceneThread.h"
+#include "pch.h"
+#include "SceneThread.h"
 
 using namespace Ion::Core;
 

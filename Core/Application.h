@@ -1,12 +1,12 @@
 #pragma once
-#include "../Core/Scene.h"
-#include "../Core/Material3D.h"
-#include "../Core/Material2D.h"
-#include "../Core/Model.h"
-#include "../Core/Texture.h"
-#include "../Core/Window.h"
-#include "../Core/PxIonAllocatorCallback.h"
-#include "../Core/PxIonErrorCallback.h"
+#include "Scene.h"
+#include "Material3D.h"
+#include "Material2D.h"
+#include "Model.h"
+#include "Texture.h"
+#include "Window.h"
+#include "PxIonAllocatorCallback.h"
+#include "PxIonErrorCallback.h"
 
 namespace Ion
 {

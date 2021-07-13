@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/AnimationKey.h"
+#include "AnimationKey.h"
 
 namespace Ion
 {

@@ -1,13 +1,13 @@
-#include "../Core/pch.h"
-#include "../Core/InstancedModelVC.h"
-#include "../Core/Application.h"
-#include "../Core/Material3D.h"
-#include "../Core/Object.h"
-#include "../Core/Scene.h"
-#include "../Core/CameraRMC.h"
-#include "../Core/Model.h"
-#include "../Core/Canvas.h"
-#include "../Core/d3dx12.h"
+#include "pch.h"
+#include "InstancedModelVC.h"
+#include "Application.h"
+#include "Material3D.h"
+#include "Object.h"
+#include "Scene.h"
+#include "CameraRMC.h"
+#include "Model.h"
+#include "Canvas.h"
+#include "d3dx12.h"
 
 using namespace Ion::Core;
 

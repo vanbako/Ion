@@ -1,6 +1,6 @@
 #pragma once
-#include "../Core/ViewC.h"
-#include "../Core/Triangle.h"
+#include "ViewC.h"
+#include "Triangle.h"
 
 // Triangle View Component
 

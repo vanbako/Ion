@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/SceneThread.h"
+#include "SceneThread.h"
 
 namespace Ion
 {

@@ -1,8 +1,8 @@
 #pragma once
-#include "../Core/TransformMC.h"
-#include "../Core/ModelVC.h"
-#include "../Core/InstancedModelVC.h"
-#include "../Core/Winding.h"
+#include "TransformMC.h"
+#include "ModelVC.h"
+#include "InstancedModelVC.h"
+#include "Winding.h"
 
 namespace Ion
 {

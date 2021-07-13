@@ -1,13 +1,13 @@
-#include "../Core/pch.h"
-#include "../Core/CharacterRMC.h"
-#include "../Core/TransformMC.h"
-#include "../Core/Object.h"
-#include "../Core/MoveForwardCmd.h"
-#include "../Core/MoveBackCmd.h"
-#include "../Core/MoveLeftCmd.h"
-#include "../Core/MoveRightCmd.h"
-#include "../Core/RotateLeftCmd.h"
-#include "../Core/RotateRightCmd.h"
+#include "pch.h"
+#include "CharacterRMC.h"
+#include "TransformMC.h"
+#include "Object.h"
+#include "MoveForwardCmd.h"
+#include "MoveBackCmd.h"
+#include "MoveLeftCmd.h"
+#include "MoveRightCmd.h"
+#include "RotateLeftCmd.h"
+#include "RotateRightCmd.h"
 
 using namespace Ion::Core;
 

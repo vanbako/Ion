@@ -1,6 +1,6 @@
-#include "../Core/pch.h"
-#include "../Core/MoveLeftCmd.h"
-#include "../Core/ReceiverMC.h"
+#include "pch.h"
+#include "MoveLeftCmd.h"
+#include "ReceiverMC.h"
 
 using namespace Ion::Core;
 

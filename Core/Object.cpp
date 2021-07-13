@@ -1,7 +1,7 @@
-#include "../Core/pch.h"
-#include "../Core/Object.h"
-#include "../Core/ControllerC.h"
-#include "../Core/ViewC.h"
+#include "pch.h"
+#include "Object.h"
+#include "ControllerC.h"
+#include "ViewC.h"
 
 using namespace Ion::Core;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/ControllerC.h"
+#include "ControllerC.h"
 
 // Input Controller Component
 

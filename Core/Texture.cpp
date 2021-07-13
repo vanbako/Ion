@@ -1,7 +1,7 @@
-#include "../Core/pch.h"
-#include "../Core/Texture.h"
-#include "../Core/Application.h"
-#include "../Core/WICTextureLoader.h"
+#include "pch.h"
+#include "Texture.h"
+#include "Application.h"
+#include "WICTextureLoader.h"
 
 using namespace Ion::Core;
 

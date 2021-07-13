@@ -1,7 +1,7 @@
-#include "../Core/pch.h"
-#include "../Core/TransformMC.h"
-#include "../Core/Object.h"
-#include "../Core/Scene.h"
+#include "pch.h"
+#include "TransformMC.h"
+#include "Object.h"
+#include "Scene.h"
 
 using namespace Ion::Core;
 
