@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Texture.h"
 #include "Application.h"
-#include "WICTextureLoader.h"
+#include "DirectXTK12/WICTextureLoader.h"
 
 using namespace Ion::Core;
 

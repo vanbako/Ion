@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{c1ca3bf5-3a5a-44c3-9a05-a63f9f3c9d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PrecompiledHeaders">
+      <UniqueIdentifier>{7c5b86b8-8c6a-446b-b4ac-440dcdeb6fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{3fdab4fb-ab17-4093-b70c-5f00340d75ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{1b8e0f9b-9444-498e-bd4d-2fecef71ef37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Input">
+      <UniqueIdentifier>{fcda3af4-7819-4eec-b8c5-9e77aaed229c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Instances">
+      <UniqueIdentifier>{970506c3-b5dc-46db-98ae-6204dda8d629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Model">
+      <UniqueIdentifier>{3d2b1952-5222-414e-8aa0-3923fde31e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture">
+      <UniqueIdentifier>{e67b8da2-97e4-4578-8aa0-7c10c46aa1c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>PrecompiledHeaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>PrecompiledHeaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Resources\Input\Camera.txt">
+      <Filter>Resources\Input</Filter>
+    </Text>
+    <Text Include="..\Resources\Input\Character.txt">
+      <Filter>Resources\Input</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\Instances\Flower.ins">
+      <Filter>Resources\Instances</Filter>
+    </None>
+    <None Include="..\Resources\Model\Flower.ovm">
+      <Filter>Resources\Model</Filter>
+    </None>
+    <None Include="..\Resources\Model\Wizard.ovm">
+      <Filter>Resources\Model</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\Texture\Flower_Blue.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Flower_Red.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Wizard_Blue_A.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Wizard_Blue_N.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Wizard_Red_A.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Wizard_Red_N.png">
+      <Filter>Resources\Texture</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

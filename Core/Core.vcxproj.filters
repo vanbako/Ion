@@ -94,211 +94,214 @@
     <Filter Include="PhysX">
       <UniqueIdentifier>{7a337638-d083-45a3-bec0-a6bf415ffcdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enums">
+      <UniqueIdentifier>{fdde2177-c662-4fc4-bdf5-a36ac7f8861f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerC.h">
-      <Filter>Component\ControllerComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformMC.h">
-      <Filter>Component\ModelComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelC.h">
-      <Filter>Component\ModelComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="AngleUnit.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewC.h">
-      <Filter>Component\ViewComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshVC.h">
-      <Filter>Component\ViewComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="Quadrilateral.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Triangle.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasConstantBuffer.h">
-      <Filter>Structs\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshVCConstantBuffer.h">
-      <Filter>Structs\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexPNC.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneThread.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Factory.h">
-      <Filter>Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Material3D.h">
-      <Filter>Material</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>PrecompiledHeader</Filter>
     </ClInclude>
-    <ClInclude Include="InputCC.h">
+    <ClInclude Include="include\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Canvas.h">
+      <Filter>Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Command.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveBackCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveDownCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveForwardCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveLeftCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveRightCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveUpCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControllerC.h">
       <Filter>Component\ControllerComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Command</Filter>
+    <ClInclude Include="include\InputCC.h">
+      <Filter>Component\ControllerComponents</Filter>
     </ClInclude>
-    <ClInclude Include="MoveLeftCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="ReceiverMC.h">
+    <ClInclude Include="include\CameraRMC.h">
       <Filter>Component\ModelComponents\Receivers</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterRMC.h">
+    <ClInclude Include="include\CharacterRMC.h">
       <Filter>Component\ModelComponents\Receivers</Filter>
     </ClInclude>
-    <ClInclude Include="CameraRMC.h">
+    <ClInclude Include="include\ReceiverMC.h">
       <Filter>Component\ModelComponents\Receivers</Filter>
     </ClInclude>
-    <ClInclude Include="MoveRightCmd.h">
-      <Filter>Command</Filter>
+    <ClInclude Include="include\ModelC.h">
+      <Filter>Component\ModelComponents</Filter>
     </ClInclude>
-    <ClInclude Include="MoveForwardCmd.h">
-      <Filter>Command</Filter>
+    <ClInclude Include="include\TransformMC.h">
+      <Filter>Component\ModelComponents</Filter>
     </ClInclude>
-    <ClInclude Include="MoveBackCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="RotateLeftCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="RotateRightCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveUpCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveDownCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelVC.h">
+    <ClInclude Include="include\InstancedModelVC.h">
       <Filter>Component\ViewComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="include\MeshVC.h">
+      <Filter>Component\ViewComponents</Filter>
     </ClInclude>
-    <ClInclude Include="MeshType.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="include\ModelVC.h">
+      <Filter>Component\ViewComponents</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationClip.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="include\TriangleVC.h">
+      <Filter>Component\ViewComponents</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationKey.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="include\ViewC.h">
+      <Filter>Component\ViewComponents</Filter>
     </ClInclude>
-    <ClInclude Include="BinIfstream.h">
+    <ClInclude Include="include\Factory.h">
+      <Filter>Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BinIfstream.h">
       <Filter>Helper</Filter>
     </ClInclude>
-    <ClInclude Include="InputSemantic.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="DDS.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DDSTextureLoader.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsMemory.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="LoaderHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceUploadBatch.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="WICTextureLoader.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearAllocator.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureType.h">
-      <Filter>Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="SemanticInfo.h">
+    <ClInclude Include="include\Material2D.h">
       <Filter>Material</Filter>
     </ClInclude>
-    <ClInclude Include="Winding.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="InstancedModelVC.h">
-      <Filter>Component\ViewComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="InstanceBuffer.h">
-      <Filter>Structs\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Structs</Filter>
-    </ClInclude>
-    <ClInclude Include="Canvas.h">
-      <Filter>Canvas</Filter>
-    </ClInclude>
-    <ClInclude Include="Material2D.h">
+    <ClInclude Include="include\Material3D.h">
       <Filter>Material</Filter>
     </ClInclude>
-    <ClInclude Include="TriangleVC.h">
-      <Filter>Component\ViewComponents</Filter>
+    <ClInclude Include="include\AnimationClip.h">
+      <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="PxIonAllocatorCallback.h">
+    <ClInclude Include="include\AnimationKey.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PxIonAllocatorCallback.h">
       <Filter>PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="PxIonErrorCallback.h">
+    <ClInclude Include="include\PxIonErrorCallback.h">
       <Filter>PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsST.h">
+    <ClInclude Include="include\Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadAction.h">
-      <Filter>Canvas</Filter>
+    <ClInclude Include="include\ControllerST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysicsST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneThread.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ViewST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CanvasConstantBuffer.h">
+      <Filter>Structs\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshVCConstantBuffer.h">
+      <Filter>Structs\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstanceBuffer.h">
+      <Filter>Structs\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Quadrilateral.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Triangle.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VertexPNC.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputSemantic.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotateLeftCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotateRightCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SemanticInfo.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadAction.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Winding.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextureType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AngleUnit.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\DDS.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\DDSTextureLoader.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\DirectXHelpers.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\GraphicsMemory.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\LinearAllocator.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\LoaderHelpers.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\PlatformHelpers.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\ResourceUploadBatch.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTK12\WICTextureLoader.h">
+      <Filter>DirectXTK12</Filter>
+    </ClInclude>
+    <ClInclude Include="include\d3dx12.h">
+      <Filter>Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,21 +416,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Texture</Filter>
     </ClCompile>
-    <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="WICTextureLoader.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceUploadBatch.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsMemory.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="LinearAllocator.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
     <ClCompile Include="InstancedModelVC.cpp">
       <Filter>Component\ViewComponents</Filter>
     </ClCompile>
@@ -449,13 +437,25 @@
     <ClCompile Include="PhysicsST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXTK12\DDSTextureLoader.cpp">
+      <Filter>DirectXTK12</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXTK12\GraphicsMemory.cpp">
+      <Filter>DirectXTK12</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXTK12\LinearAllocator.cpp">
+      <Filter>DirectXTK12</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXTK12\ResourceUploadBatch.cpp">
+      <Filter>DirectXTK12</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXTK12\WICTextureLoader.cpp">
+      <Filter>DirectXTK12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
       <Filter>Documentation</Filter>
-    </None>
-    <None Include="Shaders\Compiled\GenerateMips_main.inc">
-      <Filter>DirectXTK12</Filter>
     </None>
     <None Include="Shaders\CanvasConstantBuffer.hlsli">
       <Filter>Shaders</Filter>

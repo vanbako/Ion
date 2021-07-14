@@ -43,16 +43,14 @@ void SceneThread::Loop(SceneThread* pSceneThread)
 	std::chrono::steady_clock::time_point
 		start{ std::chrono::steady_clock::now() },
 		end{};
-	std::chrono::duration<float> sleep{};
+	std::chrono::microseconds sleep{};
 	float delta{ 0.f };
 	while (!pScene->GetIsEnd())
 	{
-		sleep = std::chrono::duration<float>(start + pSceneThread->mUpdateTime.load() - std::chrono::steady_clock::now());
-		// TODO: Fix this!
-		//std::this_thread::sleep_for(sleep);
-		std::this_thread::sleep_for(pSceneThread->mUpdateTime.load());
+		sleep = std::chrono::duration_cast<std::chrono::microseconds>(start - std::chrono::steady_clock::now()) + pSceneThread->mUpdateTime.load();
+		std::this_thread::sleep_for(sleep);
 		end = std::chrono::steady_clock::now();
-		delta = std::chrono::duration<float>(end - start).count();
+		delta = float(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / 1000000.f;
 		start = end;
 		if (pScene->GetIsActive())
 			pSceneThread->Inner(delta);
