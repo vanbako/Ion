@@ -305,9 +305,9 @@ Material2D* Application::AddMaterial2D(const std::string& name)
 	return pMaterial;
 }
 
-Model* Application::AddModel(const std::string& name, Winding winding)
+Model* Application::AddModel(const std::string& name, Winding winding, CoordSystem coordSystem)
 {
-	auto ret{ mModels.try_emplace(name, this, name, winding) };
+	auto ret{ mModels.try_emplace(name, this, name, winding, coordSystem) };
 	Model* pModel{ &((*(ret.first)).second) };
 	pModel->Initialize();
 	return pModel;

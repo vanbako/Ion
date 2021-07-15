@@ -6,6 +6,7 @@ Direct3D 12<br>
 Direct2D<br>
 NVidia Physx 4.1<br>
 <br>
+Last Added: Animation<br>
 Upcoming: Sound (probably FMOD)<br>
 <br>
 You can upvote enhancements in the Github Issue Tracker<br>

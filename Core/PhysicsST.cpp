@@ -13,8 +13,7 @@ void PhysicsST::Inner(float delta)
 {
 	(delta);
 	mpScene->GetPxScene()->lockWrite();
-	// TODO: use delta after fixing the loop timing
-	mpScene->GetPxScene()->simulate(1.f / 120.f);
+	mpScene->GetPxScene()->simulate(delta);
 	mpScene->GetPxScene()->fetchResults(true);
 	mpScene->GetPxScene()->unlockWrite();
 }

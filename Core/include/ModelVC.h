@@ -5,6 +5,7 @@
 #include "VertexPNC.h"
 #include "MeshVCConstantBuffer.h"
 #include "Winding.h"
+#include "CoordSystem.h"
 
 // Model View Component
 
@@ -22,7 +23,7 @@ namespace Ion
 			: public ViewC
 		{
 		public:
-			explicit ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject);
+			explicit ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject);
 			virtual ~ModelVC();
 			ModelVC(const ModelVC& other) = default;
 			ModelVC(ModelVC&& other) noexcept = default;
@@ -35,7 +36,7 @@ namespace Ion
 			virtual void Update(float delta) override;
 			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
 			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
-		private:
+		protected:
 			Model* mpModel;
 			std::map<TextureType,Texture*> mpTextures;
 			char* mpVertices;

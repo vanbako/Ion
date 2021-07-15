@@ -4,7 +4,9 @@
 #include "BinIfstream.h"
 #include "InputSemantic.h"
 #include "Winding.h"
+#include "CoordSystem.h"
 #include "Transform.h"
+#include "Int4.h"
 
 namespace Ion
 {
@@ -15,7 +17,7 @@ namespace Ion
 		class Model final
 		{
 		public:
-			explicit Model(Application* pApplication, const std::string& name, Winding winding);
+			explicit Model(Application* pApplication, const std::string& name, Winding winding, CoordSystem coordSystem);
 			~Model() = default;
 			Model(const Model& other) = delete;
 			Model(Model&& other) noexcept = delete;
@@ -30,8 +32,9 @@ namespace Ion
 			const std::vector<DirectX::XMFLOAT3>& GetBinormals() const;
 			const std::vector<DirectX::XMFLOAT2>& GetTexCoords() const;
 			const std::vector<DirectX::XMFLOAT4>& GetColors() const;
-			const std::vector<DirectX::XMFLOAT4>& GetBlendIndices() const;
+			const std::vector<Int4>& GetBlendIndices() const;
 			const std::vector<DirectX::XMFLOAT4>& GetBlendWeights() const;
+			const std::vector<AnimationClip>& GetAnimationClips() const;
 			size_t GetElementCount();
 			bool HasInputElem(InputSemantic inputSemantic);
 			bool HasInputElem(const std::string& inputSemantic);
@@ -42,6 +45,7 @@ namespace Ion
 			Application* mpApplication;
 			std::string mFileName;
 			Winding mWinding;
+			CoordSystem mCoordSystem;
 			std::wstring mName;
 			size_t
 				mTexCoordCount,
@@ -53,7 +57,7 @@ namespace Ion
 			std::vector<DirectX::XMFLOAT3> mBinormals;
 			std::vector<DirectX::XMFLOAT2> mTexCoords;
 			std::vector<DirectX::XMFLOAT4> mColors;
-			std::vector<DirectX::XMFLOAT4> mBlendIndices;
+			std::vector<Int4> mBlendIndices;
 			std::vector<DirectX::XMFLOAT4> mBlendWeights;
 			std::vector<AnimationClip> mAnimationClips;
 			std::vector<Transform> mInstances;

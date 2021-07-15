@@ -11,9 +11,9 @@
 
 using namespace Ion::Core;
 
-ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, Object* pObject)
+ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject)
 	: ViewC(isActive, pObject, materialName, "")
-	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, winding) }
+	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, winding, coordSystem) }
 	, mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}

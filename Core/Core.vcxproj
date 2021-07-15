@@ -102,10 +102,12 @@
     <ClInclude Include="DirectXTK12\ResourceUploadBatch.h" />
     <ClInclude Include="DirectXTK12\WICTextureLoader.h" />
     <ClInclude Include="include\AngleUnit.h" />
+    <ClInclude Include="include\AnimatedModelVC.h" />
     <ClInclude Include="include\AnimationClip.h" />
     <ClInclude Include="include\AnimationKey.h" />
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\BinIfstream.h" />
+    <ClInclude Include="include\BonesConstantBuffer.h" />
     <ClInclude Include="include\CameraRMC.h" />
     <ClInclude Include="include\Canvas.h" />
     <ClInclude Include="include\CanvasConstantBuffer.h" />
@@ -114,12 +116,14 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControllerC.h" />
     <ClInclude Include="include\ControllerST.h" />
+    <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\InputCC.h" />
     <ClInclude Include="include\InputSemantic.h" />
     <ClInclude Include="include\InstanceBuffer.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
+    <ClInclude Include="include\Int4.h" />
     <ClInclude Include="include\Material2D.h" />
     <ClInclude Include="include\Material3D.h" />
     <ClInclude Include="include\MeshType.h" />
@@ -162,6 +166,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedModelVC.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationKey.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -217,11 +222,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="Shaders\BonesBuffer.hlsli" />
     <None Include="Shaders\CalculateAlbedo.hlsli" />
     <None Include="Shaders\CalculateNormal.hlsli" />
     <None Include="Shaders\CanvasConstantBuffer.hlsli" />
     <None Include="Shaders\InstanceBuffer.hlsli" />
     <None Include="Shaders\ObjectConstantBuffer.hlsli" />
+    <None Include="Shaders\PosNormTanTex_aVSInput.hlsli" />
     <None Include="Shaders\PosNormTanTex_PSInput.hlsli" />
     <None Include="Shaders\PosNormTanTex_VSInput.hlsli" />
   </ItemGroup>
@@ -243,6 +250,24 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_rs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

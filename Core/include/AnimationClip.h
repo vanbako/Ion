@@ -19,6 +19,9 @@ namespace Ion
 			void SetName(const std::wstring& name);
 			void SetDuration(float duration);
 			void SetTicksPerSecond(float ticksPerSecond);
+
+			const float GetDuration() const;
+			const float GetTicksPerSecond() const;
 			std::vector<AnimationKey>& GetKeys();
 		private:
 			std::wstring mName;

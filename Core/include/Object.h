@@ -97,20 +97,10 @@ namespace Ion
 				return (T*)mpViewCs.back();
 			}
 			template<class T>
-			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding = Winding::CW)
+			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding = Winding::CW, CoordSystem coordSystem = CoordSystem::LeftHanded)
 			{
-			}
-			template<>
-			ModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding)
-			{
-				mpViewCs.emplace_back(new ModelVC{ modelName, materialName, isActive, winding, this });
-				return (ModelVC*)mpViewCs.back();
-			}
-			template<>
-			InstancedModelVC* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding)
-			{
-				mpViewCs.emplace_back(new InstancedModelVC{ modelName, materialName, isActive, winding, this });
-				return (InstancedModelVC*)mpViewCs.back();
+				mpViewCs.emplace_back(new T{ modelName, materialName, isActive, winding, coordSystem , this });
+				return (T*)mpViewCs.back();
 			}
 			template<class T>
 			T* GetViewC()

@@ -11,8 +11,8 @@ PSInput main(VSInput input, uint instanceID : SV_InstanceID)
 	float4x4 vp = transpose(gViewProj);
 	float4x4 wvp = transpose(mul(world, vp));
 	output.position = mul(wvp, float4(input.position, 1.0f));
-	output.normal = normalize(mul((float3x3)world, input.normal));
-	output.tangent = mul(input.tangent, (float3x3)world);
+	output.normal = normalize(mul(input.normal, (float3x3)world));
+	output.tangent = normalize(mul(input.tangent, (float3x3)world));
 	output.texcoord = input.texcoord;
 	
 	return output;

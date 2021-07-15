@@ -4,9 +4,12 @@ namespace Ion
 {
 	namespace Core
 	{
-		struct InstanceBuffer
+		struct Int4
 		{
-			DirectX::XMFLOAT4X4 mWorld;
+			int mA;
+			int mB;
+			int mC;
+			int mD;
 		};
 	}
 }

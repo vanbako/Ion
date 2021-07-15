@@ -4,7 +4,7 @@ namespace Ion
 {
 	namespace Core
 	{
-		struct Transform final
+		struct Transform
 		{
 			DirectX::XMFLOAT4 mPosition;
 			DirectX::XMFLOAT4 mScale;

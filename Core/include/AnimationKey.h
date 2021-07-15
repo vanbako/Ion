@@ -15,6 +15,8 @@ namespace Ion
 			AnimationKey& operator=(AnimationKey&& other) noexcept = default;
 
 			void SetTick(float tick);
+
+			const float GetTick() const;
 			std::vector<DirectX::XMFLOAT4X4>& GetBoneTransforms();
 		private:
 			float mTick;

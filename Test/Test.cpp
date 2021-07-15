@@ -5,6 +5,7 @@
 #include "ModelVC.h"
 #include "TriangleVC.h"
 #include "InstancedModelVC.h"
+#include "AnimatedModelVC.h"
 #include "Object.h"
 #include <iostream>
 
@@ -13,7 +14,8 @@ using namespace Ion::Core;
 Object* AddCamera(Scene* pScene, Canvas* pCanvas);
 Object* AddCube(Scene* pScene, Canvas* pCanvas1, Canvas* pCanvas2);
 Object* AddFlower(Scene* pScene, Canvas* pCanvas);
-Object* AddWizard(Scene* pScene, Canvas* pCanvas, Canvas* pCanvas2);
+Object* AddWizard(Scene* pScene, Canvas* pCanvas1, Canvas* pCanvas2);
+Object* AddRoyalHighness(Scene* pScene, Canvas* pCanvas);
 
 int main()
 {
@@ -38,6 +40,7 @@ int main()
 		Object* pCube{ AddCube(pScene, pCanvas1, pCanvas2) };
 		Object* pFlower{ AddFlower(pScene, pCanvas1) };
 		Object* pWizard{ AddWizard(pScene, pCanvas1, pCanvas2) };
+		Object* pRoyalHighness{ AddRoyalHighness(pScene, pCanvas1) };
 		Object* pCamera1{ AddCamera(pScene, pCanvas1) };
 		Object* pCamera2{ AddCamera(pScene, pCanvas2) };
 
@@ -50,6 +53,11 @@ int main()
 		pCamera2->SetIsActive(true, true);
 		pFlower->SetIsActive(true, true);
 		pWizard->SetIsActive(true, true);
+		pRoyalHighness->SetIsActive(true, true);
+
+		AnimatedModelVC* pRoyalHighnessModelVC{ pRoyalHighness->GetViewC<AnimatedModelVC>() };
+		pRoyalHighnessModelVC->SetAnimation(0);
+		pRoyalHighnessModelVC->SetIsAnimating(true);
 
 		pScene->SetIsActive(true);
 #ifdef _DEBUG
@@ -72,7 +80,7 @@ Object* AddCamera(Scene* pScene, Canvas* pCanvas)
 {
 	Object* pCamera{ Factory::AddCamera(pScene) };
 	TransformMC* pCameraTransform{ pCamera->GetModelC<TransformMC>() };
-	pCameraTransform->SetPosition(DirectX::XMFLOAT4{ 0.f, 20.f, -100.f, 0.f });
+	pCameraTransform->SetPosition(DirectX::XMFLOAT4{ 0.f, 20.f, -150.f, 0.f });
 	pCameraTransform->SetRotation(DirectX::XMFLOAT3{ 0.f, 0.f, 0.f }, AngleUnit::Degree);
 	pCanvas->SetCamera(pCamera);
 	return pCamera;
@@ -105,8 +113,8 @@ Object* AddFlower(Scene* pScene, Canvas* pCanvas)
 	TransformMC* pTransformMC{ pFlower->AddModelC<TransformMC>(false) };
 	(pTransformMC);
 	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ -15.f, 5.f, 0.f, 0.f });
-	InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<InstancedModelVC>("Flower", "PosNormTanTex_iA", false, Winding::CCW) };
-	pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower_Blue.png");
+	InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<InstancedModelVC>("Flower/Flower", "PosNormTanTex_iA", false, Winding::CCW) };
+	pFlowerModelVC->AddTexture(TextureType::Albedo, "Flower/Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
 	std::vector<TransformMC> transforms{};
 	for (size_t i{ 0 }; i < 10000; ++i)
@@ -125,9 +133,9 @@ Object* AddWizard(Scene* pScene, Canvas* pCanvas1, Canvas* pCanvas2)
 	(pTransformMC);
 	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
 	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	InstancedModelVC* pWizardModelVC{ pWizard->AddViewC<InstancedModelVC>("Wizard", "PosNormTanTex_iAN", false, Winding::CCW) };
-	pWizardModelVC->AddTexture(TextureType::Albedo, "Wizard_Blue_A.png");
-	pWizardModelVC->AddTexture(TextureType::Normal, "Wizard_Blue_N.png");
+	InstancedModelVC* pWizardModelVC{ pWizard->AddViewC<InstancedModelVC>("Wizard/Wizard", "PosNormTanTex_iAN", false, Winding::CCW, CoordSystem::RightHanded) };
+	pWizardModelVC->AddTexture(TextureType::Albedo, "Wizard/Wizard_Blue_A.png");
+	pWizardModelVC->AddTexture(TextureType::Normal, "Wizard/Wizard_Blue_N.png");
 	pWizardModelVC->AddCanvas(pCanvas1);
 	pWizardModelVC->AddCanvas(pCanvas2);
 	//TransformMC transformMC{ true, pWizard };
@@ -142,8 +150,23 @@ Object* AddWizard(Scene* pScene, Canvas* pCanvas1, Canvas* pCanvas2)
 	{
 		transforms.emplace_back(true, pWizard);
 		transforms.back().SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 5), 0.f, 0.f, 0.f });
-		transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+		//transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 	}
 	pWizardModelVC->AddInstances(transforms);
 	return pWizard;
+}
+
+Object* AddRoyalHighness(Scene* pScene, Canvas* pCanvas)
+{
+	Object* pRoyalHighness{ pScene->AddObject(false) };
+	TransformMC* pTransformMC{ pRoyalHighness->AddModelC<TransformMC>(false) };
+	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, -25.f, 0.f });
+	//pTransformMC->SetScale(DirectX::XMFLOAT4{ 0.5f, 0.5f, 0.5f, 0.f });
+	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+	AnimatedModelVC* pRoyalHighnessModelVC{ pRoyalHighness->AddViewC<AnimatedModelVC>("RoyalHighness/RoyalHighness1", "PosNormTanTex_aAN", false, Winding::CCW, CoordSystem::RightHanded) };
+	//ModelVC* pRoyalHighnessModelVC{ pRoyalHighness->AddViewC<ModelVC>("RoyalHighness/RoyalHighness1", "PosNormTanTex_AN", false, Winding::CCW, CoordSystem::RightHanded) };
+	pRoyalHighnessModelVC->AddTexture(TextureType::Albedo, "RoyalHighness/RoyalHighness_Red_A.png");
+	pRoyalHighnessModelVC->AddTexture(TextureType::Normal, "RoyalHighness/RoyalHighness_Red_N.png");
+	pRoyalHighnessModelVC->AddCanvas(pCanvas);
+	return pRoyalHighness;
 }

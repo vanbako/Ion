@@ -4,7 +4,7 @@ namespace Ion
 {
 	namespace Core
 	{
-		struct CanvasConstantBuffer final
+		struct CanvasConstantBuffer
 		{
 			DirectX::XMFLOAT4X4 mViewProj;
 			DirectX::XMFLOAT3 mLightDirection;

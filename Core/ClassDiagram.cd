@@ -1,197 +1,123 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Ion::Core::Application">
-    <Position X="20.75" Y="1.75" Width="2.25" />
+    <Position X="9.75" Y="4.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>IABAIAAAABAAAQAEAABAQAIAQAASABgAAQAgAMgAAAQ=</HashCode>
-      <FileName>Application.h</FileName>
+      <HashCode>cwJQIEAAEJACBQBEBABAUAIAQAgaAJjRAQQgoOIAoAY=</HashCode>
+      <FileName>include\Application.h</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mKeyboardMutex" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Window">
-    <Position X="17.75" Y="5.5" Width="1.5" />
+    <Position X="9.75" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpApplication" Type="Ion::Core::Application" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="19.25" Y="5.969" />
-        <Point X="21.812" Y="5.969" />
-        <Point X="21.812" Y="4.651" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AIAAAAAAAQAAAAAAAEAAQAAAQQAAAAAAAAQgCAAAAAA=</HashCode>
-      <FileName>Window.h</FileName>
+      <FileName>include\Window.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpApplication" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Ion::Core::Canvas">
-    <Position X="20.5" Y="6.5" Width="2.25" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AABAAIwEQQACwwCAAKYDoAARgEEAAABIAJAyCggAAAA=</HashCode>
-      <FileName>Canvas.h</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="mpWindow" />
-      <Field Name="mRectangle" />
-      <Field Name="mpCamera" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Ion::Core::Component">
-    <Position X="2.25" Y="1" Width="1.5" />
+    <Position X="13.5" Y="13" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpObject" Type="Ion::Core::Object" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="3.75" Y="2.062" />
-        <Point X="6.948" Y="2.062" />
-        <Point X="6.948" Y="9.062" />
-        <Point X="9.75" Y="9.062" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAQgIAAAAAAAIQAAAwAAAAAAAAAAABAAAABgAAAAAAQ=</HashCode>
-      <FileName>Component.h</FileName>
+      <FileName>include\Component.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpObject" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Scene">
-    <Position X="14.25" Y="4" Width="2.5" />
+    <Position X="7" Y="7.25" Width="2" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpApplication" Type="Ion::Core::Application" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="16.75" Y="4.5" />
-        <Point X="20.75" Y="4.5" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="mObjectsMutex" Type="std::shared_timed_mutex" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="16.75" Y="4.219" />
-        <Point X="17.125" Y="4.219" />
-        <Point X="17.125" Y="3.375" />
-        <Point X="17.75" Y="3.375" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="mpSceneThreadModelC" Type="Ion::Core::SceneThread&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="14.25" Y="5.812" />
-        <Point X="12.022" Y="5.812" />
-        <Point X="12.022" Y="5.812" />
-        <Point X="11.75" Y="5.812" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>KQAAYAwAAQAAAQAAgCEAAAAQRAAABhAwABQgAAAgAAg=</HashCode>
-      <FileName>Scene.h</FileName>
+      <HashCode>KQAAYAQAAQACAQAwwCEgIAgAZAAABhAgIBQgAAIgAAg=</HashCode>
+      <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpApplication" />
       <Field Name="mObjectsMutex" />
-      <Field Name="mpSceneThreadModelC" />
-      <Field Name="mpSceneThreadControllerC" />
-      <Field Name="mpSceneThreadViewC" />
+      <Field Name="mpModelST" />
+      <Field Name="mpControllerST" />
+      <Field Name="mpViewST" />
+      <Field Name="mpPhysicsST" />
+      <Field Name="mMutex" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Object">
-    <Position X="9.75" Y="8.25" Width="1.75" />
+    <Position X="11.25" Y="11.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpScene" Type="Ion::Core::Scene" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.5" Y="9.072" />
-        <Point X="16" Y="9.072" />
-        <Point X="16" Y="6.324" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ECgAOEAAQQCAAQAgAQAAAAAAQhgAARBAKAAgAAIQAAg=</HashCode>
-      <FileName>Object.h</FileName>
+      <HashCode>ECgAOEAAQQKAAQAgAAAAAAAAQhgAAxJAKAAgAAYQAAg=</HashCode>
+      <FileName>include\Object.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpScene" />
-      <Field Name="mpObject" />
       <Field Name="mpTransformMC" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::ModelC">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+    <Position X="6.75" Y="15.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAQAIAAAAAAAAIAAAAAAAAAAAAAAAAAAAAggAAAAAAA=</HashCode>
-      <FileName>ModelC.h</FileName>
+      <HashCode>AAQAIAAAEAAAAIAAAAAAAAAAAAAAAAAAAAggAAAACAA=</HashCode>
+      <FileName>include\ModelC.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ControllerC">
-    <Position X="2.5" Y="3.5" Width="1.5" />
+    <Position X="11.25" Y="15.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAQAgAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>ControllerC.h</FileName>
+      <FileName>include\ControllerC.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ViewC">
-    <Position X="4.5" Y="3.5" Width="1.5" />
+    <Position X="18" Y="15.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAgAAAAAAA=</HashCode>
-      <FileName>ViewC.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Ion::Core::Material">
-    <Position X="9.75" Y="0.75" Width="1.75" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AEAAEAAAIAAEAQAAAAACAAAAQgCAAAIAABggAAEgAAQ=</HashCode>
-      <FileName>Material.h</FileName>
+      <HashCode>DIAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <FileName>include\ViewC.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mpApplication" />
+      <Field Name="mpMaterial3D" />
+      <Field Name="mpMaterial2D" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::TransformMC">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="9" Y="17.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AQQAAAAAFQAAAYAAAgAAIQAAAEEACgkgAAAhAsAACgA=</HashCode>
-      <FileName>TransformMC.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Ion::Core::Rectangle&lt;T&gt;">
-    <Position X="24" Y="7" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>ggAAAAAACAAABAAAAAAIgABAAAAgAAAAAAAgAEAAAAI=</HashCode>
-      <FileName>Rectangle.h</FileName>
+      <HashCode>AQQAAAAQBQAAAYgADgAAIQAAAEEACgkgAAAhAsACAgA=</HashCode>
+      <FileName>include\TransformMC.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="std::thread">
-    <Position X="7.25" Y="4.75" Width="1.5" />
+    <Position X="4" Y="4" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
@@ -205,47 +131,39 @@
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAAACgAAgAEAAAAIAACQAAQIgAAAAQAgAQAAQAA=</HashCode>
-      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\thread</FileName>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\thread</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="std::shared_timed_mutex">
-    <Position X="17.75" Y="2.75" Width="1.75" />
+    <Position X="6.75" Y="5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAQEIIBAEAACCBAEAEAAAAAgACAAAgAAAIIgQAAAAAE=</HashCode>
-      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\shared_mutex</FileName>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\shared_mutex</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="std::timed_mutex">
-    <Position X="7.25" Y="6.5" Width="1.5" />
+    <Position X="4.25" Y="13.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>ACAAAIAAEAAAiAAEAAAAAAAIACAAAAAQAABgAAAAAAA=</HashCode>
-      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include\mutex</FileName>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\mutex</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ion::Core::SceneThread&lt;T&gt;">
-    <Position X="10" Y="5" Width="1.75" />
+  <Class Name="Ion::Core::SceneThread">
+    <Position X="4.25" Y="9" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpScene" Type="Ion::Core::Scene" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.75" Y="6.632" />
-        <Point X="11.995" Y="6.668" />
-        <Point X="14.75" Y="6.668" />
-        <Point X="14.75" Y="6.324" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAAAEAICABAEAAAEAAAAAAAAFAAAABBCAAiAAAQAAA=</HashCode>
-      <FileName>SceneThread.h</FileName>
+      <HashCode>AAAAAEAICABAEAAAEAAAAAAAAFAAAABBCAAiAAAQAAA=</HashCode>
+      <FileName>include\SceneThread.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpScene" />
@@ -254,40 +172,235 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::MeshVC">
-    <Position X="4" Y="5.5" Width="2.25" />
+    <Position X="21.75" Y="17.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="mpMaterial" Type="Ion::Core::Material" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.25" Y="6.25" />
-        <Point X="6.625" Y="6.25" />
-        <Point X="6.625" Y="3.044" />
-        <Point X="6.865" Y="3.044" Type="JumpStart" />
-        <Point X="7.031" Y="3.044" Type="JumpEnd" />
-        <Point X="9.75" Y="3.044" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>DAQQAAABIAAAQQQAQAAgAAAAAAAAAAAgABYgoAAAAAg=</HashCode>
-      <FileName>MeshVC.h</FileName>
+      <HashCode>BAQQAAABIAAAQQQAQAAgAAAAAAAAAAAgABIgIAAAAAg=</HashCode>
+      <FileName>include\MeshVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Command">
+    <Position X="3.75" Y="15.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAABAAAAAAIIAAAAAAgAAAAQAA=</HashCode>
+      <FileName>include\Command.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mpMaterial" />
+      <Field Name="mpReceiver" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Ion::Core::CameraMC">
-    <Position X="2.25" Y="5.5" Width="1.5" />
+  <Class Name="Ion::Core::ReceiverMC">
+    <Position X="5.75" Y="17.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAQIAAAiQQEAAYAAAAAAAAAAAAAAAAAAAAAgIAAAECA=</HashCode>
-      <FileName>CameraMC.h</FileName>
+      <HashCode>AAUAIIAAAAgAAIAAAAAAAAAAAAEAAAAIwAAgAAAAJAg=</HashCode>
+      <FileName>include\ReceiverMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::CharacterRMC">
+    <Position X="4.5" Y="19.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACQAIAAAAAgAgcAIQAAAQAAAAAEAACQMwAggACAAJAA=</HashCode>
+      <FileName>include\CharacterRMC.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpTransformMC" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::CameraRMC">
+    <Position X="6.75" Y="19.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAUIIAAgQQkAgcAIQCAAAAAAAAEAgCQIwAggACAANCA=</HashCode>
+      <FileName>include\CameraRMC.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpCanvas" />
+      <Field Name="mpTransform" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::InputCC">
+    <Position X="11.25" Y="17" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\InputCC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ControllerST">
+    <Position X="1" Y="11.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAIgAAAEAAAAAAAAAAEAABAAAAgAAgAAAAAAA=</HashCode>
+      <FileName>include\ControllerST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelST">
+    <Position X="7.75" Y="11.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAACgAAAAAAA=</HashCode>
+      <FileName>include\ModelST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::PhysicsST">
+    <Position X="3.25" Y="11.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAABBAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\PhysicsST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewST">
+    <Position X="5.5" Y="11.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAACAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\ViewST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Material3D">
+    <Position X="13.75" Y="7.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAIAEABQABAJACQAAASACAAAIAIBggYBEiAA0=</HashCode>
+      <FileName>include\Material3D.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Model">
+    <Position X="17.25" Y="6" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AUABAAIAAKCAAwABIAECQAKATCASABWBAQgwABBgABQ=</HashCode>
+      <FileName>include\Model.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Texture">
+    <Position X="13.75" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACCAAAgAAAAAAAAAAAQAAAAAAAAAJgAAAAAAQ=</HashCode>
+      <FileName>include\Texture.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::InstancedModelVC">
+    <Position X="13.5" Y="22.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAgABAQQEAAAAAAAADAAAgBAAABAgAAAAAAA=</HashCode>
+      <FileName>include\InstancedModelVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelVC">
+    <Position X="15" Y="17.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BQQABgAAIgAAQQAAQAAAAAAAAAABEAAMABYgICAIAAg=</HashCode>
+      <FileName>include\ModelVC.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Material2D">
+    <Position X="15.75" Y="12.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAABQABAAAAAAAAQAAAAAAAABggEAAAAAQ=</HashCode>
+      <FileName>include\Material2D.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::TriangleVC">
+    <Position X="19.25" Y="17.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAEAQAAAAgAAAACAAAAAAAAABAgAAAAAAA=</HashCode>
+      <FileName>include\TriangleVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Canvas">
+    <Position X="0.5" Y="3.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAMwEQQACwwGEAKdDoAABpEEAAACIANAyCggAAAA=</HashCode>
+      <FileName>include\Canvas.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpWindow" />
+      <Field Name="mpCamera" />
+      <Field Name="mThread" />
+      <Field Name="mpMutex" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="std::mutex">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAA=</HashCode>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\mutex</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::AnimatedModelVC">
+    <Position X="16.25" Y="22.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAkAAQQAAAAAAQCAAAAAkARIABggIAIgAAA=</HashCode>
+      <FileName>include\AnimatedModelVC.h</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

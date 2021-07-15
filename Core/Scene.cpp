@@ -23,10 +23,10 @@ Scene::Scene(Application* pApplication)
 	, mIsEnd{ false }
 	, mObjectsMutex{}
 	, mObjects{}
-	, mpModelST{ new ModelST{ this, (std::chrono::microseconds)5000 } }
-	, mpControllerST{ new ControllerST{ this, (std::chrono::microseconds)6000 } }
-	, mpViewST{ new ViewST{ this, (std::chrono::microseconds)15000 } }
-	, mpPhysicsST{ new PhysicsST{ this, (std::chrono::microseconds)5000 } } // 8333 (120/s)
+	, mpModelST{ new ModelST{ this, (std::chrono::microseconds)3000 } }
+	, mpControllerST{ new ControllerST{ this, (std::chrono::microseconds)3000 } }
+	, mpViewST{ new ViewST{ this, (std::chrono::microseconds)6000 } }
+	, mpPhysicsST{ new PhysicsST{ this, (std::chrono::microseconds)3000 } }
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
 	, mMutex{}

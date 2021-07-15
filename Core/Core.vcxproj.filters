@@ -97,6 +97,18 @@
     <Filter Include="Enums">
       <UniqueIdentifier>{fdde2177-c662-4fc4-bdf5-a36ac7f8861f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PosNormTanTex\aAN">
+      <UniqueIdentifier>{d0436065-236e-4a85-89d8-704f5948b407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Buffers">
+      <UniqueIdentifier>{54af50f4-70cd-4d7c-bb1b-d2a5c350d264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Functions">
+      <UniqueIdentifier>{e19e129a-091f-416b-902c-c08240a1d32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Inputs">
+      <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -303,6 +315,18 @@
     <ClInclude Include="include\d3dx12.h">
       <Filter>Helper</Filter>
     </ClInclude>
+    <ClInclude Include="include\CoordSystem.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AnimatedModelVC.h">
+      <Filter>Component\ViewComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Int4.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BonesConstantBuffer.h">
+      <Filter>Structs\Buffers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -452,31 +476,40 @@
     <ClCompile Include="DirectXTK12\WICTextureLoader.cpp">
       <Filter>DirectXTK12</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedModelVC.cpp">
+      <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
       <Filter>Documentation</Filter>
     </None>
+    <None Include="Shaders\BonesBuffer.hlsli">
+      <Filter>Shaders\Buffers</Filter>
+    </None>
     <None Include="Shaders\CanvasConstantBuffer.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\PosNormTanTex_PSInput.hlsli">
-      <Filter>Shaders\PosNormTanTex</Filter>
-    </None>
-    <None Include="Shaders\CalculateAlbedo.hlsli">
-      <Filter>Shaders\PosNormTanTex</Filter>
-    </None>
-    <None Include="Shaders\CalculateNormal.hlsli">
-      <Filter>Shaders\PosNormTanTex</Filter>
-    </None>
-    <None Include="Shaders\ObjectConstantBuffer.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\PosNormTanTex_VSInput.hlsli">
-      <Filter>Shaders\PosNormTanTex</Filter>
+      <Filter>Shaders\Buffers</Filter>
     </None>
     <None Include="Shaders\InstanceBuffer.hlsli">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\Buffers</Filter>
+    </None>
+    <None Include="Shaders\ObjectConstantBuffer.hlsli">
+      <Filter>Shaders\Buffers</Filter>
+    </None>
+    <None Include="Shaders\CalculateAlbedo.hlsli">
+      <Filter>Shaders\Functions</Filter>
+    </None>
+    <None Include="Shaders\CalculateNormal.hlsli">
+      <Filter>Shaders\Functions</Filter>
+    </None>
+    <None Include="Shaders\PosNormTanTex_PSInput.hlsli">
+      <Filter>Shaders\Inputs</Filter>
+    </None>
+    <None Include="Shaders\PosNormTanTex_VSInput.hlsli">
+      <Filter>Shaders\Inputs</Filter>
+    </None>
+    <None Include="Shaders\PosNormTanTex_aVSInput.hlsli">
+      <Filter>Shaders\Inputs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -524,6 +557,15 @@
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iAN_vs.hlsl">
       <Filter>Shaders\PosNormTanTex\iAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex\aAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex\aAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_aAN_rs.hlsl">
+      <Filter>Shaders\PosNormTanTex\aAN</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

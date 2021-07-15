@@ -49,7 +49,7 @@ namespace Ion
 
 			Material3D* AddMaterial3D(const std::string& name);
 			Material2D* AddMaterial2D(const std::string& name);
-			Model* AddModel(const std::string& name, Winding winding);
+			Model* AddModel(const std::string& name, Winding winding, CoordSystem coordSystem);
 			Texture* AddTexture(const std::string& name);
 		private:
 			static const std::chrono::microseconds mRunSleep;

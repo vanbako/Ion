@@ -4,7 +4,7 @@ namespace Ion
 {
 	namespace Core
 	{
-		struct MeshVCConstantBuffer final
+		struct MeshVCConstantBuffer
 		{
 			DirectX::XMFLOAT4X4 mWorld;
 			DirectX::XMFLOAT4X4 mWorldViewProj;

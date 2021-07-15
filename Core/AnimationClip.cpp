@@ -26,6 +26,16 @@ void AnimationClip::SetTicksPerSecond(float ticksPerSecond)
 	mTicksPerSecond = ticksPerSecond;
 }
 
+const float AnimationClip::GetDuration() const
+{
+	return mDuration;
+}
+
+const float AnimationClip::GetTicksPerSecond() const
+{
+	return mTicksPerSecond;
+}
+
 std::vector<AnimationKey>& AnimationClip::GetKeys()
 {
 	return mKeys;

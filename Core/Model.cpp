@@ -6,11 +6,12 @@
 
 using namespace Ion::Core;
 
-Model::Model(Application* pApplication, const std::string& name, Winding winding)
+Model::Model(Application* pApplication, const std::string& name, Winding winding, CoordSystem coordSystem)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mFileName{ name }
 	, mWinding{ winding }
+	, mCoordSystem{ coordSystem }
 	, mName{}
 	, mTexCoordCount{ 0 }
 	, mBoneCount{ 0 }
@@ -72,7 +73,7 @@ const std::vector<DirectX::XMFLOAT4>& Model::GetColors() const
 	return mColors;
 }
 
-const std::vector<DirectX::XMFLOAT4>& Model::GetBlendIndices() const
+const std::vector<Int4>& Model::GetBlendIndices() const
 {
 	return mBlendIndices;
 }
@@ -80,6 +81,11 @@ const std::vector<DirectX::XMFLOAT4>& Model::GetBlendIndices() const
 const std::vector<DirectX::XMFLOAT4>& Model::GetBlendWeights() const
 {
 	return mBlendWeights;
+}
+
+const std::vector<AnimationClip>& Ion::Core::Model::GetAnimationClips() const
+{
+	return mAnimationClips;
 }
 
 size_t Model::GetElementCount()
@@ -119,10 +125,11 @@ const std::vector<Transform>& Model::GetInstances() const
 
 void Model::ReadModel()
 {
+	using namespace DirectX;
 	BinIfstream file{ "../Resources/Model/" + mFileName + ".ovm" };
 	const char majorVersion{ file.Read<char>() };
 	const char minorVersion{ file.Read<char>() };
-	
+
 	size_t
 		indexCount{ 0 },
 		vertexCount{ 0 };
@@ -142,13 +149,28 @@ void Model::ReadModel()
 			break;
 		case MeshType::Positions:
 			mElem[size_t(InputSemantic::Position)] = 1;
-			for (size_t i{ 0 }; i < vertexCount; ++i)
+			switch (mCoordSystem)
 			{
-				DirectX::XMFLOAT3 position{};
-				position.x = file.Read<float>();
-				position.y = file.Read<float>();
-				position.z = file.Read<float>();
-				mPositions.push_back(position);
+			case CoordSystem::LeftHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 position{};
+					position.x = file.Read<float>();
+					position.y = file.Read<float>();
+					position.z = file.Read<float>();
+					mPositions.push_back(position);
+				}
+				break;
+			case CoordSystem::RightHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 position{};
+					position.x = file.Read<float>();
+					position.z = file.Read<float>();
+					position.y = -file.Read<float>();
+					mPositions.push_back(position);
+				}
+				break;
 			}
 			break;
 		case MeshType::Indices:
@@ -179,35 +201,80 @@ void Model::ReadModel()
 		}
 		case MeshType::Normals:
 			mElem[size_t(InputSemantic::Normal)] = 1;
-			for (size_t i{ 0 }; i < vertexCount; ++i)
+			switch (mCoordSystem)
 			{
-				DirectX::XMFLOAT3 normal{};
-				normal.x = file.Read<float>();
-				normal.y = file.Read<float>();
-				normal.z = file.Read<float>();
-				mNormals.push_back(normal);
+			case CoordSystem::LeftHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 normal{};
+					normal.x = file.Read<float>();
+					normal.y = file.Read<float>();
+					normal.z = file.Read<float>();
+					mNormals.push_back(normal);
+				}
+				break;
+			case CoordSystem::RightHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 normal{};
+					normal.x = file.Read<float>();
+					normal.z = file.Read<float>();
+					normal.y = -file.Read<float>();
+					mNormals.push_back(normal);
+				}
+				break;
 			}
 			break;
 		case MeshType::Tangents:
 			mElem[size_t(InputSemantic::Tangent)] = 1;
-			for (size_t i{ 0 }; i < vertexCount; ++i)
+			switch (mCoordSystem)
 			{
-				DirectX::XMFLOAT3 tangent{};
-				tangent.x = file.Read<float>();
-				tangent.y = file.Read<float>();
-				tangent.z = file.Read<float>();
-				mTangents.push_back(tangent);
+			case CoordSystem::LeftHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 tangent{};
+					tangent.x = file.Read<float>();
+					tangent.y = file.Read<float>();
+					tangent.z = file.Read<float>();
+					mTangents.push_back(tangent);
+				}
+				break;
+			case CoordSystem::RightHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 tangent{};
+					tangent.x = file.Read<float>();
+					tangent.z = file.Read<float>();
+					tangent.y = -file.Read<float>();
+					mTangents.push_back(tangent);
+				}
+				break;
 			}
 			break;
 		case MeshType::Binormals:
 			mElem[size_t(InputSemantic::Binormal)] = 1;
-			for (size_t i{ 0 }; i < vertexCount; ++i)
+			switch (mCoordSystem)
 			{
-				DirectX::XMFLOAT3 binormal{};
-				binormal.x = file.Read<float>();
-				binormal.y = file.Read<float>();
-				binormal.z = file.Read<float>();
-				mBinormals.push_back(binormal);
+			case CoordSystem::LeftHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 binormal{};
+					binormal.x = file.Read<float>();
+					binormal.y = file.Read<float>();
+					binormal.z = file.Read<float>();
+					mBinormals.push_back(binormal);
+				}
+				break;
+			case CoordSystem::RightHanded:
+				for (size_t i{ 0 }; i < vertexCount; ++i)
+				{
+					DirectX::XMFLOAT3 binormal{};
+					binormal.x = file.Read<float>();
+					binormal.z = file.Read<float>();
+					binormal.y = -file.Read<float>();
+					mBinormals.push_back(binormal);
+				}
+				break;
 			}
 			break;
 		case MeshType::TexCoords:
@@ -237,11 +304,11 @@ void Model::ReadModel()
 			mElem[size_t(InputSemantic::BlendIndices)] = 1;
 			for (size_t i{ 0 }; i < vertexCount; ++i)
 			{
-				DirectX::XMFLOAT4 index{};
-				index.x = file.Read<float>();
-				index.y = file.Read<float>();
-				index.z = file.Read<float>();
-				index.w = file.Read<float>();
+				Int4 index{};
+				index.mA = int(file.Read<float>());
+				index.mB = int(file.Read<float>());
+				index.mC = int(file.Read<float>());
+				index.mD = int(file.Read<float>());
 				mBlendIndices.push_back(index);
 			}
 			break;
@@ -260,6 +327,12 @@ void Model::ReadModel()
 		case MeshType::AnimationClips:
 		{
 			mHasAnimation = true;
+			DirectX::XMFLOAT4X4 toggleHand{
+				1.f, 0.f, 0.f, 0.f,
+				0.f, 0.f, -1.f, 0.f,
+				0.f, 1.f, 0.f, 0.f,
+				0.f, 0.f, 0.f, 1.f};
+			DirectX::XMMATRIX matrixToggle{ DirectX::XMLoadFloat4x4(&toggleHand) };
 			unsigned short clipCount{ file.Read<unsigned short>() };
 			for (unsigned short i{ 0 }; i < clipCount; ++i)
 			{
@@ -276,8 +349,29 @@ void Model::ReadModel()
 					for (unsigned short k{ 0 }; k < transformCount; ++k)
 					{
 						DirectX::XMFLOAT4X4 transform{};
-						for (int l{ 0 }; l < 16; ++l)
-							transform(l / 4, l % 4) = file.Read<float>();
+						//for (int l{ 0 }; l < 16; ++l)
+						//	transform(l / 4, l % 4) = file.Read<float>();
+						transform(0, 0) = file.Read<float>();
+						transform(0, 1) = file.Read<float>();
+						transform(0, 2) = file.Read<float>();
+						transform(0, 3) = file.Read<float>();
+						transform(1, 0) = file.Read<float>();
+						transform(1, 1) = file.Read<float>();
+						transform(1, 2) = file.Read<float>();
+						transform(1, 3) = file.Read<float>();
+						transform(2, 0) = file.Read<float>();
+						transform(2, 1) = file.Read<float>();
+						transform(2, 2) = file.Read<float>();
+						transform(2, 3) = file.Read<float>();
+						transform(3, 0) = file.Read<float>();
+						transform(3, 1) = file.Read<float>();
+						transform(3, 2) = file.Read<float>();
+						transform(3, 3) = file.Read<float>();
+						if (mCoordSystem == CoordSystem::RightHanded)
+						{
+							DirectX::XMMATRIX matrixTransform{ DirectX::XMLoadFloat4x4(&transform) };
+							DirectX::XMStoreFloat4x4(&transform, matrixToggle * matrixTransform);
+						}
 						key.GetBoneTransforms().push_back(transform);
 					}
 					clip.GetKeys().emplace_back(key);
