@@ -7,6 +7,7 @@
 #include "InstancedModelVC.h"
 #include "AnimatedModelVC.h"
 #include "Object.h"
+#include "FileLogger.h"
 #include <iostream>
 
 using namespace Ion::Core;
@@ -22,10 +23,14 @@ int main()
 	{
 		RECT rectangle{ 0, 0, 1280, 720 };
 		Application application{};
+
+		FileLogger fileLogger{ "Test.log" };
+		ServiceLocator& serviceLocator{ application.GetServiceLocator() };
+		serviceLocator.RegisterLoggerService(&fileLogger);
+
 		Scene* pScene{ application.AddScene() };
 
 		application.Initialize();
-
 		// Window 2
 		Window* pWindow2{ application.AddWindow(L"Render Window 2", rectangle) };
 		Canvas* pCanvas2{ pWindow2->AddCanvas(rectangle) };

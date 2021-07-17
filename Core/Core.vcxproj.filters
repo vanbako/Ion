@@ -109,6 +109,15 @@
     <Filter Include="Shaders\Inputs">
       <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServiceLocator">
+      <UniqueIdentifier>{176e75a0-3fec-41ea-be99-1ebe5ffadf6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServiceLocator\Audio">
+      <UniqueIdentifier>{833da238-a6e3-4915-9b23-84771b458643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServiceLocator\Logger">
+      <UniqueIdentifier>{7ad3b09f-4809-4c24-a05d-be0b7c255347}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -327,6 +336,27 @@
     <ClInclude Include="include\BonesConstantBuffer.h">
       <Filter>Structs\Buffers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Audio.h">
+      <Filter>ServiceLocator\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileLogger.h">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Logger.h">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NullAudio.h">
+      <Filter>ServiceLocator\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NullLogger.h">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ServiceLocator.h">
+      <Filter>ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MsgType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -478,6 +508,21 @@
     </ClCompile>
     <ClCompile Include="AnimatedModelVC.cpp">
       <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLogger.cpp">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="NullAudio.cpp">
+      <Filter>ServiceLocator\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="NullLogger.cpp">
+      <Filter>ServiceLocator\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>ServiceLocator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

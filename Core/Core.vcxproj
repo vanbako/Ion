@@ -106,6 +106,7 @@
     <ClInclude Include="include\AnimationClip.h" />
     <ClInclude Include="include\AnimationKey.h" />
     <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Audio.h" />
     <ClInclude Include="include\BinIfstream.h" />
     <ClInclude Include="include\BonesConstantBuffer.h" />
     <ClInclude Include="include\CameraRMC.h" />
@@ -119,11 +120,13 @@
     <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\FileLogger.h" />
     <ClInclude Include="include\InputCC.h" />
     <ClInclude Include="include\InputSemantic.h" />
     <ClInclude Include="include\InstanceBuffer.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
     <ClInclude Include="include\Int4.h" />
+    <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material2D.h" />
     <ClInclude Include="include\Material3D.h" />
     <ClInclude Include="include\MeshType.h" />
@@ -139,6 +142,9 @@
     <ClInclude Include="include\MoveLeftCmd.h" />
     <ClInclude Include="include\MoveRightCmd.h" />
     <ClInclude Include="include\MoveUpCmd.h" />
+    <ClInclude Include="include\MsgType.h" />
+    <ClInclude Include="include\NullAudio.h" />
+    <ClInclude Include="include\NullLogger.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\PhysicsST.h" />
     <ClInclude Include="include\PxIonAllocatorCallback.h" />
@@ -150,6 +156,7 @@
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneThread.h" />
     <ClInclude Include="include\SemanticInfo.h" />
+    <ClInclude Include="include\ServiceLocator.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\ThreadAction.h" />
@@ -183,8 +190,10 @@
     <ClCompile Include="DirectXTK12\LinearAllocator.cpp" />
     <ClCompile Include="DirectXTK12\ResourceUploadBatch.cpp" />
     <ClCompile Include="DirectXTK12\WICTextureLoader.cpp" />
+    <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Material2D.cpp" />
     <ClCompile Include="Material3D.cpp" />
     <ClCompile Include="MeshVC.cpp" />
@@ -198,6 +207,8 @@
     <ClCompile Include="MoveLeftCmd.cpp" />
     <ClCompile Include="MoveRightCmd.cpp" />
     <ClCompile Include="MoveUpCmd.cpp" />
+    <ClCompile Include="NullAudio.cpp" />
+    <ClCompile Include="NullLogger.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -212,6 +223,7 @@
     <ClCompile Include="RotateRightCmd.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
+    <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />

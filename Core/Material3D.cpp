@@ -61,27 +61,27 @@ Material3D::Material3D(Application* pApplication, const std::string& name)
 	{
 		std::string str{ "../x64/" + dir + "/" + mName + "_rs.cso" };
 		std::wstring wstr(str.begin(), str.end());
-		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mRS));
-		ThrowIfFailed(pDevice->CreateRootSignature(0, mRS->GetBufferPointer(), mRS->GetBufferSize(), IID_PPV_ARGS(&mpRootSignature)));
+		mpApplication->ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mRS));
+		mpApplication->ThrowIfFailed(pDevice->CreateRootSignature(0, mRS->GetBufferPointer(), mRS->GetBufferSize(), IID_PPV_ARGS(&mpRootSignature)));
 	}
 
 	// Shaders
 	{
 		std::string str{ "../x64/" + dir + "/" + mName + "_vs.cso" };
 		std::wstring wstr(str.begin(), str.end());
-		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mVS));
+		mpApplication->ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mVS));
 	}
 	{
 		std::string str{ "../x64/" + dir + "/" + mName + "_ps.cso" };
 		std::wstring wstr(str.begin(), str.end());
-		ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mPS));
+		mpApplication->ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mPS));
 	}
 
 	ID3D12ShaderReflection* pVSReflector{ nullptr };
-	ThrowIfFailed(D3DReflect(mVS->GetBufferPointer(), mVS->GetBufferSize(), IID_PPV_ARGS(&pVSReflector)));
+	mpApplication->ThrowIfFailed(D3DReflect(mVS->GetBufferPointer(), mVS->GetBufferSize(), IID_PPV_ARGS(&pVSReflector)));
 	// Build texture types set supported by shader
 	ID3D12ShaderReflection* pPSReflector{ nullptr };
-	ThrowIfFailed(D3DReflect(mPS->GetBufferPointer(), mPS->GetBufferSize(), IID_PPV_ARGS(&pPSReflector)));
+	mpApplication->ThrowIfFailed(D3DReflect(mPS->GetBufferPointer(), mPS->GetBufferSize(), IID_PPV_ARGS(&pPSReflector)));
 	D3D12_SHADER_INPUT_BIND_DESC shaderBindDesc{};
 	for (auto& pair : mTextureTypeStrings)
 		if (pPSReflector->GetResourceBindingDescByName(pair.first.c_str(), &shaderBindDesc) == S_OK)
@@ -148,7 +148,7 @@ void Material3D::Initialize()
 		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 		psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 		psoDesc.SampleDesc.Count = 1;
-		ThrowIfFailed(pDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mpPipelineState)));
+		mpApplication->ThrowIfFailed(pDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mpPipelineState)));
 	}
 	mIsInitialized = true;
 }

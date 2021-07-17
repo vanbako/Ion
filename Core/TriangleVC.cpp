@@ -20,13 +20,13 @@ void TriangleVC::Initialize()
 	auto pD2d1Factory{ pApplication->GetD2d1Factory() };
 
 	Microsoft::WRL::ComPtr<ID2D1GeometrySink> pSink{};
-	ThrowIfFailed(pD2d1Factory->CreatePathGeometry(&mpPathGeometry));
-	ThrowIfFailed(mpPathGeometry->Open(&pSink));
+	mpObject->GetScene()->GetApplication()->ThrowIfFailed(pD2d1Factory->CreatePathGeometry(&mpPathGeometry));
+	mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpPathGeometry->Open(&pSink));
 	pSink->BeginFigure(D2D1_POINT_2F{ 10.f, 0.f }, D2D1_FIGURE_BEGIN_HOLLOW);
 	pSink->AddLine(D2D1_POINT_2F{ 0.f, 16.f });
 	pSink->AddLine(D2D1_POINT_2F{ 20.f, 16.f });
 	pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-	ThrowIfFailed(pSink->Close());
+	mpObject->GetScene()->GetApplication()->ThrowIfFailed(pSink->Close());
 	mIsInitialized = true;
 }
 

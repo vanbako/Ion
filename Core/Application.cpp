@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Application.h"
+#include "Logger.h"
 
 using namespace Ion::Core;
 
@@ -48,6 +49,7 @@ Application::Application()
 	, mPxToleranceScale{}
 	, mIonAllocatorCallback{}
 	, mIonErrorCallback{}
+	, mServiceLocator{}
 {
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
@@ -79,6 +81,15 @@ Application::~Application()
 	physx::PxFoundation& foundation{ mpPhysics->getFoundation() };
 	mpPhysics->release();
 	foundation.release();
+}
+
+void Application::ThrowIfFailed(HRESULT hr)
+{
+	if (FAILED(hr))
+	{
+		mServiceLocator.GetLogger()->Message(this, MsgType::Info, "DirectX Exception" + std::to_string(hr));
+		throw HrException(hr);
+	}
 }
 
 bool Application::Initialize()
@@ -155,6 +166,9 @@ bool Application::Initialize()
 		}
 		mIsInitialized = true;
 	}
+#ifdef _DEBUG
+	mServiceLocator.GetLogger()->Message(nullptr, MsgType::Info, "Application Initialized");
+#endif
 	return true;
 }
 
@@ -282,6 +296,11 @@ physx::PxPhysics* Application::GetPhysics()
 const physx::PxTolerancesScale& Application::GetToleranceScale()
 {
 	return mPxToleranceScale;
+}
+
+ServiceLocator& Ion::Core::Application::GetServiceLocator()
+{
+	return mServiceLocator;
 }
 
 //const Microsoft::WRL::ComPtr<IDWriteFactory>& Application::GetDWriteFactory()

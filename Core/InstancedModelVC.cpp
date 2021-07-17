@@ -67,7 +67,7 @@ void InstancedModelVC::Initialize()
 	{
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(sizeof(InstanceBuffer) * mMaxInstances) };
-		ThrowIfFailed(pDevice->CreateCommittedResource(
+		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
 			&resDesc,
@@ -76,7 +76,7 @@ void InstancedModelVC::Initialize()
 			IID_PPV_ARGS(&mpInstanceBuffer)));
 
 		CD3DX12_RANGE readRange(0, 0);
-		ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
+		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
 		memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(InstanceBuffer) * mInstanceBufferData.size());
 	}
 	mIsInitialized = true;
