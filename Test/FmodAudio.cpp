@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "RegularAudio.h"
+#include "include/FmodAudio.h"
 
-using namespace Ion::Core;
-
-RegularAudio::RegularAudio()
+FmodAudio::FmodAudio()
 	: mpFmodSystem{ nullptr }
 	, mpChannelGroup{ nullptr }
 	, mpSounds{}
@@ -40,25 +38,25 @@ RegularAudio::RegularAudio()
 	}
 }
 
-RegularAudio::~RegularAudio()
+FmodAudio::~FmodAudio()
 {
 	if (mpFmodSystem != nullptr)
 		mpFmodSystem->release();
 }
 
-int RegularAudio::AddSound(const std::string& filename, bool loop)
+int FmodAudio::AddSound(const std::string& filename, bool loop)
 {
 	FMOD_MODE mode{ FMOD_DEFAULT };
 	if (loop)
 		mode |= FMOD_LOOP_NORMAL;
 	FMOD::Sound* pSound{ nullptr };
 	int soundId{ int(mpSounds.size()) };
-	if (mpFmodSystem->createSound(filename.c_str(), mode, nullptr, &pSound) == FMOD_OK)
+	if (mpFmodSystem->createSound(("../Resources/Sound/" + filename).c_str(), mode, nullptr, &pSound) == FMOD_OK)
 		mpSounds.push_back(pSound);
 	return soundId;
 }
 
-void RegularAudio::PlaySound(int soundId)
+void FmodAudio::PlaySound(int soundId)
 {
 	if (mpFmodSystem != nullptr && soundId < int(mpSounds.size()))
 	{
@@ -67,7 +65,7 @@ void RegularAudio::PlaySound(int soundId)
 	}
 }
 
-void RegularAudio::StopSound(int soundId)
+void FmodAudio::StopSound(int soundId)
 {
 	if (mpFmodSystem != nullptr && soundId < int(mpSounds.size()))
 		mpChannelGroup->stop();

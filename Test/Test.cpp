@@ -8,6 +8,7 @@
 #include "AnimatedModelVC.h"
 #include "Object.h"
 #include "FileLogger.h"
+#include "include/FmodAudio.h"
 #include <iostream>
 
 using namespace Ion::Core;
@@ -24,9 +25,12 @@ int main()
 		RECT rectangle{ 0, 0, 1280, 720 };
 		Application application{};
 
-		FileLogger fileLogger{ "Test.log" };
+		// Services
 		ServiceLocator& serviceLocator{ application.GetServiceLocator() };
+		FileLogger fileLogger{ "Test.log" };
 		serviceLocator.RegisterLoggerService(&fileLogger);
+		FmodAudio fmodAudio{};
+		serviceLocator.RegisterAudioService(&fmodAudio);
 
 		Scene* pScene{ application.AddScene() };
 
@@ -68,7 +72,13 @@ int main()
 #ifdef _DEBUG
 		std::cout << "App is running" << std::endl;
 #endif
+		int
+			startSound{ serviceLocator.GetAudio()->AddSound("bbc_world-war-_07017169.mp3", false) },
+			stopSound{ serviceLocator.GetAudio()->AddSound("bbc_peugeot-20_07055235.mp3", false) };
+		serviceLocator.GetAudio()->PlaySound(startSound);
 		application.Run();
+		serviceLocator.GetAudio()->PlaySound(stopSound);
+		std::this_thread::sleep_for(std::chrono::seconds{ 4 });
 
 		pScene->SetIsActive(false);
 #ifdef _DEBUG

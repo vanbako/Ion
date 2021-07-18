@@ -110,7 +110,7 @@ const std::vector<Transform>& Model::ReadInstances()
 {
 	if (mInstances.empty())
 	{
-		BinIfstream file{ "../Resources/Instances/" + mFileName + ".ins" };
+		BinIfstream file{ "../Resources/Instance/" + mFileName + ".ins" };
 		size_t cnt{ file.Read<size_t>() };
 		for (size_t i{ 0 }; i < cnt; ++i)
 			mInstances.emplace_back(file.Read<Transform>());

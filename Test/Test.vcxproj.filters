@@ -25,6 +25,12 @@
     <Filter Include="Resources\Texture">
       <UniqueIdentifier>{e67b8da2-97e4-4578-8aa0-7c10c46aa1c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServiceLocator">
+      <UniqueIdentifier>{73710fda-0961-4e38-81da-02b4022902c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServiceLocator\Audio">
+      <UniqueIdentifier>{e90a1257-90dd-4152-b5ee-30fc333de73c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -33,10 +39,16 @@
     <ClCompile Include="Test.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="FmodAudio.cpp">
+      <Filter>ServiceLocator\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>PrecompiledHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FmodAudio.h">
+      <Filter>ServiceLocator\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
