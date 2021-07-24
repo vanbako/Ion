@@ -1,36 +1,36 @@
 #include "pch.h"
 #include "Component.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Component::Component(bool isActive, Object* pObject)
+Core::Component::Component(bool isActive, Core::Object* pObject)
 	: mIsInitialized{ false }
 	, mIsActive{ isActive }
 	, mpObject{ pObject }
 {
 }
 
-void Component::Initialize()
+void Core::Component::Initialize()
 {
 	mIsInitialized = true;
 }
 
-void Component::SetIsActive(bool isActive)
+void Core::Component::SetIsActive(bool isActive)
 {
 	mIsActive = isActive;
 }
 
-const bool Component::GetIsActive() const
+const bool Core::Component::GetIsActive() const
 {
 	return mIsActive;
 }
 
-void Component::SetObject(Object* pObject)
+void Core::Component::SetObject(Core::Object* pObject)
 {
 	mpObject = pObject;
 }
 
-Object* Component::GetObject()
+Core::Object* Core::Component::GetObject()
 {
 	return mpObject;
 }

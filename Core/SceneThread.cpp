@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "SceneThread.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-SceneThread::SceneThread(Scene* pScene, std::chrono::microseconds updateTime)
+Core::SceneThread::SceneThread(Core::Scene* pScene, std::chrono::microseconds updateTime)
 	: mpScene{ pScene }
 	, mUpdateTime{ updateTime }
 	, mThread{}
@@ -11,35 +11,35 @@ SceneThread::SceneThread(Scene* pScene, std::chrono::microseconds updateTime)
 	, mStatsMutex{}
 	, mStatCurrent{ 0 }
 {
-	mStats.reserve(Scene::GetStatCount());
+	mStats.reserve(Core::Scene::GetStatCount());
 	if (mThread.get_id() == std::thread::id{})
 		mThread = std::thread{ &Loop, this };
 }
 
-SceneThread::~SceneThread()
+Core::SceneThread::~SceneThread()
 {
 	if (mThread.joinable())
 		mThread.join();
 }
 
-Scene* SceneThread::GetScene()
+Core::Scene* Core::SceneThread::GetScene()
 {
 	return mpScene;
 }
 
-void SceneThread::setUpdateTime(std::chrono::microseconds updateTime)
+void Core::SceneThread::setUpdateTime(std::chrono::microseconds updateTime)
 {
 	mUpdateTime.store(updateTime);
 }
 
-const std::chrono::microseconds Ion::Core::SceneThread::GetUpdateTime() const
+const std::chrono::microseconds Core::SceneThread::GetUpdateTime() const
 {
 	return mUpdateTime.load();
 }
 
-void SceneThread::Loop(SceneThread* pSceneThread)
+void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 {
-	Scene* pScene{ pSceneThread->GetScene() };
+	Core::Scene* pScene{ pSceneThread->GetScene() };
 	std::chrono::steady_clock::time_point
 		start{ std::chrono::steady_clock::now() },
 		end{};

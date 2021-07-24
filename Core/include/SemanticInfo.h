@@ -7,7 +7,7 @@ namespace Ion
 	{
 		struct SemanticInfo
 		{
-			InputSemantic inputSemantic;
+			Core::InputSemantic inputSemantic;
 			DXGI_FORMAT format;
 			UINT offset;
 			D3D12_INPUT_CLASSIFICATION inputClassification;

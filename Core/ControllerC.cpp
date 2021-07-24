@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ControllerC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ControllerC::ControllerC(bool isActive, Object* pObject)
-	: Component(isActive, pObject)
+Core::ControllerC::ControllerC(bool isActive, Core::Object* pObject)
+	: Core::Component(isActive, pObject)
 {
 }

@@ -2,9 +2,9 @@
 #include "Command.h"
 #include "ReceiverMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Command::Command(ReceiverMC* pReceiver)
+Core::Command::Command(Core::ReceiverMC* pReceiver)
 	: mpReceiver{ pReceiver }
 {
 }

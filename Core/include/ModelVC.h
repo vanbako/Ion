@@ -23,22 +23,22 @@ namespace Ion
 			: public ViewC
 		{
 		public:
-			explicit ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject);
+			explicit ModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
 			virtual ~ModelVC();
 			ModelVC(const ModelVC& other) = default;
 			ModelVC(ModelVC&& other) noexcept = default;
 			ModelVC& operator=(const ModelVC& other) = default;
 			ModelVC& operator=(ModelVC&& other) noexcept = default;
 
-			void AddTexture(TextureType textureType, const std::string& name);
+			void AddTexture(Core::TextureType textureType, const std::string& name);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
-			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
+			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
+			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		protected:
-			Model* mpModel;
-			std::map<TextureType,Texture*> mpTextures;
+			Core::Model* mpModel;
+			std::map<Core::TextureType, Core::Texture*> mpTextures;
 			char* mpVertices;
 			size_t
 				mIndexCount,
@@ -54,10 +54,10 @@ namespace Ion
 
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpObjectCbvHeap;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
-			MeshVCConstantBuffer mObjectConstantBufferData;
+			Core::MeshVCConstantBuffer mObjectConstantBufferData;
 			UINT8* mpObjectCbvDataBegin;
 
-			std::map<TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
+			std::map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 		};
 	}
 }

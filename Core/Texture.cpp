@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Texture.h"
 #include "Application.h"
-#include "DirectXTK12/WICTextureLoader.h"
+#include "WICTextureLoader.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Texture::Texture(Application* pApplication, const std::string& name)
+Core::Texture::Texture(Core::Application* pApplication, const std::string& name)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mpTexture{}
@@ -35,7 +35,7 @@ Texture::Texture(Application* pApplication, const std::string& name)
 	uploadResourcesFinished.wait();
 }
 
-const Microsoft::WRL::ComPtr<ID3D12Resource>& Texture::GetTexture() const
+const Microsoft::WRL::ComPtr<ID3D12Resource>& Core::Texture::GetTexture() const
 {
 	return mpTexture;
 }

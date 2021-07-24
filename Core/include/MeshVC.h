@@ -19,25 +19,25 @@ namespace Ion
 			: public ViewC
 		{
 		public:
-			explicit MeshVC(bool isActive, Object* pObject);
+			explicit MeshVC(bool isActive, Core::Object* pObject);
 			virtual ~MeshVC() = default;
 			MeshVC(const MeshVC& other) = default;
 			MeshVC(MeshVC&& other) noexcept = default;
 			MeshVC& operator=(const MeshVC& other) = default;
 			MeshVC& operator=(MeshVC&& other) noexcept = default;
 
-			void AddTriangle(const VertexPNC& a, const VertexPNC& b, const VertexPNC& c);
-			void AddQuadrilateral(const Quadrilateral<VertexPNC>& quadrilateral);
+			void AddTriangle(const Core::VertexPNC& a, const Core::VertexPNC& b, const Core::VertexPNC& c);
+			void AddQuadrilateral(const Core::Quadrilateral<Core::VertexPNC>& quadrilateral);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
-			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
+			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
+			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
 			static const size_t mMaxVertices{ 900 };
 
 			bool mMeshChanged;
-			VertexPNC mVertices[mMaxVertices];
+			Core::VertexPNC mVertices[mMaxVertices];
 			size_t mVertexCount;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mVertexBuffer;
@@ -46,7 +46,7 @@ namespace Ion
 
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpObjectCbvHeap;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
-			MeshVCConstantBuffer mObjectConstantBufferData;
+			Core::MeshVCConstantBuffer mObjectConstantBufferData;
 			UINT8* mpObjectCbvDataBegin;
 		};
 	}

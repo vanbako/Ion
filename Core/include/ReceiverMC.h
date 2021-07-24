@@ -10,10 +10,10 @@ namespace Ion
 		class Command;
 
 		class ReceiverMC
-			: public ModelC
+			: public Core::ModelC
 		{
 		public:
-			explicit ReceiverMC(bool isActive, Object* pObject);
+			explicit ReceiverMC(bool isActive, Core::Object* pObject);
 			virtual ~ReceiverMC() = default;
 			ReceiverMC(const ReceiverMC& other) = default;
 			ReceiverMC(ReceiverMC&& other) noexcept = default;
@@ -22,7 +22,7 @@ namespace Ion
 
 			virtual void Update(float) override = 0;
 			virtual void Switch() = 0;
-			virtual const std::vector<std::pair<std::string, Command*>>& GetCommands() const = 0;
+			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const = 0;
 			virtual const std::string& GetName() const = 0;
 
 			virtual void MoveForward() = 0;

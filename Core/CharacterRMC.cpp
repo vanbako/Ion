@@ -9,38 +9,38 @@
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-const std::string CharacterRMC::mName{ "Character" };
+const std::string Core::CharacterRMC::mName{ "Character" };
 
-CharacterRMC::CharacterRMC(bool isActive, Object* pObject)
-	: ReceiverMC(isActive, pObject)
+Core::CharacterRMC::CharacterRMC(bool isActive, Core::Object* pObject)
+	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
-		{ "MoveForward", new MoveForwardCmd{ this } },
-		{ "MoveBack", new MoveBackCmd{ this } },
-		{ "MoveLeft", new MoveLeftCmd{ this } },
-		{ "MoveRight", new MoveRightCmd{ this } },
-		{ "RotateLeft", new RotateLeftCmd{ this } },
-		{ "RotateRight", new RotateRightCmd{ this } } }
-	, mpTransformMC{ pObject->GetModelC<TransformMC>() }
+		{ "MoveForward", new Core::MoveForwardCmd{ this } },
+		{ "MoveBack", new Core::MoveBackCmd{ this } },
+		{ "MoveLeft", new Core::MoveLeftCmd{ this } },
+		{ "MoveRight", new Core::MoveRightCmd{ this } },
+		{ "RotateLeft", new Core::RotateLeftCmd{ this } },
+		{ "RotateRight", new Core::RotateRightCmd{ this } } }
+	, mpTransformMC{ pObject->GetModelC<Core::TransformMC>() }
 	, mMoveLeft{ false }
 {
 }
 
-CharacterRMC::~CharacterRMC()
+Core::CharacterRMC::~CharacterRMC()
 {
-	for (std::pair<std::string, Command*>& command : mCommands)
+	for (std::pair<std::string, Core::Command*>& command : mCommands)
 		delete command.second;
 }
 
-void CharacterRMC::Initialize()
+void Core::CharacterRMC::Initialize()
 {
 	if (mpTransformMC == nullptr)
-		mpTransformMC = mpObject->GetModelC<TransformMC>();
+		mpTransformMC = mpObject->GetModelC<Core::TransformMC>();
 	mIsInitialized = true;
 }
 
-void CharacterRMC::Update(float delta)
+void Core::CharacterRMC::Update(float delta)
 {
 	(delta);
 	if (!mIsActive)
@@ -53,7 +53,7 @@ void CharacterRMC::Update(float delta)
 	//	mpTransformMC->
 }
 
-void CharacterRMC::Switch()
+void Core::CharacterRMC::Switch()
 {
 	if (!mIsActive)
 		return;
@@ -71,47 +71,47 @@ void CharacterRMC::Switch()
 	mRotateRight[next] = mRotateRight[mCurrent];
 }
 
-const std::vector<std::pair<std::string, Command*>>& Ion::Core::CharacterRMC::GetCommands() const
+const std::vector<std::pair<std::string, Core::Command*>>& Core::CharacterRMC::GetCommands() const
 {
 	return mCommands;
 }
 
-const std::string& Ion::Core::CharacterRMC::GetName() const
+const std::string& Core::CharacterRMC::GetName() const
 {
 	return mName;
 }
 
-void CharacterRMC::MoveForward()
+void Core::CharacterRMC::MoveForward()
 {
 	mMoveForward[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CharacterRMC::MoveBack()
+void Core::CharacterRMC::MoveBack()
 {
 	mMoveBack[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CharacterRMC::MoveLeft()
+void Core::CharacterRMC::MoveLeft()
 {
 	mMoveLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CharacterRMC::MoveRight()
+void Core::CharacterRMC::MoveRight()
 {
 	mMoveRight[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CharacterRMC::RotateLeft()
+void Core::CharacterRMC::RotateLeft()
 {
 	mRotateLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CharacterRMC::RotateRight()
+void Core::CharacterRMC::RotateRight()
 {
 	mRotateRight[mCurrent] = true;
 	mHasChanged = true;

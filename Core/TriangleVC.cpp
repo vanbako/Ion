@@ -5,18 +5,18 @@
 #include "Object.h"
 #include "Scene.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-TriangleVC::TriangleVC(bool isActive, Object* pObject)
-	: ViewC(isActive, pObject, "", "Brush")
+Core::TriangleVC::TriangleVC(bool isActive, Core::Object* pObject)
+	: Core::ViewC(isActive, pObject, "", "Brush")
 {
 }
 
-void TriangleVC::Initialize()
+void Core::TriangleVC::Initialize()
 {
 	if (mIsInitialized)
 		return;
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pD2d1Factory{ pApplication->GetD2d1Factory() };
 
 	Microsoft::WRL::ComPtr<ID2D1GeometrySink> pSink{};
@@ -30,19 +30,19 @@ void TriangleVC::Initialize()
 	mIsInitialized = true;
 }
 
-void TriangleVC::Update(float delta)
+void Core::TriangleVC::Update(float delta)
 {
 	(delta);
 	if (!mIsActive)
 		return;
 }
 
-void TriangleVC::Render(Canvas* pCanvas, Material2D* pMaterial)
+void Core::TriangleVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)
 		return;
-	Application* pApp{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApp{ mpObject->GetScene()->GetApplication() };
 	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
 
 	pD2d1DeviceContext->DrawGeometry(mpPathGeometry.Get(), pCanvas->GetBrush().Get(), 2.f);

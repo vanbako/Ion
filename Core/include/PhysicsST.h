@@ -9,10 +9,10 @@ namespace Ion
 		class InputCC;
 
 		class PhysicsST final
-			: public SceneThread
+			: public Core::SceneThread
 		{
 		public:
-			explicit PhysicsST(Scene* pScene, std::chrono::microseconds updateTime);
+			explicit PhysicsST(Core::Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~PhysicsST() = default;
 			PhysicsST(const PhysicsST& other) = delete;
 			PhysicsST(PhysicsST&& other) noexcept = delete;

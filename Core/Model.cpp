@@ -4,12 +4,13 @@
 #include "MeshType.h"
 #include "Material3D.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Model::Model(Application* pApplication, const std::string& name, Winding winding, CoordSystem coordSystem)
+Core::Model::Model(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
-	, mFileName{ name }
+	, mFileName{ fileName }
+	, mFileExtension{ fileExtension }
 	, mWinding{ winding }
 	, mCoordSystem{ coordSystem }
 	, mName{}
@@ -31,102 +32,102 @@ Model::Model(Application* pApplication, const std::string& name, Winding winding
 	ReadModel();
 }
 
-void Model::Initialize()
+void Core::Model::Initialize()
 {
 	if (mIsInitialized)
 		return;
 	mIsInitialized = true;
 }
 
-const std::vector<DWORD>& Model::GetIndices() const
+const std::vector<DWORD>& Core::Model::GetIndices() const
 {
 	return mIndices;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Model::GetPositions() const
+const std::vector<DirectX::XMFLOAT3>& Core::Model::GetPositions() const
 {
 	return mPositions;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Model::GetNormals() const
+const std::vector<DirectX::XMFLOAT3>& Core::Model::GetNormals() const
 {
 	return mNormals;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Model::GetTangents() const
+const std::vector<DirectX::XMFLOAT3>& Core::Model::GetTangents() const
 {
 	return mTangents;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Model::GetBinormals() const
+const std::vector<DirectX::XMFLOAT3>& Core::Model::GetBinormals() const
 {
 	return mBinormals;
 }
 
-const std::vector<DirectX::XMFLOAT2>& Model::GetTexCoords() const
+const std::vector<DirectX::XMFLOAT2>& Core::Model::GetTexCoords() const
 {
 	return mTexCoords;
 }
 
-const std::vector<DirectX::XMFLOAT4>& Model::GetColors() const
+const std::vector<DirectX::XMFLOAT4>& Core::Model::GetColors() const
 {
 	return mColors;
 }
 
-const std::vector<Int4>& Model::GetBlendIndices() const
+const std::vector<Core::Int4>& Core::Model::GetBlendIndices() const
 {
 	return mBlendIndices;
 }
 
-const std::vector<DirectX::XMFLOAT4>& Model::GetBlendWeights() const
+const std::vector<DirectX::XMFLOAT4>& Core::Model::GetBlendWeights() const
 {
 	return mBlendWeights;
 }
 
-const std::vector<AnimationClip>& Ion::Core::Model::GetAnimationClips() const
+const std::vector<Core::AnimationClip>& Core::Model::GetAnimationClips() const
 {
 	return mAnimationClips;
 }
 
-size_t Model::GetElementCount()
+size_t Core::Model::GetElementCount()
 {
 	size_t cnt{ 0 };
-	for (size_t i{ 0 }; i < size_t(InputSemantic::Count); ++i)
+	for (size_t i{ 0 }; i < size_t(Core::InputSemantic::Count); ++i)
 		cnt += mElem[i];
 	return cnt;
 }
 
-bool Model::HasInputElem(InputSemantic inputSemantic)
+bool Core::Model::HasInputElem(Core::InputSemantic inputSemantic)
 {
 	return (mElem[size_t(inputSemantic)] == 1);
 }
 
-bool Model::HasInputElem(const std::string& inputSemantic)
+bool Core::Model::HasInputElem(const std::string& inputSemantic)
 {
-	return HasInputElem(Material3D::GetSemanticStrings().at(inputSemantic).inputSemantic);
+	return HasInputElem(Core::Material3D::GetSemanticStrings().at(inputSemantic).inputSemantic);
 }
 
-const std::vector<Transform>& Model::ReadInstances()
+const std::vector<Core::Transform>& Core::Model::ReadInstances()
 {
 	if (mInstances.empty())
 	{
-		BinIfstream file{ "../Resources/Instance/" + mFileName + ".ins" };
+		Core::BinIfstream file{ "../Resources/Instance/" + mFileName + ".ins" };
 		size_t cnt{ file.Read<size_t>() };
 		for (size_t i{ 0 }; i < cnt; ++i)
-			mInstances.emplace_back(file.Read<Transform>());
+			mInstances.emplace_back(file.Read<Core::Transform>());
 	}
 	return mInstances;
 }
 
-const std::vector<Transform>& Model::GetInstances() const
+const std::vector<Core::Transform>& Core::Model::GetInstances() const
 {
 	return mInstances;
 }
 
-void Model::ReadModel()
+void Core::Model::ReadModel()
 {
 	using namespace DirectX;
-	BinIfstream file{ "../Resources/Model/" + mFileName + ".ovm" };
+	Core::BinIfstream file{ "../Resources/Model/" + mFileName + "." + mFileExtension };
 	const char majorVersion{ file.Read<char>() };
 	const char minorVersion{ file.Read<char>() };
 
@@ -135,23 +136,23 @@ void Model::ReadModel()
 		vertexCount{ 0 };
 	for (;;)
 	{
-		MeshType meshType{ MeshType(file.Read<char>()) };
-		if (meshType == MeshType::End)
+		Core::MeshType meshType{ Core::MeshType(file.Read<char>()) };
+		if (meshType == Core::MeshType::End)
 			break;
 		unsigned int offset{ file.Read<unsigned int>() };
 
 		switch (meshType)
 		{
-		case MeshType::Header:
+		case Core::MeshType::Header:
 			mName = file.ReadString();
 			vertexCount = size_t(file.Read<unsigned int>());
 			indexCount = size_t(file.Read<unsigned int>());
 			break;
-		case MeshType::Positions:
-			mElem[size_t(InputSemantic::Position)] = 1;
+		case Core::MeshType::Positions:
+			mElem[size_t(Core::InputSemantic::Position)] = 1;
 			switch (mCoordSystem)
 			{
-			case CoordSystem::LeftHanded:
+			case Core::CoordSystem::LeftHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 position{};
@@ -161,7 +162,7 @@ void Model::ReadModel()
 					mPositions.push_back(position);
 				}
 				break;
-			case CoordSystem::RightHanded:
+			case Core::CoordSystem::RightHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 position{};
@@ -173,12 +174,12 @@ void Model::ReadModel()
 				break;
 			}
 			break;
-		case MeshType::Indices:
+		case Core::MeshType::Indices:
 		{
 			size_t cnt{ indexCount / 3 };
 			switch (mWinding)
 			{
-			case Winding::CW:
+			case Core::Winding::CW:
 				for (size_t i{ 0 }; i < cnt; ++i)
 				{
 					mIndices.push_back(file.Read<DWORD>());
@@ -186,7 +187,7 @@ void Model::ReadModel()
 					mIndices.push_back(file.Read<DWORD>());
 				}
 				break;
-			case Winding::CCW:
+			case Core::Winding::CCW:
 				DWORD two{};
 				for (size_t i{ 0 }; i < cnt; ++i)
 				{
@@ -199,11 +200,11 @@ void Model::ReadModel()
 			}
 			break;
 		}
-		case MeshType::Normals:
-			mElem[size_t(InputSemantic::Normal)] = 1;
+		case Core::MeshType::Normals:
+			mElem[size_t(Core::InputSemantic::Normal)] = 1;
 			switch (mCoordSystem)
 			{
-			case CoordSystem::LeftHanded:
+			case Core::CoordSystem::LeftHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 normal{};
@@ -213,7 +214,7 @@ void Model::ReadModel()
 					mNormals.push_back(normal);
 				}
 				break;
-			case CoordSystem::RightHanded:
+			case Core::CoordSystem::RightHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 normal{};
@@ -225,11 +226,11 @@ void Model::ReadModel()
 				break;
 			}
 			break;
-		case MeshType::Tangents:
-			mElem[size_t(InputSemantic::Tangent)] = 1;
+		case Core::MeshType::Tangents:
+			mElem[size_t(Core::InputSemantic::Tangent)] = 1;
 			switch (mCoordSystem)
 			{
-			case CoordSystem::LeftHanded:
+			case Core::CoordSystem::LeftHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 tangent{};
@@ -239,7 +240,7 @@ void Model::ReadModel()
 					mTangents.push_back(tangent);
 				}
 				break;
-			case CoordSystem::RightHanded:
+			case Core::CoordSystem::RightHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 tangent{};
@@ -251,11 +252,11 @@ void Model::ReadModel()
 				break;
 			}
 			break;
-		case MeshType::Binormals:
-			mElem[size_t(InputSemantic::Binormal)] = 1;
+		case Core::MeshType::Binormals:
+			mElem[size_t(Core::InputSemantic::Binormal)] = 1;
 			switch (mCoordSystem)
 			{
-			case CoordSystem::LeftHanded:
+			case Core::CoordSystem::LeftHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 binormal{};
@@ -265,7 +266,7 @@ void Model::ReadModel()
 					mBinormals.push_back(binormal);
 				}
 				break;
-			case CoordSystem::RightHanded:
+			case Core::CoordSystem::RightHanded:
 				for (size_t i{ 0 }; i < vertexCount; ++i)
 				{
 					DirectX::XMFLOAT3 binormal{};
@@ -277,8 +278,8 @@ void Model::ReadModel()
 				break;
 			}
 			break;
-		case MeshType::TexCoords:
-			mElem[size_t(InputSemantic::TexCoord)] = 1;
+		case Core::MeshType::TexCoords:
+			mElem[size_t(Core::InputSemantic::TexCoord)] = 1;
 			mTexCoordCount = file.Read<USHORT>();
 			for (size_t i{ 0 }; i < vertexCount * mTexCoordCount; ++i)
 			{
@@ -288,8 +289,8 @@ void Model::ReadModel()
 				mTexCoords.push_back(texCoord);
 			}
 			break;
-		case MeshType::Colors:
-			mElem[size_t(InputSemantic::Color)] = 1;
+		case Core::MeshType::Colors:
+			mElem[size_t(Core::InputSemantic::Color)] = 1;
 			for (size_t i{ 0 }; i < vertexCount; ++i)
 			{
 				DirectX::XMFLOAT4 color{};
@@ -300,8 +301,8 @@ void Model::ReadModel()
 				mColors.push_back(color);
 			}
 			break;
-		case MeshType::BlendIndices:
-			mElem[size_t(InputSemantic::BlendIndices)] = 1;
+		case Core::MeshType::BlendIndices:
+			mElem[size_t(Core::InputSemantic::BlendIndices)] = 1;
 			for (size_t i{ 0 }; i < vertexCount; ++i)
 			{
 				Int4 index{};
@@ -312,8 +313,8 @@ void Model::ReadModel()
 				mBlendIndices.push_back(index);
 			}
 			break;
-		case MeshType::BlendWeights:
-			mElem[size_t(InputSemantic::BlendWeight)] = 1;
+		case Core::MeshType::BlendWeights:
+			mElem[size_t(Core::InputSemantic::BlendWeight)] = 1;
 			for (size_t i{ 0 }; i < vertexCount; ++i)
 			{
 				DirectX::XMFLOAT4 weight{};
@@ -324,7 +325,7 @@ void Model::ReadModel()
 				mBlendWeights.push_back(weight);
 			}
 			break;
-		case MeshType::AnimationClips:
+		case Core::MeshType::AnimationClips:
 		{
 			mHasAnimation = true;
 			DirectX::XMFLOAT4X4 toggleHand{
@@ -336,14 +337,14 @@ void Model::ReadModel()
 			unsigned short clipCount{ file.Read<unsigned short>() };
 			for (unsigned short i{ 0 }; i < clipCount; ++i)
 			{
-				AnimationClip clip{};
+				Core::AnimationClip clip{};
 				clip.SetName(file.ReadString());
 				clip.SetDuration(file.Read<float>());
 				clip.SetTicksPerSecond(file.Read<float>());
 				unsigned short keyCount{ file.Read<unsigned short>() };
 				for (unsigned short j{ 0 }; j < keyCount; ++j)
 				{
-					AnimationKey key{};
+					Core::AnimationKey key{};
 					key.SetTick(file.Read<float>());
 					unsigned short transformCount{ file.Read<unsigned short>() };
 					for (unsigned short k{ 0 }; k < transformCount; ++k)
@@ -367,7 +368,7 @@ void Model::ReadModel()
 						transform(3, 1) = file.Read<float>();
 						transform(3, 2) = file.Read<float>();
 						transform(3, 3) = file.Read<float>();
-						if (mCoordSystem == CoordSystem::RightHanded)
+						if (mCoordSystem == Core::CoordSystem::RightHanded)
 						{
 							DirectX::XMMATRIX matrixTransform{ DirectX::XMLoadFloat4x4(&transform) };
 							DirectX::XMStoreFloat4x4(&transform, matrixToggle * matrixTransform);
@@ -380,7 +381,7 @@ void Model::ReadModel()
 			}
 		}
 		break;
-		case MeshType::Skeleton:
+		case Core::MeshType::Skeleton:
 		{
 			mBoneCount = size_t(file.Read<unsigned short>());
 			file.MovePosition(offset - 2);

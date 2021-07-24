@@ -8,10 +8,10 @@ namespace Ion
 	namespace Core
 	{
 		class ControllerC
-			: public Component
+			: public Core::Component
 		{
 		public:
-			explicit ControllerC(bool isActive, Object* pObject);
+			explicit ControllerC(bool isActive, Core::Object* pObject);
 			virtual ~ControllerC() = default;
 			ControllerC(const ControllerC& other) = default;
 			ControllerC(ControllerC&& other) noexcept = default;

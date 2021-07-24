@@ -10,10 +10,10 @@ namespace Ion
 		class TransformMC;
 
 		class CharacterRMC final
-			: public ReceiverMC
+			: public Core::ReceiverMC
 		{
 		public:
-			explicit CharacterRMC(bool isActive, Object* pObject);
+			explicit CharacterRMC(bool isActive, Core::Object* pObject);
 			~CharacterRMC();
 			CharacterRMC(const CharacterRMC& other) = default;
 			CharacterRMC(CharacterRMC&& other) noexcept = default;
@@ -23,7 +23,7 @@ namespace Ion
 			void Initialize() override;
 			void Update(float delta) override;
 			void Switch() override;
-			virtual const std::vector<std::pair<std::string, Command*>>& GetCommands() const override;
+			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const override;
 			virtual const std::string& GetName() const override;
 
 			virtual void MoveForward() override;
@@ -34,8 +34,8 @@ namespace Ion
 			virtual void RotateRight() override;
 		private:
 			static const std::string mName;
-			std::vector<std::pair<std::string, Command*>> mCommands;
-			TransformMC* mpTransformMC;
+			std::vector<std::pair<std::string, Core::Command*>> mCommands;
+			Core::TransformMC* mpTransformMC;
 			bool
 				mMoveForward[2],
 				mMoveBack[2],

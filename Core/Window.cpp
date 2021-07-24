@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Window.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Window::Window(Application* pApplication, const std::wstring title, RECT rectangle)
+Core::Window::Window(Core::Application* pApplication, const std::wstring title, RECT rectangle)
 	: mpApplication{ pApplication }
 	, mhWindow{}
 	, mCanvases{}
@@ -25,17 +25,17 @@ Window::Window(Application* pApplication, const std::wstring title, RECT rectang
 	UpdateWindow(mhWindow);
 }
 
-Application* Window::GetApplication()
+Core::Application* Core::Window::GetApplication()
 {
 	return mpApplication;
 }
 
-HWND& Window::GetHandle()
+HWND& Core::Window::GetHandle()
 {
 	return mhWindow;
 }
 
-Canvas* Window::AddCanvas(RECT rectangle)
+Core::Canvas* Core::Window::AddCanvas(RECT rectangle)
 {
 	mCanvases.emplace_back(this, rectangle);
 	return &mCanvases.back();

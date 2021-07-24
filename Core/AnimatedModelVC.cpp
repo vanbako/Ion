@@ -9,10 +9,10 @@
 #include "Canvas.h"
 #include "d3dx12.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject)
-	: ModelVC(modelName, materialName, isActive, winding, coordSystem, pObject)
+Core::AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+	: Core::ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mTransforms{}
 	, mAnimationClip{}
 	, mTickCount{ 0.f }
@@ -30,24 +30,24 @@ AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::string
 	mpBonesConstantBufferData = (BonesConstantBuffer *)&mTransforms[0];
 }
 
-AnimatedModelVC::~AnimatedModelVC()
+Core::AnimatedModelVC::~AnimatedModelVC()
 {
 }
 
-void AnimatedModelVC::SetAnimation(const AnimationClip& animationClip)
+void Core::AnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
 {
 	mAnimationClip = animationClip;
 	mIsClipSet = true;
 }
 
-void AnimatedModelVC::SetAnimation(size_t clipNumber)
+void Core::AnimatedModelVC::SetAnimation(size_t clipNumber)
 {
 	if (clipNumber >= mpModel->GetAnimationClips().size())
 		return;
 	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
 }
 
-void AnimatedModelVC::SetIsAnimating(bool isAnimating)
+void Core::AnimatedModelVC::SetIsAnimating(bool isAnimating)
 {
 	mIsAnimating = isAnimating;
 	if (!mIsAnimating || !mIsClipSet)
@@ -55,10 +55,10 @@ void AnimatedModelVC::SetIsAnimating(bool isAnimating)
 	mTransforms.assign(mAnimationClip.GetKeys()[0].GetBoneTransforms().begin(), mAnimationClip.GetKeys()[0].GetBoneTransforms().end());
 }
 
-void AnimatedModelVC::Initialize()
+void Core::AnimatedModelVC::Initialize()
 {
-	ModelVC::Initialize();
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::ModelVC::Initialize();
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 
 	{
@@ -69,7 +69,7 @@ void AnimatedModelVC::Initialize()
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpBonesCbvHeap)));
 	}
 	{
-		const UINT bonesConstantBufferSize{ sizeof(BonesConstantBuffer) };
+		const UINT bonesConstantBufferSize{ sizeof(Core::BonesConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(bonesConstantBufferSize) };
@@ -88,16 +88,16 @@ void AnimatedModelVC::Initialize()
 
 		CD3DX12_RANGE readRange(0, 0);
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpBonesConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpBonesCbvDataBegin)));
-		memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(BonesConstantBuffer));
+		memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
 	}
 	mIsInitialized = true;
 }
 
-void AnimatedModelVC::Update(float delta)
+void Core::AnimatedModelVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
-	ModelVC::Update(delta);
+	Core::ModelVC::Update(delta);
 	if (!(mIsAnimating && mIsClipSet))
 		return;
 
@@ -109,11 +109,11 @@ void AnimatedModelVC::Update(float delta)
 	if (mTickCount > mAnimationClip.GetDuration())
 		mTickCount -= mAnimationClip.GetDuration();
 
-	AnimationKey
+	Core::AnimationKey
 		keyA{ mAnimationClip.GetKeys().front() },
 		keyB{ mAnimationClip.GetKeys().front() };
 
-	for (AnimationKey& key : mAnimationClip.GetKeys())
+	for (Core::AnimationKey& key : mAnimationClip.GetKeys())
 	{
 		if (key.GetTick() > mTickCount)
 		{
@@ -154,21 +154,21 @@ void AnimatedModelVC::Update(float delta)
 	}
 }
 
-void AnimatedModelVC::Render(Canvas* pCanvas, Material3D* pMaterial)
+void Core::AnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)
 		return;
 
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
 	auto pDevice{ pApplication->GetDevice() };
 	auto pCmdQueue{ pApplication->GetCommandQueue() };
 	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
-	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
+	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<Core::TransformMC>()->GetWorld()) };
+	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<Core::CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld, world);
@@ -187,7 +187,7 @@ void AnimatedModelVC::Render(Canvas* pCanvas, Material3D* pMaterial)
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
 	}
-	memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(BonesConstantBuffer));
+	memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
 	{
 		ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);

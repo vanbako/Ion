@@ -1,5 +1,5 @@
 #pragma once
-#include "../DirectXTK12/ResourceUploadBatch.h"
+#include "ResourceUploadBatch.h"
 
 namespace Ion
 {
@@ -10,7 +10,7 @@ namespace Ion
 		class Texture final
 		{
 		public:
-			explicit Texture(Application* pApplication, const std::string& name);
+			explicit Texture(Core::Application* pApplication, const std::string& name);
 			~Texture() = default;
 			Texture(const Texture& other) = delete;
 			Texture(Texture&& other) noexcept = delete;
@@ -20,7 +20,7 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID3D12Resource>& GetTexture() const;
 		private:
 			bool mIsInitialized;
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpTexture;
 			DirectX::ResourceUploadBatch mUploadBatch;
 		};

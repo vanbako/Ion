@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Logger.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
 LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -13,17 +13,17 @@ LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	else
 	{
-		Application* pApplication{ (Application*)(GetWindowLongPtrW(hWnd, GWLP_USERDATA)) };
+		Core::Application* pApplication{ (Core::Application*)(GetWindowLongPtrW(hWnd, GWLP_USERDATA)) };
 		if (pApplication != nullptr)
 			return pApplication->WindowsProcedure(hWnd, msg, wParam, lParam);
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-const std::chrono::microseconds Application::mRunSleep{ 4000 };
-const std::chrono::microseconds Application::mKeyboardMutexDuration{ 1000 };
+const std::chrono::microseconds Core::Application::mRunSleep{ 4000 };
+const std::chrono::microseconds Core::Application::mKeyboardMutexDuration{ 1000 };
 
-Application::Application()
+Core::Application::Application()
 	: mIsInitialized{ false }
 	, mIsActive{ false }
 	, mKeyboard{}
@@ -69,7 +69,7 @@ Application::Application()
 	mpPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *pFoundation, mPxToleranceScale, false);
 }
 
-Application::~Application()
+Core::Application::~Application()
 {
 	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
@@ -83,7 +83,7 @@ Application::~Application()
 	foundation.release();
 }
 
-void Application::ThrowIfFailed(HRESULT hr)
+void Core::Application::ThrowIfFailed(HRESULT hr)
 {
 	if (FAILED(hr))
 	{
@@ -92,7 +92,7 @@ void Application::ThrowIfFailed(HRESULT hr)
 	}
 }
 
-bool Application::Initialize()
+bool Core::Application::Initialize()
 {
 	if (!mIsInitialized)
 	{
@@ -172,7 +172,7 @@ bool Application::Initialize()
 	return true;
 }
 
-void Application::Run()
+void Core::Application::Run()
 {
 	MSG msg{};
 	while (msg.message != WM_QUIT)
@@ -188,46 +188,46 @@ void Application::Run()
 	}
 }
 
-const bool Application::SetIsActive(bool isActive)
+const bool Core::Application::SetIsActive(bool isActive)
 {
 	if (mIsInitialized)
 		mIsActive = isActive;
 	return mIsActive;
 }
 
-const bool Application::GetIsActive() const
+const bool Core::Application::GetIsActive() const
 {
 	return mIsActive;
 }
 
-bool Application::TryLockSharedKeyboard()
+bool Core::Application::TryLockSharedKeyboard()
 {
 	return mKeyboardMutex.try_lock_shared_for(mKeyboardMutexDuration);
 }
 
-void Application::UnlockSharedKeyboard()
+void Core::Application::UnlockSharedKeyboard()
 {
 	mKeyboardMutex.unlock_shared();
 }
 
-PBYTE Application::GetKeyboard()
+PBYTE Core::Application::GetKeyboard()
 {
 	return mKeyboard;
 }
 
-Scene* Application::AddScene()
+Core::Scene* Core::Application::AddScene()
 {
 	mScenes.emplace_back(this);
 	return &mScenes.back();
 }
 
-Window* Application::AddWindow(const std::wstring& title, RECT rectangle)
+Core::Window* Core::Application::AddWindow(const std::wstring& title, RECT rectangle)
 {
 	mWindows.emplace_back(this, title, rectangle);
 	return &mWindows.back();
 }
 
-LRESULT Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT Core::Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
@@ -238,77 +238,77 @@ LRESULT Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-const Microsoft::WRL::ComPtr<IDXGIFactory4>& Application::GetDxgiFactory()
+const Microsoft::WRL::ComPtr<IDXGIFactory4>& Core::Application::GetDxgiFactory()
 {
 	return mpDxgiFactory;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12Device>& Application::GetDevice()
+const Microsoft::WRL::ComPtr<ID3D12Device>& Core::Application::GetDevice()
 {
 	return mpD3d12Device;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& Application::GetCommandQueue()
+const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& Core::Application::GetCommandQueue()
 {
 	return mpCommandQueue;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& Application::GetCommandAllocator()
+const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& Core::Application::GetCommandAllocator()
 {
 	return mpCommandAllocator;
 }
 
-const Microsoft::WRL::ComPtr<ID2D1Factory3>& Application::GetD2d1Factory()
+const Microsoft::WRL::ComPtr<ID2D1Factory3>& Core::Application::GetD2d1Factory()
 {
 	return mpD2d1Factory;
 }
 
-const Microsoft::WRL::ComPtr<IDXGIDevice>& Application::GetDxgiDevice()
+const Microsoft::WRL::ComPtr<IDXGIDevice>& Core::Application::GetDxgiDevice()
 {
 	return mpDxgiDevice;
 }
 
-const Microsoft::WRL::ComPtr<ID3D11On12Device>& Application::GetD3D11On12Device()
+const Microsoft::WRL::ComPtr<ID3D11On12Device>& Core::Application::GetD3D11On12Device()
 {
 	return mpD3d11On12Device;
 }
 
-const Microsoft::WRL::ComPtr<ID2D1Device2>& Application::GetD2d1Device()
+const Microsoft::WRL::ComPtr<ID2D1Device2>& Core::Application::GetD2d1Device()
 {
 	return mpD2d1Device;
 }
 
-const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& Application::GetD3d11DeviceContext()
+const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& Core::Application::GetD3d11DeviceContext()
 {
 	return mpD3d11DeviceContext;
 }
 
-const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Application::GetD2d1DeviceContext()
+const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Core::Application::GetD2d1DeviceContext()
 {
 	return mpD2d1DeviceContext;
 }
 
-physx::PxPhysics* Application::GetPhysics()
+physx::PxPhysics* Core::Application::GetPhysics()
 {
 	return mpPhysics;
 }
 
-const physx::PxTolerancesScale& Application::GetToleranceScale()
+const physx::PxTolerancesScale& Core::Application::GetToleranceScale()
 {
 	return mPxToleranceScale;
 }
 
-ServiceLocator& Ion::Core::Application::GetServiceLocator()
+Core::ServiceLocator& Core::Application::GetServiceLocator()
 {
 	return mServiceLocator;
 }
 
-//const Microsoft::WRL::ComPtr<IDWriteFactory>& Application::GetDWriteFactory()
+//const Microsoft::WRL::ComPtr<IDWriteFactory>& Core::Application::GetDWriteFactory()
 //{
 //	return mpDWriteFactory;
 //}
 
-Material3D* Application::AddMaterial3D(const std::string& name)
+Core::Material3D* Core::Application::AddMaterial3D(const std::string& name)
 {
 	auto ret{ mMaterials3D.try_emplace(name, this, name) };
 	Material3D* pMaterial{ &((*(ret.first)).second) };
@@ -316,7 +316,7 @@ Material3D* Application::AddMaterial3D(const std::string& name)
 	return pMaterial;
 }
 
-Material2D* Application::AddMaterial2D(const std::string& name)
+Core::Material2D* Core::Application::AddMaterial2D(const std::string& name)
 {
 	auto ret{ mMaterials2D.try_emplace(name, this, name) };
 	Material2D* pMaterial{ &((*(ret.first)).second) };
@@ -324,22 +324,22 @@ Material2D* Application::AddMaterial2D(const std::string& name)
 	return pMaterial;
 }
 
-Model* Application::AddModel(const std::string& name, Winding winding, CoordSystem coordSystem)
+Core::Model* Core::Application::AddModel(const std::string& fileName, const std::string& fileExtension, Winding winding, CoordSystem coordSystem)
 {
-	auto ret{ mModels.try_emplace(name, this, name, winding, coordSystem) };
+	auto ret{ mModels.try_emplace(fileName, this, fileName, fileExtension, winding, coordSystem) };
 	Model* pModel{ &((*(ret.first)).second) };
 	pModel->Initialize();
 	return pModel;
 }
 
-Texture* Application::AddTexture(const std::string& name)
+Core::Texture* Core::Application::AddTexture(const std::string& name)
 {
 	auto ret{ mTextures.try_emplace(name, this, name) };
 	Texture* pTexture{ &((*(ret.first)).second) };
 	return pTexture;
 }
 
-void Application::KeyboardState()
+void Core::Application::KeyboardState()
 {
 	BOOL ret{};
 	if (mKeyboardMutex.try_lock_for(mKeyboardMutexDuration))

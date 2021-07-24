@@ -21,7 +21,7 @@ namespace Ion
 		public:
 			static std::size_t GetStatCount();
 
-			explicit Scene(Application* pApplication);
+			explicit Scene(Core::Application* pApplication);
 			~Scene();
 			Scene(const Scene& other) = delete;
 			Scene(Scene&& other) noexcept = delete;
@@ -32,34 +32,34 @@ namespace Ion
 			const bool GetIsActive() const;
 			void SetIsEnd(bool isEnd);
 			const bool GetIsEnd() const;
-			std::list<Object>& GetObjects();
-			Application* GetApplication();
-			ControllerST* GetControllerST();
+			std::list<Core::Object>& GetObjects();
+			Core::Application* GetApplication();
+			Core::ControllerST* GetControllerST();
 			physx::PxScene* GetPxScene();
 
 			void Initialize();
-			Object* AddObject(bool isActive);
+			Core::Object* AddObject(bool isActive);
 			bool TryLockSharedObjects();
 			void UnlockSharedObjects();
 			bool TryLockExclusiveObjects();
 			void UnlockExclusiveObjects();
-			void AddCanvas(Canvas* pCanvas);
+			void AddCanvas(Core::Canvas* pCanvas);
 			void Render();
 		private:
 			static std::chrono::microseconds mObjectsMutexDuration;
 			static std::size_t mStatCount;
 
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			std::atomic<bool>
 				mIsActive,
 				mIsEnd;
 			std::shared_timed_mutex mObjectsMutex;
-			std::list<Object> mObjects;
-			ModelST* mpModelST;
-			ControllerST* mpControllerST;
-			ViewST* mpViewST;
-			PhysicsST* mpPhysicsST;
-			std::set<Canvas*> mpCanvases;
+			std::list<Core::Object> mObjects;
+			Core::ModelST* mpModelST;
+			Core::ControllerST* mpControllerST;
+			Core::ViewST* mpViewST;
+			Core::PhysicsST* mpPhysicsST;
+			std::set<Core::Canvas*> mpCanvases;
 			physx::PxScene* mpPxScene;
 			std::mutex mMutex;
 			std::condition_variable mConditionVar;

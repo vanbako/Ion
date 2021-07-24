@@ -11,7 +11,7 @@ namespace Ion
 		class Material2D final
 		{
 		public:
-			explicit Material2D(Application* pApplication, const std::string& name);
+			explicit Material2D(Core::Application* pApplication, const std::string& name);
 			~Material2D() = default;
 			Material2D(const Material2D& other) = delete;
 			Material2D(Material2D&& other) noexcept = delete;
@@ -19,14 +19,14 @@ namespace Ion
 			Material2D& operator=(Material2D&& other) noexcept = delete;
 
 			void Initialize();
-			void Render(Canvas* pCanvas);
+			void Render(Core::Canvas* pCanvas);
 
-			void AddViewC(Canvas* pCanvas, ViewC* pViewC);
+			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC);
 		private:
 			bool mIsInitialized;
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			std::string mName;
-			std::map<Canvas*,std::vector<ViewC*>> mpCanvasViewCs;
+			std::map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
 		};
 	}
 }

@@ -10,20 +10,20 @@ namespace Ion
 		class Window final
 		{
 		public:
-			explicit Window(Application* pApplication, const std::wstring title, RECT rectangle);
+			explicit Window(Core::Application* pApplication, const std::wstring title, RECT rectangle);
 			~Window() = default;
 			Window(const Window& other) = delete;
 			Window(Window&& other) noexcept = delete;
 			Window& operator=(const Window& other) = delete;
 			Window& operator=(Window&& other) noexcept = delete;
 
-			Application* GetApplication();
+			Core::Application* GetApplication();
 			HWND& GetHandle();
-			Canvas* AddCanvas(RECT rectangle);
+			Core::Canvas* AddCanvas(RECT rectangle);
 		private:
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			HWND mhWindow;
-			std::list<Canvas> mCanvases;
+			std::list<Core::Canvas> mCanvases;
 		};
 	}
 }

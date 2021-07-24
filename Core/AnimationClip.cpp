@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "AnimationClip.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-AnimationClip::AnimationClip()
+Core::AnimationClip::AnimationClip()
 	: mName{}
 	, mDuration{ 0.f }
 	, mTicksPerSecond{ 0.f }
@@ -11,32 +11,32 @@ AnimationClip::AnimationClip()
 {
 }
 
-void AnimationClip::SetName(const std::wstring& name)
+void Core::AnimationClip::SetName(const std::wstring& name)
 {
 	mName = name;
 }
 
-void AnimationClip::SetDuration(float duration)
+void Core::AnimationClip::SetDuration(float duration)
 {
 	mDuration = duration;
 }
 
-void AnimationClip::SetTicksPerSecond(float ticksPerSecond)
+void Core::AnimationClip::SetTicksPerSecond(float ticksPerSecond)
 {
 	mTicksPerSecond = ticksPerSecond;
 }
 
-const float AnimationClip::GetDuration() const
+const float Core::AnimationClip::GetDuration() const
 {
 	return mDuration;
 }
 
-const float AnimationClip::GetTicksPerSecond() const
+const float Core::AnimationClip::GetTicksPerSecond() const
 {
 	return mTicksPerSecond;
 }
 
-std::vector<AnimationKey>& AnimationClip::GetKeys()
+std::vector<Core::AnimationKey>& Core::AnimationClip::GetKeys()
 {
 	return mKeys;
 }

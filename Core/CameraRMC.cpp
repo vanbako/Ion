@@ -12,21 +12,21 @@
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-const std::string CameraRMC::mName{ "Camera" };
+const std::string Core::CameraRMC::mName{ "Camera" };
 
-CameraRMC::CameraRMC(bool isActive, Object* pObject)
-	: ReceiverMC(isActive, pObject)
+Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
+	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
-		{ "MoveForward", new MoveForwardCmd{ this } },
-		{ "MoveBack", new MoveBackCmd{ this } },
-		{ "MoveLeft", new MoveLeftCmd{ this } },
-		{ "MoveRight", new MoveRightCmd{ this } },
-		{ "MoveUp", new MoveUpCmd{ this } },
-		{ "MoveDown", new MoveDownCmd{ this } },
-		{ "RotateLeft", new RotateLeftCmd{ this } },
-		{ "RotateRight", new RotateRightCmd{ this } } }
+		{ "MoveForward", new Core::MoveForwardCmd{ this } },
+		{ "MoveBack", new Core::MoveBackCmd{ this } },
+		{ "MoveLeft", new Core::MoveLeftCmd{ this } },
+		{ "MoveRight", new Core::MoveRightCmd{ this } },
+		{ "MoveUp", new Core::MoveUpCmd{ this } },
+		{ "MoveDown", new Core::MoveDownCmd{ this } },
+		{ "RotateLeft", new Core::RotateLeftCmd{ this } },
+		{ "RotateRight", new Core::RotateRightCmd{ this } } }
 	, mpCanvas{ nullptr }
 	, mFarPlane{ 2500.f }
 	, mNearPlane{ 0.1f }
@@ -44,18 +44,18 @@ CameraRMC::CameraRMC(bool isActive, Object* pObject)
 {
 }
 
-CameraRMC::~CameraRMC()
+Core::CameraRMC::~CameraRMC()
 {
-	for (std::pair<std::string, Command*>& command : mCommands)
+	for (std::pair<std::string, Core::Command*>& command : mCommands)
 		delete command.second;
 }
 
-void CameraRMC::Initialize()
+void Core::CameraRMC::Initialize()
 {
 	mIsInitialized = true;
 }
 
-void CameraRMC::Update(float delta)
+void Core::CameraRMC::Update(float delta)
 {
 	(delta);
 	using namespace DirectX;
@@ -65,7 +65,7 @@ void CameraRMC::Update(float delta)
 		return;
 	if (mpTransform == nullptr)
 	{
-		mpTransform = mpObject->GetModelC<TransformMC>();
+		mpTransform = mpObject->GetModelC<Core::TransformMC>();
 		mHasChanged = true;
 	}
 	if (mpTransform == nullptr)
@@ -149,7 +149,7 @@ void CameraRMC::Update(float delta)
 	}
 }
 
-void CameraRMC::Switch()
+void Core::CameraRMC::Switch()
 {
 	if (!mIsActive)
 		return;
@@ -177,69 +177,69 @@ void CameraRMC::Switch()
 	mRotateRight[mCurrent] = false;
 }
 
-const std::vector<std::pair<std::string, Command*>>& Ion::Core::CameraRMC::GetCommands() const
+const std::vector<std::pair<std::string, Core::Command*>>& Core::CameraRMC::GetCommands() const
 {
 	return mCommands;
 }
 
-const std::string& Ion::Core::CameraRMC::GetName() const
+const std::string& Core::CameraRMC::GetName() const
 {
 	return mName;
 }
 
-void CameraRMC::SetCanvas(Canvas* pCanvas)
+void Core::CameraRMC::SetCanvas(Core::Canvas* pCanvas)
 {
 	mpCanvas = pCanvas;
 }
 
-const DirectX::XMFLOAT4X4& CameraRMC::GetViewProjection() const
+const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewProjection() const
 {
 	return mViewProjection;
 }
 
-void CameraRMC::MoveForward()
+void Core::CameraRMC::MoveForward()
 {
 	mMoveForward[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::MoveBack()
+void Core::CameraRMC::MoveBack()
 {
 	mMoveBack[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::MoveLeft()
+void Core::CameraRMC::MoveLeft()
 {
 	mMoveLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::MoveRight()
+void Core::CameraRMC::MoveRight()
 {
 	mMoveRight[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::MoveUp()
+void Core::CameraRMC::MoveUp()
 {
 	mMoveUp[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::MoveDown()
+void Core::CameraRMC::MoveDown()
 {
 	mMoveDown[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::RotateLeft()
+void Core::CameraRMC::RotateLeft()
 {
 	mRotateLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void CameraRMC::RotateRight()
+void Core::CameraRMC::RotateRight()
 {
 	mRotateRight[mCurrent] = true;
 	mHasChanged = true;

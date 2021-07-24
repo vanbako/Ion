@@ -2,14 +2,14 @@
 #include "InputCC.h"
 #include "Command.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-InputCC::InputCC(bool isActive, Object* pObject)
-	: ControllerC(isActive, pObject)
+Core::InputCC::InputCC(bool isActive, Core::Object* pObject)
+	: Core::ControllerC(isActive, pObject)
 {
 }
 
-void InputCC::Update(float)
+void Core::InputCC::Update(float)
 {
 	for (auto pCommand : mpCommands)
 	{
@@ -19,7 +19,7 @@ void InputCC::Update(float)
 	mpCommands.clear();
 }
 
-void InputCC::Queue(Command* pCommand)
+void Core::InputCC::Queue(Core::Command* pCommand)
 {
 	mpCommands.emplace_back(pCommand->Duplicate());
 }

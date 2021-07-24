@@ -1,19 +1,19 @@
 #include "pch.h"
 #include "BinIfstream.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-BinIfstream::BinIfstream(const std::string& name)
+Core::BinIfstream::BinIfstream(const std::string& name)
 	: mFile{ name, std::ios::in | std::ios::binary }
 {
 }
 
-BinIfstream::~BinIfstream(void)
+Core::BinIfstream::~BinIfstream(void)
 {
 	mFile.close();
 }
 
-std::wstring BinIfstream::ReadLongString()
+std::wstring Core::BinIfstream::ReadLongString()
 {
 	UINT stringLength{ Read<UINT>() };
 	std::wstringstream ss{};
@@ -22,14 +22,14 @@ std::wstring BinIfstream::ReadLongString()
 	return (std::wstring)ss.str();
 }
 
-std::wstring BinIfstream::ReadNullString()
+std::wstring Core::BinIfstream::ReadNullString()
 {
 	std::string buff{};
 	std::getline(mFile, buff, '\0');
 	return std::wstring(buff.begin(), buff.end());
 }
 
-std::wstring BinIfstream::ReadString()
+std::wstring Core::BinIfstream::ReadString()
 {
 	int stringLength{ int(Read<char>()) };
 	std::wstringstream ss{};
@@ -38,17 +38,17 @@ std::wstring BinIfstream::ReadString()
 	return (std::wstring)ss.str();
 }
 
-std::streampos BinIfstream::GetPosition()
+std::streampos Core::BinIfstream::GetPosition()
 {
 	return mFile.tellg();
 }
 
-void BinIfstream::SetPosition(std::streampos pos)
+void Core::BinIfstream::SetPosition(std::streampos pos)
 {
 	mFile.seekg(pos);
 }
 
-void BinIfstream::MovePosition(int move)
+void Core::BinIfstream::MovePosition(int move)
 {
 	std::streampos currPos{ GetPosition() };
 	if (currPos > 0)

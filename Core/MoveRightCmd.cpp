@@ -2,19 +2,19 @@
 #include "MoveRightCmd.h"
 #include "ReceiverMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-MoveRightCmd::MoveRightCmd(ReceiverMC* pReceiver)
-	: Command(pReceiver)
+Core::MoveRightCmd::MoveRightCmd(Core::ReceiverMC* pReceiver)
+	: Core::Command(pReceiver)
 {
 }
 
-Command* MoveRightCmd::Duplicate()
+Core::Command* Core::MoveRightCmd::Duplicate()
 {
-	return new MoveRightCmd{ mpReceiver };
+	return new Core::MoveRightCmd{ mpReceiver };
 }
 
-void MoveRightCmd::Execute()
+void Core::MoveRightCmd::Execute()
 {
 	mpReceiver->MoveRight();
 }

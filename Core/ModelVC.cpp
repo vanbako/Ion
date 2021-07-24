@@ -9,11 +9,11 @@
 #include "Canvas.h"
 #include "d3dx12.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject)
-	: ViewC(isActive, pObject, materialName, "")
-	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, winding, coordSystem) }
+Core::ModelVC::ModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+	: Core::ViewC(isActive, pObject, materialName, "")
+	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, modelExtension, winding, coordSystem) }
 	, mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}
@@ -32,21 +32,21 @@ ModelVC::ModelVC(const std::string& modelName, const std::string& materialName, 
 {
 }
 
-ModelVC::~ModelVC()
+Core::ModelVC::~ModelVC()
 {
 	if (mpVertices != nullptr)
 		delete[] mpVertices;
 }
 
-void ModelVC::AddTexture(TextureType textureType, const std::string& name)
+void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string& name)
 {
 	if (mpTextures.contains(textureType))
 		return;
 	if (!mpMaterial3D->GetTextureTypeSet().contains(textureType))
 		return;
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
-	Texture* pTexture{ mpObject->GetScene()->GetApplication()->AddTexture(name) };
+	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->AddTexture(name) };
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -69,9 +69,9 @@ void ModelVC::AddTexture(TextureType textureType, const std::string& name)
 	}
 }
 
-void ModelVC::Initialize()
+void Core::ModelVC::Initialize()
 {
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 
 	// Build vertex buffer
@@ -84,50 +84,50 @@ void ModelVC::Initialize()
 	mVertexCount = mpModel->GetPositions().size();
 	mpVertices = new char[mVertexCount * layoutSize];
 	char* pPos{ mpVertices };
-	InputSemantic* pInputSemantics{ new InputSemantic[inputElementCount]{} };
+	Core::InputSemantic* pInputSemantics{ new Core::InputSemantic[inputElementCount]{} };
 	for (UINT j{ 0 }; j < inputElementCount; ++j)
-		pInputSemantics[j] = Material3D::GetSemanticStrings().at(pInputElementDescs[j].SemanticName).inputSemantic;
+		pInputSemantics[j] = Core::Material3D::GetSemanticStrings().at(pInputElementDescs[j].SemanticName).inputSemantic;
 	for (size_t i{ 0 }; i < mVertexCount; ++i)
 		for (UINT j{ 0 }; j < inputElementCount; ++j)
 		{
 			switch (pInputSemantics[j])
 			{
-			case InputSemantic::Position:
+			case Core::InputSemantic::Position:
 				std::memcpy(pPos, &mpModel->GetPositions()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetPositions()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
-			case InputSemantic::Normal:
+			case Core::InputSemantic::Normal:
 				std::memcpy(pPos, &mpModel->GetNormals()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetNormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
-			case InputSemantic::Tangent:
+			case Core::InputSemantic::Tangent:
 				std::memcpy(pPos, &mpModel->GetTangents()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetTangents()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
-			case InputSemantic::Binormal:
+			case Core::InputSemantic::Binormal:
 				std::memcpy(pPos, &mpModel->GetBinormals()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetBinormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
-			case InputSemantic::TexCoord:
+			case Core::InputSemantic::TexCoord:
 				std::memcpy(pPos, &mpModel->GetTexCoords()[i], sizeof(DirectX::XMFLOAT2));
 				//*((DirectX::XMFLOAT2*)pPos) = mpModel->GetTexCoords()[i];
 				pPos += sizeof(DirectX::XMFLOAT2);
 				break;
-			case InputSemantic::Color:
+			case Core::InputSemantic::Color:
 				std::memcpy(pPos, &mpModel->GetColors()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetColors()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
-			case InputSemantic::BlendIndices:
+			case Core::InputSemantic::BlendIndices:
 				std::memcpy(pPos, &mpModel->GetBlendIndices()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendIndices()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
-			case InputSemantic::BlendWeight:
+			case Core::InputSemantic::BlendWeight:
 				std::memcpy(pPos, &mpModel->GetBlendWeights()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendWeights()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
@@ -187,7 +187,7 @@ void ModelVC::Initialize()
 		mVertexBufferView.SizeInBytes = vertexBufferSize;
 	}
 	{
-		const UINT objectConstantBufferSize{ sizeof(MeshVCConstantBuffer) };
+		const UINT objectConstantBufferSize{ sizeof(Core::MeshVCConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(objectConstantBufferSize) };
@@ -211,20 +211,20 @@ void ModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void ModelVC::Update(float delta)
+void Core::ModelVC::Update(float delta)
 {
 	(delta);
 	//if (!mIsActive)
 	//	return;
 }
 
-void ModelVC::Render(Canvas* pCanvas, Material3D* pMaterial)
+void Core::ModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)
 		return;
 
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
 	auto pDevice{ pApplication->GetDevice() };
 	auto pCmdQueue{ pApplication->GetCommandQueue() };

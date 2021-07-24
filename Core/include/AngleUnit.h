@@ -1,8 +1,14 @@
 #pragma once
 
-enum class AngleUnit
+namespace Ion
 {
-	Degree,
-	Radian,
-	Gradian
-};
+	namespace Core
+	{
+		enum class AngleUnit
+		{
+			Degree,
+			Radian,
+			Gradian
+		};
+	}
+}

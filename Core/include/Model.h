@@ -17,7 +17,7 @@ namespace Ion
 		class Model final
 		{
 		public:
-			explicit Model(Application* pApplication, const std::string& name, Winding winding, CoordSystem coordSystem);
+			explicit Model(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem);
 			~Model() = default;
 			Model(const Model& other) = delete;
 			Model(Model&& other) noexcept = delete;
@@ -32,20 +32,21 @@ namespace Ion
 			const std::vector<DirectX::XMFLOAT3>& GetBinormals() const;
 			const std::vector<DirectX::XMFLOAT2>& GetTexCoords() const;
 			const std::vector<DirectX::XMFLOAT4>& GetColors() const;
-			const std::vector<Int4>& GetBlendIndices() const;
+			const std::vector<Core::Int4>& GetBlendIndices() const;
 			const std::vector<DirectX::XMFLOAT4>& GetBlendWeights() const;
-			const std::vector<AnimationClip>& GetAnimationClips() const;
+			const std::vector<Core::AnimationClip>& GetAnimationClips() const;
 			size_t GetElementCount();
-			bool HasInputElem(InputSemantic inputSemantic);
+			bool HasInputElem(Core::InputSemantic inputSemantic);
 			bool HasInputElem(const std::string& inputSemantic);
-			const std::vector<Transform>& ReadInstances();
-			const std::vector<Transform>& GetInstances() const;
+			const std::vector<Core::Transform>& ReadInstances();
+			const std::vector<Core::Transform>& GetInstances() const;
 		private:
 			bool mIsInitialized;
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			std::string mFileName;
-			Winding mWinding;
-			CoordSystem mCoordSystem;
+			std::string mFileExtension;
+			Core::Winding mWinding;
+			Core::CoordSystem mCoordSystem;
 			std::wstring mName;
 			size_t
 				mTexCoordCount,
@@ -59,9 +60,9 @@ namespace Ion
 			std::vector<DirectX::XMFLOAT4> mColors;
 			std::vector<Int4> mBlendIndices;
 			std::vector<DirectX::XMFLOAT4> mBlendWeights;
-			std::vector<AnimationClip> mAnimationClips;
-			std::vector<Transform> mInstances;
-			std::bitset<size_t(InputSemantic::Count)> mElem;
+			std::vector<Core::AnimationClip> mAnimationClips;
+			std::vector<Core::Transform> mInstances;
+			std::bitset<size_t(Core::InputSemantic::Count)> mElem;
 			bool mHasAnimation;
 
 			void ReadModel();

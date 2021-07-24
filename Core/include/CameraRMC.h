@@ -11,10 +11,10 @@ namespace Ion
 		class TransformMC;
 
 		class CameraRMC final
-			: public ReceiverMC
+			: public Core::ReceiverMC
 		{
 		public:
-			explicit CameraRMC(bool isActive, Object* pObject);
+			explicit CameraRMC(bool isActive, Core::Object* pObject);
 			virtual ~CameraRMC();
 			CameraRMC(const CameraRMC& other) = default;
 			CameraRMC(CameraRMC&& other) noexcept = default;
@@ -24,10 +24,10 @@ namespace Ion
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
 			virtual void Switch() override;
-			virtual const std::vector<std::pair<std::string, Command*>>& GetCommands() const override;
+			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const override;
 			virtual const std::string& GetName() const override;
 
-			void SetCanvas(Canvas* pCanvas);
+			void SetCanvas(Core::Canvas* pCanvas);
 			const DirectX::XMFLOAT4X4& GetViewProjection() const;
 
 			virtual void MoveForward() override;
@@ -40,15 +40,15 @@ namespace Ion
 			virtual void RotateRight() override;
 		private:
 			static const std::string mName;
-			std::vector<std::pair<std::string, Command*>> mCommands;
+			std::vector<std::pair<std::string, Core::Command*>> mCommands;
 
-			Canvas* mpCanvas;
+			Core::Canvas* mpCanvas;
 			float
 				mFarPlane,
 				mNearPlane,
 				mFOV;
 			DirectX::XMFLOAT4X4 mViewProjection;
-			TransformMC* mpTransform;
+			Core::TransformMC* mpTransform;
 			// My best guess is that boolean operations are thread-safe
 			// Implement std::atomic if needed
 			bool

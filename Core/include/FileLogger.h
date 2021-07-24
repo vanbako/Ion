@@ -6,7 +6,7 @@ namespace Ion
 	namespace Core
 	{
 		class FileLogger final
-			: public Logger
+			: public Core::Logger
 		{
 		public:
 			explicit FileLogger(const std::string& location);
@@ -16,7 +16,7 @@ namespace Ion
 			FileLogger& operator=(const FileLogger&) = delete;
 			FileLogger& operator=(const FileLogger&&) = delete;
 
-			virtual void Message(void* pClass, MsgType msgType, const std::string& msg) override;
+			virtual void Message(void* pClass, Core::MsgType msgType, const std::string& msg) override;
 		};
 	}
 }

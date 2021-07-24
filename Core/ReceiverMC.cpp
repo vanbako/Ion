@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ReceiverMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ReceiverMC::ReceiverMC(bool isActive, Object* pObject)
-	: ModelC(isActive, pObject)
+Core::ReceiverMC::ReceiverMC(bool isActive, Core::Object* pObject)
+	: Core::ModelC(isActive, pObject)
 {
 }

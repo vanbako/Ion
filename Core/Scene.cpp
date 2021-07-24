@@ -7,26 +7,26 @@
 #include "Application.h"
 #include <extensions/PxExtensionsAPI.h>
 
-using namespace Ion::Core;
+using namespace Ion;
 
-std::chrono::microseconds Scene::mObjectsMutexDuration{ 1000 };
-std::size_t Scene::mStatCount{ 300 }; // in seconds
+std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
+std::size_t Core::Scene::mStatCount{ 300 }; // in seconds
 
-std::size_t Scene::GetStatCount()
+std::size_t Core::Scene::GetStatCount()
 {
 	return mStatCount;
 }
 
-Scene::Scene(Application* pApplication)
+Core::Scene::Scene(Core::Application* pApplication)
 	: mpApplication{ pApplication }
 	, mIsActive{ false }
 	, mIsEnd{ false }
 	, mObjectsMutex{}
 	, mObjects{}
-	, mpModelST{ new ModelST{ this, (std::chrono::microseconds)3000 } }
-	, mpControllerST{ new ControllerST{ this, (std::chrono::microseconds)3000 } }
-	, mpViewST{ new ViewST{ this, (std::chrono::microseconds)6000 } }
-	, mpPhysicsST{ new PhysicsST{ this, (std::chrono::microseconds)3000 } }
+	, mpModelST{ new Core::ModelST{ this, (std::chrono::microseconds)3000 } }
+	, mpControllerST{ new Core::ControllerST{ this, (std::chrono::microseconds)3000 } }
+	, mpViewST{ new Core::ViewST{ this, (std::chrono::microseconds)6000 } }
+	, mpPhysicsST{ new Core::PhysicsST{ this, (std::chrono::microseconds)3000 } }
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
 	, mMutex{}
@@ -39,62 +39,62 @@ Scene::Scene(Application* pApplication)
 	mpPxScene = mpApplication->GetPhysics()->createScene(sceneDesc);
 }
 
-Scene::~Scene()
+Core::Scene::~Scene()
 {
 	delete mpModelST;
 	delete mpControllerST;
 	delete mpViewST;
 	delete mpPhysicsST;
 	mpPxScene->release();
-	for (Canvas* pCanvas : mpCanvases)
+	for (Core::Canvas* pCanvas : mpCanvases)
 	{
 		std::lock_guard<std::mutex> lk(mMutex);
-		pCanvas->SetThreadAction(ThreadAction::Close);
+		pCanvas->SetThreadAction(Core::ThreadAction::Close);
 	}
 	mConditionVar.notify_all();
 }
 
-void Scene::SetIsActive(bool isActive)
+void Core::Scene::SetIsActive(bool isActive)
 {
 	mIsActive.store(isActive);
 }
 
-const bool Scene::GetIsActive() const
+const bool Core::Scene::GetIsActive() const
 {
 	return mIsActive.load();
 }
 
-void Scene::SetIsEnd(bool isEnd)
+void Core::Scene::SetIsEnd(bool isEnd)
 {
 	mIsEnd.store(isEnd);
 }
 
-const bool Scene::GetIsEnd() const
+const bool Core::Scene::GetIsEnd() const
 {
 	return mIsEnd.load();
 }
 
-std::list<Object>& Scene::GetObjects()
+std::list<Core::Object>& Core::Scene::GetObjects()
 {
 	return mObjects;
 }
 
-Application* Scene::GetApplication()
+Core::Application* Core::Scene::GetApplication()
 {
 	return mpApplication;
 }
 
-ControllerST* Scene::GetControllerST()
+Core::ControllerST* Core::Scene::GetControllerST()
 {
 	return mpControllerST;
 }
 
-physx::PxScene* Scene::GetPxScene()
+physx::PxScene* Core::Scene::GetPxScene()
 {
 	return mpPxScene;
 }
 
-void Scene::Initialize()
+void Core::Scene::Initialize()
 {
 	if (!TryLockExclusiveObjects())
 		return;
@@ -107,7 +107,7 @@ void Scene::Initialize()
 	UnlockExclusiveObjects();
 }
 
-Object* Scene::AddObject(bool isActive)
+Core::Object* Core::Scene::AddObject(bool isActive)
 {
 	if (!TryLockExclusiveObjects())
 		return nullptr;
@@ -117,38 +117,38 @@ Object* Scene::AddObject(bool isActive)
 	return pObject;
 }
 
-bool Scene::TryLockSharedObjects()
+bool Core::Scene::TryLockSharedObjects()
 {
 	return mObjectsMutex.try_lock_shared_for(mObjectsMutexDuration);
 }
 
-void Scene::UnlockSharedObjects()
+void Core::Scene::UnlockSharedObjects()
 {
 	mObjectsMutex.unlock_shared();
 }
 
-bool Scene::TryLockExclusiveObjects()
+bool Core::Scene::TryLockExclusiveObjects()
 {
 	return mObjectsMutex.try_lock_for(mObjectsMutexDuration);
 }
 
-void Scene::UnlockExclusiveObjects()
+void Core::Scene::UnlockExclusiveObjects()
 {
 	mObjectsMutex.unlock();
 }
 
-void Scene::AddCanvas(Canvas* pCanvas)
+void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 {
 	mpCanvases.emplace(pCanvas);
 	pCanvas->RunThread(&mConditionVar, &mMutex);
 }
 
-void Scene::Render()
+void Core::Scene::Render()
 {
-	for (Canvas* pCanvas : mpCanvases)
+	for (Core::Canvas* pCanvas : mpCanvases)
 	{
 		std::lock_guard<std::mutex> lk(mMutex);
-		pCanvas->SetThreadAction(ThreadAction::Render);
+		pCanvas->SetThreadAction(Core::ThreadAction::Render);
 	}
 	mConditionVar.notify_all();
 }

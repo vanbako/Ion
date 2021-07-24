@@ -8,10 +8,10 @@ namespace Ion
 	namespace Core
 	{
 		class ModelC
-			: public Component
+			: public Core::Component
 		{
 		public:
-			explicit ModelC(bool isActive, Object* pObject);
+			explicit ModelC(bool isActive, Core::Object* pObject);
 			virtual ~ModelC() = default;
 			ModelC(const ModelC& other) = default;
 			ModelC(ModelC&& other) noexcept = default;

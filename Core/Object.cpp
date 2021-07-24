@@ -3,9 +3,9 @@
 #include "ControllerC.h"
 #include "ViewC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Object::Object(bool isActive, Scene* pScene, Object* pParent)
+Core::Object::Object(bool isActive, Core::Scene* pScene, Core::Object* pParent)
 	: mIsActive{ isActive }
 	, mpScene{ pScene }
 	, mpParentObject{ pParent }
@@ -17,17 +17,17 @@ Object::Object(bool isActive, Scene* pScene, Object* pParent)
 {
 }
 
-Object::~Object()
+Core::Object::~Object()
 {
-	for (ModelC* pModelC : mpModelCs)
+	for (Core::ModelC* pModelC : mpModelCs)
 		delete pModelC;
-	for (ControllerC* pControllerC : mpControllerCs)
+	for (Core::ControllerC* pControllerC : mpControllerCs)
 		delete pControllerC;
-	for (ViewC* pViewC : mpViewCs)
+	for (Core::ViewC* pViewC : mpViewCs)
 		delete pViewC;
 }
 
-void Object::SetIsActive(bool isActive, bool includeComponents)
+void Core::Object::SetIsActive(bool isActive, bool includeComponents)
 {
 	mIsActive = isActive;
 	for (auto& childObject : mChildObjects)
@@ -43,79 +43,79 @@ void Object::SetIsActive(bool isActive, bool includeComponents)
 	}
 }
 
-const bool Object::GetIsActive() const
+const bool Core::Object::GetIsActive() const
 {
 	return mIsActive;
 }
 
-Scene* Object::GetScene()
+Core::Scene* Core::Object::GetScene()
 {
 	return mpScene;
 }
 
-Object* Object::GetParent()
+Core::Object* Core::Object::GetParent()
 {
 	return mpParentObject;
 }
 
-Object* Object::AddChildObject(bool isActive)
+Core::Object* Core::Object::AddChildObject(bool isActive)
 {
 	mChildObjects.emplace_back(isActive, mpScene, this);
 	Core::Object* pObject{ &mChildObjects.back() };
 	return pObject;
 }
 
-void Object::ModelCInitialize()
+void Core::Object::ModelCInitialize()
 {
-	for (ModelC* pModelC : mpModelCs)
+	for (Core::ModelC* pModelC : mpModelCs)
 		pModelC->Initialize();
 	for (auto& childObject : mChildObjects)
 		childObject.ModelCInitialize();
 }
 
-void Object::ModelCUpdate(float delta)
+void Core::Object::ModelCUpdate(float delta)
 {
-	for (ModelC* pModelC : mpModelCs)
+	for (Core::ModelC* pModelC : mpModelCs)
 		pModelC->Update(delta);
 	for (auto& childObject : mChildObjects)
 		childObject.ModelCUpdate(delta);
 }
 
-void Object::ModelCSwitch()
+void Core::Object::ModelCSwitch()
 {
-	for (ModelC* pModelC : mpModelCs)
+	for (Core::ModelC* pModelC : mpModelCs)
 		pModelC->Switch();
 	for (auto& childObject : mChildObjects)
 		childObject.ModelCSwitch();
 }
 
-void Object::ControllerCInitialize()
+void Core::Object::ControllerCInitialize()
 {
-	for (ControllerC* pControllerC : mpControllerCs)
+	for (Core::ControllerC* pControllerC : mpControllerCs)
 		pControllerC->Initialize();
 	for (auto& childObject : mChildObjects)
 		childObject.ControllerCInitialize();
 }
 
-void Object::ControllerCUpdate(float delta)
+void Core::Object::ControllerCUpdate(float delta)
 {
-	for (ControllerC* pControllerC : mpControllerCs)
+	for (Core::ControllerC* pControllerC : mpControllerCs)
 		pControllerC->Update(delta);
 	for (auto& childObject : mChildObjects)
 		childObject.ControllerCUpdate(delta);
 }
 
-void Object::ViewCInitialize()
+void Core::Object::ViewCInitialize()
 {
-	for (ViewC* pViewC : mpViewCs)
+	for (Core::ViewC* pViewC : mpViewCs)
 		pViewC->Initialize();
 	for (auto& childObject : mChildObjects)
 		childObject.ViewCInitialize();
 }
 
-void Object::ViewCUpdate(float delta)
+void Core::Object::ViewCUpdate(float delta)
 {
-	for (ViewC* pViewC : mpViewCs)
+	for (Core::ViewC* pViewC : mpViewCs)
 		pViewC->Update(delta);
 	for (auto& childObject : mChildObjects)
 		childObject.ViewCUpdate(delta);

@@ -1,7 +1,13 @@
 #pragma once
 
-enum class CoordSystem
+namespace Ion
 {
-	LeftHanded,
-	RightHanded
-};
+	namespace Core
+	{
+		enum class CoordSystem
+		{
+			LeftHanded,
+			RightHanded
+		};
+	}
+}

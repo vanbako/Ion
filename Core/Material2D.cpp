@@ -3,9 +3,9 @@
 #include "Application.h"
 #include "Canvas.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Material2D::Material2D(Application* pApplication, const std::string& name)
+Core::Material2D::Material2D(Core::Application* pApplication, const std::string& name)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mName{ name }
@@ -13,7 +13,7 @@ Material2D::Material2D(Application* pApplication, const std::string& name)
 {
 }
 
-void Material2D::Initialize()
+void Core::Material2D::Initialize()
 {
 	if (mIsInitialized)
 		return;
@@ -21,13 +21,13 @@ void Material2D::Initialize()
 	mIsInitialized = true;
 }
 
-void Material2D::Render(Canvas* pCanvas)
+void Core::Material2D::Render(Core::Canvas* pCanvas)
 {
 	for (auto pViewC : mpCanvasViewCs[pCanvas])
 		pViewC->Render(pCanvas, this);
 }
 
-void Material2D::AddViewC(Canvas* pCanvas, ViewC* pViewC)
+void Core::Material2D::AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC)
 {
 	mpCanvasViewCs[pCanvas].emplace_back(pViewC);
 }

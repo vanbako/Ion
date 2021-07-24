@@ -15,7 +15,7 @@ namespace Ion
 			Logger& operator=(const Logger&) = delete;
 			Logger& operator=(Logger&&) = delete;
 
-			virtual void Message(void* pClass, MsgType msgType, const std::string& msg) = 0;
+			virtual void Message(void* pClass, Core::MsgType msgType, const std::string& msg) = 0;
 		protected:
 			const std::string mLocation;
 

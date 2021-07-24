@@ -22,9 +22,6 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{f64835f3-042c-4738-8a95-2d9a18aab783}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Vertex">
-      <UniqueIdentifier>{ea733c97-fd7b-47d0-a9bc-b58d996ad340}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Material">
       <UniqueIdentifier>{a83f9b7e-72a8-4475-81ca-3d23d4526eaf}</UniqueIdentifier>
     </Filter>
@@ -54,9 +51,6 @@
     </Filter>
     <Filter Include="Model">
       <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DirectXTK12">
-      <UniqueIdentifier>{3c0b96d9-bd5a-4ad0-8880-5bef9d83763b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{1799dd8c-33f1-466e-9eb1-7c133a972161}</UniqueIdentifier>
@@ -117,6 +111,9 @@
     </Filter>
     <Filter Include="ServiceLocator\Logger">
       <UniqueIdentifier>{7ad3b09f-4809-4c24-a05d-be0b7c255347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PosNorm">
+      <UniqueIdentifier>{840bbdaa-0d81-46d1-ba30-ccaeb35b18a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,9 +255,6 @@
     <ClInclude Include="include\Window.h">
       <Filter>Window</Filter>
     </ClInclude>
-    <ClInclude Include="include\VertexPNC.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
     <ClInclude Include="include\Texture.h">
       <Filter>Texture</Filter>
     </ClInclude>
@@ -293,33 +287,6 @@
     </ClInclude>
     <ClInclude Include="include\AngleUnit.h">
       <Filter>Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\DDS.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\DDSTextureLoader.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\DirectXHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\GraphicsMemory.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\LinearAllocator.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\LoaderHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\PlatformHelpers.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\ResourceUploadBatch.h">
-      <Filter>DirectXTK12</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTK12\WICTextureLoader.h">
-      <Filter>DirectXTK12</Filter>
     </ClInclude>
     <ClInclude Include="include\d3dx12.h">
       <Filter>Helper</Filter>
@@ -357,6 +324,15 @@
     <ClInclude Include="include\MsgType.h">
       <Filter>Enums</Filter>
     </ClInclude>
+    <ClInclude Include="include\BinOfstream.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelFormat.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VertexPNC.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -373,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="ViewC.cpp">
       <Filter>Component\ViewComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexPNC.cpp">
-      <Filter>Vertex</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -491,21 +464,6 @@
     <ClCompile Include="PhysicsST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXTK12\DDSTextureLoader.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXTK12\GraphicsMemory.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXTK12\LinearAllocator.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXTK12\ResourceUploadBatch.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXTK12\WICTextureLoader.cpp">
-      <Filter>DirectXTK12</Filter>
-    </ClCompile>
     <ClCompile Include="AnimatedModelVC.cpp">
       <Filter>Component\ViewComponents</Filter>
     </ClCompile>
@@ -523,6 +481,9 @@
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="BinOfstream.cpp">
+      <Filter>Helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -556,6 +517,7 @@
     <None Include="Shaders\PosNormTanTex_aVSInput.hlsli">
       <Filter>Shaders\Inputs</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
@@ -611,6 +573,15 @@
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_aAN_rs.hlsl">
       <Filter>Shaders\PosNormTanTex\aAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_ps.hlsl">
+      <Filter>Shaders\PosNorm</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_rs.hlsl">
+      <Filter>Shaders\PosNorm</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_vs.hlsl">
+      <Filter>Shaders\PosNorm</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -16,31 +16,31 @@ namespace Ion
 		class Texture;
 
 		class InstancedModelVC
-			: public ModelVC
+			: public Core::ModelVC
 		{
 		public:
-			explicit InstancedModelVC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding, CoordSystem coordSystem, Object* pObject);
+			explicit InstancedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
 			virtual ~InstancedModelVC();
 			InstancedModelVC(const InstancedModelVC& other) = default;
 			InstancedModelVC(InstancedModelVC&& other) noexcept = default;
 			InstancedModelVC& operator=(const InstancedModelVC& other) = default;
 			InstancedModelVC& operator=(InstancedModelVC&& other) noexcept = default;
 
-			void AddInstance(const TransformMC& transform);
-			void AddInstances(const std::vector<TransformMC>& transforms);
+			void AddInstance(const Core::TransformMC& transform);
+			void AddInstances(const std::vector<Core::TransformMC>& transforms);
 			void ReadInstances();
-			std::vector<TransformMC>& GetInstances();
+			std::vector<Core::TransformMC>& GetInstances();
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override;
-			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override { (pCanvas); (pMaterial); };
+			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
+			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
 			static const size_t mMaxInstances;
-			std::vector<TransformMC> mTransforms;
+			std::vector<Core::TransformMC> mTransforms;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpInstanceBuffer;
-			std::vector<InstanceBuffer> mInstanceBufferData;
+			std::vector<Core::InstanceBuffer> mInstanceBufferData;
 			UINT8* mpInstanceDataBegin;
 		};
 	}

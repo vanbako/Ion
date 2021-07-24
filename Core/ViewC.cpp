@@ -7,10 +7,10 @@
 #include "Material2D.h"
 #include "Canvas.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ViewC::ViewC(bool isActive, Object* pObject, const std::string& material3D, const std::string& material2D)
-	: Component(isActive, pObject)
+Core::ViewC::ViewC(bool isActive, Core::Object* pObject, const std::string& material3D, const std::string& material2D)
+	: Core::Component(isActive, pObject)
 	, mpMaterial3D{ nullptr }
 	, mpMaterial2D{ nullptr }
 	, mpCanvases{}
@@ -27,7 +27,7 @@ ViewC::ViewC(bool isActive, Object* pObject, const std::string& material3D, cons
 	}
 }
 
-void ViewC::AddCanvas(Canvas* pCanvas)
+void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)
 {
 	if (mpMaterial3D != nullptr)
 		mpMaterial3D->AddViewC(pCanvas, this);

@@ -9,17 +9,17 @@ namespace Ion
 		class InputCC;
 
 		class ControllerST final
-			: public SceneThread
+			: public Core::SceneThread
 		{
 		public:
-			explicit ControllerST(Scene* pScene, std::chrono::microseconds updateTime);
+			explicit ControllerST(Core::Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~ControllerST() = default;
 			ControllerST(const ControllerST& other) = delete;
 			ControllerST(ControllerST&& other) noexcept = delete;
 			ControllerST& operator=(const ControllerST& other) = delete;
 			ControllerST& operator=(ControllerST&& other) noexcept = delete;
 
-			void Register(InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Command*>>& commands);
+			void Register(Core::InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Core::Command*>>& commands);
 		protected:
 			virtual void Inner(float delta) override;
 		private:
@@ -27,7 +27,7 @@ namespace Ion
 
 			void Input();
 
-			std::map<int, std::vector<std::pair<Command*, InputCC*>>> mCommands;
+			std::map<int, std::vector<std::pair<Core::Command*, Core::InputCC*>>> mCommands;
 		};
 	}
 }

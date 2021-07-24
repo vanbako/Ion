@@ -13,22 +13,22 @@ namespace Ion
 		class SceneThread
 		{
 		public:
-			explicit SceneThread(Scene* pScene, std::chrono::microseconds updateTime);
+			explicit SceneThread(Core::Scene* pScene, std::chrono::microseconds updateTime);
 			virtual ~SceneThread();
 			SceneThread(const SceneThread& other) = delete;
 			SceneThread(SceneThread&& other) noexcept = delete;
 			SceneThread& operator=(const SceneThread& other) = delete;
 			SceneThread& operator=(SceneThread&& other) noexcept = delete;
 
-			Scene* GetScene();
+			Core::Scene* GetScene();
 			void setUpdateTime(std::chrono::microseconds updateTime);
 			const std::chrono::microseconds GetUpdateTime() const;
 		protected:
-			static void Loop(SceneThread* pSceneThread);
+			static void Loop(Core::SceneThread* pSceneThread);
 
 			virtual void Inner(float delta) = 0;
 
-			Scene* mpScene;
+			Core::Scene* mpScene;
 			std::atomic<std::chrono::microseconds> mUpdateTime;
 			std::thread mThread;
 			std::timed_mutex mStatsMutex;

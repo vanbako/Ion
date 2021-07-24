@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "NullAudio.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-int NullAudio::AddSound(const std::string& filename, bool loop)
+int Core::NullAudio::AddSound(const std::string& filename, bool loop)
 {
 	(filename);
 	(loop);

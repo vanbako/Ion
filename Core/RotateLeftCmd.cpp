@@ -2,19 +2,19 @@
 #include "RotateLeftCmd.h"
 #include "ReceiverMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-RotateLeftCmd::RotateLeftCmd(ReceiverMC* pReceiver)
-	: Command(pReceiver)
+Core::RotateLeftCmd::RotateLeftCmd(Core::ReceiverMC* pReceiver)
+	: Core::Command(pReceiver)
 {
 }
 
-Command* RotateLeftCmd::Duplicate()
+Core::Command* Core::RotateLeftCmd::Duplicate()
 {
-	return new RotateLeftCmd{ mpReceiver };
+	return new Core::RotateLeftCmd{ mpReceiver };
 }
 
-void RotateLeftCmd::Execute()
+void Core::RotateLeftCmd::Execute()
 {
 	mpReceiver->RotateLeft();
 }

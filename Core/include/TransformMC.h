@@ -9,10 +9,10 @@ namespace Ion
 	namespace Core
 	{
 		class TransformMC final
-			: public ModelC
+			: public Core::ModelC
 		{
 		public:
-			explicit TransformMC(bool isActive, Object* pObject);
+			explicit TransformMC(bool isActive, Core::Object* pObject);
 			~TransformMC() = default;
 			TransformMC(const TransformMC& other) = default;
 			TransformMC(TransformMC&& other) noexcept = default;
@@ -26,7 +26,7 @@ namespace Ion
 			void SetPosition(const DirectX::XMFLOAT4& position);
 			void SetScale(const DirectX::XMFLOAT4& scale);
 			void SetRotation(const DirectX::XMFLOAT4& rotation);
-			void SetRotation(const DirectX::XMFLOAT3& rotation, AngleUnit unit = AngleUnit::Degree);
+			void SetRotation(const DirectX::XMFLOAT3& rotation, Core::AngleUnit unit = Core::AngleUnit::Degree);
 			void SetForward(const DirectX::XMFLOAT4& forward);
 			void SetUp(const DirectX::XMFLOAT4& up);
 			void SetRight(const DirectX::XMFLOAT4& right);

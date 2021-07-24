@@ -15,12 +15,12 @@ namespace Ion
 			Command& operator=(const Command& other) = default;
 			Command& operator=(Command&& other) noexcept = default;
 
-			virtual Command* Duplicate() = 0;
+			virtual Core::Command* Duplicate() = 0;
 			virtual void Execute() = 0;
 		protected:
-			explicit Command(ReceiverMC* pReceiver);
+			explicit Command(Core::ReceiverMC* pReceiver);
 
-			ReceiverMC* mpReceiver;
+			Core::ReceiverMC* mpReceiver;
 		};
 	}
 }

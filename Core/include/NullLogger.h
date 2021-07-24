@@ -6,7 +6,7 @@ namespace Ion
 	namespace Core
 	{
 		class NullLogger final
-			: public Logger
+			: public Core::Logger
 		{
 		public:
 			explicit NullLogger(const std::string& location = "");
@@ -16,7 +16,7 @@ namespace Ion
 			NullLogger& operator=(const NullLogger&) = delete;
 			NullLogger& operator=(const NullLogger&&) = delete;
 
-			virtual void Message(void* pClass, MsgType msgType, const std::string& msg) override;
+			virtual void Message(void* pClass, Core::MsgType msgType, const std::string& msg) override;
 		};
 	}
 }

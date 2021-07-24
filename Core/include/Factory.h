@@ -17,9 +17,9 @@ namespace Ion
 			Factory& operator=(const Factory& other) = delete;
 			Factory& operator=(Factory&& other) noexcept = delete;
 
-			static Object* AddCamera(Scene* pScene);
-			static Object* AddCube(
-				Scene* pScene,
+			static Core::Object* AddCamera(Core::Scene* pScene);
+			static Core::Object* AddCube(
+				Core::Scene* pScene,
 				float width = 1.f,
 				float height = 1.f,
 				float depth = 1.f,

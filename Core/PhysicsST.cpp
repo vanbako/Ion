@@ -2,16 +2,15 @@
 #include "Application.h"
 #include "PhysicsST.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-PhysicsST::PhysicsST(Scene* pScene, std::chrono::microseconds updateTime)
-	: SceneThread(pScene, updateTime)
+Core::PhysicsST::PhysicsST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+	: Core::SceneThread(pScene, updateTime)
 {
 }
 
-void PhysicsST::Inner(float delta)
+void Core::PhysicsST::Inner(float delta)
 {
-	(delta);
 	mpScene->GetPxScene()->lockWrite();
 	mpScene->GetPxScene()->simulate(delta);
 	mpScene->GetPxScene()->fetchResults(true);

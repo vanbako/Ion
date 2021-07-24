@@ -1,7 +1,13 @@
 #pragma once
 
-enum class Winding
+namespace Ion
 {
-	CW,
-	CCW
-};
+	namespace Core
+	{
+		enum class Winding
+		{
+			CW,
+			CCW
+		};
+	}
+}

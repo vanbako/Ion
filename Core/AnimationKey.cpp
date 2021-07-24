@@ -1,25 +1,25 @@
 #include "pch.h"
 #include "AnimationKey.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-AnimationKey::AnimationKey()
+Core::AnimationKey::AnimationKey()
 	: mTick{ 0.f }
 	, mBoneTransforms{}
 {
 }
 
-void AnimationKey::SetTick(float tick)
+void Core::AnimationKey::SetTick(float tick)
 {
 	mTick = tick;
 }
 
-const float AnimationKey::GetTick() const
+const float Core::AnimationKey::GetTick() const
 {
 	return mTick;
 }
 
-std::vector<DirectX::XMFLOAT4X4>& AnimationKey::GetBoneTransforms()
+std::vector<DirectX::XMFLOAT4X4>& Core::AnimationKey::GetBoneTransforms()
 {
 	return mBoneTransforms;
 }

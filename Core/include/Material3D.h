@@ -13,7 +13,7 @@ namespace Ion
 		class Material3D final
 		{
 		public:
-			explicit Material3D(Application* pApplication, const std::string& name);
+			explicit Material3D(Core::Application* pApplication, const std::string& name);
 			~Material3D();
 			Material3D(const Material3D& other) = delete;
 			Material3D(Material3D&& other) noexcept = delete;
@@ -21,24 +21,24 @@ namespace Ion
 			Material3D& operator=(Material3D&& other) noexcept = delete;
 
 			void Initialize();
-			void Render(Canvas* pCanvas);
+			void Render(Core::Canvas* pCanvas);
 			const Microsoft::WRL::ComPtr<ID3D12RootSignature>& GetRootSignature();
 			const Microsoft::WRL::ComPtr<ID3D12PipelineState>& GetPipelineState();
 			D3D12_INPUT_ELEMENT_DESC* GetInputElementDescs();
 			UINT GetInputElementCount() const;
 			UINT GetLayoutSize() const;
-			const std::set<TextureType>& GetTextureTypeSet() const;
+			const std::set<Core::TextureType>& GetTextureTypeSet() const;
 
-			void AddViewC(Canvas* pCanvas, ViewC* pViewC);
+			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC);
 
-			static const std::map<std::string, SemanticInfo>& GetSemanticStrings();
+			static const std::map<std::string, Core::SemanticInfo>& GetSemanticStrings();
 		private:
 			static const UINT mMaxInputParam;
-			static const std::map<std::string, SemanticInfo> mSemanticStrings;
-			static const std::map<std::string, TextureType> mTextureTypeStrings;
+			static const std::map<std::string, Core::SemanticInfo> mSemanticStrings;
+			static const std::map<std::string, Core::TextureType> mTextureTypeStrings;
 
 			bool mIsInitialized;
-			Application* mpApplication;
+			Core::Application* mpApplication;
 			std::string mName;
 			Microsoft::WRL::ComPtr<ID3DBlob>
 				mRS,
@@ -52,8 +52,8 @@ namespace Ion
 				mConstantBufferCount,
 				mInputElementCount,
 				mLayoutSize;
-			std::map<Canvas*,std::vector<ViewC*>> mpCanvasViewCs;
-			std::set<TextureType> mTextureTypes;
+			std::map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
+			std::set<Core::TextureType> mTextureTypes;
 		};
 	}
 }

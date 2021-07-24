@@ -2,19 +2,19 @@
 #include "MoveDownCmd.h"
 #include "ReceiverMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-MoveDownCmd::MoveDownCmd(ReceiverMC* pReceiver)
-	: Command(pReceiver)
+Core::MoveDownCmd::MoveDownCmd(Core::ReceiverMC* pReceiver)
+	: Core::Command(pReceiver)
 {
 }
 
-Command* MoveDownCmd::Duplicate()
+Core::Command* Core::MoveDownCmd::Duplicate()
 {
-	return new MoveDownCmd{ mpReceiver };
+	return new Core::MoveDownCmd{ mpReceiver };
 }
 
-void MoveDownCmd::Execute()
+void Core::MoveDownCmd::Execute()
 {
 	mpReceiver->MoveDown();
 }

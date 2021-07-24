@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "FileLogger.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-FileLogger::FileLogger(const std::string& location)
-	: Logger(location)
+Core::FileLogger::FileLogger(const std::string& location)
+	: Core::Logger(location)
 {
 }
 
-void FileLogger::Message(void* pClass, MsgType msgType, const std::string& msg)
+void Core::FileLogger::Message(void* pClass, Core::MsgType msgType, const std::string& msg)
 {
 	std::ofstream file{ mLocation };
 	if (!file.is_open())
@@ -18,6 +18,6 @@ void FileLogger::Message(void* pClass, MsgType msgType, const std::string& msg)
 		<< typeid(pClass).name() << ' '
 		<< msg << std::endl;
 	file.close();
-	if (msgType == MsgType::Fatal)
+	if (msgType == Core::MsgType::Fatal)
 		throw std::runtime_error{ typeid(pClass).name() + ' ' + msg };
 }

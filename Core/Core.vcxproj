@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -45,9 +46,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -58,8 +61,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -79,8 +80,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -92,15 +91,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXTK12\DDS.h" />
-    <ClInclude Include="DirectXTK12\DDSTextureLoader.h" />
-    <ClInclude Include="DirectXTK12\DirectXHelpers.h" />
-    <ClInclude Include="DirectXTK12\GraphicsMemory.h" />
-    <ClInclude Include="DirectXTK12\LinearAllocator.h" />
-    <ClInclude Include="DirectXTK12\LoaderHelpers.h" />
-    <ClInclude Include="DirectXTK12\PlatformHelpers.h" />
-    <ClInclude Include="DirectXTK12\ResourceUploadBatch.h" />
-    <ClInclude Include="DirectXTK12\WICTextureLoader.h" />
     <ClInclude Include="include\AngleUnit.h" />
     <ClInclude Include="include\AnimatedModelVC.h" />
     <ClInclude Include="include\AnimationClip.h" />
@@ -108,6 +98,7 @@
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\Audio.h" />
     <ClInclude Include="include\BinIfstream.h" />
+    <ClInclude Include="include\BinOfstream.h" />
     <ClInclude Include="include\BonesConstantBuffer.h" />
     <ClInclude Include="include\CameraRMC.h" />
     <ClInclude Include="include\Canvas.h" />
@@ -170,6 +161,7 @@
     <ClInclude Include="include\ViewST.h" />
     <ClInclude Include="include\Winding.h" />
     <ClInclude Include="include\Window.h" />
+    <ClInclude Include="ModelFormat.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +170,7 @@
     <ClCompile Include="AnimationKey.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BinIfstream.cpp" />
+    <ClCompile Include="BinOfstream.cpp" />
     <ClCompile Include="CameraRMC.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CharacterRMC.cpp" />
@@ -185,11 +178,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
     <ClCompile Include="ControllerST.cpp" />
-    <ClCompile Include="DirectXTK12\DDSTextureLoader.cpp" />
-    <ClCompile Include="DirectXTK12\GraphicsMemory.cpp" />
-    <ClCompile Include="DirectXTK12\LinearAllocator.cpp" />
-    <ClCompile Include="DirectXTK12\ResourceUploadBatch.cpp" />
-    <ClCompile Include="DirectXTK12\WICTextureLoader.cpp" />
     <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
@@ -227,13 +215,13 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />
-    <ClCompile Include="VertexPNC.cpp" />
     <ClCompile Include="ViewC.cpp" />
     <ClCompile Include="ViewST.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="Shaders\BonesBuffer.hlsli" />
     <None Include="Shaders\CalculateAlbedo.hlsli" />
     <None Include="Shaders\CalculateNormal.hlsli" />
@@ -353,8 +341,36 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_rs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNorm_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
+    <Import Project="..\packages\directxtk12_desktop_2017.2021.6.10.2\build\native\directxtk12_desktop_2017.targets" Condition="Exists('..\packages\directxtk12_desktop_2017.2021.6.10.2\build\native\directxtk12_desktop_2017.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtk12_desktop_2017.2021.6.10.2\build\native\directxtk12_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk12_desktop_2017.2021.6.10.2\build\native\directxtk12_desktop_2017.targets'))" />
+  </Target>
 </Project>

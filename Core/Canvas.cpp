@@ -3,9 +3,9 @@
 #include "Application.h"
 #include "CameraRMC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-Canvas::Canvas(Window* pWindow, RECT rectangle)
+Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 	: mpWindow{ pWindow }
 	, mRectangle{ rectangle }
 	, mRatio{ float(rectangle.right - rectangle.left) / float(rectangle.bottom - rectangle.top) }
@@ -44,15 +44,15 @@ Canvas::Canvas(Window* pWindow, RECT rectangle)
 		mThread = std::thread{ &ThreadRender, this };
 }
 
-Canvas::~Canvas()
+Core::Canvas::~Canvas()
 {
 	if (mThread.joinable())
 		mThread.join();
 }
 
-void Canvas::Initialize()
+void Core::Canvas::Initialize()
 {
-	Application* pApp{ mpWindow->GetApplication() };
+	Core::Application* pApp{ mpWindow->GetApplication() };
 	auto pDxgiFactory{ pApp->GetDxgiFactory() };
 	auto pD2d1Factory{ pApp->GetD2d1Factory() };
 	auto pDevice{ pApp->GetDevice() };
@@ -232,29 +232,29 @@ void Canvas::Initialize()
 	}
 }
 
-void Canvas::SetCamera(Object* pCamera)
+void Core::Canvas::SetCamera(Core::Object* pCamera)
 {
 	mpCamera = pCamera;
 	if (pCamera != nullptr)
 	pCamera->GetModelC<CameraRMC>()->SetCanvas(this);
 }
 
-Object* Canvas::GetCamera()
+Core::Object* Core::Canvas::GetCamera()
 {
 	return mpCamera;
 }
 
-float Canvas::GetRatio()
+float Core::Canvas::GetRatio()
 {
 	return mRatio;
 }
 
-const Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>& Canvas::GetBrush()
+const Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>& Core::Canvas::GetBrush()
 {
 	return mpBrush;
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE Canvas::GetCurrentBackBufferView()
+D3D12_CPU_DESCRIPTOR_HANDLE Core::Canvas::GetCurrentBackBufferView()
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE{
 		mpRtvHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -262,29 +262,29 @@ D3D12_CPU_DESCRIPTOR_HANDLE Canvas::GetCurrentBackBufferView()
 		mRtvDescriptorSize };
 }
 
-Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& Canvas::GetGraphicsCommandList()
+Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& Core::Canvas::GetGraphicsCommandList()
 {
 	return mpGraphicsCommandList;
 }
 
-void Canvas::AddMaterial(Material3D* pMaterial)
+void Core::Canvas::AddMaterial(Core::Material3D* pMaterial)
 {
 	mpMaterials3D.emplace(pMaterial);
 }
 
-void Canvas::AddMaterial(Material2D* pMaterial)
+void Core::Canvas::AddMaterial(Core::Material2D* pMaterial)
 {
 	mpMaterials2D.emplace(pMaterial);
 }
 
-void Canvas::SetDescriptor()
+void Core::Canvas::SetDescriptor()
 {
 	ID3D12DescriptorHeap* ppHeaps[]{ mpCanvasCbvHeap.Get() };
 	mpGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	mpGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCanvasCbvHeap->GetGPUDescriptorHandleForHeapStart());
 }
 
-void Canvas::Render()
+void Core::Canvas::Render()
 {
 	if ((mpCamera == nullptr) && (!mpMaterials3D.empty()))
 		return;
@@ -304,7 +304,7 @@ void Canvas::Render()
 	if (!mpMaterials3D.empty())
 	{
 		mCanvasConstantBufferData.mViewProj = mpCamera->GetModelC<CameraRMC>()->GetViewProjection();
-		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(CanvasConstantBuffer));
+		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(Core::CanvasConstantBuffer));
 	}
 
 	mpGraphicsCommandList->RSSetViewports(1, &mViewport);
@@ -362,9 +362,9 @@ void Canvas::Render()
 		mCurrentBackBuffer = 0;
 }
 
-void Canvas::WaitForPreviousFrame()
+void Core::Canvas::WaitForPreviousFrame()
 {
-	Application* pApp{ mpWindow->GetApplication() };
+	Core::Application* pApp{ mpWindow->GetApplication() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCommandQueue{ pApp->GetCommandQueue() };
 
@@ -380,7 +380,7 @@ void Canvas::WaitForPreviousFrame()
 	}
 }
 
-void Canvas::RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex)
+void Core::Canvas::RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex)
 {
 	if (mRunThread.load())
 		return;
@@ -389,12 +389,12 @@ void Canvas::RunThread(std::condition_variable* pConditionVar, std::mutex* pMute
 	mRunThread.store(true);
 }
 
-void Canvas::SetThreadAction(ThreadAction threadAction)
+void Core::Canvas::SetThreadAction(Core::ThreadAction threadAction)
 {
 	mThreadAction = threadAction;
 }
 
-void Canvas::ThreadRender(Canvas* pCanvas)
+void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 {
 	bool close{ false };
 	while (!close)
@@ -405,14 +405,14 @@ void Canvas::ThreadRender(Canvas* pCanvas)
 		pCanvas->mpConditionVar->wait(lk);
 		switch (pCanvas->mThreadAction)
 		{
-		case ThreadAction::Render:
+		case Core::ThreadAction::Render:
 			pCanvas->Render();
 			break;
-		case ThreadAction::Close:
+		case Core::ThreadAction::Close:
 			close = true;
 			break;
 		}
-		pCanvas->mThreadAction = ThreadAction::Sleep;
+		pCanvas->mThreadAction = Core::ThreadAction::Sleep;
 		lk.unlock();
 	}
 }

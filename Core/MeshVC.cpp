@@ -7,9 +7,9 @@
 #include "CameraRMC.h"
 #include "d3dx12.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-MeshVC::MeshVC(bool isActive, Object* pObject)
+Core::MeshVC::MeshVC(bool isActive, Core::Object* pObject)
 	: ViewC(isActive, pObject, "PosNormCol", "")
 	, mMeshChanged{ false }
 	, mVertices{}
@@ -24,7 +24,7 @@ MeshVC::MeshVC(bool isActive, Object* pObject)
 {
 }
 
-void MeshVC::AddTriangle(const VertexPNC& a, const VertexPNC& b, const VertexPNC& c)
+void Core::MeshVC::AddTriangle(const Core::VertexPNC& a, const Core::VertexPNC& b, const Core::VertexPNC& c)
 {
 	if (mVertexCount >= (mMaxVertices - 3))
 		return;
@@ -35,15 +35,15 @@ void MeshVC::AddTriangle(const VertexPNC& a, const VertexPNC& b, const VertexPNC
 	mMeshChanged = true;
 }
 
-void MeshVC::AddQuadrilateral(const Quadrilateral<VertexPNC>& quadrilateral)
+void Core::MeshVC::AddQuadrilateral(const Core::Quadrilateral<Core::VertexPNC>& quadrilateral)
 {
 	AddTriangle(quadrilateral.GetA(), quadrilateral.GetB(), quadrilateral.GetC());
 	AddTriangle(quadrilateral.GetC(), quadrilateral.GetD(), quadrilateral.GetA());
 }
 
-void MeshVC::Initialize()
+void Core::MeshVC::Initialize()
 {
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 
 	{
@@ -57,7 +57,7 @@ void MeshVC::Initialize()
 	{
 		const UINT vertexBufferSize{ UINT(mVertexCount * sizeof(VertexPNC)) };
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
-		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(mMaxVertices * sizeof(VertexPNC)) };
+		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(mMaxVertices * sizeof(Core::VertexPNC)) };
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
@@ -72,11 +72,11 @@ void MeshVC::Initialize()
 		//mVertexBuffer->Unmap(0, nullptr);
 
 		mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
-		mVertexBufferView.StrideInBytes = sizeof(VertexPNC);
-		mVertexBufferView.SizeInBytes = mMaxVertices * sizeof(VertexPNC);
+		mVertexBufferView.StrideInBytes = sizeof(Core::VertexPNC);
+		mVertexBufferView.SizeInBytes = mMaxVertices * sizeof(Core::VertexPNC);
 	}
 	{
-		const UINT objectConstantBufferSize{ sizeof(MeshVCConstantBuffer) };
+		const UINT objectConstantBufferSize{ sizeof(Core::MeshVCConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(objectConstantBufferSize) };
@@ -100,14 +100,14 @@ void MeshVC::Initialize()
 	mIsInitialized = true;
 }
 
-void MeshVC::Update(float delta)
+void Core::MeshVC::Update(float delta)
 {
 	(delta);
 	if (!mIsActive)
 		return;
 	if (mMeshChanged)
 	{
-		const UINT vertexBufferSize{ UINT(mVertexCount * sizeof(VertexPNC)) };
+		const UINT vertexBufferSize{ UINT(mVertexCount * sizeof(Core::VertexPNC)) };
 		//CD3DX12_RANGE readRange(0, 0);
 		//ThrowIfFailed(mVertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpVertexDataBegin)));
 		memcpy(mpVertexDataBegin, mVertices, vertexBufferSize);
@@ -116,7 +116,7 @@ void MeshVC::Update(float delta)
 	}
 }
 
-void MeshVC::Render(Canvas* pCanvas, Material3D* pMaterial)
+void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	(pMaterial);
 	if (!mIsActive)
@@ -124,15 +124,15 @@ void MeshVC::Render(Canvas* pCanvas, Material3D* pMaterial)
 	if (mVertexCount == 0)
 		return;
 
-	Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
 	auto pDevice{ pApplication->GetDevice() };
 	auto pCmdQueue{ pApplication->GetCommandQueue() };
 	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
-	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
+	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<Core::TransformMC>()->GetWorld()) };
+	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<Core::CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);

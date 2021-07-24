@@ -16,7 +16,7 @@ namespace Ion
 		class Object final
 		{
 		public:
-			explicit Object(bool isActive, Scene* pScene, Object* pParent = nullptr);
+			explicit Object(bool isActive, Core::Scene* pScene, Core::Object* pParent = nullptr);
 			~Object();
 			Object(const Object& other) = delete;
 			Object(Object&& other) noexcept = delete;
@@ -25,10 +25,10 @@ namespace Ion
 
 			void SetIsActive(bool isActive, bool includeComponents = false);
 			const bool GetIsActive() const;
-			Scene* GetScene();
+			Core::Scene* GetScene();
 
-			Object* GetParent();
-			Object* AddChildObject(bool isActive);
+			Core::Object* GetParent();
+			Core::Object* AddChildObject(bool isActive);
 
 			template<class T>
 			T* AddModelC(bool isActive)
@@ -37,10 +37,10 @@ namespace Ion
 				return (T*)mpModelCs.back();
 			}
 			template<>
-			TransformMC* AddModelC(bool isActive)
+			Core::TransformMC* AddModelC(bool isActive)
 			{
 				if (mpTransformMC == nullptr)
-					mpTransformMC = new TransformMC{ isActive, this };
+					mpTransformMC = new Core::TransformMC{ isActive, this };
 				mpModelCs.emplace_back(mpTransformMC);
 				return mpTransformMC;
 			}
@@ -53,7 +53,7 @@ namespace Ion
 				return nullptr;
 			}
 			template<>
-			TransformMC* GetModelC()
+			Core::TransformMC* GetModelC()
 			{
 				return mpTransformMC;
 			}
@@ -97,9 +97,9 @@ namespace Ion
 				return (T*)mpViewCs.back();
 			}
 			template<class T>
-			T* AddViewC(const std::string& modelName, const std::string& materialName, bool isActive, Winding winding = Winding::CW, CoordSystem coordSystem = CoordSystem::LeftHanded)
+			T* AddViewC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding = Core::Winding::CW, Core::CoordSystem coordSystem = Core::CoordSystem::LeftHanded)
 			{
-				mpViewCs.emplace_back(new T{ modelName, materialName, isActive, winding, coordSystem , this });
+				mpViewCs.emplace_back(new T{ modelName, modelExtension, materialName, isActive, winding, coordSystem , this });
 				return (T*)mpViewCs.back();
 			}
 			template<class T>
@@ -121,13 +121,13 @@ namespace Ion
 			void ViewCUpdate(float delta);
 		private:
 			bool mIsActive;
-			Scene* mpScene;
-			Object* mpParentObject;
-			std::list<Object> mChildObjects;
-			TransformMC* mpTransformMC;
-			std::list<ModelC*> mpModelCs;
-			std::list<ControllerC*> mpControllerCs;
-			std::list<ViewC*> mpViewCs;
+			Core::Scene* mpScene;
+			Core::Object* mpParentObject;
+			std::list<Core::Object> mChildObjects;
+			Core::TransformMC* mpTransformMC;
+			std::list<Core::ModelC*> mpModelCs;
+			std::list<Core::ControllerC*> mpControllerCs;
+			std::list<Core::ViewC*> mpViewCs;
 		};
 	}
 }

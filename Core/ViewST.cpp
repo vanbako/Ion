@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "ViewST.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ViewST::ViewST(Scene* pScene, std::chrono::microseconds updateTime)
-	: SceneThread(pScene, updateTime)
+Core::ViewST::ViewST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+	: Core::SceneThread(pScene, updateTime)
 {
 }
 
-void ViewST::Inner(float delta)
+void Core::ViewST::Inner(float delta)
 {
 	if (!mpScene->TryLockSharedObjects())
 		return;

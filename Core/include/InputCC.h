@@ -10,10 +10,10 @@ namespace Ion
 		class Command;
 
 		class InputCC final
-			: public ControllerC
+			: public Core::ControllerC
 		{
 		public:
-			explicit InputCC(bool isActive, Object* pObject);
+			explicit InputCC(bool isActive, Core::Object* pObject);
 			virtual ~InputCC() = default;
 			InputCC(const InputCC& other) = default;
 			InputCC(InputCC&& other) noexcept = default;
@@ -22,10 +22,10 @@ namespace Ion
 
 			virtual void Update(float) override;
 
-			void Queue(Command* pCommand);
+			void Queue(Core::Command* pCommand);
 		private:
 			// No need for thread-safety, Queue & Update are called from the same thread
-			std::vector<Command*> mpCommands;
+			std::vector<Core::Command*> mpCommands;
 		};
 	}
 }

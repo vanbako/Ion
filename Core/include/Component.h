@@ -9,7 +9,7 @@ namespace Ion
 		class Component
 		{
 		public:
-			explicit Component(bool isActive, Object* pObject);
+			explicit Component(bool isActive, Core::Object* pObject);
 			virtual ~Component() = default;
 			Component(const Component& other) = default;
 			Component(Component&& other) noexcept = default;
@@ -21,12 +21,12 @@ namespace Ion
 
 			void SetIsActive(bool isActive);
 			const bool GetIsActive() const;
-			void SetObject(Object* pObject);
-			Object* GetObject();
+			void SetObject(Core::Object* pObject);
+			Core::Object* GetObject();
 		protected:
 			bool mIsInitialized;
 			bool mIsActive;
-			Object* mpObject;
+			Core::Object* mpObject;
 		};
 	}
 }

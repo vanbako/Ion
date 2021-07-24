@@ -32,8 +32,8 @@ namespace Ion
 			void UnlockSharedKeyboard();
 			PBYTE GetKeyboard();
 
-			Scene* AddScene();
-			Window* AddWindow(const std::wstring& title, RECT rectangle = RECT{ 0, 0, 1280, 720 });
+			Core::Scene* AddScene();
+			Core::Window* AddWindow(const std::wstring& title, RECT rectangle = RECT{ 0, 0, 1280, 720 });
 			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			const Microsoft::WRL::ComPtr<IDXGIFactory4>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device>& GetDevice();
@@ -48,12 +48,12 @@ namespace Ion
 			//const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
 			physx::PxPhysics* GetPhysics();
 			const physx::PxTolerancesScale& GetToleranceScale();
-			ServiceLocator& GetServiceLocator();
+			Core::ServiceLocator& GetServiceLocator();
 
-			Material3D* AddMaterial3D(const std::string& name);
-			Material2D* AddMaterial2D(const std::string& name);
-			Model* AddModel(const std::string& name, Winding winding, CoordSystem coordSystem);
-			Texture* AddTexture(const std::string& name);
+			Core::Material3D* AddMaterial3D(const std::string& name);
+			Core::Material2D* AddMaterial2D(const std::string& name);
+			Core::Model* AddModel(const std::string& fileName, const std::string& fileExtension, Winding winding, CoordSystem coordSystem);
+			Core::Texture* AddTexture(const std::string& name);
 		private:
 			static const std::chrono::microseconds mRunSleep;
 			static const std::chrono::microseconds mKeyboardMutexDuration;
@@ -65,10 +65,10 @@ namespace Ion
 			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Scene> mScenes;
 			std::list<Window> mWindows;
-			std::map<std::string, Material3D> mMaterials3D;
-			std::map<std::string, Material2D> mMaterials2D;
-			std::map<std::string, Model> mModels;
-			std::map<std::string, Texture> mTextures;
+			std::map<std::string, Core::Material3D> mMaterials3D;
+			std::map<std::string, Core::Material2D> mMaterials2D;
+			std::map<std::string, Core::Model> mModels;
+			std::map<std::string, Core::Texture> mTextures;
 			Microsoft::WRL::ComPtr<IDXGIFactory4> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
 			Microsoft::WRL::ComPtr<IDXGIDevice> mpDxgiDevice;
@@ -84,7 +84,7 @@ namespace Ion
 			physx::PxTolerancesScale mPxToleranceScale;
 			physx::PxIonAllocatorCallback mIonAllocatorCallback;
 			physx::PxIonErrorCallback mIonErrorCallback;
-			ServiceLocator mServiceLocator;
+			Core::ServiceLocator mServiceLocator;
 
 			void KeyboardState();
 		};

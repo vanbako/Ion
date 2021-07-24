@@ -8,17 +8,17 @@ namespace Ion
 		class ReceiverMC;
 
 		class MoveDownCmd
-			: public Command
+			: public Core::Command
 		{
 		public:
-			explicit MoveDownCmd(ReceiverMC* pReceiver);
+			explicit MoveDownCmd(Core::ReceiverMC* pReceiver);
 			virtual ~MoveDownCmd() = default;
 			MoveDownCmd(const MoveDownCmd& other) = default;
 			MoveDownCmd(MoveDownCmd&& other) noexcept = default;
 			MoveDownCmd& operator=(const MoveDownCmd& other) = default;
 			MoveDownCmd& operator=(MoveDownCmd&& other) noexcept = default;
 
-			virtual Command* Duplicate() override;
+			virtual Core::Command* Duplicate() override;
 			virtual void Execute() override;
 		};
 	}

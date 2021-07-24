@@ -21,15 +21,15 @@ namespace Ion
 			ServiceLocator& operator=(const ServiceLocator&) = delete;
 			ServiceLocator& operator=(ServiceLocator&&) = delete;
 
-			Audio* GetAudio();
-			void RegisterAudioService(Audio* pAudioService);
-			Logger* GetLogger();
-			void RegisterLoggerService(Logger* pLoggerService);
+			Core::Audio* GetAudio();
+			void RegisterAudioService(Core::Audio* pAudioService);
+			Core::Logger* GetLogger();
+			void RegisterLoggerService(Core::Logger* pLoggerService);
 		private:
-			Audio* mpAudioService;
-			NullAudio mNullAudioService;
-			Logger* mpLoggerService;
-			NullLogger mNullLoggerService;
+			Core::Audio* mpAudioService;
+			Core::NullAudio mNullAudioService;
+			Core::Logger* mpLoggerService;
+			Core::NullLogger mNullLoggerService;
 		};
 	}
 }

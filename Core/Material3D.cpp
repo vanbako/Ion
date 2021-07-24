@@ -5,10 +5,10 @@
 #include "d3dx12.h"
 #include <d3dcompiler.h>
 
-using namespace Ion::Core;
+using namespace Ion;
 
-const UINT Material3D::mMaxInputParam{ 20 };
-const std::map<std::string, SemanticInfo> Material3D::mSemanticStrings
+const UINT Core::Material3D::mMaxInputParam{ 20 };
+const std::map<std::string, Core::SemanticInfo> Core::Material3D::mSemanticStrings
 {
 	{ "POSITION", SemanticInfo{ InputSemantic::Position, DXGI_FORMAT_R32G32B32_FLOAT, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
 	{ "NORMAL", SemanticInfo{ InputSemantic::Normal, DXGI_FORMAT_R32G32B32_FLOAT, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
@@ -20,7 +20,7 @@ const std::map<std::string, SemanticInfo> Material3D::mSemanticStrings
 	{ "BLENDWEIGHT", SemanticInfo{ InputSemantic::BlendWeight, DXGI_FORMAT_R32G32B32A32_FLOAT, 16, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA } },
 	{ "WORLD", SemanticInfo{ InputSemantic::World, DXGI_FORMAT_R32G32B32A32_FLOAT, 16, D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA } }
 };
-const std::map<std::string, TextureType> Material3D::mTextureTypeStrings
+const std::map<std::string, Core::TextureType> Core::Material3D::mTextureTypeStrings
 {
 	{ "gTextureAlbedo", TextureType::Albedo },
 	{ "gTextureNormal", TextureType::Normal },
@@ -34,7 +34,7 @@ const std::map<std::string, TextureType> Material3D::mTextureTypeStrings
 	{ "gTextureSelfIllumination", TextureType::SelfIllumination }
 };
 
-Material3D::Material3D(Application* pApplication, const std::string& name)
+Core::Material3D::Material3D(Core::Application* pApplication, const std::string& name)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mName{ name }
@@ -99,7 +99,7 @@ Material3D::Material3D(Application* pApplication, const std::string& name)
 			svInstanceID = 1;
 			continue;
 		}
-		const SemanticInfo& semanticInfo{ mSemanticStrings.at(mSigParDescs[i].SemanticName) };
+		const Core::SemanticInfo& semanticInfo{ mSemanticStrings.at(mSigParDescs[i].SemanticName) };
 		mpInputElementDescs[i] = {
 			mSigParDescs[i].SemanticName,
 			mSigParDescs[i].SemanticIndex,
@@ -113,13 +113,13 @@ Material3D::Material3D(Application* pApplication, const std::string& name)
 	mInputElementCount -= svInstanceID;
 }
 
-Material3D::~Material3D()
+Core::Material3D::~Material3D()
 {
 	if (mpInputElementDescs != nullptr)
 		delete[] mpInputElementDescs;
 }
 
-void Material3D::Initialize()
+void Core::Material3D::Initialize()
 {
 	if (mIsInitialized)
 		return;
@@ -153,7 +153,7 @@ void Material3D::Initialize()
 	mIsInitialized = true;
 }
 
-void Material3D::Render(Canvas* pCanvas)
+void Core::Material3D::Render(Core::Canvas* pCanvas)
 {
 	auto pCommandAllocator{ mpApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
@@ -167,42 +167,42 @@ void Material3D::Render(Canvas* pCanvas)
 		pViewC->Render(pCanvas, this);
 }
 
-const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Material3D::GetRootSignature()
+const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Core::Material3D::GetRootSignature()
 {
 	return mpRootSignature;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12PipelineState>& Material3D::GetPipelineState()
+const Microsoft::WRL::ComPtr<ID3D12PipelineState>& Core::Material3D::GetPipelineState()
 {
 	return mpPipelineState;
 }
 
-D3D12_INPUT_ELEMENT_DESC* Material3D::GetInputElementDescs()
+D3D12_INPUT_ELEMENT_DESC* Core::Material3D::GetInputElementDescs()
 {
 	return mpInputElementDescs;
 }
 
-UINT Material3D::GetInputElementCount() const
+UINT Core::Material3D::GetInputElementCount() const
 {
 	return mInputElementCount;
 }
 
-UINT Material3D::GetLayoutSize() const
+UINT Core::Material3D::GetLayoutSize() const
 {
 	return mLayoutSize;
 }
 
-const std::set<TextureType>& Material3D::GetTextureTypeSet() const
+const std::set<Core::TextureType>& Core::Material3D::GetTextureTypeSet() const
 {
 	return mTextureTypes;
 }
 
-void Material3D::AddViewC(Canvas* pCanvas, ViewC* pViewC)
+void Core::Material3D::AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC)
 {
 	mpCanvasViewCs[pCanvas].emplace_back(pViewC);
 }
 
-const std::map<std::string, SemanticInfo>& Material3D::GetSemanticStrings()
+const std::map<std::string, Core::SemanticInfo>& Core::Material3D::GetSemanticStrings()
 {
 	return mSemanticStrings;
 }

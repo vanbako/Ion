@@ -6,7 +6,7 @@ namespace Ion
 	namespace Core
 	{
 		class NullAudio final
-			: public Audio
+			: public Core::Audio
 		{
 		public:
 			explicit NullAudio() = default;

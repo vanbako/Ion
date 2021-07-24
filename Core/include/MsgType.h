@@ -1,9 +1,15 @@
 #pragma once
 
-enum class MsgType
+namespace Ion
 {
-	Info,
-	Warning,
-	Fatal,
-	Count
-};
+	namespace Core
+	{
+		enum class MsgType
+		{
+			Info,
+			Warning,
+			Fatal,
+			Count
+		};
+	}
+}

@@ -22,12 +22,12 @@ namespace Ion
 
 			const float GetDuration() const;
 			const float GetTicksPerSecond() const;
-			std::vector<AnimationKey>& GetKeys();
+			std::vector<Core::AnimationKey>& GetKeys();
 		private:
 			std::wstring mName;
 			float mDuration;
 			float mTicksPerSecond;
-			std::vector<AnimationKey> mKeys;
+			std::vector<Core::AnimationKey> mKeys;
 		};
 	}
 }

@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "ModelST.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ModelST::ModelST(Scene* pScene, std::chrono::microseconds updateTime)
-	: SceneThread(pScene, updateTime)
+Core::ModelST::ModelST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+	: Core::SceneThread(pScene, updateTime)
 {
 }
 
-void ModelST::Inner(float delta)
+void Core::ModelST::Inner(float delta)
 {
 	if (!mpScene->TryLockSharedObjects())
 		return;

@@ -13,10 +13,10 @@ namespace Ion
 		class Canvas2D;
 
 		class TriangleVC
-			: public ViewC
+			: public Core::ViewC
 		{
 		public:
-			explicit TriangleVC(bool isActive, Object* pObject);
+			explicit TriangleVC(bool isActive, Core::Object* pObject);
 			virtual ~TriangleVC() = default;
 			TriangleVC(const TriangleVC& other) = default;
 			TriangleVC(TriangleVC&& other) noexcept = default;
@@ -25,8 +25,8 @@ namespace Ion
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Canvas* pCanvas, Material3D* pMaterial) override { (pCanvas); (pMaterial); };
-			virtual void Render(Canvas* pCanvas, Material2D* pMaterial) override;
+			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override { (pCanvas); (pMaterial); };
+			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override;
 		private:
 			Microsoft::WRL::ComPtr<ID2D1PathGeometry> mpPathGeometry;
 		};

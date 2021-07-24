@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "ServiceLocator.h"
-#include "Audio.h"
-#include "NullAudio.h"
-#include "NullLogger.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-ServiceLocator::ServiceLocator()
+Core::ServiceLocator::ServiceLocator()
 	: mpLoggerService{ nullptr }
 	, mNullLoggerService{}
 	, mpAudioService{ nullptr }
@@ -16,12 +13,12 @@ ServiceLocator::ServiceLocator()
 	mpLoggerService = &mNullLoggerService;
 }
 
-Audio* ServiceLocator::GetAudio()
+Core::Audio* Core::ServiceLocator::GetAudio()
 {
 	return mpAudioService;
 }
 
-void ServiceLocator::RegisterAudioService(Audio* pAudioService)
+void Core::ServiceLocator::RegisterAudioService(Core::Audio* pAudioService)
 {
 	if (pAudioService == nullptr)
 		mpAudioService = &mNullAudioService;
@@ -29,12 +26,12 @@ void ServiceLocator::RegisterAudioService(Audio* pAudioService)
 		mpAudioService = pAudioService;
 }
 
-Logger* ServiceLocator::GetLogger()
+Core::Logger* Core::ServiceLocator::GetLogger()
 {
 	return mpLoggerService;
 }
 
-void ServiceLocator::RegisterLoggerService(Logger* pLoggerService)
+void Core::ServiceLocator::RegisterLoggerService(Core::Logger* pLoggerService)
 {
 	if (pLoggerService == nullptr)
 		mpLoggerService = &mNullLoggerService;

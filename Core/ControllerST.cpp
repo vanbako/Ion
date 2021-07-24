@@ -4,9 +4,9 @@
 #include "Command.h"
 #include "InputCC.h"
 
-using namespace Ion::Core;
+using namespace Ion;
 
-const std::map<std::string, int> ControllerST::mKeyNames{
+const std::map<std::string, int> Core::ControllerST::mKeyNames{
 	{ "VK_LBUTTON", VK_LBUTTON },
 	{ "VK_RBUTTON", VK_RBUTTON },
 	{ "VK_CANCEL", VK_CANCEL },
@@ -231,15 +231,15 @@ const std::map<std::string, int> ControllerST::mKeyNames{
 	{ "VK_OEM_CLEAR", VK_OEM_CLEAR }
 };
 
-ControllerST::ControllerST(Scene* pScene, std::chrono::microseconds updateTime)
-	: SceneThread(pScene, updateTime)
+Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+	: Core::SceneThread(pScene, updateTime)
 	, mCommands{}
 {
 }
 
 // Do not call Register while Scene is active, because it us not thread-safe!
 // If you really need to, make it thread-safe :-)
-void ControllerST::Register(InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Command*>>& commands)
+void Core::ControllerST::Register(Core::InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Core::Command*>>& commands)
 {
 	std::map<std::string, std::string> nameValues{};
 	std::string
@@ -260,11 +260,11 @@ void ControllerST::Register(InputCC* pInvoker, const std::string& name, const st
 		if (mCommands.contains(it2->second))
 			mCommands[it2->second].emplace_back(pair.second, pInvoker);
 		else
-			mCommands[it2->second] = std::vector<std::pair<Command*, InputCC*>>{ { pair.second, pInvoker } };
+			mCommands[it2->second] = std::vector<std::pair<Core::Command*, Core::InputCC*>>{ { pair.second, pInvoker } };
  	}
 }
 
-void ControllerST::Inner(float delta)
+void Core::ControllerST::Inner(float delta)
 {
 	Input();
 	if (!mpScene->TryLockSharedObjects())
@@ -274,7 +274,7 @@ void ControllerST::Inner(float delta)
 	mpScene->UnlockSharedObjects();
 }
 
-void ControllerST::Input()
+void Core::ControllerST::Input()
 {
 	if (!mpScene->GetApplication()->TryLockSharedKeyboard())
 		return;
