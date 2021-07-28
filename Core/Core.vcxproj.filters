@@ -115,6 +115,9 @@
     <Filter Include="Shaders\PosNorm">
       <UniqueIdentifier>{840bbdaa-0d81-46d1-ba30-ccaeb35b18a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PosNormTanTex\iaAN">
+      <UniqueIdentifier>{d580f232-a373-4756-99ec-4eb178ee6619}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -333,6 +336,24 @@
     <ClInclude Include="include\VertexPNC.h">
       <Filter>Structs</Filter>
     </ClInclude>
+    <ClInclude Include="include\MoveObjectRMC.h">
+      <Filter>Component\ModelComponents\Receivers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstancedAnimatedModelVC.h">
+      <Filter>Component\ViewComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NextObjectCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PrevObjectCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShowControlsCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlRMC.h">
+      <Filter>Component\ModelComponents\Receivers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -485,6 +506,24 @@
     <ClCompile Include="BinOfstream.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
+    <ClCompile Include="MoveObjectRMC.cpp">
+      <Filter>Component\ModelComponents\Receivers</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedAnimatedModelVC.cpp">
+      <Filter>Component\ViewComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="NextObjectCmd.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="PrevObjectCmd.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="ShowControlsCmd.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlRMC.cpp">
+      <Filter>Component\ModelComponents\Receivers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
@@ -582,6 +621,15 @@
     </FxCompile>
     <FxCompile Include="Shaders\PosNorm_vs.hlsl">
       <Filter>Shaders\PosNorm</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_ps.hlsl">
+      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_rs.hlsl">
+      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_vs.hlsl">
+      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

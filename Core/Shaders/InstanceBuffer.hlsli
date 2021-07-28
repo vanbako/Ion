@@ -3,7 +3,7 @@
 
 struct InstanceData
 {
-	float4x4 world;
+	float4x4 local;
 };
 
 StructuredBuffer<InstanceData> gInstanceData : register(t9);

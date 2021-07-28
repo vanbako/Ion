@@ -19,9 +19,13 @@ std::size_t Core::Scene::GetStatCount()
 
 Core::Scene::Scene(Core::Application* pApplication)
 	: mpApplication{ pApplication }
+	, mIsInitialized{ false }
 	, mIsActive{ false }
 	, mIsEnd{ false }
 	, mObjectsMutex{}
+	, mControllerCMutex{}
+	, mModelCMutex{}
+	, mViewCMutex{}
 	, mObjects{}
 	, mpModelST{ new Core::ModelST{ this, (std::chrono::microseconds)3000 } }
 	, mpControllerST{ new Core::ControllerST{ this, (std::chrono::microseconds)3000 } }
@@ -105,6 +109,7 @@ void Core::Scene::Initialize()
 		object.ViewCInitialize();
 	}
 	UnlockExclusiveObjects();
+	mIsInitialized = true;
 }
 
 Core::Object* Core::Scene::AddObject(bool isActive)
@@ -137,6 +142,66 @@ void Core::Scene::UnlockExclusiveObjects()
 	mObjectsMutex.unlock();
 }
 
+bool Core::Scene::TryLockSharedControllerCs()
+{
+	return mControllerCMutex.try_lock_shared_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockSharedControllerCs()
+{
+	mControllerCMutex.unlock_shared();
+}
+
+bool Core::Scene::TryLockExclusiveControllerCs()
+{
+	return mControllerCMutex.try_lock_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockExclusiveControllerCs()
+{
+	mControllerCMutex.unlock();
+}
+
+bool Core::Scene::TryLockSharedModelCs()
+{
+	return mModelCMutex.try_lock_shared_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockSharedModelCs()
+{
+	mModelCMutex.unlock_shared();
+}
+
+bool Core::Scene::TryLockExclusiveModelCs()
+{
+	return mModelCMutex.try_lock_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockExclusiveModelCs()
+{
+	mModelCMutex.unlock();
+}
+
+bool Core::Scene::TryLockSharedViewCs()
+{
+	return mViewCMutex.try_lock_shared_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockSharedViewCs()
+{
+	mViewCMutex.unlock_shared();
+}
+
+bool Core::Scene::TryLockExclusiveViewCs()
+{
+	return mViewCMutex.try_lock_for(mObjectsMutexDuration);
+}
+
+void Core::Scene::UnlockExclusiveViewCs()
+{
+	mViewCMutex.unlock();
+}
+
 void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 {
 	mpCanvases.emplace(pCanvas);
@@ -145,6 +210,13 @@ void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 
 void Core::Scene::Render()
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Scene.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	for (Core::Canvas* pCanvas : mpCanvases)
 	{
 		std::lock_guard<std::mutex> lk(mMutex);

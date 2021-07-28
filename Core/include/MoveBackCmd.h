@@ -7,7 +7,7 @@ namespace Ion
 	{
 		class ReceiverMC;
 
-		class MoveBackCmd
+		class MoveBackCmd final
 			: public Core::Command
 		{
 		public:

@@ -25,14 +25,17 @@ namespace Ion
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const = 0;
 			virtual const std::string& GetName() const = 0;
 
-			virtual void MoveForward() = 0;
-			virtual void MoveBack() = 0;
-			virtual void MoveLeft() = 0;
-			virtual void MoveRight() = 0;
-			virtual void MoveUp() = 0;
-			virtual void MoveDown() = 0;
-			virtual void RotateLeft() = 0;
-			virtual void RotateRight() = 0;
+			virtual void MoveForward() {};
+			virtual void MoveBack() {};
+			virtual void MoveLeft() {};
+			virtual void MoveRight() {};
+			virtual void MoveUp() {};
+			virtual void MoveDown() {};
+			virtual void RotateLeft() {};
+			virtual void RotateRight() {};
+			virtual void NextObject() {};
+			virtual void PrevObject() {};
+			virtual void ShowControls() {};
 		};
 	}
 }

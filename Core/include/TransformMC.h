@@ -32,6 +32,7 @@ namespace Ion
 			void SetRight(const DirectX::XMFLOAT4& right);
 			void SetPxRigidActor(physx::PxRigidActor* pPxRigidActor);
 
+			const DirectX::XMFLOAT4& GetRotation();
 			const DirectX::XMFLOAT4& GetWorldPosition() const;
 			const DirectX::XMFLOAT4& GetForward() const;
 			const DirectX::XMFLOAT4& GetUp() const;

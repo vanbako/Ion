@@ -1,0 +1,8 @@
+MoveForward VK_UP
+MoveBack VK_DOWN
+MoveLeft VK_LEFT
+MoveRight VK_RIGHT
+MoveUp VK_PRIOR
+MoveDown VK_NEXT
+RotateLeft VK_DELETE
+RotateRight VK_END

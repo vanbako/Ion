@@ -155,6 +155,13 @@ void Core::Material3D::Initialize()
 
 void Core::Material3D::Render(Core::Canvas* pCanvas)
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Material3D.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	auto pCommandAllocator{ mpApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 

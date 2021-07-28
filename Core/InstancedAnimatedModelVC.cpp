@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "AnimatedModelVC.h"
+#include "InstancedAnimatedModelVC.h"
 #include "Application.h"
 #include "Material3D.h"
 #include "Object.h"
@@ -11,8 +11,14 @@
 
 using namespace Ion;
 
-Core::AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
-	: Core::ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
+const size_t Core::InstancedAnimatedModelVC::mMaxInstances{ 40960 };
+
+Core::InstancedAnimatedModelVC::InstancedAnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
+	, mTransforms{}
+	, mpInstanceBuffer{}
+	, mInstanceBufferData{}
+	, mpInstanceDataBegin{ nullptr }
 	, mBoneTransforms{}
 	, mAnimationClip{}
 	, mTickCount{ 0.f }
@@ -27,27 +33,60 @@ Core::AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::
 	mBoneTransforms.reserve(128);
 	DirectX::XMFLOAT4X4 identity{ 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f };
 	mBoneTransforms.assign(128, identity);
-	mpBonesConstantBufferData = (BonesConstantBuffer *)&mBoneTransforms[0];
+	mpBonesConstantBufferData = (BonesConstantBuffer*)&mBoneTransforms[0];
 }
 
-Core::AnimatedModelVC::~AnimatedModelVC()
+Core::InstancedAnimatedModelVC::~InstancedAnimatedModelVC()
 {
 }
 
-void Core::AnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
+void Core::InstancedAnimatedModelVC::AddInstance(const Core::TransformMC& transformMC)
+{
+	mTransforms.push_back(transformMC);
+	mTransforms.back().Update(0.f);
+	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
+}
+
+void Core::InstancedAnimatedModelVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
+{
+	for (auto& transformMC : transformMCs)
+		AddInstance(transformMC);
+}
+
+void Core::InstancedAnimatedModelVC::ReadInstances()
+{
+	if (!mTransforms.empty())
+		return;
+	const std::vector<Core::Transform>& transforms{ mpModel->ReadInstances() };
+	Core::TransformMC transformMC{ true, mpObject };
+	for (auto& transform : transforms)
+	{
+		transformMC.SetPosition(transform.mPosition);
+		transformMC.SetScale(transform.mScale);
+		transformMC.SetRotation(transform.mRotation);
+		AddInstance(transformMC);
+	}
+}
+
+std::vector<Core::TransformMC>& Core::InstancedAnimatedModelVC::GetInstances()
+{
+	return mTransforms;
+}
+
+void Core::InstancedAnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
 {
 	mAnimationClip = animationClip;
 	mIsClipSet = true;
 }
 
-void Core::AnimatedModelVC::SetAnimation(size_t clipNumber)
+void Core::InstancedAnimatedModelVC::SetAnimation(size_t clipNumber)
 {
 	if (clipNumber >= mpModel->GetAnimationClips().size())
 		return;
 	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
 }
 
-void Core::AnimatedModelVC::SetIsAnimating(bool isAnimating)
+void Core::InstancedAnimatedModelVC::SetIsAnimating(bool isAnimating)
 {
 	mIsAnimating = isAnimating;
 	if (!mIsAnimating || !mIsClipSet)
@@ -55,12 +94,26 @@ void Core::AnimatedModelVC::SetIsAnimating(bool isAnimating)
 	mBoneTransforms.assign(mAnimationClip.GetKeys()[0].GetBoneTransforms().begin(), mAnimationClip.GetKeys()[0].GetBoneTransforms().end());
 }
 
-void Core::AnimatedModelVC::Initialize()
+void Core::InstancedAnimatedModelVC::Initialize()
 {
 	Core::ModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
+	{
+		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
+		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(sizeof(Core::InstanceBuffer) * mMaxInstances) };
+		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
+			&heapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&resDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&mpInstanceBuffer)));
 
+		CD3DX12_RANGE readRange(0, 0);
+		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
+		memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
+	}
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
 		cbvHeapDesc.NumDescriptors = 1;
@@ -93,7 +146,7 @@ void Core::AnimatedModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void Core::AnimatedModelVC::Update(float delta)
+void Core::InstancedAnimatedModelVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
@@ -154,12 +207,12 @@ void Core::AnimatedModelVC::Update(float delta)
 	}
 }
 
-void Core::AnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+void Core::InstancedAnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 #ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "AnimatedModelVC.Render() while mIsInitialized == false");
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
 		return;
 	}
 #endif
@@ -179,9 +232,11 @@ void Core::AnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMat
 		++dsTable;
 	}
 	SetDescTableTextures(pCanvas, dsTable);
+	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
+	pGraphicsCommandList->SetGraphicsRootShaderResourceView(dsTable, mpInstanceBuffer->GetGPUVirtualAddress());
 
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), 1, 0, 0, 0);
+	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), UINT(mInstanceBufferData.size()), 0, 0, 0);
 }

@@ -91,29 +91,24 @@ void Core::InstancedModelVC::Update(float delta)
 
 void Core::InstancedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;
 
-	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
-	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
-	auto pDevice{ pApplication->GetDevice() };
-	auto pCmdQueue{ pApplication->GetCommandQueue() };
-	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	UINT dsTable{ 1 };
-	for (auto& pair : mpTextureSrvHeaps)
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
-		++dsTable;
-	}
+	SetDescTableObjectConstants(pCanvas, dsTable);
+	SetDescTableTextures(pCanvas, dsTable);
 	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
 	pGraphicsCommandList->SetGraphicsRootShaderResourceView(dsTable, mpInstanceBuffer->GetGPUVirtualAddress());
-	++dsTable;
 
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);

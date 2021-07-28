@@ -12,8 +12,12 @@ void Core::ViewST::Inner(float delta)
 {
 	if (!mpScene->TryLockSharedObjects())
 		return;
-	for (auto& object : mpScene->GetObjects())
-		object.ViewCUpdate(delta);
-	mpScene->Render();
+	if (mpScene->TryLockSharedViewCs())
+	{
+		for (auto& object : mpScene->GetObjects())
+			object.ViewCUpdate(delta);
+		mpScene->Render();
+		mpScene->UnlockSharedViewCs();
+	}
 	mpScene->UnlockSharedObjects();
 }

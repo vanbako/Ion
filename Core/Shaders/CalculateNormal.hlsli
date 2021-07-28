@@ -9,9 +9,7 @@ float3 CalculateNormal(float3 tangent, float3 normal, float2 texCoord)
 	float3x3 localAxis = transpose( float3x3( tangent, binormal, normal )) ;
 	float3 sampledNormal = gTextureNormal.Sample(gTextureSampler, texCoord).xyz;
 	sampledNormal = (sampledNormal * 2.0f) - 1.0f;
-	//sampledNormal = (sampledNormal.x * tangent) + (sampledNormal.y * binormal) + (-sampledNormal.z * normal);
 	
-	//return normalize(sampledNormal);
 	return normalize(mul(localAxis, sampledNormal));
 }
 

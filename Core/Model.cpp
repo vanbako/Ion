@@ -111,7 +111,7 @@ const std::vector<Core::Transform>& Core::Model::ReadInstances()
 {
 	if (mInstances.empty())
 	{
-		Core::BinIfstream file{ "../Resources/Instance/" + mFileName + ".ins" };
+		Core::BinIfstream file{ mpApplication, "../Resources/Instance/" + mFileName + ".ins" };
 		size_t cnt{ file.Read<size_t>() };
 		for (size_t i{ 0 }; i < cnt; ++i)
 			mInstances.emplace_back(file.Read<Core::Transform>());
@@ -127,7 +127,7 @@ const std::vector<Core::Transform>& Core::Model::GetInstances() const
 void Core::Model::ReadModel()
 {
 	using namespace DirectX;
-	Core::BinIfstream file{ "../Resources/Model/" + mFileName + "." + mFileExtension };
+	Core::BinIfstream file{ mpApplication, "../Resources/Model/" + mFileName + "." + mFileExtension };
 	const char majorVersion{ file.Read<char>() };
 	const char minorVersion{ file.Read<char>() };
 
@@ -384,7 +384,7 @@ void Core::Model::ReadModel()
 		case Core::MeshType::Skeleton:
 		{
 			mBoneCount = size_t(file.Read<unsigned short>());
-			file.MovePosition(offset - 2);
+			file.MovePosition(size_t(offset) - sizeof(unsigned short));
 		}
 		break;
 		default:

@@ -220,39 +220,58 @@ void Core::ModelVC::Update(float delta)
 
 void Core::ModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "ModelVC.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;
 
-	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
-	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
-	auto pDevice{ pApplication->GetDevice() };
-	auto pCmdQueue{ pApplication->GetCommandQueue() };
-	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
+	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+
+	UINT dsTable{ 1 };
+	SetDescTableObjectConstants(pCanvas, dsTable);
+	SetDescTableTextures(pCanvas, dsTable);
+	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
+	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
+	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), 1, 0, 0, 0);
+}
+
+void Core::ModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
+{
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
 	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 
-	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);
+	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld, world);
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorldViewProj, wvp);
+
+	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+	{
+		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
+		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
+	}
+	++dsTable;
+}
+
+void Core::ModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
+{
+	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	for (auto& pair : mpTextureSrvHeaps)
 	{
 		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(UINT(pair.first) + 2, tex);
+		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
+		++dsTable;
 	}
-	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
-	}
-	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
-	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), 1, 0, 0, 0);
 }

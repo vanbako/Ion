@@ -18,7 +18,6 @@ Core::Object* Core::Factory::AddCamera(Core::Scene* pScene)
 	Core::CameraRMC* pCamera{ pObject->AddModelC<Core::CameraRMC>(false) };
 	Core::InputCC* pInput{ pObject->AddControllerC<Core::InputCC>(false) };
 	(pTransform);
-	(pCamera);
 	pScene->GetControllerST()->Register(pInput, pCamera->GetName(), pCamera->GetCommands());
 	return pObject;
 }

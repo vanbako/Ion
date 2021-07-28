@@ -114,6 +114,11 @@ void Core::TransformMC::SetPxRigidActor(physx::PxRigidActor* pPxRigidActor)
 	mPxRigidActor = pPxRigidActor;
 }
 
+const DirectX::XMFLOAT4& Core::TransformMC::GetRotation()
+{
+	return mRotation[mCurrent];
+}
+
 const DirectX::XMFLOAT4& Core::TransformMC::GetWorldPosition() const
 {
 	return mWorldPosition[mCurrent];

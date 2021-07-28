@@ -118,6 +118,13 @@ void Core::MeshVC::Update(float delta)
 
 void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "MeshVC.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;

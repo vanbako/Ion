@@ -6,10 +6,17 @@
 #include "TriangleVC.h"
 #include "InstancedModelVC.h"
 #include "AnimatedModelVC.h"
+#include "InstancedAnimatedModelVC.h"
+#include "MoveObjectRMC.h"
+#include "ControlRMC.h"
+#include "InputCC.h"
+#include "ControllerST.h"
 #include "Object.h"
 #include "FileLogger.h"
 #include "include/FmodAudio.h"
 #include <iostream>
+
+//#define SOUND
 
 using namespace Ion;
 
@@ -21,6 +28,9 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas);
 
 int main()
 {
+#ifdef _DEBUG
+	std::cout << "Start" << std::endl;
+#endif
 	{
 		RECT rectangle{ 0, 0, 1280, 720 };
 		Core::Application application{};
@@ -29,8 +39,10 @@ int main()
 		Core::ServiceLocator& serviceLocator{ application.GetServiceLocator() };
 		Core::FileLogger fileLogger{ "Test.log" };
 		serviceLocator.RegisterLoggerService(&fileLogger);
+#ifdef SOUND
 		FmodAudio fmodAudio{};
 		serviceLocator.RegisterAudioService(&fmodAudio);
+#endif
 
 		Core::Scene* pScene{ application.AddScene() };
 
@@ -53,6 +65,14 @@ int main()
 		Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
 		Core::Object* pCamera2{ AddCamera(pScene, pCanvas2) };
 
+		Core::Object* pControl{ pScene->AddObject(false) };
+		Core::ControlRMC* pControlRMC{ pControl->AddModelC<Core::ControlRMC>(false) };
+		Core::InputCC* pInput{ pControl->AddControllerC<Core::InputCC>(false) };
+		pScene->GetControllerST()->Register(pInput, pControlRMC->GetName(), pControlRMC->GetCommands());
+		pControlRMC->AddObject(pFlower);
+		pControlRMC->AddObject(pWizard);
+		pControlRMC->AddObject(pRoyalHighness);
+
 		pScene->Initialize();
 
 		Core::Factory::CreatePhysicsPlane(application.GetPhysics(), pScene->GetPxScene());
@@ -63,26 +83,38 @@ int main()
 		pFlower->SetIsActive(true, true);
 		pWizard->SetIsActive(true, true);
 		pRoyalHighness->SetIsActive(true, true);
+		pControl->SetIsActive(true, true);
+
+		Core::InstancedAnimatedModelVC* pWizardModelVC{ pWizard->GetViewC<Core::InstancedAnimatedModelVC>() };
+		pWizardModelVC->SetAnimation(0);
+		pWizardModelVC->SetIsAnimating(true);
 
 		Core::AnimatedModelVC* pRoyalHighnessModelVC{ pRoyalHighness->GetViewC<Core::AnimatedModelVC>() };
 		pRoyalHighnessModelVC->SetAnimation(0);
 		pRoyalHighnessModelVC->SetIsAnimating(true);
 
 		pScene->SetIsActive(true);
-#ifdef _DEBUG
-		std::cout << "App is running" << std::endl;
-#endif
+#ifdef SOUND
 		int
 			startSound{ serviceLocator.GetAudio()->AddSound("bbc_world-war-_07017169.mp3", false) },
 			stopSound{ serviceLocator.GetAudio()->AddSound("bbc_peugeot-20_07055235.mp3", false) };
 		serviceLocator.GetAudio()->PlaySound(startSound);
+#endif
+#ifdef _DEBUG
+		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application before run");
+#endif
 		application.Run();
+#ifdef _DEBUG
+		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application after run");
+#endif
+#ifdef SOUND
 		serviceLocator.GetAudio()->PlaySound(stopSound);
 		std::this_thread::sleep_for(std::chrono::seconds{ 4 });
+#endif
 
 		pScene->SetIsActive(false);
 #ifdef _DEBUG
-		std::cout << "App is shutting down" << std::endl;
+		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application shutdown");
 #endif
 		pScene->SetIsEnd(true);
 	}
@@ -126,8 +158,15 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 {
 	Core::Object* pFlower{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pFlower->AddModelC<Core::TransformMC>(false) };
-	(pTransformMC);
-	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ -15.f, 5.f, 0.f, 0.f });
+	Core::MoveObjectRMC* pMoveObject{ pFlower->AddModelC<Core::MoveObjectRMC>(false) };
+	Core::InputCC* pInput{ pFlower->AddControllerC<Core::InputCC>(false) };
+	pScene->GetControllerST()->Register(pInput, pMoveObject->GetName(), pMoveObject->GetCommands());
+	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
+	//DirectX::XMVECTOR axis{ 0.f, 1.f, 0.f };
+	//DirectX::XMVECTOR rotVec{ DirectX::XMQuaternionRotationAxis(axis, -float(M_PI_4)) };
+	//DirectX::XMFLOAT4 rot{};
+	//XMStoreFloat4(&rot, rotVec);
+	//pTransformMC->SetRotation(rot);
 	Core::InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<Core::InstancedModelVC>("Flower/Flower", "ovm", "PosNormTanTex_iA", false, Core::Winding::CCW)};
 	pFlowerModelVC->AddTexture(Core::TextureType::Albedo, "Flower/Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
@@ -148,7 +187,7 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	(pTransformMC);
 	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
 	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	Core::InstancedModelVC* pWizardModelVC{ pWizard->AddViewC<Core::InstancedModelVC>("Wizard/Wizard", "ovm", "PosNormTanTex_iAN", false, Core::Winding::CCW, Core::CoordSystem::RightHanded) };
+	Core::InstancedAnimatedModelVC* pWizardModelVC{ pWizard->AddViewC<Core::InstancedAnimatedModelVC>("Wizard/Wizard", "ovm", "PosNormTanTex_iaAN", false, Core::Winding::CCW, Core::CoordSystem::RightHanded) };
 	pWizardModelVC->AddTexture(Core::TextureType::Albedo, "Wizard/Wizard_Blue_A.png");
 	pWizardModelVC->AddTexture(Core::TextureType::Normal, "Wizard/Wizard_Blue_N.png");
 	pWizardModelVC->AddCanvas(pCanvas1);

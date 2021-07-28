@@ -39,6 +39,13 @@ void Core::TriangleVC::Update(float delta)
 
 void Core::TriangleVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "TriangleVC.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;

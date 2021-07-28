@@ -3,16 +3,13 @@
 
 cbuffer CanvasConstantBuffer : register(b0)
 {
+	float4x4 gView;
 	float4x4 gViewProj;
 	float3 gLightDirection;
-	float cPadding0;
+	float gAmbientIntensity;
 	float4 gColorDiffuse;
 	float4 gColorAmbient;
-	float gAmbientIntensity;
-	float cPadding1;
-	float cPadding2;
-	float cPadding3;
-	float4 cPadding4[8];
+	float4 cPadding4[5];
 };
 
 #endif

@@ -1,9 +1,11 @@
+#include "../../Core/Shaders/CanvasConstantBuffer.hlsli"
 #include "../../Core/Shaders/ObjectConstantBuffer.hlsli"
 #include "../../Core/Shaders/BonesBuffer.hlsli"
+#include "../../Core/Shaders/InstanceBuffer.hlsli"
 #include "../../Core/Shaders/PosNormTanTex_aVSInput.hlsli"
 #include "../../Core/Shaders/PosNormTanTex_PSInput.hlsli"
 
-PSInput main(VSInput input)
+PSInput main(VSInput input, uint instanceID : SV_InstanceID)
 {
 	PSInput output = (PSInput)0;
 	
@@ -18,15 +20,18 @@ PSInput main(VSInput input)
 		if (index >= 0)
 		{
 			transformedPosition += input.boneweights[i] * mul(gBones[index], originalPosition);
-			transformedNormal += input.boneweights[i] * mul((float3x3)gBones[index], input.normal );
+			transformedNormal += input.boneweights[i] * mul((float3x3)gBones[index], input.normal);
 			transformedTangent += input.boneweights[i] * mul((float3x3)gBones[index], input.tangent);
 		}
 	}
 	transformedPosition.w = 1.0f;
 
-	output.position = mul(gWorldViewProj, transformedPosition);
-	output.normal = normalize(mul((float3x3)gWorld, transformedNormal));
-	output.tangent = mul((float3x3)gWorld, transformedTangent);
+	float4x4 world = transpose(mul(gWorld, gInstanceData[instanceID].local));
+	float4x4 vp = transpose(gViewProj);
+	float4x4 wvp = transpose(mul(world, vp));
+	output.position = mul(wvp, transformedPosition);
+	output.normal = normalize(mul(transformedNormal, (float3x3)world));
+	output.tangent = normalize(mul(transformedTangent, (float3x3)world));
 	output.texcoord = input.texcoord;
 	
 	return output;

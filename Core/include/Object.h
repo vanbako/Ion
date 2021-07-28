@@ -45,11 +45,37 @@ namespace Ion
 				return mpTransformMC;
 			}
 			template<class T>
+			void AttachModelC(T* pModelC)
+			{
+				pModelC->SetObject(this);
+				mpModelCs.emplace_back(pModelC);
+			}
+			template<class T>
 			T* GetModelC()
 			{
 				for (auto pModelC : mpModelCs)
 					if (typeid(*pModelC).hash_code() == typeid(T).hash_code())
 						return (T*)pModelC;
+				return nullptr;
+			}
+			template<class T>
+			bool HasModelC()
+			{
+				for (auto pModelC : mpModelCs)
+					if (typeid(*pModelC).hash_code() == typeid(T).hash_code())
+						return true;
+				return false;
+			}
+			template<class T>
+			T* DetachModelC()
+			{
+				for (auto it{ mpModelCs.begin() }; it != mpModelCs.end(); ++it)
+					if (typeid(**it).hash_code() == typeid(T).hash_code())
+					{
+						auto ret{ *it };
+						mpModelCs.erase(it);
+						return (T*)ret;
+					}
 				return nullptr;
 			}
 			template<>
@@ -71,11 +97,37 @@ namespace Ion
 				return (T*)mpControllerCs.back();
 			}
 			template<class T>
+			void AttachControllerC(T* pControllerC)
+			{
+				pControllerC->SetObject(this);
+				mpControllerCs.emplace_back(pControllerC);
+			}
+			template<class T>
 			T* GetControllerC()
 			{
 				for (auto pControllerC : mpControllerCs)
 					if (typeid(*pControllerC).hash_code() == typeid(T).hash_code())
 						return (T*)pControllerC;
+				return nullptr;
+			}
+			template<class T>
+			bool HasControllerC()
+			{
+				for (auto pControllerC : mpControllerCs)
+					if (typeid(*pControllerC).hash_code() == typeid(T).hash_code())
+						return true;
+				return false;
+			}
+			template<class T>
+			T* DetachControllerC()
+			{
+				for (auto it{ mpControllerCs.begin() }; it != mpControllerCs.end(); ++it)
+					if (typeid(**it).hash_code() == typeid(T).hash_code())
+					{
+						auto ret{ *it };
+						mpControllerCs.erase(it);
+						return (T*)ret;
+					}
 				return nullptr;
 			}
 			template<class T>

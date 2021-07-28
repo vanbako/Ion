@@ -39,6 +39,7 @@ namespace Ion
 			void RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex);
 			void SetThreadAction(Core::ThreadAction threadAction);
 		private:
+			bool mIsInitialized;
 			Core::Window* mpWindow;
 			RECT mRectangle;
 			float mRatio;

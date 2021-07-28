@@ -10,14 +10,21 @@ Core::ModelST::ModelST(Core::Scene* pScene, std::chrono::microseconds updateTime
 
 void Core::ModelST::Inner(float delta)
 {
-	if (!mpScene->TryLockSharedObjects())
-		return;
-	for (auto& object : mpScene->GetObjects())
-		object.ModelCUpdate(delta);
-	mpScene->UnlockSharedObjects();
 	if (!mpScene->TryLockExclusiveObjects())
 		return;
-	for (auto& object : mpScene->GetObjects())
-		object.ModelCSwitch();
+
+	if (mpScene->TryLockSharedModelCs())
+	{
+		for (auto& object : mpScene->GetObjects())
+			object.ModelCUpdate(delta);
+		mpScene->UnlockSharedModelCs();
+	}
+
+	if (mpScene->TryLockExclusiveModelCs())
+	{
+		for (auto& object : mpScene->GetObjects())
+			object.ModelCSwitch();
+		mpScene->UnlockExclusiveModelCs();
+	}
 	mpScene->UnlockExclusiveObjects();
 }

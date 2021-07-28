@@ -1,0 +1,3 @@
+NextObject VK_TAB
+PrevObject VK_BACK
+ShowControls VK_ESCAPE

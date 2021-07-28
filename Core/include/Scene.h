@@ -43,6 +43,18 @@ namespace Ion
 			void UnlockSharedObjects();
 			bool TryLockExclusiveObjects();
 			void UnlockExclusiveObjects();
+			bool TryLockSharedControllerCs();
+			void UnlockSharedControllerCs();
+			bool TryLockExclusiveControllerCs();
+			void UnlockExclusiveControllerCs();
+			bool TryLockSharedModelCs();
+			void UnlockSharedModelCs();
+			bool TryLockExclusiveModelCs();
+			void UnlockExclusiveModelCs();
+			bool TryLockSharedViewCs();
+			void UnlockSharedViewCs();
+			bool TryLockExclusiveViewCs();
+			void UnlockExclusiveViewCs();
 			void AddCanvas(Core::Canvas* pCanvas);
 			void Render();
 		private:
@@ -51,9 +63,13 @@ namespace Ion
 
 			Core::Application* mpApplication;
 			std::atomic<bool>
+				mIsInitialized,
 				mIsActive,
 				mIsEnd;
 			std::shared_timed_mutex mObjectsMutex;
+			std::shared_timed_mutex mControllerCMutex;
+			std::shared_timed_mutex mModelCMutex;
+			std::shared_timed_mutex mViewCMutex;
 			std::list<Core::Object> mObjects;
 			Core::ModelST* mpModelST;
 			Core::ControllerST* mpControllerST;

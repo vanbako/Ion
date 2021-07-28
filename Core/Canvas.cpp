@@ -6,7 +6,8 @@
 using namespace Ion;
 
 Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
-	: mpWindow{ pWindow }
+	: mIsInitialized{ false }
+	, mpWindow{ pWindow }
 	, mRectangle{ rectangle }
 	, mRatio{ float(rectangle.right - rectangle.left) / float(rectangle.bottom - rectangle.top) }
 	, mpCamera{ nullptr }
@@ -200,6 +201,7 @@ void Core::Canvas::Initialize()
 
 		CD3DX12_RANGE readRange(0, 0);
 		mpWindow->GetApplication()->ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
+		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mView, DirectX::XMMatrixIdentity());
 		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mViewProj, DirectX::XMMatrixIdentity());
 		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
 		mCanvasConstantBufferData.mColorDiffuse = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
@@ -230,6 +232,7 @@ void Core::Canvas::Initialize()
 	{
 		mpWindow->GetApplication()->ThrowIfFailed(pD2d1DeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &mpBrush));
 	}
+	mIsInitialized = true;
 }
 
 void Core::Canvas::SetCamera(Core::Object* pCamera)
@@ -286,6 +289,13 @@ void Core::Canvas::SetDescriptor()
 
 void Core::Canvas::Render()
 {
+#ifdef _DEBUG
+	if (!mIsInitialized)
+	{
+		mpWindow->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Canvas.Render() while mIsInitialized == false");
+		return;
+	}
+#endif
 	if ((mpCamera == nullptr) && (!mpMaterials3D.empty()))
 		return;
 	if (mpMaterials2D.empty() && mpMaterials3D.empty())
@@ -303,6 +313,7 @@ void Core::Canvas::Render()
 
 	if (!mpMaterials3D.empty())
 	{
+		mCanvasConstantBufferData.mView = mpCamera->GetModelC<CameraRMC>()->GetView();
 		mCanvasConstantBufferData.mViewProj = mpCamera->GetModelC<CameraRMC>()->GetViewProjection();
 		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(Core::CanvasConstantBuffer));
 	}

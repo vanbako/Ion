@@ -8,7 +8,7 @@ PSInput main(VSInput input)
 	
 	output.position = mul(gWorldViewProj, float4(input.position, 1.0f));
 	output.normal = normalize(mul((float3x3)gWorld, input.normal));
-	output.tangent = mul(input.tangent, (float3x3)gWorld);
+	output.tangent = mul((float3x3)gWorld, input.tangent);
 	output.texcoord = input.texcoord;
 	
 	return output;

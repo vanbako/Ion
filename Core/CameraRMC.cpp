@@ -145,6 +145,7 @@ void Core::CameraRMC::Update(float delta)
 
 		const DirectX::XMMATRIX view{ DirectX::XMMatrixLookAtLH(worldPosition, worldPosition + forward, up) };
 
+		DirectX::XMStoreFloat4x4(&mView, view);
 		DirectX::XMStoreFloat4x4(&mViewProjection, view * projection);
 	}
 }
@@ -190,6 +191,11 @@ const std::string& Core::CameraRMC::GetName() const
 void Core::CameraRMC::SetCanvas(Core::Canvas* pCanvas)
 {
 	mpCanvas = pCanvas;
+}
+
+const DirectX::XMFLOAT4X4& Core::CameraRMC::GetView() const
+{
+	return mView;
 }
 
 const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewProjection() const

@@ -108,6 +108,7 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControllerC.h" />
     <ClInclude Include="include\ControllerST.h" />
+    <ClInclude Include="include\ControlRMC.h" />
     <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="include\InputCC.h" />
     <ClInclude Include="include\InputSemantic.h" />
     <ClInclude Include="include\InstanceBuffer.h" />
+    <ClInclude Include="include\InstancedAnimatedModelVC.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
     <ClInclude Include="include\Int4.h" />
     <ClInclude Include="include\Logger.h" />
@@ -131,13 +133,16 @@
     <ClInclude Include="include\MoveDownCmd.h" />
     <ClInclude Include="include\MoveForwardCmd.h" />
     <ClInclude Include="include\MoveLeftCmd.h" />
+    <ClInclude Include="include\MoveObjectRMC.h" />
     <ClInclude Include="include\MoveRightCmd.h" />
     <ClInclude Include="include\MoveUpCmd.h" />
     <ClInclude Include="include\MsgType.h" />
+    <ClInclude Include="include\NextObjectCmd.h" />
     <ClInclude Include="include\NullAudio.h" />
     <ClInclude Include="include\NullLogger.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\PhysicsST.h" />
+    <ClInclude Include="include\PrevObjectCmd.h" />
     <ClInclude Include="include\PxIonAllocatorCallback.h" />
     <ClInclude Include="include\PxIonErrorCallback.h" />
     <ClInclude Include="include\Quadrilateral.h" />
@@ -148,6 +153,7 @@
     <ClInclude Include="include\SceneThread.h" />
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
+    <ClInclude Include="include\ShowControlsCmd.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\ThreadAction.h" />
@@ -178,8 +184,10 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
     <ClCompile Include="ControllerST.cpp" />
+    <ClCompile Include="ControlRMC.cpp" />
     <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
+    <ClCompile Include="InstancedAnimatedModelVC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Material2D.cpp" />
@@ -193,8 +201,10 @@
     <ClCompile Include="MoveDownCmd.cpp" />
     <ClCompile Include="MoveForwardCmd.cpp" />
     <ClCompile Include="MoveLeftCmd.cpp" />
+    <ClCompile Include="MoveObjectRMC.cpp" />
     <ClCompile Include="MoveRightCmd.cpp" />
     <ClCompile Include="MoveUpCmd.cpp" />
+    <ClCompile Include="NextObjectCmd.cpp" />
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="NullLogger.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -204,6 +214,7 @@
     </ClCompile>
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="PhysicsST.cpp" />
+    <ClCompile Include="PrevObjectCmd.cpp" />
     <ClCompile Include="PxIonAllocatorCallback.cpp" />
     <ClCompile Include="PxIonErrorCallback.cpp" />
     <ClCompile Include="ReceiverMC.cpp" />
@@ -212,6 +223,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />
@@ -286,6 +298,24 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_rs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\PosNormTanTex_iaAN_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iAN_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
