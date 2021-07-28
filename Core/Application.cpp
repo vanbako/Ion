@@ -44,7 +44,9 @@ Core::Application::Application()
 	, mpD2d1Device{}
 	, mpD2d1DeviceContext{}
 	, mpD2d1Factory{}
-	//, mpDWriteFactory{}
+	, mpDWriteFactory{}
+	, mpFontCollection{}
+	, mpDWriteFormat{}
 	, mpPhysics{ nullptr }
 	, mPxToleranceScale{}
 	, mIonAllocatorCallback{}
@@ -94,78 +96,87 @@ void Core::Application::ThrowIfFailed(HRESULT hr)
 
 bool Core::Application::Initialize()
 {
-	if (!mIsInitialized)
-	{
-		// 3D
-		// Factory
-		UINT dxgiFactoryFlags{ 0 };
-		UINT d3d11DeviceFlags{ D3D11_CREATE_DEVICE_BGRA_SUPPORT };
-		D2D1_FACTORY_OPTIONS d2dFactoryOptions{};
+	if (mIsInitialized)
+		return true;
+	// 3D
+	// Factory
+	UINT dxgiFactoryFlags{ 0 };
+	UINT d3d11DeviceFlags{ D3D11_CREATE_DEVICE_BGRA_SUPPORT };
+	D2D1_FACTORY_OPTIONS d2dFactoryOptions{};
 
 #if defined(_DEBUG)
+	{
+		Microsoft::WRL::ComPtr<ID3D12Debug> pDebugController;
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
 		{
-			Microsoft::WRL::ComPtr<ID3D12Debug> pDebugController;
-			if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
-			{
-				pDebugController->EnableDebugLayer();
+			pDebugController->EnableDebugLayer();
 
-				// Enable additional debug layers.
-				dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
-				d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-				d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
-			}
+			// Enable additional debug layers.
+			dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+			d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+			d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 		}
-#endif
-		ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mpDxgiFactory)));
-		// Device
-		{
-			ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&mpD3d12Device)));
-		}
-		// CommandQueue
-		{
-			D3D12_COMMAND_QUEUE_DESC queueDesc{};
-			queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-			queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-			queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-			queueDesc.NodeMask = 0;
-			ThrowIfFailed(mpD3d12Device->CreateCommandQueue(
-				&queueDesc,
-				IID_PPV_ARGS(&mpCommandQueue)));
-		}
-		// Command Allocator
-		{
-			ThrowIfFailed(mpD3d12Device->CreateCommandAllocator(
-				D3D12_COMMAND_LIST_TYPE_DIRECT,
-				IID_PPV_ARGS(&mpCommandAllocator)));
-		}
-		// 2D & D3D11On12
-		// Device & Factory
-		{
-
-			Microsoft::WRL::ComPtr<ID3D11Device> pD3d11Device{};
-			ThrowIfFailed(D3D11On12CreateDevice(
-				mpD3d12Device.Get(),
-				d3d11DeviceFlags,
-				nullptr,
-				0,
-				reinterpret_cast<IUnknown**>(mpCommandQueue.GetAddressOf()),
-				1,
-				0,
-				&pD3d11Device,
-				&mpD3d11DeviceContext,
-				nullptr
-			));
-			ThrowIfFailed(pD3d11Device.As(&mpD3d11On12Device));
-
-			D2D1_DEVICE_CONTEXT_OPTIONS deviceOptions{ D2D1_DEVICE_CONTEXT_OPTIONS_NONE };
-			ThrowIfFailed(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory3), &d2dFactoryOptions, &mpD2d1Factory));
-			ThrowIfFailed(mpD3d11On12Device.As(&mpDxgiDevice));
-			ThrowIfFailed(mpD2d1Factory->CreateDevice(mpDxgiDevice.Get(), &mpD2d1Device));
-			ThrowIfFailed(mpD2d1Device->CreateDeviceContext(deviceOptions, &mpD2d1DeviceContext));
-			//ThrowIfFailed(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &mpDWriteFactory));
-		}
-		mIsInitialized = true;
 	}
+#endif
+	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mpDxgiFactory)));
+	// Device
+	{
+		ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&mpD3d12Device)));
+	}
+	// CommandQueue
+	{
+		D3D12_COMMAND_QUEUE_DESC queueDesc{};
+		queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+		queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+		queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+		queueDesc.NodeMask = 0;
+		ThrowIfFailed(mpD3d12Device->CreateCommandQueue(
+			&queueDesc,
+			IID_PPV_ARGS(&mpCommandQueue)));
+	}
+	// Command Allocator
+	{
+		ThrowIfFailed(mpD3d12Device->CreateCommandAllocator(
+			D3D12_COMMAND_LIST_TYPE_DIRECT,
+			IID_PPV_ARGS(&mpCommandAllocator)));
+	}
+	// 2D & D3D11On12
+	// Device & Factory
+	{
+
+		Microsoft::WRL::ComPtr<ID3D11Device> pD3d11Device{};
+		ThrowIfFailed(D3D11On12CreateDevice(
+			mpD3d12Device.Get(),
+			d3d11DeviceFlags,
+			nullptr,
+			0,
+			reinterpret_cast<IUnknown**>(mpCommandQueue.GetAddressOf()),
+			1,
+			0,
+			&pD3d11Device,
+			&mpD3d11DeviceContext,
+			nullptr
+		));
+		ThrowIfFailed(pD3d11Device.As(&mpD3d11On12Device));
+
+		D2D1_DEVICE_CONTEXT_OPTIONS deviceOptions{ D2D1_DEVICE_CONTEXT_OPTIONS_NONE };
+		ThrowIfFailed(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory3), &d2dFactoryOptions, &mpD2d1Factory));
+		ThrowIfFailed(mpD3d11On12Device.As(&mpDxgiDevice));
+		ThrowIfFailed(mpD2d1Factory->CreateDevice(mpDxgiDevice.Get(), &mpD2d1Device));
+		ThrowIfFailed(mpD2d1Device->CreateDeviceContext(deviceOptions, &mpD2d1DeviceContext));
+		ThrowIfFailed(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &mpDWriteFactory));
+		ThrowIfFailed(mpDWriteFactory->GetSystemFontCollection(&mpFontCollection));
+		ThrowIfFailed(mpDWriteFactory->CreateTextFormat(
+			L"Arial",
+			mpFontCollection.Get(),
+			DWRITE_FONT_WEIGHT_REGULAR,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			18.f,
+			L"en-us",
+			&mpDWriteFormat));
+	}
+	mIsInitialized = true;
 #ifdef _DEBUG
 	mServiceLocator.GetLogger()->Message(nullptr, MsgType::Info, "Application Initialized");
 #endif
@@ -303,10 +314,15 @@ Core::ServiceLocator& Core::Application::GetServiceLocator()
 	return mServiceLocator;
 }
 
-//const Microsoft::WRL::ComPtr<IDWriteFactory>& Core::Application::GetDWriteFactory()
-//{
-//	return mpDWriteFactory;
-//}
+const Microsoft::WRL::ComPtr<IDWriteFactory>& Core::Application::GetDWriteFactory()
+{
+	return mpDWriteFactory;
+}
+
+const Microsoft::WRL::ComPtr<IDWriteTextFormat>& Ion::Core::Application::GetDWriteTextFormat()
+{
+	return mpDWriteFormat;
+}
 
 Core::Material3D* Core::Application::AddMaterial3D(const std::string& name)
 {

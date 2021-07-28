@@ -10,4 +10,6 @@ FMOD 2.01.10<br>
 <br>
 You can upvote enhancements in the Github Issue Tracker<br>
 <br>
+https://discord.gg/72Xbv5Rwfa<br>
+<br>
 Let me know if you're interested in contributing<br>

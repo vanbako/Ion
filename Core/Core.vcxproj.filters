@@ -354,6 +354,9 @@
     <ClInclude Include="include\ControlRMC.h">
       <Filter>Component\ModelComponents\Receivers</Filter>
     </ClInclude>
+    <ClInclude Include="include\TextVC.h">
+      <Filter>Component\ViewComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -523,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="ControlRMC.cpp">
       <Filter>Component\ModelComponents\Receivers</Filter>
+    </ClCompile>
+    <ClCompile Include="TextVC.cpp">
+      <Filter>Component\ViewComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

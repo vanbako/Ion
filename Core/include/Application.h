@@ -45,7 +45,8 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID2D1Device2>& GetD2d1Device();
 			const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetD3d11DeviceContext();
 			const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& GetD2d1DeviceContext();
-			//const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
+			const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
+			const Microsoft::WRL::ComPtr<IDWriteTextFormat>& GetDWriteTextFormat();
 			physx::PxPhysics* GetPhysics();
 			const physx::PxTolerancesScale& GetToleranceScale();
 			Core::ServiceLocator& GetServiceLocator();
@@ -79,7 +80,9 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID2D1Device2> mpD2d1Device;
 			Microsoft::WRL::ComPtr<ID2D1DeviceContext2> mpD2d1DeviceContext;
 			Microsoft::WRL::ComPtr<ID2D1Factory3> mpD2d1Factory;
-			//Microsoft::WRL::ComPtr<IDWriteFactory> mpDWriteFactory;
+			Microsoft::WRL::ComPtr<IDWriteFactory> mpDWriteFactory;
+			Microsoft::WRL::ComPtr<IDWriteFontCollection> mpFontCollection;
+			Microsoft::WRL::ComPtr<IDWriteTextFormat> mpDWriteFormat; // Move to Material2D?
 			physx::PxPhysics* mpPhysics;
 			physx::PxTolerancesScale mPxToleranceScale;
 			physx::PxIonAllocatorCallback mIonAllocatorCallback;

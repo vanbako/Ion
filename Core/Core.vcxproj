@@ -156,6 +156,7 @@
     <ClInclude Include="include\ShowControlsCmd.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
+    <ClInclude Include="include\TextVC.h" />
     <ClInclude Include="include\ThreadAction.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\TransformMC.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextVC.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />
     <ClCompile Include="ViewC.cpp" />

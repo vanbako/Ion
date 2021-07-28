@@ -41,6 +41,11 @@ Core::Scene::Scene(Core::Application* pApplication)
 	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 	sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
 	mpPxScene = mpApplication->GetPhysics()->createScene(sceneDesc);
+//#ifdef _DEBUG
+//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.0f);
+//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 2.0f);
+//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eBODY_LIN_VELOCITY, 2.0f);
+//#endif
 }
 
 Core::Scene::~Scene()

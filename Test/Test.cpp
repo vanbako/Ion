@@ -4,6 +4,7 @@
 #include "MeshVC.h"
 #include "ModelVC.h"
 #include "TriangleVC.h"
+#include "TextVC.h"
 #include "InstancedModelVC.h"
 #include "AnimatedModelVC.h"
 #include "InstancedAnimatedModelVC.h"
@@ -25,6 +26,7 @@ Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas*
 Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas);
 Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2);
 Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas);
+Core::Object* AddControl(Core::Scene* pScene, Core::Canvas* pCanvas);
 
 int main()
 {
@@ -64,11 +66,8 @@ int main()
 		Core::Object* pRoyalHighness{ AddRoyalHighness(pScene, pCanvas1) };
 		Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
 		Core::Object* pCamera2{ AddCamera(pScene, pCanvas2) };
-
-		Core::Object* pControl{ pScene->AddObject(false) };
-		Core::ControlRMC* pControlRMC{ pControl->AddModelC<Core::ControlRMC>(false) };
-		Core::InputCC* pInput{ pControl->AddControllerC<Core::InputCC>(false) };
-		pScene->GetControllerST()->Register(pInput, pControlRMC->GetName(), pControlRMC->GetCommands());
+		Core::Object* pControl{ AddControl(pScene, pCanvas1) };
+		Core::ControlRMC* pControlRMC{ pControl->GetModelC<Core::ControlRMC>() };
 		pControlRMC->AddObject(pFlower);
 		pControlRMC->AddObject(pWizard);
 		pControlRMC->AddObject(pRoyalHighness);
@@ -223,4 +222,17 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Normal, "RoyalHighness/RoyalHighness_Red_N.png");
 	pRoyalHighnessModelVC->AddCanvas(pCanvas);
 	return pRoyalHighness;
+}
+
+Core::Object* AddControl(Core::Scene* pScene, Core::Canvas* pCanvas)
+{
+	Core::Object* pControl{ pScene->AddObject(false) };
+	Core::ControlRMC* pControlRMC{ pControl->AddModelC<Core::ControlRMC>(false) };
+	Core::InputCC* pInput{ pControl->AddControllerC<Core::InputCC>(false) };
+	Core::TextVC* pTextVC{ pControl->AddViewC<Core::TextVC>(false) };
+	pTextVC->SetRect(D2D1_RECT_F{ 40.f, 40.f, 680.f, 400.f });
+	pTextVC->SetText(L"wasd/qe/rf: Move Camera\nArrows/Del/End/PgUp/PgDn: Move Object\nTab: Cycle Object");
+	pTextVC->AddCanvas(pCanvas);
+	pScene->GetControllerST()->Register(pInput, pControlRMC->GetName(), pControlRMC->GetCommands());
+	return pControl;
 }
