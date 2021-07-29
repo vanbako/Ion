@@ -8,6 +8,7 @@
 #include "ShowControlsCmd.h"
 #include "MoveObjectRMC.h"
 #include "InputCC.h"
+#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -116,20 +117,25 @@ void Core::ControlRMC::AddObject(Core::Object* pObject)
 	mpObjects.emplace_back(pObject);
 }
 
-void Core::ControlRMC::NextObject()
+void Core::ControlRMC::NextObject(long long value)
 {
+	if (KeyboardState(value) != KeyboardState::KeyDown)
+		return;
 	mNextObject[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::ControlRMC::PrevObject()
+void Core::ControlRMC::PrevObject(long long value)
 {
+	if (KeyboardState(value) != KeyboardState::KeyDown)
+		return;
 	mPrevObject[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::ControlRMC::ShowControls()
+void Core::ControlRMC::ShowControls(long long value)
 {
+	(value);
 	mShowControls[mCurrent] = true;
 	mHasChanged = true;
 }

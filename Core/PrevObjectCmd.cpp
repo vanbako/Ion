@@ -16,5 +16,5 @@ Core::Command* Core::PrevObjectCmd::Duplicate()
 
 void Core::PrevObjectCmd::Execute()
 {
-	mpReceiver->PrevObject();
+	mpReceiver->PrevObject(mValue);
 }

@@ -31,18 +31,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\ModelComponents">
-      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ModelComponents\Receivers">
-      <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ControllerComponents">
-      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ViewComponents">
-      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Command">
       <UniqueIdentifier>{808bb631-bc16-4bcc-bcac-6c0875879cac}</UniqueIdentifier>
     </Filter>
@@ -51,33 +39,6 @@
     </Filter>
     <Filter Include="Model">
       <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{1799dd8c-33f1-466e-9eb1-7c133a972161}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormCol">
-      <UniqueIdentifier>{97211dc8-f071-437d-9078-5ee904bdb5a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex">
-      <UniqueIdentifier>{12d1a4c6-f0db-47ed-b911-7971aa3d70cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Structs">
-      <UniqueIdentifier>{92d6c182-0827-49c9-a21f-4c1609d72490}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Structs\Buffers">
-      <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex\AN">
-      <UniqueIdentifier>{bc0cf431-791b-4e29-9e28-1cb532682b97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex\A">
-      <UniqueIdentifier>{c9f225b4-a018-4348-9e5c-8a736b498a32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex\iA">
-      <UniqueIdentifier>{c8a48c2b-61d6-44c5-9d48-9dcb04d664f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex\iAN">
-      <UniqueIdentifier>{5934c40d-5410-4c45-80e6-fc9698d46476}</UniqueIdentifier>
     </Filter>
     <Filter Include="Canvas">
       <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
@@ -88,21 +49,6 @@
     <Filter Include="PhysX">
       <UniqueIdentifier>{7a337638-d083-45a3-bec0-a6bf415ffcdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enums">
-      <UniqueIdentifier>{fdde2177-c662-4fc4-bdf5-a36ac7f8861f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\PosNormTanTex\aAN">
-      <UniqueIdentifier>{d0436065-236e-4a85-89d8-704f5948b407}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Buffers">
-      <UniqueIdentifier>{54af50f4-70cd-4d7c-bb1b-d2a5c350d264}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Functions">
-      <UniqueIdentifier>{e19e129a-091f-416b-902c-c08240a1d32f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Inputs">
-      <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ServiceLocator">
       <UniqueIdentifier>{176e75a0-3fec-41ea-be99-1ebe5ffadf6e}</UniqueIdentifier>
     </Filter>
@@ -112,11 +58,65 @@
     <Filter Include="ServiceLocator\Logger">
       <UniqueIdentifier>{7ad3b09f-4809-4c24-a05d-be0b7c255347}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\PosNorm">
+    <Filter Include="Component\ModelC">
+      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ModelC\ReceiverMC">
+      <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ControllerC">
+      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ViewC">
+      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enum">
+      <UniqueIdentifier>{fdde2177-c662-4fc4-bdf5-a36ac7f8861f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{1799dd8c-33f1-466e-9eb1-7c133a972161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormCol">
+      <UniqueIdentifier>{97211dc8-f071-437d-9078-5ee904bdb5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex">
+      <UniqueIdentifier>{12d1a4c6-f0db-47ed-b911-7971aa3d70cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\AN">
+      <UniqueIdentifier>{bc0cf431-791b-4e29-9e28-1cb532682b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\A">
+      <UniqueIdentifier>{c9f225b4-a018-4348-9e5c-8a736b498a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\iA">
+      <UniqueIdentifier>{c8a48c2b-61d6-44c5-9d48-9dcb04d664f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\iAN">
+      <UniqueIdentifier>{5934c40d-5410-4c45-80e6-fc9698d46476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\aAN">
+      <UniqueIdentifier>{d0436065-236e-4a85-89d8-704f5948b407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNormTanTex\iaAN">
+      <UniqueIdentifier>{d580f232-a373-4756-99ec-4eb178ee6619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\PosNorm">
       <UniqueIdentifier>{840bbdaa-0d81-46d1-ba30-ccaeb35b18a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\PosNormTanTex\iaAN">
-      <UniqueIdentifier>{d580f232-a373-4756-99ec-4eb178ee6619}</UniqueIdentifier>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{92d6c182-0827-49c9-a21f-4c1609d72490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Struct\Buffer">
+      <UniqueIdentifier>{084f4622-ff67-41c6-825b-dd332b26b690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Buffer">
+      <UniqueIdentifier>{54af50f4-70cd-4d7c-bb1b-d2a5c350d264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Function">
+      <UniqueIdentifier>{e19e129a-091f-416b-902c-c08240a1d32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Input">
+      <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,40 +154,40 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="include\ControllerC.h">
-      <Filter>Component\ControllerComponents</Filter>
+      <Filter>Component\ControllerC</Filter>
     </ClInclude>
     <ClInclude Include="include\InputCC.h">
-      <Filter>Component\ControllerComponents</Filter>
+      <Filter>Component\ControllerC</Filter>
     </ClInclude>
     <ClInclude Include="include\CameraRMC.h">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\CharacterRMC.h">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ReceiverMC.h">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ModelC.h">
-      <Filter>Component\ModelComponents</Filter>
+      <Filter>Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\TransformMC.h">
-      <Filter>Component\ModelComponents</Filter>
+      <Filter>Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedModelVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\ModelVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\TriangleVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\ViewC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\Factory.h">
       <Filter>Factory</Filter>
@@ -238,13 +238,13 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\CanvasConstantBuffer.h">
-      <Filter>Structs\Buffers</Filter>
+      <Filter>Struct\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshVCConstantBuffer.h">
-      <Filter>Structs\Buffers</Filter>
+      <Filter>Struct\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\InstanceBuffer.h">
-      <Filter>Structs\Buffers</Filter>
+      <Filter>Struct\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\Quadrilateral.h">
       <Filter>Math</Filter>
@@ -262,13 +262,13 @@
       <Filter>Texture</Filter>
     </ClInclude>
     <ClInclude Include="include\Transform.h">
-      <Filter>Structs</Filter>
+      <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\InputSemantic.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshType.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\RotateLeftCmd.h">
       <Filter>Command</Filter>
@@ -277,34 +277,34 @@
       <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="include\SemanticInfo.h">
-      <Filter>Structs</Filter>
+      <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\ThreadAction.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\Winding.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\TextureType.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\AngleUnit.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\d3dx12.h">
       <Filter>Helper</Filter>
     </ClInclude>
     <ClInclude Include="include\CoordSystem.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimatedModelVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\Int4.h">
-      <Filter>Structs</Filter>
+      <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\BonesConstantBuffer.h">
-      <Filter>Structs\Buffers</Filter>
+      <Filter>Struct\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio.h">
       <Filter>ServiceLocator\Audio</Filter>
@@ -325,22 +325,19 @@
       <Filter>ServiceLocator</Filter>
     </ClInclude>
     <ClInclude Include="include\MsgType.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\BinOfstream.h">
       <Filter>Helper</Filter>
     </ClInclude>
     <ClInclude Include="ModelFormat.h">
-      <Filter>Enums</Filter>
+      <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\VertexPNC.h">
-      <Filter>Structs</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveObjectRMC.h">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedAnimatedModelVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\NextObjectCmd.h">
       <Filter>Command</Filter>
@@ -351,11 +348,14 @@
     <ClInclude Include="include\ShowControlsCmd.h">
       <Filter>Command</Filter>
     </ClInclude>
-    <ClInclude Include="include\ControlRMC.h">
-      <Filter>Component\ModelComponents\Receivers</Filter>
-    </ClInclude>
     <ClInclude Include="include\TextVC.h">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveObjectRMC.h">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyboardState.h">
+      <Filter>Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,16 +363,16 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="TransformMC.cpp">
-      <Filter>Component\ModelComponents</Filter>
+      <Filter>Component\ModelC</Filter>
     </ClCompile>
     <ClCompile Include="ModelC.cpp">
-      <Filter>Component\ModelComponents</Filter>
+      <Filter>Component\ModelC</Filter>
     </ClCompile>
     <ClCompile Include="ControllerC.cpp">
-      <Filter>Component\ControllerComponents</Filter>
+      <Filter>Component\ControllerC</Filter>
     </ClCompile>
     <ClCompile Include="ViewC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -396,10 +396,10 @@
       <Filter>PrecompiledHeader</Filter>
     </ClCompile>
     <ClCompile Include="MeshVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="InputCC.cpp">
-      <Filter>Component\ControllerComponents</Filter>
+      <Filter>Component\ControllerC</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
@@ -408,13 +408,13 @@
       <Filter>Command</Filter>
     </ClCompile>
     <ClCompile Include="ReceiverMC.cpp">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="CharacterRMC.cpp">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="CameraRMC.cpp">
-      <Filter>Component\ModelComponents\Receivers</Filter>
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="MoveRightCmd.cpp">
       <Filter>Command</Filter>
@@ -450,7 +450,7 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="ModelVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Model</Filter>
@@ -468,7 +468,7 @@
       <Filter>Texture</Filter>
     </ClCompile>
     <ClCompile Include="InstancedModelVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="Canvas.cpp">
       <Filter>Canvas</Filter>
@@ -477,7 +477,7 @@
       <Filter>Material</Filter>
     </ClCompile>
     <ClCompile Include="TriangleVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="PxIonAllocatorCallback.cpp">
       <Filter>PhysX</Filter>
@@ -489,7 +489,7 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedModelVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="FileLogger.cpp">
       <Filter>ServiceLocator\Logger</Filter>
@@ -509,11 +509,8 @@
     <ClCompile Include="BinOfstream.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
-    <ClCompile Include="MoveObjectRMC.cpp">
-      <Filter>Component\ModelComponents\Receivers</Filter>
-    </ClCompile>
     <ClCompile Include="InstancedAnimatedModelVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="NextObjectCmd.cpp">
       <Filter>Command</Filter>
@@ -524,11 +521,11 @@
     <ClCompile Include="ShowControlsCmd.cpp">
       <Filter>Command</Filter>
     </ClCompile>
-    <ClCompile Include="ControlRMC.cpp">
-      <Filter>Component\ModelComponents\Receivers</Filter>
-    </ClCompile>
     <ClCompile Include="TextVC.cpp">
-      <Filter>Component\ViewComponents</Filter>
+      <Filter>Component\ViewC</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveObjectRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -536,106 +533,106 @@
       <Filter>Documentation</Filter>
     </None>
     <None Include="Shaders\BonesBuffer.hlsli">
-      <Filter>Shaders\Buffers</Filter>
+      <Filter>Shader\Buffer</Filter>
     </None>
     <None Include="Shaders\CanvasConstantBuffer.hlsli">
-      <Filter>Shaders\Buffers</Filter>
+      <Filter>Shader\Buffer</Filter>
     </None>
     <None Include="Shaders\InstanceBuffer.hlsli">
-      <Filter>Shaders\Buffers</Filter>
+      <Filter>Shader\Buffer</Filter>
     </None>
     <None Include="Shaders\ObjectConstantBuffer.hlsli">
-      <Filter>Shaders\Buffers</Filter>
+      <Filter>Shader\Buffer</Filter>
     </None>
     <None Include="Shaders\CalculateAlbedo.hlsli">
-      <Filter>Shaders\Functions</Filter>
+      <Filter>Shader\Function</Filter>
     </None>
     <None Include="Shaders\CalculateNormal.hlsli">
-      <Filter>Shaders\Functions</Filter>
+      <Filter>Shader\Function</Filter>
     </None>
     <None Include="Shaders\PosNormTanTex_PSInput.hlsli">
-      <Filter>Shaders\Inputs</Filter>
+      <Filter>Shader\Input</Filter>
     </None>
     <None Include="Shaders\PosNormTanTex_VSInput.hlsli">
-      <Filter>Shaders\Inputs</Filter>
+      <Filter>Shader\Input</Filter>
     </None>
     <None Include="Shaders\PosNormTanTex_aVSInput.hlsli">
-      <Filter>Shaders\Inputs</Filter>
+      <Filter>Shader\Input</Filter>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
-      <Filter>Shaders\PosNormCol</Filter>
+      <Filter>Shader\PosNormCol</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormCol_rs.hlsl">
-      <Filter>Shaders\PosNormCol</Filter>
+      <Filter>Shader\PosNormCol</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormCol_vs.hlsl">
-      <Filter>Shaders\PosNormCol</Filter>
+      <Filter>Shader\PosNormCol</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\A</Filter>
+      <Filter>Shader\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\A</Filter>
+      <Filter>Shader\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_A_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\A</Filter>
+      <Filter>Shader\PosNormTanTex\A</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\AN</Filter>
+      <Filter>Shader\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\AN</Filter>
+      <Filter>Shader\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_AN_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\AN</Filter>
+      <Filter>Shader\PosNormTanTex\AN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iA_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\iA</Filter>
+      <Filter>Shader\PosNormTanTex\iA</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iA_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iA</Filter>
+      <Filter>Shader\PosNormTanTex\iA</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iA_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iA</Filter>
+      <Filter>Shader\PosNormTanTex\iA</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iAN_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\iAN</Filter>
+      <Filter>Shader\PosNormTanTex\iAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iAN_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iAN</Filter>
+      <Filter>Shader\PosNormTanTex\iAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iAN_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iAN</Filter>
+      <Filter>Shader\PosNormTanTex\iAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_aAN_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\aAN</Filter>
+      <Filter>Shader\PosNormTanTex\aAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_aAN_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\aAN</Filter>
+      <Filter>Shader\PosNormTanTex\aAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_aAN_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\aAN</Filter>
+      <Filter>Shader\PosNormTanTex\aAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNorm_ps.hlsl">
-      <Filter>Shaders\PosNorm</Filter>
+      <Filter>Shader\PosNorm</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNorm_rs.hlsl">
-      <Filter>Shaders\PosNorm</Filter>
+      <Filter>Shader\PosNorm</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNorm_vs.hlsl">
-      <Filter>Shaders\PosNorm</Filter>
+      <Filter>Shader\PosNorm</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iaAN_ps.hlsl">
-      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
+      <Filter>Shader\PosNormTanTex\iaAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iaAN_rs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
+      <Filter>Shader\PosNormTanTex\iaAN</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iaAN_vs.hlsl">
-      <Filter>Shaders\PosNormTanTex\iaAN</Filter>
+      <Filter>Shader\PosNormTanTex\iaAN</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -21,5 +21,6 @@ void Core::InputCC::Update(float)
 
 void Core::InputCC::Queue(Core::Command* pCommand)
 {
-	mpCommands.emplace_back(pCommand->Duplicate());
+	//mpCommands.emplace_back(pCommand->Duplicate());
+	mpCommands.emplace_back(pCommand);
 }

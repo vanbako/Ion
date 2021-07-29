@@ -8,6 +8,7 @@
 #include "MoveRightCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
+#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -81,38 +82,44 @@ const std::string& Core::CharacterRMC::GetName() const
 	return mName;
 }
 
-void Core::CharacterRMC::MoveForward()
+void Core::CharacterRMC::MoveForward(long long value)
 {
+	(value);
 	mMoveForward[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::CharacterRMC::MoveBack()
+void Core::CharacterRMC::MoveBack(long long value)
 {
+	(value);
 	mMoveBack[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::CharacterRMC::MoveLeft()
+void Core::CharacterRMC::MoveLeft(long long value)
 {
+	(value);
 	mMoveLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::CharacterRMC::MoveRight()
+void Core::CharacterRMC::MoveRight(long long value)
 {
+	(value);
 	mMoveRight[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::CharacterRMC::RotateLeft()
+void Core::CharacterRMC::RotateLeft(long long value)
 {
+	(value);
 	mRotateLeft[mCurrent] = true;
 	mHasChanged = true;
 }
 
-void Core::CharacterRMC::RotateRight()
+void Core::CharacterRMC::RotateRight(long long value)
 {
+	(value);
 	mRotateRight[mCurrent] = true;
 	mHasChanged = true;
 }

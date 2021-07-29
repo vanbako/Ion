@@ -16,5 +16,5 @@ Core::Command* Core::ShowControlsCmd::Duplicate()
 
 void Core::ShowControlsCmd::Execute()
 {
-	mpReceiver->ShowControls();
+	mpReceiver->ShowControls(mValue);
 }

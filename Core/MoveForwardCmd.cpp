@@ -16,5 +16,5 @@ Core::Command* Core::MoveForwardCmd::Duplicate()
 
 void Core::MoveForwardCmd::Execute()
 {
-	mpReceiver->MoveForward();
+	mpReceiver->MoveForward(mValue);
 }

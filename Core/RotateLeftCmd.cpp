@@ -16,5 +16,5 @@ Core::Command* Core::RotateLeftCmd::Duplicate()
 
 void Core::RotateLeftCmd::Execute()
 {
-	mpReceiver->RotateLeft();
+	mpReceiver->RotateLeft(mValue);
 }

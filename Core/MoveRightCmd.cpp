@@ -16,5 +16,5 @@ Core::Command* Core::MoveRightCmd::Duplicate()
 
 void Core::MoveRightCmd::Execute()
 {
-	mpReceiver->MoveRight();
+	mpReceiver->MoveRight(mValue);
 }

@@ -31,14 +31,14 @@ namespace Ion
 			const DirectX::XMFLOAT4X4& GetView() const;
 			const DirectX::XMFLOAT4X4& GetViewProjection() const;
 
-			virtual void MoveForward() override;
-			virtual void MoveBack() override;
-			virtual void MoveLeft() override;
-			virtual void MoveRight() override;
-			virtual void MoveUp() override;
-			virtual void MoveDown() override;
-			virtual void RotateLeft() override;
-			virtual void RotateRight() override;
+			virtual void MoveForward(long long value) override;
+			virtual void MoveBack(long long value) override;
+			virtual void MoveLeft(long long value) override;
+			virtual void MoveRight(long long value) override;
+			virtual void MoveUp(long long value) override;
+			virtual void MoveDown(long long value) override;
+			virtual void RotateLeft(long long value) override;
+			virtual void RotateRight(long long value) override;
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;

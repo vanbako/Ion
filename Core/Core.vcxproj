@@ -108,7 +108,6 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControllerC.h" />
     <ClInclude Include="include\ControllerST.h" />
-    <ClInclude Include="include\ControlRMC.h" />
     <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
@@ -119,6 +118,7 @@
     <ClInclude Include="include\InstancedAnimatedModelVC.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
     <ClInclude Include="include\Int4.h" />
+    <ClInclude Include="include\KeyboardState.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material2D.h" />
     <ClInclude Include="include\Material3D.h" />
@@ -185,7 +185,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
     <ClCompile Include="ControllerST.cpp" />
-    <ClCompile Include="ControlRMC.cpp" />
     <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedAnimatedModelVC.cpp" />

@@ -31,6 +31,15 @@
     <Filter Include="ServiceLocator\Audio">
       <UniqueIdentifier>{e90a1257-90dd-4152-b5ee-30fc333de73c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{76da5e13-c949-4651-aeed-2b1d5aac3526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ModelC">
+      <UniqueIdentifier>{92d3dd1b-02b4-4d79-b040-40be82664dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ModelC\ReceiverMC">
+      <UniqueIdentifier>{b4378cba-11c2-4b63-b72a-9627b95990ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,6 +51,9 @@
     <ClCompile Include="FmodAudio.cpp">
       <Filter>ServiceLocator\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="ControlRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -49,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="include\FmodAudio.h">
       <Filter>ServiceLocator\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlRMC.h">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@
 #include "MoveDownCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
+#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -31,6 +32,7 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 	, mFarPlane{ 2500.f }
 	, mNearPlane{ 0.1f }
 	, mFOV{ DirectX::XM_PIDIV4 }
+	, mView{}
 	, mViewProjection{}
 	, mpTransform{ nullptr }
 	, mMoveForward{ false, false }
@@ -168,14 +170,8 @@ void Core::CameraRMC::Switch()
 	mMoveDown[next] = mMoveDown[mCurrent];
 	mRotateLeft[next] = mRotateLeft[mCurrent];
 	mRotateRight[next] = mRotateRight[mCurrent];
-	mMoveForward[mCurrent] = false;
-	mMoveBack[mCurrent] = false;
-	mMoveLeft[mCurrent] = false;
-	mMoveRight[mCurrent] = false;
-	mMoveUp[mCurrent] = false;
-	mMoveDown[mCurrent] = false;
-	mRotateLeft[mCurrent] = false;
-	mRotateRight[mCurrent] = false;
+	if (mMoveForward[mCurrent] || mMoveBack[mCurrent] || mMoveLeft[mCurrent] || mMoveRight[mCurrent] || mMoveUp[mCurrent] || mMoveDown[mCurrent] || mRotateLeft[mCurrent] || mRotateRight[mCurrent])
+		mHasChanged = true;
 }
 
 const std::vector<std::pair<std::string, Core::Command*>>& Core::CameraRMC::GetCommands() const
@@ -203,50 +199,90 @@ const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewProjection() const
 	return mViewProjection;
 }
 
-void Core::CameraRMC::MoveForward()
+void Core::CameraRMC::MoveForward(long long value)
 {
-	mMoveForward[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveForward[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveForward[mCurrent] = false;
 }
 
-void Core::CameraRMC::MoveBack()
+void Core::CameraRMC::MoveBack(long long value)
 {
-	mMoveBack[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveBack[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveBack[mCurrent] = false;
 }
 
-void Core::CameraRMC::MoveLeft()
+void Core::CameraRMC::MoveLeft(long long value)
 {
-	mMoveLeft[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveLeft[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveLeft[mCurrent] = false;
 }
 
-void Core::CameraRMC::MoveRight()
+void Core::CameraRMC::MoveRight(long long value)
 {
-	mMoveRight[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveRight[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveRight[mCurrent] = false;
 }
 
-void Core::CameraRMC::MoveUp()
+void Core::CameraRMC::MoveUp(long long value)
 {
-	mMoveUp[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveUp[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveUp[mCurrent] = false;
 }
 
-void Core::CameraRMC::MoveDown()
+void Core::CameraRMC::MoveDown(long long value)
 {
-	mMoveDown[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveDown[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveDown[mCurrent] = false;
 }
 
-void Core::CameraRMC::RotateLeft()
+void Core::CameraRMC::RotateLeft(long long value)
 {
-	mRotateLeft[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mRotateLeft[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mRotateLeft[mCurrent] = false;
 }
 
-void Core::CameraRMC::RotateRight()
+void Core::CameraRMC::RotateRight(long long value)
 {
-	mRotateRight[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mRotateRight[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mRotateRight[mCurrent] = false;
 }

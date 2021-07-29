@@ -24,6 +24,10 @@ namespace Ion
 			virtual void Inner(float delta) override;
 		private:
 			static const std::map<std::string, int> mKeyNames;
+			BYTE mKeyboard[512];
+			PBYTE
+				mpCurrKeyboard,
+				mpLastKeyboard;
 
 			void Input();
 

@@ -16,5 +16,5 @@ Core::Command* Core::MoveDownCmd::Duplicate()
 
 void Core::MoveDownCmd::Execute()
 {
-	mpReceiver->MoveDown();
+	mpReceiver->MoveDown(mValue);
 }

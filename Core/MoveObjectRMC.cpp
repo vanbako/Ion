@@ -11,6 +11,7 @@
 #include "MoveDownCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
+#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -143,14 +144,8 @@ void Core::MoveObjectRMC::Switch()
 	mMoveDown[next] = mMoveDown[mCurrent];
 	mRotateLeft[next] = mRotateLeft[mCurrent];
 	mRotateRight[next] = mRotateRight[mCurrent];
-	mMoveForward[mCurrent] = false;
-	mMoveBack[mCurrent] = false;
-	mMoveLeft[mCurrent] = false;
-	mMoveRight[mCurrent] = false;
-	mMoveUp[mCurrent] = false;
-	mMoveDown[mCurrent] = false;
-	mRotateLeft[mCurrent] = false;
-	mRotateRight[mCurrent] = false;
+	if (mMoveForward[mCurrent] || mMoveBack[mCurrent] || mMoveLeft[mCurrent] || mMoveRight[mCurrent] || mMoveUp[mCurrent] || mMoveDown[mCurrent] || mRotateLeft[mCurrent] || mRotateRight[mCurrent])
+		mHasChanged = true;
 }
 
 const std::vector<std::pair<std::string, Core::Command*>>& Core::MoveObjectRMC::GetCommands() const
@@ -168,50 +163,90 @@ void Core::MoveObjectRMC::SetTransformMC(TransformMC* pTransform)
 	mpTransform = pTransform;
 }
 
-void Core::MoveObjectRMC::MoveForward()
+void Core::MoveObjectRMC::MoveForward(long long value)
 {
-	mMoveForward[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveForward[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if(KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveForward[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::MoveBack()
+void Core::MoveObjectRMC::MoveBack(long long value)
 {
-	mMoveBack[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveBack[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveBack[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::MoveLeft()
+void Core::MoveObjectRMC::MoveLeft(long long value)
 {
-	mMoveLeft[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveLeft[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveLeft[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::MoveRight()
+void Core::MoveObjectRMC::MoveRight(long long value)
 {
-	mMoveRight[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveRight[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveRight[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::MoveUp()
+void Core::MoveObjectRMC::MoveUp(long long value)
 {
-	mMoveUp[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveUp[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveUp[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::MoveDown()
+void Core::MoveObjectRMC::MoveDown(long long value)
 {
-	mMoveDown[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mMoveDown[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mMoveDown[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::RotateLeft()
+void Core::MoveObjectRMC::RotateLeft(long long value)
 {
-	mRotateLeft[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mRotateLeft[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mRotateLeft[mCurrent] = false;
 }
 
-void Core::MoveObjectRMC::RotateRight()
+void Core::MoveObjectRMC::RotateRight(long long value)
 {
-	mRotateRight[mCurrent] = true;
-	mHasChanged = true;
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		mRotateRight[mCurrent] = true;
+		mHasChanged = true;
+	}
+	else if (KeyboardState(value) == KeyboardState::KeyUp)
+		mRotateRight[mCurrent] = false;
 }

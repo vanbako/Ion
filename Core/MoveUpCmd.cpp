@@ -16,5 +16,5 @@ Core::Command* Core::MoveUpCmd::Duplicate()
 
 void Core::MoveUpCmd::Execute()
 {
-	mpReceiver->MoveUp();
+	mpReceiver->MoveUp(mValue);
 }

@@ -3,6 +3,7 @@
 #include "ControllerST.h"
 #include "Command.h"
 #include "InputCC.h"
+#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -233,8 +234,13 @@ const std::map<std::string, int> Core::ControllerST::mKeyNames{
 
 Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::microseconds updateTime)
 	: Core::SceneThread(pScene, updateTime)
+	, mKeyboard{}
+	, mpCurrKeyboard{}
+	, mpLastKeyboard{}
 	, mCommands{}
 {
+	mpCurrKeyboard = mKeyboard;
+	mpLastKeyboard = mKeyboard + 256;
 }
 
 // Do not call Register while Scene is active, because it us not thread-safe!
@@ -282,10 +288,33 @@ void Core::ControllerST::Input()
 {
 	if (!mpScene->GetApplication()->TryLockSharedKeyboard())
 		return;
-	PBYTE keyboard{ mpScene->GetApplication()->GetKeyboard() };
-	for (auto& outer : mCommands)
-		if ((keyboard[outer.first] & 0x80) == 0x80)
-			for (auto& inner : outer.second)
-				inner.second->Queue(inner.first);
+	PBYTE pTemp{ mpCurrKeyboard };
+	mpCurrKeyboard = mpLastKeyboard;
+	mpLastKeyboard = pTemp;
+	std::memcpy(mpCurrKeyboard, mpScene->GetApplication()->GetKeyboard(), 256);
 	mpScene->GetApplication()->UnlockSharedKeyboard();
+	for (auto& outer : mCommands)
+	{
+		if (((mpCurrKeyboard[outer.first] & 0x80) == 0x80) &&
+			((mpLastKeyboard[outer.first] & 0x80) == 0x00)
+			)
+			for (auto& inner : outer.second)
+			{
+				auto pCommand{ inner.first->Duplicate() };
+				pCommand->SetValue(long long(KeyboardState::KeyDown));
+				inner.second->Queue(pCommand);
+			}
+		if (((mpCurrKeyboard[outer.first] & 0x80) == 0x00) &&
+			((mpLastKeyboard[outer.first] & 0x80) == 0x80)
+			)
+			for (auto& inner : outer.second)
+			{
+				auto pCommand{ inner.first->Duplicate() };
+				pCommand->SetValue(long long(KeyboardState::KeyUp));
+				inner.second->Queue(pCommand);
+			}
+		//if ((mKeyboard[outer.first] & 0x80) == 0x80)
+		//	for (auto& inner : outer.second)
+		//		inner.second->Queue(inner.first);
+	}
 }

@@ -16,5 +16,5 @@ Core::Command* Core::MoveLeftCmd::Duplicate()
 
 void Core::MoveLeftCmd::Execute()
 {
-	mpReceiver->MoveLeft();
+	mpReceiver->MoveLeft(mValue);
 }

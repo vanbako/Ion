@@ -16,5 +16,5 @@ Core::Command* Core::NextObjectCmd::Duplicate()
 
 void Core::NextObjectCmd::Execute()
 {
-	mpReceiver->NextObject();
+	mpReceiver->NextObject(mValue);
 }

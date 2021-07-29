@@ -17,10 +17,12 @@ namespace Ion
 
 			virtual Core::Command* Duplicate() = 0;
 			virtual void Execute() = 0;
+			virtual void SetValue(long long value);
 		protected:
 			explicit Command(Core::ReceiverMC* pReceiver);
 
 			Core::ReceiverMC* mpReceiver;
+			long long int mValue;
 		};
 	}
 }

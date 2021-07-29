@@ -16,5 +16,5 @@ Core::Command* Core::MoveBackCmd::Duplicate()
 
 void Core::MoveBackCmd::Execute()
 {
-	mpReceiver->MoveBack();
+	mpReceiver->MoveBack(mValue);
 }
