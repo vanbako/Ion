@@ -130,19 +130,19 @@
     <ClInclude Include="include\ModelST.h" />
     <ClInclude Include="include\ModelVC.h" />
     <ClInclude Include="include\MoveBackCmd.h" />
+    <ClInclude Include="include\MoveCommand.h" />
     <ClInclude Include="include\MoveDownCmd.h" />
     <ClInclude Include="include\MoveForwardCmd.h" />
     <ClInclude Include="include\MoveLeftCmd.h" />
     <ClInclude Include="include\MoveObjectRMC.h" />
+    <ClInclude Include="include\MoveRMC.h" />
     <ClInclude Include="include\MoveRightCmd.h" />
     <ClInclude Include="include\MoveUpCmd.h" />
     <ClInclude Include="include\MsgType.h" />
-    <ClInclude Include="include\NextObjectCmd.h" />
     <ClInclude Include="include\NullAudio.h" />
     <ClInclude Include="include\NullLogger.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\PhysicsST.h" />
-    <ClInclude Include="include\PrevObjectCmd.h" />
     <ClInclude Include="include\PxIonAllocatorCallback.h" />
     <ClInclude Include="include\PxIonErrorCallback.h" />
     <ClInclude Include="include\Quadrilateral.h" />
@@ -153,7 +153,6 @@
     <ClInclude Include="include\SceneThread.h" />
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
-    <ClInclude Include="include\ShowControlsCmd.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\TextVC.h" />
@@ -198,13 +197,14 @@
     <ClCompile Include="ModelST.cpp" />
     <ClCompile Include="ModelVC.cpp" />
     <ClCompile Include="MoveBackCmd.cpp" />
+    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="MoveDownCmd.cpp" />
     <ClCompile Include="MoveForwardCmd.cpp" />
     <ClCompile Include="MoveLeftCmd.cpp" />
     <ClCompile Include="MoveObjectRMC.cpp" />
+    <ClCompile Include="MoveRMC.cpp" />
     <ClCompile Include="MoveRightCmd.cpp" />
     <ClCompile Include="MoveUpCmd.cpp" />
-    <ClCompile Include="NextObjectCmd.cpp" />
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="NullLogger.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -214,7 +214,6 @@
     </ClCompile>
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="PhysicsST.cpp" />
-    <ClCompile Include="PrevObjectCmd.cpp" />
     <ClCompile Include="PxIonAllocatorCallback.cpp" />
     <ClCompile Include="PxIonErrorCallback.cpp" />
     <ClCompile Include="ReceiverMC.cpp" />
@@ -223,7 +222,6 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
-    <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextVC.cpp" />
     <ClCompile Include="TransformMC.cpp" />

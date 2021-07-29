@@ -18,7 +18,7 @@ using namespace Ion;
 const std::string Core::CameraRMC::mName{ "Camera" };
 
 Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
-	: Core::ReceiverMC(isActive, pObject)
+	: Core::MoveRMC(isActive, pObject)
 	, mCommands{
 		{ "MoveForward", new Core::MoveForwardCmd{ this } },
 		{ "MoveBack", new Core::MoveBackCmd{ this } },

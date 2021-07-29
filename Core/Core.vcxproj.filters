@@ -339,15 +339,6 @@
     <ClInclude Include="include\InstancedAnimatedModelVC.h">
       <Filter>Component\ViewC</Filter>
     </ClInclude>
-    <ClInclude Include="include\NextObjectCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PrevObjectCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ShowControlsCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
     <ClInclude Include="include\TextVC.h">
       <Filter>Component\ViewC</Filter>
     </ClInclude>
@@ -356,6 +347,12 @@
     </ClInclude>
     <ClInclude Include="include\KeyboardState.h">
       <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveRMC.h">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveCommand.h">
+      <Filter>Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,20 +509,17 @@
     <ClCompile Include="InstancedAnimatedModelVC.cpp">
       <Filter>Component\ViewC</Filter>
     </ClCompile>
-    <ClCompile Include="NextObjectCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="PrevObjectCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="ShowControlsCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
     <ClCompile Include="TextVC.cpp">
       <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="MoveObjectRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

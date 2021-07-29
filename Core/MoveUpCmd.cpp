@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "MoveUpCmd.h"
-#include "ReceiverMC.h"
+#include "MoveRMC.h"
 
 using namespace Ion;
 
-Core::MoveUpCmd::MoveUpCmd(Core::ReceiverMC* pReceiver)
-	: Core::Command(pReceiver)
+Core::MoveUpCmd::MoveUpCmd(Core::MoveRMC* pMoveRMC)
+	: Core::MoveCommand(pMoveRMC)
 {
 }
 
-Core::Command* Core::MoveUpCmd::Duplicate()
+Core::MoveCommand* Core::MoveUpCmd::Duplicate()
 {
-	return new Core::MoveUpCmd{ mpReceiver };
+	return new Core::MoveUpCmd{ mpMoveRMC };
 }
 
 void Core::MoveUpCmd::Execute()
 {
-	mpReceiver->MoveUp(mValue);
+	mpMoveRMC->MoveUp(mValue);
 }

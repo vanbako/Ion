@@ -1,24 +1,22 @@
 #pragma once
-#include "Command.h"
+#include "ControlCommand.h"
 
 namespace Ion
 {
 	namespace Core
 	{
-		class ReceiverMC;
-
 		class NextObjectCmd final
-			: public Core::Command
+			: public Core::ControlCommand
 		{
 		public:
-			explicit NextObjectCmd(Core::ReceiverMC* pReceiver);
+			explicit NextObjectCmd(Core::ControlRMC* pControlRMC);
 			virtual ~NextObjectCmd() = default;
 			NextObjectCmd(const NextObjectCmd& other) = default;
 			NextObjectCmd(NextObjectCmd&& other) noexcept = default;
 			NextObjectCmd& operator=(const NextObjectCmd& other) = default;
 			NextObjectCmd& operator=(NextObjectCmd&& other) noexcept = default;
 
-			virtual Core::Command* Duplicate() override;
+			virtual Core::ControlCommand* Duplicate() override;
 			virtual void Execute() override;
 		};
 	}

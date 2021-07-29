@@ -1,24 +1,22 @@
 #pragma once
-#include "Command.h"
+#include "MoveCommand.h"
 
 namespace Ion
 {
 	namespace Core
 	{
-		class ReceiverMC;
-
 		class MoveBackCmd final
-			: public Core::Command
+			: public Core::MoveCommand
 		{
 		public:
-			explicit MoveBackCmd(Core::ReceiverMC* pReceiver);
+			explicit MoveBackCmd(Core::MoveRMC* pMoveRMC);
 			virtual ~MoveBackCmd() = default;
 			MoveBackCmd(const MoveBackCmd& other) = default;
 			MoveBackCmd(MoveBackCmd&& other) noexcept = default;
 			MoveBackCmd& operator=(const MoveBackCmd& other) = default;
 			MoveBackCmd& operator=(MoveBackCmd&& other) noexcept = default;
 
-			virtual Core::Command* Duplicate() override;
+			virtual Core::MoveCommand* Duplicate() override;
 			virtual void Execute() override;
 		};
 	}

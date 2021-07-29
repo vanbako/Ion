@@ -71,10 +71,14 @@ void Core::ControlRMC::Update(float delta)
 		size_t prevObject{ mpObjects.size() - 1 };
 		if (mCurrObject != 0)
 			prevObject = mCurrObject - 1;
-		if (mpObjects[mCurrObject]->GetScene()->TryLockExclusiveControllerCs())
+		if (mpObjects[mCurrObject]->GetScene()->TryLockExclusiveControllerCs() &&
+			mpObjects[mCurrObject]->HasModelC<MoveObjectRMC>() &&
+			mpObjects[mCurrObject]->HasControllerC<InputCC>())
 		{
-			mpObjects[prevObject]->AttachModelC<MoveObjectRMC>(mpObjects[mCurrObject]->DetachModelC<MoveObjectRMC>());
+			MoveObjectRMC* pMoveObjectRMC{ mpObjects[mCurrObject]->DetachModelC<MoveObjectRMC>() };
+			mpObjects[prevObject]->AttachModelC<MoveObjectRMC>(pMoveObjectRMC);
 			mpObjects[prevObject]->AttachControllerC<InputCC>(mpObjects[mCurrObject]->DetachControllerC<InputCC>());
+			pMoveObjectRMC->SetTransformMC(mpObjects[prevObject]->GetModelC<TransformMC>());
 			mpObjects[mCurrObject]->GetScene()->UnlockExclusiveControllerCs();
 			mCurrObject = prevObject;
 		}

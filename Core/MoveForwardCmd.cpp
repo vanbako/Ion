@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "MoveForwardCmd.h"
-#include "ReceiverMC.h"
+#include "MoveRMC.h"
 
 using namespace Ion;
 
-Core::MoveForwardCmd::MoveForwardCmd(Core::ReceiverMC* pReceiver)
-	: Core::Command(pReceiver)
+Core::MoveForwardCmd::MoveForwardCmd(Core::MoveRMC* pMoveRMC)
+	: Core::MoveCommand(pMoveRMC)
 {
 }
 
-Core::Command* Core::MoveForwardCmd::Duplicate()
+Core::MoveCommand* Core::MoveForwardCmd::Duplicate()
 {
-	return new Core::MoveForwardCmd{ mpReceiver };
+	return new Core::MoveForwardCmd{ mpMoveRMC };
 }
 
 void Core::MoveForwardCmd::Execute()
 {
-	mpReceiver->MoveForward(mValue);
+	mpMoveRMC->MoveForward(mValue);
 }

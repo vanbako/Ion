@@ -1,5 +1,5 @@
 #pragma once
-#include "ReceiverMC.h"
+#include "MoveRMC.h"
 
 // Camera Model Component
 
@@ -11,7 +11,7 @@ namespace Ion
 		class TransformMC;
 
 		class MoveObjectRMC final
-			: public Core::ReceiverMC
+			: public Core::MoveRMC
 		{
 		public:
 			explicit MoveObjectRMC(bool isActive, Core::Object* pObject);

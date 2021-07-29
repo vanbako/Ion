@@ -4,9 +4,8 @@
 
 using namespace Ion;
 
-Core::Command::Command(Core::ReceiverMC* pReceiver)
-	: mpReceiver{ pReceiver }
-	, mValue{ 0 }
+Core::Command::Command()
+	: mValue{ 0 }
 {
 }
 

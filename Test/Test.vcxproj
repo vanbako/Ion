@@ -103,17 +103,25 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ControlCommand.cpp" />
     <ClCompile Include="ControlRMC.cpp" />
+    <ClCompile Include="NextObjectCmd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FmodAudio.cpp" />
+    <ClCompile Include="PrevObjectCmd.cpp" />
+    <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ControlCommand.h" />
     <ClInclude Include="include\ControlRMC.h" />
     <ClInclude Include="include\FmodAudio.h" />
+    <ClInclude Include="include\NextObjectCmd.h" />
+    <ClInclude Include="include\PrevObjectCmd.h" />
+    <ClInclude Include="include\ShowControlsCmd.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -125,40 +133,31 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </Text>
+    <Text Include="..\Resources\Input\Control.txt" />
+    <Text Include="..\Resources\Input\MoveObject.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Instances\Flower.ins" />
-    <None Include="..\Resources\Model\Flower.ovm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="..\Resources\Model\Wizard.ovm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resources\Texture\Flower_Blue.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\Resources\Texture\Flower_Red.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\Resources\Texture\Wizard_Blue_A.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\Resources\Texture\Wizard_Blue_N.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\Resources\Texture\Wizard_Red_A.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="..\Resources\Texture\Wizard_Red_N.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
+    <None Include="..\Resources\Model\Flower\Flower.ovm" />
+    <None Include="..\Resources\Model\RoyalHighness\RoyalHighness1.ovm" />
+    <None Include="..\Resources\Model\Wizard\Wizard.ovm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{320c2102-3ca8-4698-b81c-5ab2e023a22b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\Texture\Flower\Flower_Blue.png" />
+    <Image Include="..\Resources\Texture\Flower\Flower_Red.png" />
+    <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Blue_A.png" />
+    <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Blue_N.png" />
+    <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_A.png" />
+    <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_N.png" />
+    <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_A.png" />
+    <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_N.png" />
+    <Image Include="..\Resources\Texture\Wizard\Wizard_Red_A.png" />
+    <Image Include="..\Resources\Texture\Wizard\Wizard_Red_N.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

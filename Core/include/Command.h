@@ -19,9 +19,8 @@ namespace Ion
 			virtual void Execute() = 0;
 			virtual void SetValue(long long value);
 		protected:
-			explicit Command(Core::ReceiverMC* pReceiver);
+			explicit Command();
 
-			Core::ReceiverMC* mpReceiver;
 			long long int mValue;
 		};
 	}

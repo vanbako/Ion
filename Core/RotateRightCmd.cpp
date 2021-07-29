@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "RotateRightCmd.h"
-#include "ReceiverMC.h"
+#include "MoveRMC.h"
 
 using namespace Ion;
 
-Core::RotateRightCmd::RotateRightCmd(Core::ReceiverMC* pReceiver)
-	: Core::Command(pReceiver)
+Core::RotateRightCmd::RotateRightCmd(Core::MoveRMC* pMoveRMC)
+	: Core::MoveCommand(pMoveRMC)
 {
 }
 
-Core::Command* Core::RotateRightCmd::Duplicate()
+Core::MoveCommand* Core::RotateRightCmd::Duplicate()
 {
-	return new Core::RotateRightCmd{ mpReceiver };
+	return new Core::RotateRightCmd{ mpMoveRMC };
 }
 
 void Core::RotateRightCmd::Execute()
 {
-	mpReceiver->RotateRight(mValue);
+	mpMoveRMC->RotateRight(mValue);
 }

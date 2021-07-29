@@ -1,5 +1,5 @@
 #pragma once
-#include "ReceiverMC.h"
+#include "MoveRMC.h"
 
 // Character Model Component
 
@@ -10,7 +10,7 @@ namespace Ion
 		class TransformMC;
 
 		class CharacterRMC final
-			: public Core::ReceiverMC
+			: public Core::MoveRMC
 		{
 		public:
 			explicit CharacterRMC(bool isActive, Core::Object* pObject);

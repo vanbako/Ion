@@ -29,9 +29,9 @@ namespace Ion
 
 			void AddObject(Core::Object* pObject);
 
-			virtual void NextObject(long long value) override;
-			virtual void PrevObject(long long value) override;
-			virtual void ShowControls(long long value) override;
+			virtual void NextObject(long long value);
+			virtual void PrevObject(long long value);
+			virtual void ShowControls(long long value);
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
