@@ -16,5 +16,5 @@ Core::MoveCommand* Core::RotateRightCmd::Duplicate()
 
 void Core::RotateRightCmd::Execute()
 {
-	mpMoveRMC->RotateRight(mValue);
+	mpMoveRMC->RotateRight(mLongLongValue);
 }

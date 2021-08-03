@@ -18,7 +18,7 @@ namespace Ion
 			ControllerC& operator=(const ControllerC& other) = default;
 			ControllerC& operator=(ControllerC&& other) noexcept = default;
 
-			virtual void Update(float) override = 0;
+			virtual void Update(float delta) override = 0;
 		};
 	}
 }

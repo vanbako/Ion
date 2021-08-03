@@ -16,5 +16,5 @@ Core::ControlCommand* Core::ShowControlsCmd::Duplicate()
 
 void Core::ShowControlsCmd::Execute()
 {
-	mpControlRMC->ShowControls(mValue);
+	mpControlRMC->ShowControls(mLongLongValue);
 }

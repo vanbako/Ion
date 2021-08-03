@@ -16,5 +16,5 @@ Core::ControlCommand* Core::PrevObjectCmd::Duplicate()
 
 void Core::PrevObjectCmd::Execute()
 {
-	mpControlRMC->PrevObject(mValue);
+	mpControlRMC->PrevObject(mLongLongValue);
 }

@@ -16,6 +16,7 @@ namespace Ion
 		class Canvas3D;
 		class Model;
 		class Texture;
+		class InstancedTransformMC;
 
 		class InstancedAnimatedModelVC
 			: public Core::ModelVC
@@ -28,10 +29,9 @@ namespace Ion
 			InstancedAnimatedModelVC& operator=(const InstancedAnimatedModelVC& other) = default;
 			InstancedAnimatedModelVC& operator=(InstancedAnimatedModelVC&& other) noexcept = default;
 
-			void AddInstance(const Core::TransformMC& transform);
-			void AddInstances(const std::vector<Core::TransformMC>& transforms);
-			void ReadInstances();
-			std::vector<Core::TransformMC>& GetInstances();
+			//void AddInstance(const Core::TransformMC& transform);
+			//void AddInstances(const std::vector<Core::TransformMC>& transforms);
+			void SetInstancedTransform(InstancedTransformMC* pInstancedTransform);
 
 			void SetAnimation(const Core::AnimationClip& animationClip);
 			void SetAnimation(size_t clipNumber);
@@ -42,8 +42,7 @@ namespace Ion
 			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
 			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
-			static const size_t mMaxInstances;
-			std::vector<Core::TransformMC> mTransforms;
+			InstancedTransformMC* mpInstancedTransform;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpInstanceBuffer;
 			std::vector<Core::InstanceBuffer> mInstanceBufferData;

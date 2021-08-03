@@ -91,6 +91,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Behaviour.h" />
+    <ClInclude Include="include\BehaviourCC.h" />
     <ClInclude Include="include\AngleUnit.h" />
     <ClInclude Include="include\AnimatedModelVC.h" />
     <ClInclude Include="include\AnimationClip.h" />
@@ -117,6 +119,7 @@
     <ClInclude Include="include\InstanceBuffer.h" />
     <ClInclude Include="include\InstancedAnimatedModelVC.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
+    <ClInclude Include="include\InstancedTransformMC.h" />
     <ClInclude Include="include\Int4.h" />
     <ClInclude Include="include\KeyboardState.h" />
     <ClInclude Include="include\Logger.h" />
@@ -153,6 +156,8 @@
     <ClInclude Include="include\SceneThread.h" />
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
+    <ClInclude Include="include\SteeringCommand.h" />
+    <ClInclude Include="include\SteeringRMC.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\TextVC.h" />
@@ -162,15 +167,18 @@
     <ClInclude Include="include\Triangle.h" />
     <ClInclude Include="include\TriangleVC.h" />
     <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\Velocity.h" />
     <ClInclude Include="include\VertexPNC.h" />
     <ClInclude Include="include\ViewC.h" />
     <ClInclude Include="include\ViewST.h" />
+    <ClInclude Include="include\WanderCmd.h" />
     <ClInclude Include="include\Winding.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="ModelFormat.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviourCC.cpp" />
     <ClCompile Include="AnimatedModelVC.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationKey.cpp" />
@@ -188,6 +196,7 @@
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedAnimatedModelVC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
+    <ClCompile Include="InstancedTransformMC.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Material2D.cpp" />
     <ClCompile Include="Material3D.cpp" />
@@ -222,12 +231,15 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="SteeringCommand.cpp" />
+    <ClCompile Include="SteeringRMC.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextVC.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />
     <ClCompile Include="ViewC.cpp" />
     <ClCompile Include="ViewST.cpp" />
+    <ClCompile Include="WanderCmd.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

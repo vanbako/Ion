@@ -9,8 +9,9 @@ Core::InputCC::InputCC(bool isActive, Core::Object* pObject)
 {
 }
 
-void Core::InputCC::Update(float)
+void Core::InputCC::Update(float delta)
 {
+	(delta);
 	for (auto pCommand : mpCommands)
 	{
 		pCommand->Execute();
@@ -21,6 +22,5 @@ void Core::InputCC::Update(float)
 
 void Core::InputCC::Queue(Core::Command* pCommand)
 {
-	//mpCommands.emplace_back(pCommand->Duplicate());
 	mpCommands.emplace_back(pCommand);
 }

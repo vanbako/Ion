@@ -118,6 +118,9 @@
     <Filter Include="Shader\Input">
       <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\ControllerC\BehaviourCC">
+      <UniqueIdentifier>{f1a202a3-e56c-46e5-82f3-cbaac29e03e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -354,6 +357,27 @@
     <ClInclude Include="include\MoveCommand.h">
       <Filter>Command</Filter>
     </ClInclude>
+    <ClInclude Include="include\InstancedTransformMC.h">
+      <Filter>Component\ModelC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Velocity.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BehaviourCC.h">
+      <Filter>Component\ControllerC\BehaviourCC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SteeringCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WanderCmd.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SteeringRMC.h">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Behaviour.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -520,6 +544,21 @@
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedTransformMC.cpp">
+      <Filter>Component\ModelC</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourCC.cpp">
+      <Filter>Component\ControllerC\BehaviourCC</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringCommand.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderCmd.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

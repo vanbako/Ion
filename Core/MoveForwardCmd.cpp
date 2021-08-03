@@ -16,5 +16,5 @@ Core::MoveCommand* Core::MoveForwardCmd::Duplicate()
 
 void Core::MoveForwardCmd::Execute()
 {
-	mpMoveRMC->MoveForward(mValue);
+	mpMoveRMC->MoveForward(mLongLongValue);
 }

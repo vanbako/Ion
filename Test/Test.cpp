@@ -3,6 +3,7 @@
 #include "Factory.h"
 #include "MeshVC.h"
 #include "ModelVC.h"
+#include "InstancedTransformMC.h"
 #include "TriangleVC.h"
 #include "TextVC.h"
 #include "InstancedModelVC.h"
@@ -10,7 +11,9 @@
 #include "InstancedAnimatedModelVC.h"
 #include "MoveObjectRMC.h"
 #include "ControlRMC.h"
+#include "SteeringRMC.h"
 #include "InputCC.h"
+#include "BehaviourCC.h"
 #include "ControllerST.h"
 #include "Object.h"
 #include "FileLogger.h"
@@ -166,6 +169,7 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 	//DirectX::XMFLOAT4 rot{};
 	//XMStoreFloat4(&rot, rotVec);
 	//pTransformMC->SetRotation(rot);
+	Core::InstancedTransformMC* pFlowerTransformMC{ pFlower->AddModelC<Core::InstancedTransformMC>(false) };
 	Core::InstancedModelVC* pFlowerModelVC{ pFlower->AddViewC<Core::InstancedModelVC>("Flower/Flower", "ovm", "PosNormTanTex_iA", false, Core::Winding::CCW)};
 	pFlowerModelVC->AddTexture(Core::TextureType::Albedo, "Flower/Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
@@ -175,7 +179,8 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 		transforms.emplace_back(true, pFlower);
 		transforms.back().SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 100 + 1), 0.f, 10.f * float(i % 100 + 1), 0.f });
 	}
-	pFlowerModelVC->AddInstances(transforms);
+	pFlowerTransformMC->AddInstances(transforms);
+	pFlowerModelVC->SetInstancedTransform(pFlowerTransformMC);
 	return pFlower;
 }
 
@@ -187,6 +192,7 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
 	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 	Core::InstancedAnimatedModelVC* pWizardModelVC{ pWizard->AddViewC<Core::InstancedAnimatedModelVC>("Wizard/Wizard", "ovm", "PosNormTanTex_iaAN", false, Core::Winding::CCW, Core::CoordSystem::RightHanded) };
+	Core::InstancedTransformMC* pWizardTransformMC{ pWizard->AddModelC<Core::InstancedTransformMC>(false) };
 	pWizardModelVC->AddTexture(Core::TextureType::Albedo, "Wizard/Wizard_Blue_A.png");
 	pWizardModelVC->AddTexture(Core::TextureType::Normal, "Wizard/Wizard_Blue_N.png");
 	pWizardModelVC->AddCanvas(pCanvas1);
@@ -205,7 +211,8 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 		transforms.back().SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 5), 0.f, 0.f, 0.f });
 		//transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 	}
-	pWizardModelVC->AddInstances(transforms);
+	pWizardTransformMC->AddInstances(transforms);
+	pWizardModelVC->SetInstancedTransform(pWizardTransformMC);
 	return pWizard;
 }
 
@@ -221,6 +228,11 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Albedo, "RoyalHighness/RoyalHighness_Red_A.png");
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Normal, "RoyalHighness/RoyalHighness_Red_N.png");
 	pRoyalHighnessModelVC->AddCanvas(pCanvas);
+
+	Core::SteeringRMC* pSteeringRMC{ pRoyalHighness->AddModelC<Core::SteeringRMC>(false) };
+	Core::BehaviourCC* pBehaviour{ pRoyalHighness->AddControllerC<Core::BehaviourCC>(false) };
+	pBehaviour->SetBehaviour(Core::Behaviour::Wander);
+	pBehaviour->SetSteeringRMC(pSteeringRMC);
 	return pRoyalHighness;
 }
 

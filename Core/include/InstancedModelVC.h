@@ -1,7 +1,6 @@
 #pragma once
 #include "ModelVC.h"
 #include "InstanceBuffer.h"
-#include "TransformMC.h"
 
 // Instanced Model View Component
 
@@ -14,6 +13,7 @@ namespace Ion
 		class Canvas3D;
 		class Model;
 		class Texture;
+		class InstancedTransformMC;
 
 		class InstancedModelVC
 			: public Core::ModelVC
@@ -26,19 +26,16 @@ namespace Ion
 			InstancedModelVC& operator=(const InstancedModelVC& other) = default;
 			InstancedModelVC& operator=(InstancedModelVC&& other) noexcept = default;
 
-			void AddInstance(const Core::TransformMC& transform);
-			void AddInstances(const std::vector<Core::TransformMC>& transforms);
-			void ReadInstances();
-			std::vector<Core::TransformMC>& GetInstances();
+			//void AddInstance(const Core::TransformMC& transform);
+			//void AddInstances(const std::vector<Core::TransformMC>& transforms);
+			void SetInstancedTransform(InstancedTransformMC* pInstancedTransform);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
 			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
 			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
-			static const size_t mMaxInstances;
-			std::vector<Core::TransformMC> mTransforms;
-
+			InstancedTransformMC* mpInstancedTransform;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpInstanceBuffer;
 			std::vector<Core::InstanceBuffer> mInstanceBufferData;
 			UINT8* mpInstanceDataBegin;

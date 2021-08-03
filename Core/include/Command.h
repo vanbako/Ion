@@ -17,11 +17,17 @@ namespace Ion
 
 			virtual Core::Command* Duplicate() = 0;
 			virtual void Execute() = 0;
+			virtual void SetValue(int value);
 			virtual void SetValue(long long value);
+			virtual void SetValue(float value);
+			virtual void SetValue(bool value);
 		protected:
 			explicit Command();
 
-			long long int mValue;
+			bool mBoolValue;
+			int mIntValue;
+			long long mLongLongValue;
+			float mFloatValue;
 		};
 	}
 }

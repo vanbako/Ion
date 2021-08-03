@@ -20,7 +20,7 @@ namespace Ion
 			InputCC& operator=(const InputCC& other) = default;
 			InputCC& operator=(InputCC&& other) noexcept = default;
 
-			virtual void Update(float) override;
+			virtual void Update(float delta) override;
 
 			void Queue(Core::Command* pCommand);
 		private:

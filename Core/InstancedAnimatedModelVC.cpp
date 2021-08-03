@@ -7,15 +7,14 @@
 #include "CameraRMC.h"
 #include "Model.h"
 #include "Canvas.h"
+#include "InstancedTransformMC.h"
 #include "d3dx12.h"
 
 using namespace Ion;
 
-const size_t Core::InstancedAnimatedModelVC::mMaxInstances{ 40960 };
-
 Core::InstancedAnimatedModelVC::InstancedAnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
-	, mTransforms{}
+	, mpInstancedTransform{ nullptr }
 	, mpInstanceBuffer{}
 	, mInstanceBufferData{}
 	, mpInstanceDataBegin{ nullptr }
@@ -40,38 +39,27 @@ Core::InstancedAnimatedModelVC::~InstancedAnimatedModelVC()
 {
 }
 
-void Core::InstancedAnimatedModelVC::AddInstance(const Core::TransformMC& transformMC)
+//void Core::InstancedAnimatedModelVC::AddInstance(const Core::TransformMC& transformMC)
+//{
+//	mTransforms.push_back(transformMC);
+//	mTransforms.back().Update(0.f);
+//	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
+//}
+//
+//void Core::InstancedAnimatedModelVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
+//{
+//	for (auto& transformMC : transformMCs)
+//		AddInstance(transformMC);
+//}
+
+void Core::InstancedAnimatedModelVC::SetInstancedTransform(InstancedTransformMC* pInstancedTransform)
 {
-	mTransforms.push_back(transformMC);
-	mTransforms.back().Update(0.f);
-	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
+	mpInstancedTransform = pInstancedTransform;
+	mInstanceBufferData.clear();
+	for (auto& transform : mpInstancedTransform->GetInstances())
+		mInstanceBufferData.emplace_back(transform.GetWorld());
 }
 
-void Core::InstancedAnimatedModelVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
-{
-	for (auto& transformMC : transformMCs)
-		AddInstance(transformMC);
-}
-
-void Core::InstancedAnimatedModelVC::ReadInstances()
-{
-	if (!mTransforms.empty())
-		return;
-	const std::vector<Core::Transform>& transforms{ mpModel->ReadInstances() };
-	Core::TransformMC transformMC{ true, mpObject };
-	for (auto& transform : transforms)
-	{
-		transformMC.SetPosition(transform.mPosition);
-		transformMC.SetScale(transform.mScale);
-		transformMC.SetRotation(transform.mRotation);
-		AddInstance(transformMC);
-	}
-}
-
-std::vector<Core::TransformMC>& Core::InstancedAnimatedModelVC::GetInstances()
-{
-	return mTransforms;
-}
 
 void Core::InstancedAnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
 {
@@ -101,7 +89,7 @@ void Core::InstancedAnimatedModelVC::Initialize()
 	auto pDevice{ pApplication->GetDevice() };
 	{
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
-		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(sizeof(Core::InstanceBuffer) * mMaxInstances) };
+		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(sizeof(Core::InstanceBuffer) * InstancedTransformMC::GetMaxInstances()) };
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
@@ -112,7 +100,7 @@ void Core::InstancedAnimatedModelVC::Initialize()
 
 		CD3DX12_RANGE readRange(0, 0);
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
-		memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
+		//memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
 	}
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};

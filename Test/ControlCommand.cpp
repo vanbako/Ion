@@ -12,5 +12,5 @@ Core::ControlCommand::ControlCommand(Core::ControlRMC* pControlRMC)
 
 void Core::ControlCommand::SetValue(long long value)
 {
-	mValue = value;
+	mLongLongValue = value;
 }

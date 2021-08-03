@@ -9,8 +9,3 @@ Core::MoveCommand::MoveCommand(Core::MoveRMC* pMoveRMC)
 	, mpMoveRMC{ pMoveRMC }
 {
 }
-
-void Core::MoveCommand::SetValue(long long value)
-{
-	mValue = value;
-}

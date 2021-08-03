@@ -19,7 +19,6 @@ namespace Ion
 
 			virtual Core::MoveCommand* Duplicate() = 0;
 			virtual void Execute() = 0;
-			virtual void SetValue(long long value);
 		protected:
 			explicit MoveCommand(Core::MoveRMC* pMoveRMC);
 

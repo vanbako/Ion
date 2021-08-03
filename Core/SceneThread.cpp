@@ -39,6 +39,7 @@ const std::chrono::microseconds Core::SceneThread::GetUpdateTime() const
 
 void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 {
+	std::srand(unsigned int(std::time(nullptr)));
 	Core::Scene* pScene{ pSceneThread->GetScene() };
 	std::chrono::steady_clock::time_point
 		start{ std::chrono::steady_clock::now() },

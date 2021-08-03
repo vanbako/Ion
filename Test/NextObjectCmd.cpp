@@ -16,5 +16,5 @@ Core::ControlCommand* Core::NextObjectCmd::Duplicate()
 
 void Core::NextObjectCmd::Execute()
 {
-	mpControlRMC->NextObject(mValue);
+	mpControlRMC->NextObject(mLongLongValue);
 }

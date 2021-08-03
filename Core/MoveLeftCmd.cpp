@@ -16,5 +16,5 @@ Core::MoveCommand* Core::MoveLeftCmd::Duplicate()
 
 void Core::MoveLeftCmd::Execute()
 {
-	mpMoveRMC->MoveLeft(mValue);
+	mpMoveRMC->MoveLeft(mLongLongValue);
 }
