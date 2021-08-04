@@ -12,20 +12,33 @@ const size_t Core::InstancedTransformMC::mMaxInstances{ 40960 };
 Core::InstancedTransformMC::InstancedTransformMC(bool isActive, Core::Object* pObject)
 	: ModelC(isActive, pObject)
 	, mIsStatic{ true }
+	, mHasBehaviour{ false }
 	, mTransforms{}
+	, mBehaviours{}
 {
 }
 
-void Core::InstancedTransformMC::AddInstance(const Core::TransformMC& transform)
+void Core::InstancedTransformMC::AddInstance(const Core::TransformMC& transform, Behaviour behaviour)
 {
-	mTransforms.push_back(transform);
-	mTransforms.back().Update(0.f);
+	mTransforms.emplace_back(transform).Update(0.f);
+	if (mHasBehaviour)
+		mBehaviours.emplace_back(behaviour);
 }
 
-void Core::InstancedTransformMC::AddInstances(const std::vector<Core::TransformMC>& transforms)
+void Core::InstancedTransformMC::AddInstances(const std::vector<Core::TransformMC>& transforms, const std::vector<Core::Behaviour>& behaviours)
 {
-	for (auto& transform : transforms)
-		AddInstance(transform);
+	if (mHasBehaviour)
+	{
+		auto it{ behaviours.begin() };
+		for (auto& transform : transforms)
+		{
+			AddInstance(transform, *it);
+			++it;
+		}
+	}
+	else
+		for (auto& transform : transforms)
+			AddInstance(transform, Core::Behaviour::Idle);
 }
 
 //void Core::InstancedTransformMC::ReadInstances()
@@ -46,6 +59,11 @@ void Core::InstancedTransformMC::AddInstances(const std::vector<Core::TransformM
 std::vector<Core::TransformMC>& Core::InstancedTransformMC::GetInstances()
 {
 	return mTransforms;
+}
+
+std::vector<Core::Behaviour>& Core::InstancedTransformMC::GetBehaviours()
+{
+	return mBehaviours;
 }
 
 void Core::InstancedTransformMC::Initialize()
@@ -69,9 +87,20 @@ void Core::InstancedTransformMC::Switch()
 		transform.Switch();
 }
 
+bool Core::InstancedTransformMC::GetIsStatic()
+{
+	return mIsStatic;
+}
+
 void Core::InstancedTransformMC::SetIsStatic(bool isStatic)
 {
 	mIsStatic = isStatic;
+}
+
+void Core::InstancedTransformMC::SetHasBehaviour(bool hasBehaviour)
+{
+	if (mTransforms.empty())
+		mHasBehaviour = hasBehaviour;
 }
 
 const size_t Core::InstancedTransformMC::GetMaxInstances()

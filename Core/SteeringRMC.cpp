@@ -13,12 +13,6 @@ Core::SteeringRMC::SteeringRMC(bool isActive, Core::Object* pObject)
 	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
 		{ "Wander", new Core::WanderCmd{ this } } }
-	, mpTransform{ nullptr }
-	, mVelocity{ { 0.f, 0.f, -0.1f }, 0.f }
-	, mOffset{ 6.f }
-	, mRadius{ 4.f }
-	, mAngleChange{ float(M_PI_4) * 0.5f }
-	, mWanderAngle{ 0.f }
 	, mWanderDeltas{}
 {
 }
@@ -29,41 +23,6 @@ Core::SteeringRMC::~SteeringRMC()
 		delete command.second;
 }
 
-void Core::SteeringRMC::Initialize()
-{
-	mIsInitialized = true;
-}
-
-void Core::SteeringRMC::Update(float delta)
-{
-	(delta);
-	using namespace DirectX;
-	if (!mIsActive)
-		return;
-	if (mpTransform == nullptr)
-	{
-		mpTransform = mpObject->GetModelC<Core::TransformMC>();
-		mHasChanged = true;
-	}
-	if (mpTransform == nullptr)
-		return;
-	if (!mHasChanged)
-		return;
-
-	for (auto& wanderDelta : mWanderDeltas)
-		Steering(CalculateWander(wanderDelta), wanderDelta);
-	mWanderDeltas.clear();
-	mHasChanged = false;
-}
-
-void Core::SteeringRMC::Switch()
-{
-	//if (!mIsActive)
-	//	return;
-	//if (!mHasChanged)
-	//	return;
-}
-
 const std::vector<std::pair<std::string, Core::Command*>>& Core::SteeringRMC::GetCommands() const
 {
 	return mCommands;
@@ -72,11 +31,6 @@ const std::vector<std::pair<std::string, Core::Command*>>& Core::SteeringRMC::Ge
 const std::string& Core::SteeringRMC::GetName() const
 {
 	return mName;
-}
-
-void Core::SteeringRMC::SetTransformMC(TransformMC* pTransform)
-{
-	mpTransform = pTransform;
 }
 
 void Core::SteeringRMC::Wander(float value)
@@ -92,36 +46,36 @@ float Core::SteeringRMC::GetOrientationFromVelocity(const Core::Velocity& veloci
 	return std::atan2(-velocity.mLinear.x, -velocity.mLinear.z);
 }
 
-void Core::SteeringRMC::Steering(Core::Velocity velocity, float delta)
+void Core::SteeringRMC::Steering(TransformMC* pTransform, Core::Velocity& velocity, Core::Velocity steeringVelocity, float delta)
 {
 	using namespace DirectX;
 
-	XMVECTOR vel{ XMLoadFloat3(&mVelocity.mLinear) };
-	XMVECTOR force{ XMLoadFloat3(&velocity.mLinear) - vel };
-	XMVECTOR acc{ force /* divive by mass */ };
+	XMVECTOR vel{ XMLoadFloat3(&velocity.mLinear) };
+	XMVECTOR force{ XMLoadFloat3(&steeringVelocity.mLinear) - vel };
+	XMVECTOR acc{ force /* TODO: divive by mass */ };
 	vel += acc * delta;
-	XMStoreFloat3(&mVelocity.mLinear, vel);
-	XMVECTOR pos{ XMLoadFloat4(&mpTransform->GetWorldPosition()) + vel };
+	XMStoreFloat3(&velocity.mLinear, vel);
+	XMVECTOR pos{ XMLoadFloat4(&pTransform->GetWorldPosition()) + vel };
 	XMFLOAT4 newPos{};
 	XMStoreFloat4(&newPos, pos);
-	mpTransform->SetPosition(newPos);
+	pTransform->SetPosition(newPos);
 
-	XMVECTOR rot{ XMQuaternionRotationAxis(XMVECTOR{ 0.f, 1.f, 0.f }, GetOrientationFromVelocity(mVelocity)) };
+	XMVECTOR rot{ XMQuaternionRotationAxis(XMVECTOR{ 0.f, 1.f, 0.f }, GetOrientationFromVelocity(velocity)) };
 	XMFLOAT4 newRot{};
 	XMStoreFloat4(&newRot, rot);
-	mpTransform->SetRotation(newRot);
+	pTransform->SetRotation(newRot);
 }
 
-Core::Velocity Core::SteeringRMC::CalculateWander(float delta)
+Core::Velocity Ion::Core::SteeringRMC::CalculateWander(Core::WanderData& wanderData, Core::Velocity& velocity, float delta)
 {
 	(delta);
 	using namespace DirectX;
 
-	XMVECTOR offset{ mOffset * XMVector3Normalize(XMLoadFloat3(&mVelocity.mLinear)) };
-	XMVECTOR circleOffset{ std::cos(mWanderAngle) * mRadius, 0.f, std::sin(mWanderAngle) * mRadius };
-	mWanderAngle += mAngleChange * ((float(std::rand()) / float(RAND_MAX)) - .5f);
+	XMVECTOR offset{ wanderData.mOffset * XMVector3Normalize(XMLoadFloat3(&velocity.mLinear)) };
+	XMVECTOR circleOffset{ std::cos(wanderData.mAngle) * wanderData.mRadius, 0.f, std::sin(wanderData.mAngle) * wanderData.mRadius };
+	wanderData.mAngle += wanderData.mAngleChange * ((float(std::rand()) / float(RAND_MAX)) - .5f);
 	XMVECTOR vel{ XMVector3Normalize(offset + circleOffset) * 0.1f }; // 0.1f = MaxLinearSpeed
-	Core::Velocity velocity{};
-	XMStoreFloat3(&velocity.mLinear, vel);
-	return velocity;
+	Core::Velocity retVelocity{};
+	XMStoreFloat3(&retVelocity.mLinear, vel);
+	return retVelocity;
 }

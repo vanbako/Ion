@@ -27,8 +27,7 @@ Core::InstancedModelVC::~InstancedModelVC()
 
 //void Core::InstancedModelVC::AddInstance(const Core::TransformMC& transformMC)
 //{
-//	mTransforms.push_back(transformMC);
-//	mTransforms.back().Update(0.f);
+//	mTransforms.push_back(transformMC).Update(0.f);
 //	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
 //}
 //
@@ -95,6 +94,8 @@ void Core::InstancedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMa
 	UINT dsTable{ 1 };
 	SetDescTableObjectConstants(pCanvas, dsTable);
 	SetDescTableTextures(pCanvas, dsTable);
+	if (!mpInstancedTransform->GetIsStatic())
+		SetInstancedTransform(mpInstancedTransform);
 	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
 	pGraphicsCommandList->SetGraphicsRootShaderResourceView(dsTable, mpInstanceBuffer->GetGPUVirtualAddress());
 

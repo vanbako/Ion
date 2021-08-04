@@ -37,6 +37,5 @@ HWND& Core::Window::GetHandle()
 
 Core::Canvas* Core::Window::AddCanvas(RECT rectangle)
 {
-	mCanvases.emplace_back(this, rectangle);
-	return &mCanvases.back();
+	return &mCanvases.emplace_back(this, rectangle);
 }

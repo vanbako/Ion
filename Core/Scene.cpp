@@ -121,8 +121,7 @@ Core::Object* Core::Scene::AddObject(bool isActive)
 {
 	if (!TryLockExclusiveObjects())
 		return nullptr;
-	mObjects.emplace_back(isActive, this);
-	Core::Object* pObject{ &mObjects.back() };
+	Core::Object* pObject{ &mObjects.emplace_back(isActive, this) };
 	UnlockExclusiveObjects();
 	return pObject;
 }

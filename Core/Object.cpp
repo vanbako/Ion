@@ -60,9 +60,7 @@ Core::Object* Core::Object::GetParent()
 
 Core::Object* Core::Object::AddChildObject(bool isActive)
 {
-	mChildObjects.emplace_back(isActive, mpScene, this);
-	Core::Object* pObject{ &mChildObjects.back() };
-	return pObject;
+	return &mChildObjects.emplace_back(isActive, mpScene, this);
 }
 
 void Core::Object::ModelCInitialize()

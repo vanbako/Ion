@@ -41,8 +41,7 @@ Core::InstancedAnimatedModelVC::~InstancedAnimatedModelVC()
 
 //void Core::InstancedAnimatedModelVC::AddInstance(const Core::TransformMC& transformMC)
 //{
-//	mTransforms.push_back(transformMC);
-//	mTransforms.back().Update(0.f);
+//	mTransforms.push_back(transformMC).Update(0.f);
 //	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
 //}
 //
@@ -220,6 +219,8 @@ void Core::InstancedAnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Materia
 		++dsTable;
 	}
 	SetDescTableTextures(pCanvas, dsTable);
+	if (!mpInstancedTransform->GetIsStatic())
+		SetInstancedTransform(mpInstancedTransform);
 	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
 	pGraphicsCommandList->SetGraphicsRootShaderResourceView(dsTable, mpInstanceBuffer->GetGPUVirtualAddress());
 

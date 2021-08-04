@@ -118,8 +118,8 @@
     <Filter Include="Shader\Input">
       <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\ControllerC\BehaviourCC">
-      <UniqueIdentifier>{f1a202a3-e56c-46e5-82f3-cbaac29e03e3}</UniqueIdentifier>
+    <Filter Include="Component\ModelC\ReceiverMC\SteeringRMC">
+      <UniqueIdentifier>{3b355340-b61f-4bda-a5a6-58a4e5fb88ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -363,20 +363,29 @@
     <ClInclude Include="include\Velocity.h">
       <Filter>Struct</Filter>
     </ClInclude>
-    <ClInclude Include="include\BehaviourCC.h">
-      <Filter>Component\ControllerC\BehaviourCC</Filter>
-    </ClInclude>
     <ClInclude Include="include\SteeringCommand.h">
       <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="include\WanderCmd.h">
       <Filter>Command</Filter>
     </ClInclude>
-    <ClInclude Include="include\SteeringRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
-    </ClInclude>
     <ClInclude Include="include\Behaviour.h">
       <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BehaviourCC.h">
+      <Filter>Component\ControllerC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WanderData.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SteeringRMC.h">
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstancedSteeringRMC.h">
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ObjectSteeringRMC.h">
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -548,17 +557,23 @@
     <ClCompile Include="InstancedTransformMC.cpp">
       <Filter>Component\ModelC</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviourCC.cpp">
-      <Filter>Component\ControllerC\BehaviourCC</Filter>
-    </ClCompile>
     <ClCompile Include="SteeringCommand.cpp">
       <Filter>Command</Filter>
     </ClCompile>
     <ClCompile Include="WanderCmd.cpp">
       <Filter>Command</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviourCC.cpp">
+      <Filter>Component\ControllerC</Filter>
+    </ClCompile>
     <ClCompile Include="SteeringRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedSteeringRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSteeringRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

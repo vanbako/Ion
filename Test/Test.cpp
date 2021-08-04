@@ -11,7 +11,8 @@
 #include "InstancedAnimatedModelVC.h"
 #include "MoveObjectRMC.h"
 #include "ControlRMC.h"
-#include "SteeringRMC.h"
+#include "ObjectSteeringRMC.h"
+#include "InstancedSteeringRMC.h"
 #include "InputCC.h"
 #include "BehaviourCC.h"
 #include "ControllerST.h"
@@ -174,12 +175,10 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pFlowerModelVC->AddTexture(Core::TextureType::Albedo, "Flower/Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
 	std::vector<Core::TransformMC> transforms{};
+	std::vector<Core::Behaviour> behaviours{};
 	for (size_t i{ 0 }; i < 10000; ++i)
-	{
-		transforms.emplace_back(true, pFlower);
-		transforms.back().SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 100 + 1), 0.f, 10.f * float(i % 100 + 1), 0.f });
-	}
-	pFlowerTransformMC->AddInstances(transforms);
+		transforms.emplace_back(true, pFlower).SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 100 + 1), 0.f, 10.f * float(i % 100 + 1), 0.f });
+	pFlowerTransformMC->AddInstances(transforms, behaviours);
 	pFlowerModelVC->SetInstancedTransform(pFlowerTransformMC);
 	return pFlower;
 }
@@ -205,14 +204,23 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	//transformMC.SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 	//pWizardModelVC->AddInstance(transformMC);
 	std::vector<Core::TransformMC> transforms{};
+	std::vector<Core::Behaviour> behaviours{};
 	for (size_t i{ 0 }; i < 10; ++i)
 	{
-		transforms.emplace_back(true, pWizard);
-		transforms.back().SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 5), 0.f, 0.f, 0.f });
+		transforms.emplace_back(true, pWizard).SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 5), 0.f, 0.f, 0.f });
 		//transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+		behaviours.emplace_back(Core::Behaviour::Wander);
 	}
-	pWizardTransformMC->AddInstances(transforms);
+	pWizardTransformMC->SetHasBehaviour(true);
+	pWizardTransformMC->AddInstances(transforms, behaviours);
 	pWizardModelVC->SetInstancedTransform(pWizardTransformMC);
+
+	pWizardTransformMC->SetIsStatic(false);
+	Core::InstancedSteeringRMC* pInstancedSteeringRMC{ pWizard->AddModelC<Core::InstancedSteeringRMC>(false) };
+	Core::BehaviourCC* pBehaviour{ pWizard->AddControllerC<Core::BehaviourCC>(false) };
+	pBehaviour->SetBehaviour(Core::Behaviour::Wander);
+	pBehaviour->SetSteeringRMC(pInstancedSteeringRMC);
+
 	return pWizard;
 }
 
@@ -229,10 +237,10 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Normal, "RoyalHighness/RoyalHighness_Red_N.png");
 	pRoyalHighnessModelVC->AddCanvas(pCanvas);
 
-	Core::SteeringRMC* pSteeringRMC{ pRoyalHighness->AddModelC<Core::SteeringRMC>(false) };
+	Core::ObjectSteeringRMC* pObjectSteeringRMC{ pRoyalHighness->AddModelC<Core::ObjectSteeringRMC>(false) };
 	Core::BehaviourCC* pBehaviour{ pRoyalHighness->AddControllerC<Core::BehaviourCC>(false) };
 	pBehaviour->SetBehaviour(Core::Behaviour::Wander);
-	pBehaviour->SetSteeringRMC(pSteeringRMC);
+	pBehaviour->SetSteeringRMC(pObjectSteeringRMC);
 	return pRoyalHighness;
 }
 

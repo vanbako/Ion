@@ -119,6 +119,7 @@
     <ClInclude Include="include\InstanceBuffer.h" />
     <ClInclude Include="include\InstancedAnimatedModelVC.h" />
     <ClInclude Include="include\InstancedModelVC.h" />
+    <ClInclude Include="include\InstancedSteeringRMC.h" />
     <ClInclude Include="include\InstancedTransformMC.h" />
     <ClInclude Include="include\Int4.h" />
     <ClInclude Include="include\KeyboardState.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="include\NullAudio.h" />
     <ClInclude Include="include\NullLogger.h" />
     <ClInclude Include="include\Object.h" />
+    <ClInclude Include="include\ObjectSteeringRMC.h" />
     <ClInclude Include="include\PhysicsST.h" />
     <ClInclude Include="include\PxIonAllocatorCallback.h" />
     <ClInclude Include="include\PxIonErrorCallback.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="include\VertexPNC.h" />
     <ClInclude Include="include\ViewC.h" />
     <ClInclude Include="include\ViewST.h" />
+    <ClInclude Include="include\WanderData.h" />
     <ClInclude Include="include\WanderCmd.h" />
     <ClInclude Include="include\Winding.h" />
     <ClInclude Include="include\Window.h" />
@@ -196,6 +199,7 @@
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedAnimatedModelVC.cpp" />
     <ClCompile Include="InstancedModelVC.cpp" />
+    <ClCompile Include="InstancedSteeringRMC.cpp" />
     <ClCompile Include="InstancedTransformMC.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Material2D.cpp" />
@@ -217,6 +221,7 @@
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="NullLogger.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectSteeringRMC.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

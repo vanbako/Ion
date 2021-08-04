@@ -228,14 +228,12 @@ PBYTE Core::Application::GetKeyboard()
 
 Core::Scene* Core::Application::AddScene()
 {
-	mScenes.emplace_back(this);
-	return &mScenes.back();
+	return &mScenes.emplace_back(this);
 }
 
 Core::Window* Core::Application::AddWindow(const std::wstring& title, RECT rectangle)
 {
-	mWindows.emplace_back(this, title, rectangle);
-	return &mWindows.back();
+	return &mWindows.emplace_back(this, title, rectangle);
 }
 
 LRESULT Core::Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

@@ -33,8 +33,7 @@ namespace Ion
 			template<class T>
 			T* AddModelC(bool isActive)
 			{
-				mpModelCs.emplace_back(new T{ isActive, this });
-				return (T*)mpModelCs.back();
+				return (T*)mpModelCs.emplace_back(new T{ isActive, this });
 			}
 			template<>
 			Core::TransformMC* AddModelC(bool isActive)
@@ -93,8 +92,7 @@ namespace Ion
 			template<class T>
 			T* AddControllerC(bool isActive)
 			{
-				mpControllerCs.emplace_back(new T{ isActive, this });
-				return (T*)mpControllerCs.back();
+				return (T*)mpControllerCs.emplace_back(new T{ isActive, this });
 			}
 			template<class T>
 			void AttachControllerC(T* pControllerC)
@@ -145,14 +143,12 @@ namespace Ion
 			template<class T>
 			T* AddViewC(bool isActive)
 			{
-				mpViewCs.emplace_back(new T{ isActive, this });
-				return (T*)mpViewCs.back();
+				return (T*)mpViewCs.emplace_back(new T{ isActive, this });
 			}
 			template<class T>
 			T* AddViewC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding = Core::Winding::CW, Core::CoordSystem coordSystem = Core::CoordSystem::LeftHanded)
 			{
-				mpViewCs.emplace_back(new T{ modelName, modelExtension, materialName, isActive, winding, coordSystem , this });
-				return (T*)mpViewCs.back();
+				return (T*)mpViewCs.emplace_back(new T{ modelName, modelExtension, materialName, isActive, winding, coordSystem , this });
 			}
 			template<class T>
 			T* GetViewC()
