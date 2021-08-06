@@ -1,7 +1,7 @@
 #pragma once
 #include "SteeringRMC.h"
 
-// Steering Receiver Model Component
+// Object Steering Receiver Model Component
 
 namespace Ion
 {
@@ -26,8 +26,11 @@ namespace Ion
 			virtual void Switch() override;
 
 			void SetTransformMC(TransformMC* pTransform);
+			void SetTarget(TransformMC* pTarget);
 		private:
-			Core::TransformMC *mpTransform;
+			Core::TransformMC
+				*mpTransform,
+				*mpTarget;
 			Core::Velocity mVelocity;
 			WanderData mWander;
 		};

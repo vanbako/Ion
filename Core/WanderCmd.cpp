@@ -9,7 +9,7 @@ Core::WanderCmd::WanderCmd(Core::SteeringRMC* pSteeringRMC)
 {
 }
 
-Core::WanderCmd* Ion::Core::WanderCmd::Duplicate()
+Core::WanderCmd* Core::WanderCmd::Duplicate()
 {
 	return nullptr;
 }

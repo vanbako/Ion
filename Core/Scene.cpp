@@ -29,7 +29,7 @@ Core::Scene::Scene(Core::Application* pApplication)
 	, mObjects{}
 	, mpModelST{ new Core::ModelST{ this, (std::chrono::microseconds)3000 } }
 	, mpControllerST{ new Core::ControllerST{ this, (std::chrono::microseconds)3000 } }
-	, mpViewST{ new Core::ViewST{ this, (std::chrono::microseconds)6000 } }
+	, mpViewST{ new Core::ViewST{ this, (std::chrono::microseconds)3000 } }
 	, mpPhysicsST{ new Core::PhysicsST{ this, (std::chrono::microseconds)3000 } }
 	, mpCanvases{}
 	, mpPxScene{ nullptr }

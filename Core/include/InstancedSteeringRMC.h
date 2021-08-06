@@ -26,8 +26,10 @@ namespace Ion
 			virtual void Switch() override;
 
 			void SetInstancedTransformMC(Core::InstancedTransformMC* pInstancedTransform);
+			void SetTarget(size_t index, TransformMC* pTarget);
 		private:
 			Core::InstancedTransformMC *mpInstancedTransform;
+			std::vector<Core::TransformMC*> mpTargets;
 			std::vector<Core::Velocity> mVelocities;
 			std::vector<Core::WanderData> mWanderData;
 		};

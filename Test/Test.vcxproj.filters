@@ -52,6 +52,9 @@
     <Filter Include="Resources\Instance">
       <UniqueIdentifier>{970506c3-b5dc-46db-98ae-6204dda8d629}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command\Control">
+      <UniqueIdentifier>{3db15daf-263a-478a-ad39-c4fff14e2564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -66,17 +69,17 @@
     <ClCompile Include="ControlRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
+    <ClCompile Include="ControlCommand.cpp">
+      <Filter>Command\Control</Filter>
+    </ClCompile>
     <ClCompile Include="NextObjectCmd.cpp">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClCompile>
     <ClCompile Include="PrevObjectCmd.cpp">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClCompile>
     <ClCompile Include="ShowControlsCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlCommand.cpp">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,17 +92,17 @@
     <ClInclude Include="include\ControlRMC.h">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
+    <ClInclude Include="include\ControlCommand.h">
+      <Filter>Command\Control</Filter>
+    </ClInclude>
     <ClInclude Include="include\NextObjectCmd.h">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClInclude>
     <ClInclude Include="include\PrevObjectCmd.h">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClInclude>
     <ClInclude Include="include\ShowControlsCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ControlCommand.h">
-      <Filter>Command</Filter>
+      <Filter>Command\Control</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

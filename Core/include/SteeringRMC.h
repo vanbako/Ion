@@ -29,15 +29,19 @@ namespace Ion
 			virtual const std::string& GetName() const override;
 
 			virtual void Wander(float value);
+			virtual void Seek(float value);
 		protected:
 			static const std::string mName;
+			static const float mMaxSpeed;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
-			// TODO: Make this vector thread-safe
+			// TODO: Make these vectors thread-safe
 			std::vector<float> mWanderDeltas;
+			std::vector<float> mSeekDeltas;
 
 			virtual float GetOrientationFromVelocity(const Core::Velocity& velocity);
 			virtual void Steering(TransformMC* pTransform, Core::Velocity& velocity, Core::Velocity steeringVelocity, float delta);
-			virtual Core::Velocity CalculateWander(Core::WanderData& wanderData, Core::Velocity& velocity, float delta);
+			virtual Core::Velocity CalculateWander(Core::WanderData& wanderData, Core::Velocity& velocity);
+			virtual Core::Velocity CalculateSeek(TransformMC* pTransform, TransformMC* pTarget);
 		};
 	}
 }

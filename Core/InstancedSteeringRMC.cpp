@@ -10,10 +10,9 @@ using namespace Ion;
 Core::InstancedSteeringRMC::InstancedSteeringRMC(bool isActive, Core::Object* pObject)
 	: Core::SteeringRMC(isActive, pObject)
 	, mpInstancedTransform{ nullptr }
+	, mpTargets{}
 	, mVelocities{}
 	, mWanderData{}
-	//, mVelocity{ { 0.f, 0.f, -0.1f }, 0.f }
-	//, mWander{ 6.f, 4.f, float(M_PI_4) * 0.5f, 0.f }
 {
 }
 
@@ -45,9 +44,22 @@ void Core::InstancedSteeringRMC::Update(float delta)
 		Core::WanderData wanderData{ 6.f, 4.f, float(M_PI_4) * 0.5f, 0.f };
 		for (auto& transform : mpInstancedTransform->GetInstances())
 		{
-			Steering(&transform, *velocityIt, CalculateWander(*wanderIt, *velocityIt, wanderDelta), wanderDelta);
+			Steering(&transform, *velocityIt, CalculateWander(*wanderIt, *velocityIt), wanderDelta);
 			++velocityIt;
 			++wanderIt;
+		}
+	}
+	mWanderDeltas.clear();
+	for (auto& seekDelta : mSeekDeltas)
+	{
+		auto velocityIt{ mVelocities.begin() };
+		auto targetIt{ mpTargets.begin() };
+		for (auto& transform : mpInstancedTransform->GetInstances())
+		{
+			if (*targetIt != nullptr)
+				Steering(&transform, *velocityIt, CalculateSeek(&transform, *targetIt), seekDelta);
+			++velocityIt;
+			++targetIt;
 		}
 	}
 	mWanderDeltas.clear();
@@ -65,6 +77,9 @@ void Core::InstancedSteeringRMC::Switch()
 void Core::InstancedSteeringRMC::SetInstancedTransformMC(InstancedTransformMC* pInstancedTransform)
 {
 	mpInstancedTransform = pInstancedTransform;
+	mVelocities.clear();
+	mWanderData.clear();
+	mpTargets.clear();
 	Core::Velocity velocity{ { 0.f, 0.f, -0.1f }, 0.f };
 	Core::WanderData wanderData{ 6.f, 4.f, float(M_PI_4) * 0.5f, 0.f };
 	for (auto& transform : mpInstancedTransform->GetInstances())
@@ -72,5 +87,12 @@ void Core::InstancedSteeringRMC::SetInstancedTransformMC(InstancedTransformMC* p
 		(transform);
 		mVelocities.emplace_back(velocity);
 		mWanderData.emplace_back(wanderData);
+		mpTargets.emplace_back(nullptr);
 	}
+}
+
+void Core::InstancedSteeringRMC::SetTarget(size_t index, TransformMC* pTarget)
+{
+	if (mpTargets.size() > index)
+		mpTargets[index] = pTarget;
 }

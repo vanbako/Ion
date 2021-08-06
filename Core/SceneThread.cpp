@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SceneThread.h"
+#include <timeapi.h>
 
 using namespace Ion;
 
@@ -39,6 +40,7 @@ const std::chrono::microseconds Core::SceneThread::GetUpdateTime() const
 
 void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 {
+	timeBeginPeriod(1);
 	std::srand(unsigned int(std::time(nullptr)));
 	Core::Scene* pScene{ pSceneThread->GetScene() };
 	std::chrono::steady_clock::time_point
@@ -49,11 +51,14 @@ void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 	while (!pScene->GetIsEnd())
 	{
 		sleep = std::chrono::duration_cast<std::chrono::microseconds>(start - std::chrono::steady_clock::now()) + pSceneThread->mUpdateTime.load();
+		std::chrono::steady_clock::time_point beforeSleep{ std::chrono::steady_clock::now() };
 		std::this_thread::sleep_for(sleep);
+		std::chrono::steady_clock::time_point afterSleep{ std::chrono::steady_clock::now() };
 		end = std::chrono::steady_clock::now();
 		delta = float(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / 1000000.f;
 		start = end;
 		if (pScene->GetIsActive())
 			pSceneThread->Inner(delta);
 	}
+	timeEndPeriod(1);
 }

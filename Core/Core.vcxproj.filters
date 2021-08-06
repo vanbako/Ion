@@ -121,6 +121,12 @@
     <Filter Include="Component\ModelC\ReceiverMC\SteeringRMC">
       <UniqueIdentifier>{3b355340-b61f-4bda-a5a6-58a4e5fb88ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command\Steering">
+      <UniqueIdentifier>{e1fcea85-41f0-4282-996e-8019f31e6972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Move">
+      <UniqueIdentifier>{444ae89a-538f-456e-b0bf-547644c50fc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -133,24 +139,6 @@
       <Filter>Canvas</Filter>
     </ClInclude>
     <ClInclude Include="include\Command.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveBackCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveDownCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveForwardCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveLeftCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveRightCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MoveUpCmd.h">
       <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="include\Component.h">
@@ -273,12 +261,6 @@
     <ClInclude Include="include\MeshType.h">
       <Filter>Enum</Filter>
     </ClInclude>
-    <ClInclude Include="include\RotateLeftCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RotateRightCmd.h">
-      <Filter>Command</Filter>
-    </ClInclude>
     <ClInclude Include="include\SemanticInfo.h">
       <Filter>Struct</Filter>
     </ClInclude>
@@ -354,20 +336,11 @@
     <ClInclude Include="include\MoveRMC.h">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
-    <ClInclude Include="include\MoveCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
     <ClInclude Include="include\InstancedTransformMC.h">
       <Filter>Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\Velocity.h">
       <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SteeringCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="include\WanderCmd.h">
-      <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="include\Behaviour.h">
       <Filter>Enum</Filter>
@@ -386,6 +359,42 @@
     </ClInclude>
     <ClInclude Include="include\ObjectSteeringRMC.h">
       <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SteeringCommand.h">
+      <Filter>Command\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WanderCmd.h">
+      <Filter>Command\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveBackCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveCommand.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveDownCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveForwardCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveLeftCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveRightCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MoveUpCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotateLeftCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotateRightCmd.h">
+      <Filter>Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SeekCmd.h">
+      <Filter>Command\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,9 +443,6 @@
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
-    <ClCompile Include="MoveLeftCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
     <ClCompile Include="ReceiverMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
@@ -445,27 +451,6 @@
     </ClCompile>
     <ClCompile Include="CameraRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveRightCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveForwardCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveBackCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateLeftCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="RotateRightCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveUpCmd.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveDownCmd.cpp">
-      <Filter>Command</Filter>
     </ClCompile>
     <ClCompile Include="SceneThread.cpp">
       <Filter>Scene</Filter>
@@ -551,17 +536,8 @@
     <ClCompile Include="MoveRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
     <ClCompile Include="InstancedTransformMC.cpp">
       <Filter>Component\ModelC</Filter>
-    </ClCompile>
-    <ClCompile Include="SteeringCommand.cpp">
-      <Filter>Command</Filter>
-    </ClCompile>
-    <ClCompile Include="WanderCmd.cpp">
-      <Filter>Command</Filter>
     </ClCompile>
     <ClCompile Include="BehaviourCC.cpp">
       <Filter>Component\ControllerC</Filter>
@@ -574,6 +550,42 @@
     </ClCompile>
     <ClCompile Include="ObjectSteeringRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringCommand.cpp">
+      <Filter>Command\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderCmd.cpp">
+      <Filter>Command\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveBackCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDownCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveForwardCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveLeftCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveRightCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveUpCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateLeftCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="RotateRightCmd.cpp">
+      <Filter>Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekCmd.cpp">
+      <Filter>Command\Steering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

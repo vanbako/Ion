@@ -9,6 +9,7 @@ namespace Ion
 	namespace Core
 	{
 		class WanderCmd;
+		class SeekCmd;
 		class SteeringRMC;
 
 		class BehaviourCC
@@ -30,6 +31,7 @@ namespace Ion
 			Behaviour mBehaviour;
 			SteeringRMC* mpSteeringRMC;
 			WanderCmd* mpWanderCmd;
+			SeekCmd* mpSeekCmd;
 		};
 	}
 }

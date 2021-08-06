@@ -156,6 +156,7 @@
     <ClInclude Include="include\RotateRightCmd.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneThread.h" />
+    <ClInclude Include="include\SeekCmd.h" />
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
     <ClInclude Include="include\SteeringCommand.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="RotateRightCmd.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneThread.cpp" />
+    <ClCompile Include="SeekCmd.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SteeringCommand.cpp" />
     <ClCompile Include="SteeringRMC.cpp" />

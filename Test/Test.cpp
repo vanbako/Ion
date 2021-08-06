@@ -176,8 +176,8 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pFlowerModelVC->AddCanvas(pCanvas);
 	std::vector<Core::TransformMC> transforms{};
 	std::vector<Core::Behaviour> behaviours{};
-	for (size_t i{ 0 }; i < 10000; ++i)
-		transforms.emplace_back(true, pFlower).SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 100 + 1), 0.f, 10.f * float(i % 100 + 1), 0.f });
+	for (size_t i{ 0 }; i < 100; ++i)
+		transforms.emplace_back(true, pFlower).SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 10 + 1), 0.f, 10.f * float(i % 10 + 1), 0.f });
 	pFlowerTransformMC->AddInstances(transforms, behaviours);
 	pFlowerModelVC->SetInstancedTransform(pFlowerTransformMC);
 	return pFlower;
@@ -211,15 +211,21 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 		//transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 		behaviours.emplace_back(Core::Behaviour::Wander);
 	}
+	behaviours[0] = Core::Behaviour::Seek;
 	pWizardTransformMC->SetHasBehaviour(true);
 	pWizardTransformMC->AddInstances(transforms, behaviours);
 	pWizardModelVC->SetInstancedTransform(pWizardTransformMC);
 
 	pWizardTransformMC->SetIsStatic(false);
 	Core::InstancedSteeringRMC* pInstancedSteeringRMC{ pWizard->AddModelC<Core::InstancedSteeringRMC>(false) };
-	Core::BehaviourCC* pBehaviour{ pWizard->AddControllerC<Core::BehaviourCC>(false) };
-	pBehaviour->SetBehaviour(Core::Behaviour::Wander);
-	pBehaviour->SetSteeringRMC(pInstancedSteeringRMC);
+	Core::BehaviourCC* pWanderBehaviour{ pWizard->AddControllerC<Core::BehaviourCC>(false) };
+	pWanderBehaviour->SetBehaviour(Core::Behaviour::Wander);
+	pWanderBehaviour->SetSteeringRMC(pInstancedSteeringRMC);
+	Core::BehaviourCC* pSeekBehaviour{ pWizard->AddControllerC<Core::BehaviourCC>(false) };
+	pSeekBehaviour->SetBehaviour(Core::Behaviour::Seek);
+	pSeekBehaviour->SetSteeringRMC(pInstancedSteeringRMC);
+	pInstancedSteeringRMC->SetInstancedTransformMC(pWizardTransformMC);
+	pInstancedSteeringRMC->SetTarget(0, &pWizardTransformMC->GetInstances()[9]);
 
 	return pWizard;
 }

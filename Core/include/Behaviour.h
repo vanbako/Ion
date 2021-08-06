@@ -8,6 +8,7 @@ namespace Ion
 		{
 			Idle,
 			Wander,
+			Seek,
 			Count
 		};
 	}

@@ -79,13 +79,13 @@ void Core::BinIfstream::MovePosition(size_t move)
 		SetPosition(currPos + std::streampos(move));
 }
 
-size_t Ion::Core::BinIfstream::GetSize()
+size_t Core::BinIfstream::GetSize()
 {
 	return mSize;
 }
 
 #ifdef _DEBUG
-void Ion::Core::BinIfstream::Fatal()
+void Core::BinIfstream::Fatal()
 {
 	mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "BinIfstream reading past eof " + mName);
 }

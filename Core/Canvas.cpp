@@ -68,7 +68,7 @@ void Core::Canvas::Initialize()
 		DXGI_SWAP_CHAIN_DESC scd{};
 		scd.BufferDesc.Width = mRectangle.right - mRectangle.left;
 		scd.BufferDesc.Height = mRectangle.bottom - mRectangle.top;
-		scd.BufferDesc.RefreshRate.Numerator = 60;
+		scd.BufferDesc.RefreshRate.Numerator = 240;
 		scd.BufferDesc.RefreshRate.Denominator = 1;
 		scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;

@@ -5,7 +5,7 @@ namespace Ion
 {
 	namespace Core
 	{
-		class WanderCmd
+		class WanderCmd final
 			: public Core::SteeringCommand
 		{
 		public:

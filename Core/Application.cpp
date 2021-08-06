@@ -317,7 +317,7 @@ const Microsoft::WRL::ComPtr<IDWriteFactory>& Core::Application::GetDWriteFactor
 	return mpDWriteFactory;
 }
 
-const Microsoft::WRL::ComPtr<IDWriteTextFormat>& Ion::Core::Application::GetDWriteTextFormat()
+const Microsoft::WRL::ComPtr<IDWriteTextFormat>& Core::Application::GetDWriteTextFormat()
 {
 	return mpDWriteFormat;
 }

@@ -4,16 +4,20 @@
 #include "Object.h"
 #include "Scene.h"
 #include "WanderCmd.h"
+#include "SeekCmd.h"
 
 using namespace Ion;
 
 const std::string Core::SteeringRMC::mName{ "Steering" };
+const float Core::SteeringRMC::mMaxSpeed{ 0.1f };
 
 Core::SteeringRMC::SteeringRMC(bool isActive, Core::Object* pObject)
 	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
-		{ "Wander", new Core::WanderCmd{ this } } }
+		{ "Wander", new Core::WanderCmd{ this } },
+		{ "Seek", new Core::SeekCmd{ this } } }
 	, mWanderDeltas{}
+	, mSeekDeltas{}
 {
 }
 
@@ -36,6 +40,12 @@ const std::string& Core::SteeringRMC::GetName() const
 void Core::SteeringRMC::Wander(float value)
 {
 	mWanderDeltas.emplace_back(value);
+	mHasChanged = true;
+}
+
+void Core::SteeringRMC::Seek(float value)
+{
+	mSeekDeltas.emplace_back(value);
 	mHasChanged = true;
 }
 
@@ -66,15 +76,24 @@ void Core::SteeringRMC::Steering(TransformMC* pTransform, Core::Velocity& veloci
 	pTransform->SetRotation(newRot);
 }
 
-Core::Velocity Ion::Core::SteeringRMC::CalculateWander(Core::WanderData& wanderData, Core::Velocity& velocity, float delta)
+Core::Velocity Core::SteeringRMC::CalculateWander(Core::WanderData& wanderData, Core::Velocity& velocity)
 {
-	(delta);
 	using namespace DirectX;
 
 	XMVECTOR offset{ wanderData.mOffset * XMVector3Normalize(XMLoadFloat3(&velocity.mLinear)) };
 	XMVECTOR circleOffset{ std::cos(wanderData.mAngle) * wanderData.mRadius, 0.f, std::sin(wanderData.mAngle) * wanderData.mRadius };
 	wanderData.mAngle += wanderData.mAngleChange * ((float(std::rand()) / float(RAND_MAX)) - .5f);
-	XMVECTOR vel{ XMVector3Normalize(offset + circleOffset) * 0.1f }; // 0.1f = MaxLinearSpeed
+	XMVECTOR vel{ XMVector3Normalize(offset + circleOffset) * mMaxSpeed };
+	Core::Velocity retVelocity{};
+	XMStoreFloat3(&retVelocity.mLinear, vel);
+	return retVelocity;
+}
+
+Core::Velocity Core::SteeringRMC::CalculateSeek(TransformMC* pTransform, TransformMC* pTarget)
+{
+	using namespace DirectX;
+
+	XMVECTOR vel{ XMVector4Normalize(XMLoadFloat4(&pTarget->GetWorldPosition()) - XMLoadFloat4(&pTransform->GetWorldPosition())) * mMaxSpeed };
 	Core::Velocity retVelocity{};
 	XMStoreFloat3(&retVelocity.mLinear, vel);
 	return retVelocity;
