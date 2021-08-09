@@ -145,6 +145,7 @@
     <ClInclude Include="include\MsgType.h" />
     <ClInclude Include="include\NullAudio.h" />
     <ClInclude Include="include\NullLogger.h" />
+    <ClInclude Include="include\NullStatsWriter.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\ObjectSteeringRMC.h" />
     <ClInclude Include="include\PhysicsST.h" />
@@ -159,6 +160,8 @@
     <ClInclude Include="include\SeekCmd.h" />
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
+    <ClInclude Include="include\Stat.h" />
+    <ClInclude Include="include\StatsWriter.h" />
     <ClInclude Include="include\SteeringCommand.h" />
     <ClInclude Include="include\SteeringRMC.h" />
     <ClInclude Include="include\Texture.h" />
@@ -221,6 +224,7 @@
     <ClCompile Include="MoveUpCmd.cpp" />
     <ClCompile Include="NullAudio.cpp" />
     <ClCompile Include="NullLogger.cpp" />
+    <ClCompile Include="NullStatsWriter.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectSteeringRMC.cpp" />
     <ClCompile Include="pch.cpp">
@@ -238,6 +242,7 @@
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="SeekCmd.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="StatsWriter.cpp" />
     <ClCompile Include="SteeringCommand.cpp" />
     <ClCompile Include="SteeringRMC.cpp" />
     <ClCompile Include="Texture.cpp" />

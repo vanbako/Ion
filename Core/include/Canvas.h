@@ -54,6 +54,7 @@ namespace Ion
 				mpRtvHeap,
 				mpDsvHeap,
 				mpCanvasCbvHeap;
+			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> mpGraphicsCommandList;
 			Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> mpBrush;
 			int mCurrentBackBuffer;
@@ -76,6 +77,7 @@ namespace Ion
 			std::condition_variable* mpConditionVar;
 			Core::ThreadAction mThreadAction;
 			std::atomic<bool> mRunThread;
+			ID2D1Multithread* mpD2DMultithread;
 
 			void Render();
 			static void ThreadRender(Core::Canvas* pCanvas);

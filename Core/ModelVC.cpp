@@ -220,13 +220,13 @@ void Core::ModelVC::Update(float delta)
 
 void Core::ModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "ModelVC.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "ModelVC.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;

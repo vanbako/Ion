@@ -118,13 +118,13 @@ void Core::MeshVC::Update(float delta)
 
 void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "MeshVC.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "MeshVC.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;
@@ -135,7 +135,6 @@ void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
 	auto pDevice{ pApplication->GetDevice() };
 	auto pCmdQueue{ pApplication->GetCommandQueue() };
-	auto pCmdAlloc{ pApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<Core::TransformMC>()->GetWorld()) };

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "NullLogger.h"
 
+#ifdef ION_LOGGER
+
 using namespace Ion;
 
 Core::NullLogger::NullLogger(const std::string& location)
@@ -8,9 +10,4 @@ Core::NullLogger::NullLogger(const std::string& location)
 {
 }
 
-void Core::NullLogger::Message(void* pClass, Core::MsgType msgType, const std::string& msg)
-{
-	(pClass);
-	(msgType);
-	(msg);
-}
+#endif

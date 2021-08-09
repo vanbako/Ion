@@ -1,6 +1,8 @@
 #pragma once
 #include "Logger.h"
 
+#ifdef ION_LOGGER
+
 namespace Ion
 {
 	namespace Core
@@ -15,8 +17,8 @@ namespace Ion
 			NullLogger(NullLogger&&) = delete;
 			NullLogger& operator=(const NullLogger&) = delete;
 			NullLogger& operator=(const NullLogger&&) = delete;
-
-			virtual void Message(void* pClass, Core::MsgType msgType, const std::string& msg) override;
 		};
 	}
 }
+
+#endif

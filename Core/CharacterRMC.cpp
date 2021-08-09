@@ -8,7 +8,6 @@
 #include "MoveRightCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
-#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -24,7 +23,6 @@ Core::CharacterRMC::CharacterRMC(bool isActive, Core::Object* pObject)
 		{ "RotateLeft", new Core::RotateLeftCmd{ this } },
 		{ "RotateRight", new Core::RotateRightCmd{ this } } }
 	, mpTransformMC{ pObject->GetModelC<Core::TransformMC>() }
-	, mMoveLeft{ false }
 {
 }
 
@@ -50,26 +48,6 @@ void Core::CharacterRMC::Update(float delta)
 		return;
 	if (!mHasChanged)
 		return;
-	//if (mMoveLeft)
-	//	mpTransformMC->
-}
-
-void Core::CharacterRMC::Switch()
-{
-	if (!mIsActive)
-		return;
-	if (!mHasChanged)
-		return;
-	mHasChanged = false;
-	int next{ 0 };
-	if (mCurrent == 0)
-		next = 1;
-	mMoveForward[next] = mMoveForward[mCurrent];
-	mMoveBack[next] = mMoveBack[mCurrent];
-	mMoveLeft[next] = mMoveLeft[mCurrent];
-	mMoveRight[next] = mMoveRight[mCurrent];
-	mRotateLeft[next] = mRotateLeft[mCurrent];
-	mRotateRight[next] = mRotateRight[mCurrent];
 }
 
 const std::vector<std::pair<std::string, Core::Command*>>& Core::CharacterRMC::GetCommands() const

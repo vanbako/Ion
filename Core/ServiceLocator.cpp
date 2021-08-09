@@ -4,13 +4,17 @@
 using namespace Ion;
 
 Core::ServiceLocator::ServiceLocator()
-	: mpLoggerService{ nullptr }
-	, mNullLoggerService{}
-	, mpAudioService{ nullptr }
+	: mpAudioService{ nullptr }
 	, mNullAudioService{}
+#ifdef ION_LOGGER
+	, mpLoggerService{ nullptr }
+	, mNullLoggerService{}
+#endif
 {
 	mpAudioService = &mNullAudioService;
+#ifdef ION_LOGGER
 	mpLoggerService = &mNullLoggerService;
+#endif
 }
 
 Core::Audio* Core::ServiceLocator::GetAudio()
@@ -26,6 +30,8 @@ void Core::ServiceLocator::RegisterAudioService(Core::Audio* pAudioService)
 		mpAudioService = pAudioService;
 }
 
+#ifdef ION_LOGGER
+
 Core::Logger* Core::ServiceLocator::GetLogger()
 {
 	return mpLoggerService;
@@ -38,3 +44,5 @@ void Core::ServiceLocator::RegisterLoggerService(Core::Logger* pLoggerService)
 	else
 		mpLoggerService = pLoggerService;
 }
+
+#endif

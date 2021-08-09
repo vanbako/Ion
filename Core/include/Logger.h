@@ -1,6 +1,8 @@
 #pragma once
 #include "MsgType.h"
 
+#ifdef ION_LOGGER
+
 namespace Ion
 {
 	namespace Core
@@ -15,7 +17,7 @@ namespace Ion
 			Logger& operator=(const Logger&) = delete;
 			Logger& operator=(Logger&&) = delete;
 
-			virtual void Message(void* pClass, Core::MsgType msgType, const std::string& msg) = 0;
+			virtual void Message(const char* pThisName, Core::MsgType msgType, const std::string& msg);
 		protected:
 			const std::string mLocation;
 
@@ -23,3 +25,5 @@ namespace Ion
 		};
 	}
 }
+
+#endif

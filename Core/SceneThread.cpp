@@ -8,11 +8,15 @@ Core::SceneThread::SceneThread(Core::Scene* pScene, std::chrono::microseconds up
 	: mpScene{ pScene }
 	, mUpdateTime{ updateTime }
 	, mThread{}
+#ifdef ION_STATS
 	, mStats{}
 	, mStatsMutex{}
 	, mStatCurrent{ 0 }
+#endif
 {
+#ifdef ION_STATS
 	mStats.reserve(Core::Scene::GetStatCount());
+#endif
 	if (mThread.get_id() == std::thread::id{})
 		mThread = std::thread{ &Loop, this };
 }
@@ -52,7 +56,11 @@ void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 	{
 		sleep = std::chrono::duration_cast<std::chrono::microseconds>(start - std::chrono::steady_clock::now()) + pSceneThread->mUpdateTime.load();
 		std::chrono::steady_clock::time_point beforeSleep{ std::chrono::steady_clock::now() };
-		std::this_thread::sleep_for(sleep);
+		if (sleep.count() > 0)
+			if (sleep <= pSceneThread->mUpdateTime.load())
+				std::this_thread::sleep_for(sleep);
+			else
+				std::this_thread::sleep_for(pSceneThread->mUpdateTime.load());
 		std::chrono::steady_clock::time_point afterSleep{ std::chrono::steady_clock::now() };
 		end = std::chrono::steady_clock::now();
 		delta = float(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / 1000000.f;

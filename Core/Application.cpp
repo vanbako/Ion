@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Application.h"
 #include "Logger.h"
+#include <timeapi.h>
 
 using namespace Ion;
 
@@ -38,7 +39,6 @@ Core::Application::Application()
 	, mpD3d12Device{}
 	, mpDxgiDevice{}
 	, mpCommandQueue{}
-	, mpCommandAllocator{}
 	, mpD3d11On12Device{}
 	, mpD3d11DeviceContext{}
 	, mpD2d1Device{}
@@ -89,7 +89,9 @@ void Core::Application::ThrowIfFailed(HRESULT hr)
 {
 	if (FAILED(hr))
 	{
-		mServiceLocator.GetLogger()->Message(this, MsgType::Info, "DirectX Exception" + std::to_string(hr));
+#ifdef ION_LOGGER
+		mServiceLocator.GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "DirectX Exception " + std::to_string(hr));
+#endif
 		throw HrException(hr);
 	}
 }
@@ -134,12 +136,6 @@ bool Core::Application::Initialize()
 			&queueDesc,
 			IID_PPV_ARGS(&mpCommandQueue)));
 	}
-	// Command Allocator
-	{
-		ThrowIfFailed(mpD3d12Device->CreateCommandAllocator(
-			D3D12_COMMAND_LIST_TYPE_DIRECT,
-			IID_PPV_ARGS(&mpCommandAllocator)));
-	}
 	// 2D & D3D11On12
 	// Device & Factory
 	{
@@ -177,14 +173,15 @@ bool Core::Application::Initialize()
 			&mpDWriteFormat));
 	}
 	mIsInitialized = true;
-#ifdef _DEBUG
-	mServiceLocator.GetLogger()->Message(nullptr, MsgType::Info, "Application Initialized");
+#ifdef ION_LOGGER
+	mServiceLocator.GetLogger()->Message(typeid(this).name(), MsgType::Info, "Application Initialized");
 #endif
 	return true;
 }
 
 void Core::Application::Run()
 {
+	timeBeginPeriod(1);
 	MSG msg{};
 	while (msg.message != WM_QUIT)
 	{
@@ -197,6 +194,7 @@ void Core::Application::Run()
 		else
 			std::this_thread::sleep_for(mRunSleep);
 	}
+	timeEndPeriod(1);
 }
 
 const bool Core::Application::SetIsActive(bool isActive)
@@ -260,11 +258,6 @@ const Microsoft::WRL::ComPtr<ID3D12Device>& Core::Application::GetDevice()
 const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& Core::Application::GetCommandQueue()
 {
 	return mpCommandQueue;
-}
-
-const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& Core::Application::GetCommandAllocator()
-{
-	return mpCommandAllocator;
 }
 
 const Microsoft::WRL::ComPtr<ID2D1Factory3>& Core::Application::GetD2d1Factory()

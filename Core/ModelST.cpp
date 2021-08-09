@@ -12,7 +12,6 @@ void Core::ModelST::Inner(float delta)
 {
 	if (!mpScene->TryLockExclusiveObjects())
 		return;
-
 	if (mpScene->TryLockSharedModelCs())
 	{
 		for (auto& object : mpScene->GetObjects())

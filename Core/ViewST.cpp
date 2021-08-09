@@ -10,8 +10,8 @@ Core::ViewST::ViewST(Core::Scene* pScene, std::chrono::microseconds updateTime)
 
 void Core::ViewST::Inner(float delta)
 {
-	if (!mpScene->TryLockSharedObjects())
-		return;
+	//if (!mpScene->TryLockSharedObjects())
+	//	return;
 	if (mpScene->TryLockSharedViewCs())
 	{
 		for (auto& object : mpScene->GetObjects())
@@ -19,5 +19,5 @@ void Core::ViewST::Inner(float delta)
 		mpScene->Render();
 		mpScene->UnlockSharedViewCs();
 	}
-	mpScene->UnlockSharedObjects();
+	//mpScene->UnlockSharedObjects();
 }

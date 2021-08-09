@@ -2,6 +2,7 @@
 #include "Canvas.h"
 #include "Application.h"
 #include "CameraRMC.h"
+#include <timeapi.h>
 
 using namespace Ion;
 
@@ -19,6 +20,7 @@ Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 	, mpRtvHeap{}
 	, mpDsvHeap{}
 	, mpCanvasCbvHeap{}
+	, mpCommandAllocator{}
 	, mpGraphicsCommandList{}
 	, mpBrush{}
 	, mCurrentBackBuffer{ 0 }
@@ -40,7 +42,9 @@ Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 	, mpConditionVar{ nullptr }
 	, mThreadAction{}
 	, mRunThread{ false }
+	, mpD2DMultithread{ nullptr }
 {
+	mpWindow->GetApplication()->GetD2d1Factory()->QueryInterface(IID_PPV_ARGS(&mpD2DMultithread));
 	if (mThread.get_id() == std::thread::id{})
 		mThread = std::thread{ &ThreadRender, this };
 }
@@ -58,7 +62,6 @@ void Core::Canvas::Initialize()
 	auto pD2d1Factory{ pApp->GetD2d1Factory() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCommandQueue{ pApp->GetCommandQueue() };
-	auto pCommandAllocator{ pApp->GetCommandAllocator() };
 	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
 	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
 
@@ -145,7 +148,6 @@ void Core::Canvas::Initialize()
 				&mpBitmaps[i]
 			));
 			rtvHeapHandle.Offset(1, mRtvDescriptorSize);
-			//mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mpCommandAllocator[i])));
 		}
 	}
 
@@ -209,12 +211,17 @@ void Core::Canvas::Initialize()
 		mCanvasConstantBufferData.mAmbientIntensity = 0.15f;
 		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, canvasConstantBufferSize);
 	}
+	{
+		ThrowIfFailed(pDevice->CreateCommandAllocator(
+			D3D12_COMMAND_LIST_TYPE_DIRECT,
+			IID_PPV_ARGS(&mpCommandAllocator)));
+	}
 	// Graphics Command List
 	{
 		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateCommandList(
 			0,
 			D3D12_COMMAND_LIST_TYPE_DIRECT,
-			pCommandAllocator.Get(),
+			mpCommandAllocator.Get(),
 			nullptr,
 			IID_PPV_ARGS(&mpGraphicsCommandList)));
 		mpGraphicsCommandList->Close();
@@ -289,27 +296,26 @@ void Core::Canvas::SetDescriptor()
 
 void Core::Canvas::Render()
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpWindow->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Canvas.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpWindow->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Canvas.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
 	if ((mpCamera == nullptr) && (!mpMaterials3D.empty()))
 		return;
 	if (mpMaterials2D.empty() && mpMaterials3D.empty())
 		return;
 	Application* pApp{ mpWindow->GetApplication() };
 	auto pDevice{ pApp->GetDevice() };
-	auto pCmdAlloc{ pApp->GetCommandAllocator() };
 	auto pCmdQueue{ pApp->GetCommandQueue() };
 	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
 	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
 	auto pD3d11DeviceContext{ pApp->GetD3d11DeviceContext() };
 
-	mpWindow->GetApplication()->ThrowIfFailed(pCmdAlloc->Reset());
-	mpWindow->GetApplication()->ThrowIfFailed(mpGraphicsCommandList->Reset(pCmdAlloc.Get(), nullptr));
+	mpWindow->GetApplication()->ThrowIfFailed(mpCommandAllocator->Reset());
+	mpWindow->GetApplication()->ThrowIfFailed(mpGraphicsCommandList->Reset(mpCommandAllocator.Get(), nullptr));
 
 	if (!mpMaterials3D.empty())
 	{
@@ -337,6 +343,7 @@ void Core::Canvas::Render()
 	for (Material3D* pMaterial : mpMaterials3D)
 		pMaterial->Render(this);
 
+	mpD2DMultithread->Enter();
 	if (mpMaterials2D.empty())
 	{
 		D3D12_RESOURCE_BARRIER rbTransition2{ CD3DX12_RESOURCE_BARRIER::Transition(
@@ -362,6 +369,7 @@ void Core::Canvas::Render()
 		pD3D11On12Device->ReleaseWrappedResources(mpWrappedBackBuffers[mCurrentBackBuffer].GetAddressOf(), 1);
 		pD3d11DeviceContext->Flush();
 	}
+	mpD2DMultithread->Leave();
 
 	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(1, 0));
 
@@ -407,6 +415,7 @@ void Core::Canvas::SetThreadAction(Core::ThreadAction threadAction)
 
 void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 {
+	timeBeginPeriod(1);
 	bool close{ false };
 	while (!close)
 	{
@@ -426,4 +435,5 @@ void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 		pCanvas->mThreadAction = Core::ThreadAction::Sleep;
 		lk.unlock();
 	}
+	timeEndPeriod(1);
 }

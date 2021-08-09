@@ -19,7 +19,9 @@ namespace Ion
 		class Scene final
 		{
 		public:
+#ifdef ION_STATS
 			static std::size_t GetStatCount();
+#endif
 
 			explicit Scene(Core::Application* pApplication);
 			~Scene();
@@ -59,8 +61,14 @@ namespace Ion
 			void Render();
 		private:
 			static std::chrono::microseconds mObjectsMutexDuration;
+			static std::chrono::microseconds
+				mModelTime,
+				mControllerTime,
+				mViewTime,
+				mPhysicsTime;
+#ifdef ION_STATS
 			static std::size_t mStatCount;
-
+#endif
 			Core::Application* mpApplication;
 			std::atomic<bool>
 				mIsInitialized,
@@ -75,10 +83,8 @@ namespace Ion
 			Core::ControllerST* mpControllerST;
 			Core::ViewST* mpViewST;
 			Core::PhysicsST* mpPhysicsST;
-			std::set<Core::Canvas*> mpCanvases;
+			std::map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
 			physx::PxScene* mpPxScene;
-			std::mutex mMutex;
-			std::condition_variable mConditionVar;
 		};
 	}
 }

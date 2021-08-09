@@ -23,13 +23,13 @@ void Core::Material2D::Initialize()
 
 void Core::Material2D::Render(Core::Canvas* pCanvas)
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Material2D.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Material2D.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
 	for (auto pViewC : mpCanvasViewCs[pCanvas])
 		pViewC->Render(pCanvas, this);
 }

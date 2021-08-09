@@ -196,13 +196,13 @@ void Core::InstancedAnimatedModelVC::Update(float delta)
 
 void Core::InstancedAnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
 	(pMaterial);
 	if (!mIsActive)
 		return;

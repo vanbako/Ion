@@ -21,7 +21,7 @@
 #include "include/FmodAudio.h"
 #include <iostream>
 
-//#define SOUND
+//#define TEST_SOUND
 
 using namespace Ion;
 
@@ -43,9 +43,12 @@ int main()
 
 		// Services
 		Core::ServiceLocator& serviceLocator{ application.GetServiceLocator() };
+		(serviceLocator);
+#ifdef ION_LOGGER
 		Core::FileLogger fileLogger{ "Test.log" };
 		serviceLocator.RegisterLoggerService(&fileLogger);
-#ifdef SOUND
+#endif
+#ifdef TEST_SOUND
 		FmodAudio fmodAudio{};
 		serviceLocator.RegisterAudioService(&fmodAudio);
 #endif
@@ -97,26 +100,26 @@ int main()
 		pRoyalHighnessModelVC->SetIsAnimating(true);
 
 		pScene->SetIsActive(true);
-#ifdef SOUND
+#ifdef TEST_SOUND
 		int
 			startSound{ serviceLocator.GetAudio()->AddSound("bbc_world-war-_07017169.mp3", false) },
 			stopSound{ serviceLocator.GetAudio()->AddSound("bbc_peugeot-20_07055235.mp3", false) };
 		serviceLocator.GetAudio()->PlaySound(startSound);
 #endif
-#ifdef _DEBUG
+#ifdef ION_LOGGER
 		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application before run");
 #endif
 		application.Run();
-#ifdef _DEBUG
+#ifdef ION_LOGGER
 		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application after run");
 #endif
-#ifdef SOUND
+#ifdef TEST_SOUND
 		serviceLocator.GetAudio()->PlaySound(stopSound);
 		std::this_thread::sleep_for(std::chrono::seconds{ 4 });
 #endif
 
 		pScene->SetIsActive(false);
-#ifdef _DEBUG
+#ifdef ION_LOGGER
 		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application shutdown");
 #endif
 		pScene->SetIsEnd(true);

@@ -1,7 +1,7 @@
 #pragma once
 #include "MoveRMC.h"
 
-// Character Model Component
+// Character Receiver Model Component
 
 namespace Ion
 {
@@ -22,7 +22,6 @@ namespace Ion
 
 			void Initialize() override;
 			void Update(float delta) override;
-			void Switch() override;
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const override;
 			virtual const std::string& GetName() const override;
 
@@ -30,19 +29,14 @@ namespace Ion
 			virtual void MoveBack(long long value) override;
 			virtual void MoveLeft(long long value) override;
 			virtual void MoveRight(long long value) override;
+			virtual void MoveUp(long long value) override { (value); };
+			virtual void MoveDown(long long value) override { (value); };
 			virtual void RotateLeft(long long value) override;
 			virtual void RotateRight(long long value) override;
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
 			Core::TransformMC* mpTransformMC;
-			bool
-				mMoveForward[2],
-				mMoveBack[2],
-				mMoveLeft[2],
-				mMoveRight[2],
-				mRotateLeft[2],
-				mRotateRight[2];
 		};
 	}
 }

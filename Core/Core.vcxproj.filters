@@ -127,6 +127,9 @@
     <Filter Include="Command\Move">
       <UniqueIdentifier>{444ae89a-538f-456e-b0bf-547644c50fc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServiceLocator\StatsWriter">
+      <UniqueIdentifier>{5c5b75a6-dfca-4592-83dd-d1e65ad15be9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -396,6 +399,15 @@
     <ClInclude Include="include\SeekCmd.h">
       <Filter>Command\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="include\NullStatsWriter.h">
+      <Filter>ServiceLocator\StatsWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StatsWriter.h">
+      <Filter>ServiceLocator\StatsWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stat.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -586,6 +598,12 @@
     </ClCompile>
     <ClCompile Include="SeekCmd.cpp">
       <Filter>Command\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="NullStatsWriter.cpp">
+      <Filter>ServiceLocator\StatsWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsWriter.cpp">
+      <Filter>ServiceLocator\StatsWriter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

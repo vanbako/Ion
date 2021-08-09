@@ -1,15 +1,23 @@
 #pragma once
-#include "NullLogger.h"
 #include "NullAudio.h"
+#ifdef ION_LOGGER
+#include "NullLogger.h"
+#endif
+#ifdef ION_STATS
+#include "NullStatsWriter.h"
+#endif
 
 namespace Ion
 {
 	namespace Core
 	{
 		class Audio;
-		class NullAudio;
+#ifdef ION_LOGGER
 		class Logger;
-		class NullLogger;
+#endif
+#ifdef ION_STATS
+		class StatsWriter;
+#endif
 
 		class ServiceLocator final
 		{
@@ -23,13 +31,25 @@ namespace Ion
 
 			Core::Audio* GetAudio();
 			void RegisterAudioService(Core::Audio* pAudioService);
+#ifdef ION_LOGGER
 			Core::Logger* GetLogger();
 			void RegisterLoggerService(Core::Logger* pLoggerService);
+#endif
+#ifdef ION_STATS
+			Core::StatsWriter* GetStatsWriter();
+			void RegisterStatsWriterService(Core::StatsWriter* pStatsWriterService);
+#endif
 		private:
 			Core::Audio* mpAudioService;
 			Core::NullAudio mNullAudioService;
+#ifdef ION_LOGGER
 			Core::Logger* mpLoggerService;
 			Core::NullLogger mNullLoggerService;
+#endif
+#ifdef ION_STATS
+			Core::StatsWriter* mpStatsWriterService;
+			Core::NullStatsWriter mNullStatsWriterService;
+#endif
 		};
 	}
 }

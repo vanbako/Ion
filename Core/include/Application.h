@@ -38,7 +38,6 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<IDXGIFactory4>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device>& GetDevice();
 			const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& GetCommandQueue();
-			const Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& GetCommandAllocator();
 			const Microsoft::WRL::ComPtr<ID2D1Factory3>& GetD2d1Factory();
 			const Microsoft::WRL::ComPtr<IDXGIDevice>& GetDxgiDevice();
 			const Microsoft::WRL::ComPtr<ID3D11On12Device>& GetD3D11On12Device();
@@ -74,7 +73,6 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID3D12Device> mpD3d12Device;
 			Microsoft::WRL::ComPtr<IDXGIDevice> mpDxgiDevice;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
-			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
 			Microsoft::WRL::ComPtr<ID3D11On12Device> mpD3d11On12Device;
 			Microsoft::WRL::ComPtr<ID3D11DeviceContext> mpD3d11DeviceContext;
 			Microsoft::WRL::ComPtr<ID2D1Device2> mpD2d1Device;
@@ -82,7 +80,8 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID2D1Factory3> mpD2d1Factory;
 			Microsoft::WRL::ComPtr<IDWriteFactory> mpDWriteFactory;
 			Microsoft::WRL::ComPtr<IDWriteFontCollection> mpFontCollection;
-			Microsoft::WRL::ComPtr<IDWriteTextFormat> mpDWriteFormat; // Move to Material2D?
+			// TODO: Move to Material2D?
+			Microsoft::WRL::ComPtr<IDWriteTextFormat> mpDWriteFormat;
 			physx::PxPhysics* mpPhysics;
 			physx::PxTolerancesScale mPxToleranceScale;
 			physx::PxIonAllocatorCallback mIonAllocatorCallback;

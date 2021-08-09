@@ -10,12 +10,19 @@
 using namespace Ion;
 
 std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
+std::chrono::microseconds Core::Scene::mModelTime{ 6000 };
+std::chrono::microseconds Core::Scene::mControllerTime{ 2000 };
+std::chrono::microseconds Core::Scene::mViewTime{ 9000 };
+std::chrono::microseconds Core::Scene::mPhysicsTime{ 4000 };
+
+#ifdef ION_STATS
 std::size_t Core::Scene::mStatCount{ 300 }; // in seconds
 
 std::size_t Core::Scene::GetStatCount()
 {
 	return mStatCount;
 }
+#endif
 
 Core::Scene::Scene(Core::Application* pApplication)
 	: mpApplication{ pApplication }
@@ -27,14 +34,12 @@ Core::Scene::Scene(Core::Application* pApplication)
 	, mModelCMutex{}
 	, mViewCMutex{}
 	, mObjects{}
-	, mpModelST{ new Core::ModelST{ this, (std::chrono::microseconds)3000 } }
-	, mpControllerST{ new Core::ControllerST{ this, (std::chrono::microseconds)3000 } }
-	, mpViewST{ new Core::ViewST{ this, (std::chrono::microseconds)3000 } }
-	, mpPhysicsST{ new Core::PhysicsST{ this, (std::chrono::microseconds)3000 } }
+	, mpModelST{ new Core::ModelST{ this, mModelTime } }
+	, mpControllerST{ new Core::ControllerST{ this, mControllerTime } }
+	, mpViewST{ new Core::ViewST{ this, mViewTime } }
+	, mpPhysicsST{ new Core::PhysicsST{ this, mPhysicsTime } }
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
-	, mMutex{}
-	, mConditionVar{}
 {
 	physx::PxSceneDesc sceneDesc{ mpApplication->GetToleranceScale() };
 	sceneDesc.gravity = physx::PxVec3{ 0.0f, -9.81f, 0.0f };
@@ -55,12 +60,13 @@ Core::Scene::~Scene()
 	delete mpViewST;
 	delete mpPhysicsST;
 	mpPxScene->release();
-	for (Core::Canvas* pCanvas : mpCanvases)
+	for (auto& pair : mpCanvases)
 	{
-		std::lock_guard<std::mutex> lk(mMutex);
-		pCanvas->SetThreadAction(Core::ThreadAction::Close);
+		std::lock_guard<std::mutex> lk(pair.second.first);
+		pair.first->SetThreadAction(Core::ThreadAction::Close);
+		pair.second.second.notify_one();
 	}
-	mConditionVar.notify_all();
+	// TODO: wait for Canvases to finish
 }
 
 void Core::Scene::SetIsActive(bool isActive)
@@ -208,23 +214,25 @@ void Core::Scene::UnlockExclusiveViewCs()
 
 void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 {
-	mpCanvases.emplace(pCanvas);
-	pCanvas->RunThread(&mConditionVar, &mMutex);
+	auto pair{ mpCanvases.try_emplace(pCanvas) };
+	// If pCanvas was not yet in the mpCanvases map
+	if (pair.second)
+		pCanvas->RunThread(&(*pair.first).second.second, &(*pair.first).second.first);
 }
 
 void Core::Scene::Render()
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Scene.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Scene.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
-	for (Core::Canvas* pCanvas : mpCanvases)
+	for (auto& pair : mpCanvases)
 	{
-		std::lock_guard<std::mutex> lk(mMutex);
-		pCanvas->SetThreadAction(Core::ThreadAction::Render);
+		std::lock_guard<std::mutex> lk(pair.second.first);
+		pair.first->SetThreadAction(Core::ThreadAction::Render);
+		pair.second.second.notify_one();
 	}
-	mConditionVar.notify_all();
 }

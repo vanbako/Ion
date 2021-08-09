@@ -11,7 +11,6 @@
 #include "MoveDownCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
-#include "KeyboardState.h"
 
 using namespace Ion;
 
@@ -35,14 +34,6 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 	, mView{}
 	, mViewProjection{}
 	, mpTransform{ nullptr }
-	, mMoveForward{ false, false }
-	, mMoveBack{ false, false }
-	, mMoveLeft{ false, false }
-	, mMoveRight{ false, false }
-	, mMoveUp{ false, false }
-	, mMoveDown{ false, false }
-	, mRotateLeft{ false, false }
-	, mRotateRight{ false, false }
 {
 }
 
@@ -152,28 +143,6 @@ void Core::CameraRMC::Update(float delta)
 	}
 }
 
-void Core::CameraRMC::Switch()
-{
-	if (!mIsActive)
-		return;
-	if (!mHasChanged)
-		return;
-	mHasChanged = false;
-	int next{ 0 };
-	if (mCurrent == 0)
-		next = 1;
-	mMoveForward[next] = mMoveForward[mCurrent];
-	mMoveBack[next] = mMoveBack[mCurrent];
-	mMoveLeft[next] = mMoveLeft[mCurrent];
-	mMoveRight[next] = mMoveRight[mCurrent];
-	mMoveUp[next] = mMoveUp[mCurrent];
-	mMoveDown[next] = mMoveDown[mCurrent];
-	mRotateLeft[next] = mRotateLeft[mCurrent];
-	mRotateRight[next] = mRotateRight[mCurrent];
-	if (mMoveForward[mCurrent] || mMoveBack[mCurrent] || mMoveLeft[mCurrent] || mMoveRight[mCurrent] || mMoveUp[mCurrent] || mMoveDown[mCurrent] || mRotateLeft[mCurrent] || mRotateRight[mCurrent])
-		mHasChanged = true;
-}
-
 const std::vector<std::pair<std::string, Core::Command*>>& Core::CameraRMC::GetCommands() const
 {
 	return mCommands;
@@ -197,92 +166,4 @@ const DirectX::XMFLOAT4X4& Core::CameraRMC::GetView() const
 const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewProjection() const
 {
 	return mViewProjection;
-}
-
-void Core::CameraRMC::MoveForward(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveForward[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveForward[mCurrent] = false;
-}
-
-void Core::CameraRMC::MoveBack(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveBack[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveBack[mCurrent] = false;
-}
-
-void Core::CameraRMC::MoveLeft(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveLeft[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveLeft[mCurrent] = false;
-}
-
-void Core::CameraRMC::MoveRight(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveRight[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveRight[mCurrent] = false;
-}
-
-void Core::CameraRMC::MoveUp(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveUp[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveUp[mCurrent] = false;
-}
-
-void Core::CameraRMC::MoveDown(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveDown[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveDown[mCurrent] = false;
-}
-
-void Core::CameraRMC::RotateLeft(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mRotateLeft[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mRotateLeft[mCurrent] = false;
-}
-
-void Core::CameraRMC::RotateRight(long long value)
-{
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mRotateRight[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mRotateRight[mCurrent] = false;
 }

@@ -12,4 +12,6 @@ You can upvote enhancements in the Github Issue Tracker<br>
 <br>
 https://discord.gg/72Xbv5Rwfa<br>
 <br>
+You'll need Windows SDK 10.0.19041.0 to build<br>
+<br>
 Let me know if you're interested in contributing<br>

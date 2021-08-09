@@ -127,7 +127,6 @@ void Core::Material3D::Initialize()
 		return;
 	auto pDxgiFactory{ mpApplication->GetDxgiFactory() };
 	auto pDevice{ mpApplication->GetDevice() };
-	auto pCommandAllocator{ mpApplication->GetCommandAllocator() };
 
 	// Build Pipeline State
 	{
@@ -155,14 +154,13 @@ void Core::Material3D::Initialize()
 
 void Core::Material3D::Render(Core::Canvas* pCanvas)
 {
-#ifdef _DEBUG
 	if (!mIsInitialized)
 	{
-		mpApplication->GetServiceLocator().GetLogger()->Message(this, Core::MsgType::Fatal, "Material3D.Render() while mIsInitialized == false");
+#ifdef ION_LOGGER
+		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Material3D.Render() while mIsInitialized == false");
+#endif
 		return;
 	}
-#endif
-	auto pCommandAllocator{ mpApplication->GetCommandAllocator() };
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
 	pGraphicsCommandList->SetPipelineState(mpPipelineState.Get());

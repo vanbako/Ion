@@ -31,9 +31,11 @@ namespace Ion
 			Core::Scene* mpScene;
 			std::atomic<std::chrono::microseconds> mUpdateTime;
 			std::thread mThread;
+#ifdef ION_STATS
 			std::timed_mutex mStatsMutex;
 			std::vector<std::chrono::microseconds> mStats;
 			std::size_t mStatCurrent;
+#endif
 		};
 	}
 }
