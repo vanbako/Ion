@@ -15,7 +15,7 @@ using namespace Ion;
 std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
 std::chrono::microseconds Core::Scene::mModelTime{ 6000 };
 std::chrono::microseconds Core::Scene::mControllerTime{ 2000 };
-std::chrono::microseconds Core::Scene::mViewTime{ 9000 };
+std::chrono::microseconds Core::Scene::mViewTime{ 8333 };
 std::chrono::microseconds Core::Scene::mPhysicsTime{ 4000 };
 
 #ifdef ION_STATS
@@ -249,8 +249,9 @@ void Core::Scene::Render()
 	}
 	for (auto& pair : mpCanvases)
 	{
-		std::lock_guard<std::mutex> lk(pair.second.first);
+		pair.second.first.lock();
 		pair.first->SetThreadAction(Core::ThreadAction::Render);
 		pair.second.second.notify_one();
+		pair.second.first.unlock();
 	}
 }

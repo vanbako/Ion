@@ -371,7 +371,7 @@ void Core::Canvas::Render()
 	}
 	mpD2DMultithread->Leave();
 
-	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(1, 0));
+	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(0, 0));
 
 	WaitForPreviousFrame();
 
