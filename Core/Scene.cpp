@@ -4,6 +4,9 @@
 #include "ControllerST.h"
 #include "ViewST.h"
 #include "PhysicsST.h"
+#ifdef ION_STATS
+#include "StatsST.h"
+#endif
 #include "Application.h"
 #include <extensions/PxExtensionsAPI.h>
 
@@ -16,12 +19,7 @@ std::chrono::microseconds Core::Scene::mViewTime{ 9000 };
 std::chrono::microseconds Core::Scene::mPhysicsTime{ 4000 };
 
 #ifdef ION_STATS
-std::size_t Core::Scene::mStatCount{ 300 }; // in seconds
-
-std::size_t Core::Scene::GetStatCount()
-{
-	return mStatCount;
-}
+std::chrono::microseconds Core::Scene::mStatsTime{ 32000 };
 #endif
 
 Core::Scene::Scene(Core::Application* pApplication)
@@ -38,9 +36,21 @@ Core::Scene::Scene(Core::Application* pApplication)
 	, mpControllerST{ new Core::ControllerST{ this, mControllerTime } }
 	, mpViewST{ new Core::ViewST{ this, mViewTime } }
 	, mpPhysicsST{ new Core::PhysicsST{ this, mPhysicsTime } }
+#ifdef ION_STATS
+	, mpStatsST{ nullptr }
+#endif
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
 {
+	mpSceneThreads = {
+		{ "Model", mpModelST },
+		{ "Controller", mpControllerST },
+		{ "View", mpViewST },
+		{ "Physics", mpPhysicsST }
+	};
+#ifdef ION_STATS
+	mpStatsST = new Core::StatsST{ this, mStatsTime };
+#endif
 	physx::PxSceneDesc sceneDesc{ mpApplication->GetToleranceScale() };
 	sceneDesc.gravity = physx::PxVec3{ 0.0f, -9.81f, 0.0f };
 	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -59,6 +69,9 @@ Core::Scene::~Scene()
 	delete mpControllerST;
 	delete mpViewST;
 	delete mpPhysicsST;
+#ifdef ION_STATS
+	delete mpStatsST;
+#endif
 	mpPxScene->release();
 	for (auto& pair : mpCanvases)
 	{
@@ -107,6 +120,11 @@ Core::ControllerST* Core::Scene::GetControllerST()
 physx::PxScene* Core::Scene::GetPxScene()
 {
 	return mpPxScene;
+}
+
+std::map<const std::string, Core::SceneThread*>& Core::Scene::GetSceneThreads()
+{
+	return mpSceneThreads;
 }
 
 void Core::Scene::Initialize()

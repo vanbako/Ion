@@ -1,12 +1,19 @@
 # Ion
 Ion Render/Game Engine<br>
 It is meant as a learning tool for developing a game engine in C++20, multithreaded, ...<br>
-Using:<br>
-Direct3D 12<br>
-Direct2D<br>
-DirectXTK12<br>
-NVidia Physx 4.1<br>
-FMOD 2.01.10<br>
+Using: Direct3D 12, Direct2D, DirectXTK12, NVidia Physx 4.1, FMOD 2.01.10<br>
+<br>
+Current Features:<br>
+Multiple Windows & Canvases with multithreaded rendering<br>
+Scenes - Objects - Components (Model, View, Controller)<br>
+Materials, Meshes, Textures<br>
+Input using command pattern: keyboard<br>
+Hardware Instancing<br>
+Animation<br>
+Audio, Logger using ServiceLocator pattern<br>
+Steering behaviour (Wander, Seek)<br>
+Direct2D Text<br>
+Threads: ControllerComponents, ModelComponents, ViewComponents, Canvas, Physics<br>
 <br>
 You can upvote enhancements in the Github Issue Tracker<br>
 <br>

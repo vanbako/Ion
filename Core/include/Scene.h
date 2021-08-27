@@ -15,14 +15,14 @@ namespace Ion
 		class ControllerST;
 		class ViewST;
 		class PhysicsST;
+#ifdef ION_STATS
+		class StatsST;
+#endif
+		class SceneThread;
 
 		class Scene final
 		{
 		public:
-#ifdef ION_STATS
-			static std::size_t GetStatCount();
-#endif
-
 			explicit Scene(Core::Application* pApplication);
 			~Scene();
 			Scene(const Scene& other) = delete;
@@ -38,6 +38,7 @@ namespace Ion
 			Core::Application* GetApplication();
 			Core::ControllerST* GetControllerST();
 			physx::PxScene* GetPxScene();
+			std::map<const std::string, Core::SceneThread*>& GetSceneThreads();
 
 			void Initialize();
 			Core::Object* AddObject(bool isActive);
@@ -66,23 +67,26 @@ namespace Ion
 				mControllerTime,
 				mViewTime,
 				mPhysicsTime;
-#ifdef ION_STATS
-			static std::size_t mStatCount;
-#endif
 			Core::Application* mpApplication;
 			std::atomic<bool>
 				mIsInitialized,
 				mIsActive,
 				mIsEnd;
-			std::shared_timed_mutex mObjectsMutex;
-			std::shared_timed_mutex mControllerCMutex;
-			std::shared_timed_mutex mModelCMutex;
-			std::shared_timed_mutex mViewCMutex;
+			std::shared_timed_mutex
+				mObjectsMutex,
+				mControllerCMutex,
+				mModelCMutex,
+				mViewCMutex;
 			std::list<Core::Object> mObjects;
+			std::map<const std::string, Core::SceneThread*> mpSceneThreads;
 			Core::ModelST* mpModelST;
 			Core::ControllerST* mpControllerST;
 			Core::ViewST* mpViewST;
 			Core::PhysicsST* mpPhysicsST;
+#ifdef ION_STATS
+			static std::chrono::microseconds mStatsTime;
+			Core::StatsST* mpStatsST;
+#endif
 			std::map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
 			physx::PxScene* mpPxScene;
 		};

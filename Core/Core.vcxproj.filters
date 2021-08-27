@@ -408,6 +408,9 @@
     <ClInclude Include="include\Stat.h">
       <Filter>Enum</Filter>
     </ClInclude>
+    <ClInclude Include="include\StatsST.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -604,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="StatsWriter.cpp">
       <Filter>ServiceLocator\StatsWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsST.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

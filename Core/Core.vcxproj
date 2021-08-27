@@ -161,6 +161,7 @@
     <ClInclude Include="include\SemanticInfo.h" />
     <ClInclude Include="include\ServiceLocator.h" />
     <ClInclude Include="include\Stat.h" />
+    <ClInclude Include="include\StatsST.h" />
     <ClInclude Include="include\StatsWriter.h" />
     <ClInclude Include="include\SteeringCommand.h" />
     <ClInclude Include="include\SteeringRMC.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="SceneThread.cpp" />
     <ClCompile Include="SeekCmd.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="StatsST.cpp" />
     <ClCompile Include="StatsWriter.cpp" />
     <ClCompile Include="SteeringCommand.cpp" />
     <ClCompile Include="SteeringRMC.cpp" />

@@ -4,19 +4,24 @@
 
 using namespace Ion;
 
+#ifdef ION_STATS
+const std::chrono::microseconds Core::SceneThread::mStatsMutexDuration{ 1000 };
+const std::chrono::microseconds Core::SceneThread::mStatsTime{ 32000 };
+#endif
+
 Core::SceneThread::SceneThread(Core::Scene* pScene, std::chrono::microseconds updateTime)
 	: mpScene{ pScene }
 	, mUpdateTime{ updateTime }
 	, mThread{}
 #ifdef ION_STATS
 	, mStats{}
+	, mStatSeqs{}
 	, mStatsMutex{}
+	, mStatCount{ 0 }
 	, mStatCurrent{ 0 }
+	, mStatSeq{ 0 }
 #endif
 {
-#ifdef ION_STATS
-	mStats.reserve(Core::Scene::GetStatCount());
-#endif
 	if (mThread.get_id() == std::thread::id{})
 		mThread = std::thread{ &Loop, this };
 }
@@ -41,6 +46,43 @@ const std::chrono::microseconds Core::SceneThread::GetUpdateTime() const
 {
 	return mUpdateTime.load();
 }
+
+#ifdef ION_STATS
+std::chrono::microseconds* Core::SceneThread::GetStats()
+{
+	return mStats;
+}
+
+std::size_t* Ion::Core::SceneThread::GetStatSeqs()
+{
+	return mStatSeqs;
+}
+
+std::size_t Core::SceneThread::GetStatCount()
+{
+	return mStatCount;
+}
+
+std::size_t Core::SceneThread::GetStatCurrent()
+{
+	return mStatCurrent;
+}
+
+void Core::SceneThread::Done()
+{
+	mStatCount = 0;
+}
+
+bool Core::SceneThread::TryLockStats()
+{
+	return mStatsMutex.try_lock_for(mStatsMutexDuration);
+}
+
+void Ion::Core::SceneThread::UnlockStats()
+{
+	mStatsMutex.unlock();
+}
+#endif
 
 void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 {
@@ -67,6 +109,20 @@ void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 		start = end;
 		if (pScene->GetIsActive())
 			pSceneThread->Inner(delta);
+#ifdef ION_STATS
+		if (pSceneThread->TryLockStats())
+		{
+			++pSceneThread->mStatSeq;
+			++pSceneThread->mStatCurrent;
+			++pSceneThread->mStatCount;
+			if (pSceneThread->mStatCount >= mStatMax)
+				pSceneThread->mStatCount = mStatMax;
+			if (pSceneThread->mStatCurrent >= mStatMax)
+				pSceneThread->mStatCurrent = 0;
+			pSceneThread->mStats[pSceneThread->mStatCurrent] = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);			pSceneThread->UnlockStats();
+			pSceneThread->mStatSeqs[pSceneThread->mStatCurrent] = pSceneThread->mStatSeq;
+		}
+#endif
 	}
 	timeEndPeriod(1);
 }

@@ -3,7 +3,7 @@
 // Make sure that these defines are the same as the Core Build
 // Otherwise you get "Run-Time Check Failure #2 - Stack around the variable 'application' was corrupted."
 //#define ION_LOGGER
-//#define ION_STATS
+#define ION_STATS
 
 #define WIN32_LEAN_AND_MEAN
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
