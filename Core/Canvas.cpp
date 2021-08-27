@@ -371,7 +371,7 @@ void Core::Canvas::Render()
 	}
 	mpD2DMultithread->Leave();
 
-	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(0, 0));
+	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(1, 0));
 
 	WaitForPreviousFrame();
 
@@ -423,6 +423,7 @@ void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 			std::this_thread::sleep_for(std::chrono::milliseconds{ 16 });
 		std::unique_lock<std::mutex> lk{ *pCanvas->mpMutex };
 		pCanvas->mpConditionVar->wait(lk);
+		lk.unlock();
 		switch (pCanvas->mThreadAction)
 		{
 		case Core::ThreadAction::Render:
@@ -433,7 +434,6 @@ void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 			break;
 		}
 		pCanvas->mThreadAction = Core::ThreadAction::Sleep;
-		lk.unlock();
 	}
 	timeEndPeriod(1);
 }

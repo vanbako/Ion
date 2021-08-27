@@ -13,10 +13,10 @@
 using namespace Ion;
 
 std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
-std::chrono::microseconds Core::Scene::mModelTime{ 6000 };
-std::chrono::microseconds Core::Scene::mControllerTime{ 2000 };
-std::chrono::microseconds Core::Scene::mViewTime{ 8333 };
-std::chrono::microseconds Core::Scene::mPhysicsTime{ 4000 };
+std::chrono::microseconds Core::Scene::mModelTime{ 3000 };
+std::chrono::microseconds Core::Scene::mControllerTime{ 3000 };
+std::chrono::microseconds Core::Scene::mViewTime{ 6500 };
+std::chrono::microseconds Core::Scene::mPhysicsTime{ 3000 };
 
 #ifdef ION_STATS
 std::chrono::microseconds Core::Scene::mStatsTime{ 32000 };
