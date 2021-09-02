@@ -180,7 +180,6 @@ void Core::ModelVC::Initialize()
 		CD3DX12_RANGE readRange(0, 0);
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mVertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpVertexDataBegin)));
 		memcpy(mpVertexDataBegin, mpVertices, vertexBufferSize);
-		//mVertexBuffer->Unmap(0, nullptr);
 
 		mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
 		mVertexBufferView.StrideInBytes = UINT(layoutSize);

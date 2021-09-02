@@ -141,6 +141,7 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     <None Include="..\Resources\Model\Flower\Flower.ovm" />
     <None Include="..\Resources\Model\RoyalHighness\RoyalHighness1.ovm" />
     <None Include="..\Resources\Model\Wizard\Wizard.ovm" />
+    <None Include="..\Resources\Terrain\Hawai_HeightMap_128x128x16.raw" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">
@@ -154,6 +155,7 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Blue_N.png" />
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_A.png" />
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_N.png" />
+    <Image Include="..\Resources\Texture\Terrain\Hawai_TexMap.png" />
     <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_A.png" />
     <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_N.png" />
     <Image Include="..\Resources\Texture\Wizard\Wizard_Red_A.png" />

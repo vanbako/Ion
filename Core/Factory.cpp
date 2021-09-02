@@ -31,7 +31,7 @@ Core::Object* Core::Factory::AddCube(Core::Scene* pScene, float width, float hei
 
 	Core::Object* pObject{ pScene->AddObject(false) };
 	pObject->AddModelC<Core::TransformMC>(false);
-	Core::MeshVC* pMeshVC{ pObject->AddViewC<Core::MeshVC>(false) };
+	Core::MeshVC* pMeshVC{ pObject->AddViewC<Core::MeshVC>("PosNormCol", false)};
 	pObject->AddViewC<Core::TriangleVC>(false);
 
 	// Front

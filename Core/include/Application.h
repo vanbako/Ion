@@ -46,7 +46,8 @@ namespace Ion
 			const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& GetD2d1DeviceContext();
 			const Microsoft::WRL::ComPtr<IDWriteFactory>& GetDWriteFactory();
 			const Microsoft::WRL::ComPtr<IDWriteTextFormat>& GetDWriteTextFormat();
-			physx::PxPhysics* GetPhysics();
+			physx::PxPhysics* GetPxPhysics();
+			physx::PxCooking* GetPxCooking();
 			const physx::PxTolerancesScale& GetToleranceScale();
 			Core::ServiceLocator& GetServiceLocator();
 
@@ -86,6 +87,7 @@ namespace Ion
 			physx::PxTolerancesScale mPxToleranceScale;
 			physx::PxIonAllocatorCallback mIonAllocatorCallback;
 			physx::PxIonErrorCallback mIonErrorCallback;
+			physx::PxCooking* mpCooking;
 			Core::ServiceLocator mServiceLocator;
 
 			void KeyboardState();

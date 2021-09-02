@@ -9,8 +9,8 @@
 
 using namespace Ion;
 
-Core::MeshVC::MeshVC(bool isActive, Core::Object* pObject)
-	: ViewC(isActive, pObject, "PosNormCol", "")
+Core::MeshVC::MeshVC(const std::string& materialName, bool isActive, Core::Object* pObject)
+	: ViewC(isActive, pObject, materialName, "")
 	, mMeshChanged{ false }
 	, mVertices{}
 	, mVertexCount{ 0 }
@@ -43,6 +43,8 @@ void Core::MeshVC::AddQuadrilateral(const Core::Quadrilateral<Core::VertexPNC>& 
 
 void Core::MeshVC::Initialize()
 {
+	if (mIsInitialized)
+		return;
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 

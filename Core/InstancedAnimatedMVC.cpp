@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "InstancedAnimatedModelVC.h"
+#include "InstancedAnimatedMVC.h"
 #include "Application.h"
 #include "Material3D.h"
 #include "Object.h"
@@ -12,7 +12,7 @@
 
 using namespace Ion;
 
-Core::InstancedAnimatedModelVC::InstancedAnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+Core::InstancedAnimatedMVC::InstancedAnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mpInstancedTransform{ nullptr }
 	, mpInstanceBuffer{}
@@ -35,23 +35,19 @@ Core::InstancedAnimatedModelVC::InstancedAnimatedModelVC(const std::string& mode
 	mpBonesConstantBufferData = (BonesConstantBuffer*)&mBoneTransforms[0];
 }
 
-Core::InstancedAnimatedModelVC::~InstancedAnimatedModelVC()
-{
-}
-
-//void Core::InstancedAnimatedModelVC::AddInstance(const Core::TransformMC& transformMC)
+//void Core::InstancedAnimatedMVC::AddInstance(const Core::TransformMC& transformMC)
 //{
 //	mTransforms.push_back(transformMC).Update(0.f);
 //	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
 //}
 //
-//void Core::InstancedAnimatedModelVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
+//void Core::InstancedAnimatedMVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
 //{
 //	for (auto& transformMC : transformMCs)
 //		AddInstance(transformMC);
 //}
 
-void Core::InstancedAnimatedModelVC::SetInstancedTransform(InstancedTransformMC* pInstancedTransform)
+void Core::InstancedAnimatedMVC::SetInstancedTransform(InstancedTransformMC* pInstancedTransform)
 {
 	mpInstancedTransform = pInstancedTransform;
 	mInstanceBufferData.clear();
@@ -60,20 +56,20 @@ void Core::InstancedAnimatedModelVC::SetInstancedTransform(InstancedTransformMC*
 }
 
 
-void Core::InstancedAnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
+void Core::InstancedAnimatedMVC::SetAnimation(const Core::AnimationClip& animationClip)
 {
 	mAnimationClip = animationClip;
 	mIsClipSet = true;
 }
 
-void Core::InstancedAnimatedModelVC::SetAnimation(size_t clipNumber)
+void Core::InstancedAnimatedMVC::SetAnimation(size_t clipNumber)
 {
 	if (clipNumber >= mpModel->GetAnimationClips().size())
 		return;
 	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
 }
 
-void Core::InstancedAnimatedModelVC::SetIsAnimating(bool isAnimating)
+void Core::InstancedAnimatedMVC::SetIsAnimating(bool isAnimating)
 {
 	mIsAnimating = isAnimating;
 	if (!mIsAnimating || !mIsClipSet)
@@ -81,7 +77,7 @@ void Core::InstancedAnimatedModelVC::SetIsAnimating(bool isAnimating)
 	mBoneTransforms.assign(mAnimationClip.GetKeys()[0].GetBoneTransforms().begin(), mAnimationClip.GetKeys()[0].GetBoneTransforms().end());
 }
 
-void Core::InstancedAnimatedModelVC::Initialize()
+void Core::InstancedAnimatedMVC::Initialize()
 {
 	Core::ModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
@@ -133,7 +129,7 @@ void Core::InstancedAnimatedModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void Core::InstancedAnimatedModelVC::Update(float delta)
+void Core::InstancedAnimatedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
@@ -194,7 +190,7 @@ void Core::InstancedAnimatedModelVC::Update(float delta)
 	}
 }
 
-void Core::InstancedAnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+void Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{

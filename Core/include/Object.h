@@ -1,7 +1,7 @@
 #pragma once
 #include "TransformMC.h"
 #include "ModelVC.h"
-#include "InstancedModelVC.h"
+#include "InstancedMVC.h"
 #include "Winding.h"
 
 namespace Ion
@@ -144,6 +144,16 @@ namespace Ion
 			T* AddViewC(bool isActive)
 			{
 				return (T*)mpViewCs.emplace_back(new T{ isActive, this });
+			}
+			template<class T>
+			T* AddViewC(const std::string& filename, float width, float depth, std::size_t rowCount, std::size_t colCount, bool isActive)
+			{
+				return (T*)mpViewCs.emplace_back(new T{ filename, width, depth, rowCount, colCount, isActive, this });
+			}
+			template<class T>
+			T* AddViewC(const std::string& materialName, bool isActive)
+			{
+				return (T*)mpViewCs.emplace_back(new T{ materialName, isActive, this });
 			}
 			template<class T>
 			T* AddViewC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding = Core::Winding::CW, Core::CoordSystem coordSystem = Core::CoordSystem::LeftHanded)

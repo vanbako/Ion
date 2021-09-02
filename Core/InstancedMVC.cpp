@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "InstancedModelVC.h"
+#include "InstancedMVC.h"
 #include "Application.h"
 #include "Material3D.h"
 #include "Object.h"
@@ -12,7 +12,7 @@
 
 using namespace Ion;
 
-Core::InstancedModelVC::InstancedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+Core::InstancedMVC::InstancedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mpInstancedTransform{ nullptr }
 	, mpInstanceBuffer{}
@@ -21,23 +21,19 @@ Core::InstancedModelVC::InstancedModelVC(const std::string& modelName, const std
 {
 }
 
-Core::InstancedModelVC::~InstancedModelVC()
-{
-}
-
-//void Core::InstancedModelVC::AddInstance(const Core::TransformMC& transformMC)
+//void Core::InstancedMVC::AddInstance(const Core::TransformMC& transformMC)
 //{
 //	mTransforms.push_back(transformMC).Update(0.f);
 //	mInstanceBufferData.emplace_back(mTransforms.back().GetWorld());
 //}
 //
-//void Core::InstancedModelVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
+//void Core::InstancedMVC::AddInstances(const std::vector<Core::TransformMC>& transformMCs)
 //{
 //	for (auto& transformMC : transformMCs)
 //		AddInstance(transformMC);
 //}
 
-void Core::InstancedModelVC::SetInstancedTransform(InstancedTransformMC* pInstancedTransform)
+void Core::InstancedMVC::SetInstancedTransform(InstancedTransformMC* pInstancedTransform)
 {
 	mpInstancedTransform = pInstancedTransform;
 	mInstanceBufferData.clear();
@@ -45,7 +41,7 @@ void Core::InstancedModelVC::SetInstancedTransform(InstancedTransformMC* pInstan
 		mInstanceBufferData.emplace_back(transform.GetWorld());
 }
 
-void Core::InstancedModelVC::Initialize()
+void Core::InstancedMVC::Initialize()
 {
 	Core::ModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
@@ -67,14 +63,14 @@ void Core::InstancedModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void Core::InstancedModelVC::Update(float delta)
+void Core::InstancedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
 	Core::ModelVC::Update(delta);
 }
 
-void Core::InstancedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+void Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{

@@ -130,6 +130,12 @@
     <Filter Include="ServiceLocator\StatsWriter">
       <UniqueIdentifier>{5c5b75a6-dfca-4592-83dd-d1e65ad15be9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\ViewC\ModelVC">
+      <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Terrain">
+      <UniqueIdentifier>{4eb9e2a3-84a5-4aaf-a990-2874dc694f23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -167,15 +173,6 @@
     </ClInclude>
     <ClInclude Include="include\TransformMC.h">
       <Filter>Component\ModelC</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InstancedModelVC.h">
-      <Filter>Component\ViewC</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MeshVC.h">
-      <Filter>Component\ViewC</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ModelVC.h">
-      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\TriangleVC.h">
       <Filter>Component\ViewC</Filter>
@@ -285,9 +282,6 @@
     <ClInclude Include="include\CoordSystem.h">
       <Filter>Enum</Filter>
     </ClInclude>
-    <ClInclude Include="include\AnimatedModelVC.h">
-      <Filter>Component\ViewC</Filter>
-    </ClInclude>
     <ClInclude Include="include\Int4.h">
       <Filter>Struct</Filter>
     </ClInclude>
@@ -323,9 +317,6 @@
     </ClInclude>
     <ClInclude Include="include\VertexPNC.h">
       <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InstancedAnimatedModelVC.h">
-      <Filter>Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\TextVC.h">
       <Filter>Component\ViewC</Filter>
@@ -411,6 +402,27 @@
     <ClInclude Include="include\StatsST.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="include\AnimatedMVC.h">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstancedAnimatedMVC.h">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstancedMVC.h">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelVC.h">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TerrainVC.h">
+      <Filter>Component\ViewC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshVC.h">
+      <Filter>Component\ViewC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VertexPNT.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -449,9 +461,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>PrecompiledHeader</Filter>
     </ClCompile>
-    <ClCompile Include="MeshVC.cpp">
-      <Filter>Component\ViewC</Filter>
-    </ClCompile>
     <ClCompile Include="InputCC.cpp">
       <Filter>Component\ControllerC</Filter>
     </ClCompile>
@@ -479,9 +488,6 @@
     <ClCompile Include="ViewST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ModelVC.cpp">
-      <Filter>Component\ViewC</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
@@ -496,9 +502,6 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="InstancedModelVC.cpp">
-      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="Canvas.cpp">
       <Filter>Canvas</Filter>
@@ -518,9 +521,6 @@
     <ClCompile Include="PhysicsST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="AnimatedModelVC.cpp">
-      <Filter>Component\ViewC</Filter>
-    </ClCompile>
     <ClCompile Include="FileLogger.cpp">
       <Filter>ServiceLocator\Logger</Filter>
     </ClCompile>
@@ -538,9 +538,6 @@
     </ClCompile>
     <ClCompile Include="BinOfstream.cpp">
       <Filter>Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="InstancedAnimatedModelVC.cpp">
-      <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="TextVC.cpp">
       <Filter>Component\ViewC</Filter>
@@ -611,6 +608,24 @@
     <ClCompile Include="StatsST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedMVC.cpp">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedAnimatedMVC.cpp">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedMVC.cpp">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelVC.cpp">
+      <Filter>Component\ViewC\ModelVC</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainVC.cpp">
+      <Filter>Component\ViewC</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshVC.cpp">
+      <Filter>Component\ViewC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
@@ -644,6 +659,12 @@
       <Filter>Shader\Input</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="Shaders\Terrain_PSInput.hlsli">
+      <Filter>Shader\Input</Filter>
+    </None>
+    <None Include="Shaders\Terrain_VSInput.hlsli">
+      <Filter>Shader\Input</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
@@ -717,6 +738,15 @@
     </FxCompile>
     <FxCompile Include="Shaders\PosNormTanTex_iaAN_vs.hlsl">
       <Filter>Shader\PosNormTanTex\iaAN</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_ps.hlsl">
+      <Filter>Shader\Terrain</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_rs.hlsl">
+      <Filter>Shader\Terrain</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_vs.hlsl">
+      <Filter>Shader\Terrain</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

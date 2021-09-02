@@ -51,6 +51,7 @@ Core::Application::Application()
 	, mPxToleranceScale{}
 	, mIonAllocatorCallback{}
 	, mIonErrorCallback{}
+	, mpCooking{ nullptr }
 	, mServiceLocator{}
 {
 	WNDCLASS wndClass{};
@@ -69,6 +70,8 @@ Core::Application::Application()
 	physx::PxFoundation* pFoundation{ PxCreateFoundation(PX_PHYSICS_VERSION, mIonAllocatorCallback, mIonErrorCallback) };
 
 	mpPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *pFoundation, mPxToleranceScale, false);
+	mpCooking = PxCreateCooking(PX_PHYSICS_VERSION, *pFoundation, physx::PxCookingParams{ mPxToleranceScale });
+	PxRegisterHeightFields(*mpPhysics);
 }
 
 Core::Application::~Application()
@@ -80,6 +83,7 @@ Core::Application::~Application()
 	mMaterials3D.clear();
 	mModels.clear();
 
+	mpCooking->release();
 	physx::PxFoundation& foundation{ mpPhysics->getFoundation() };
 	mpPhysics->release();
 	foundation.release();
@@ -290,9 +294,14 @@ const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Core::Application::GetD2d1Dev
 	return mpD2d1DeviceContext;
 }
 
-physx::PxPhysics* Core::Application::GetPhysics()
+physx::PxPhysics* Core::Application::GetPxPhysics()
 {
 	return mpPhysics;
+}
+
+physx::PxCooking* Ion::Core::Application::GetPxCooking()
+{
+	return mpCooking;
 }
 
 const physx::PxTolerancesScale& Core::Application::GetToleranceScale()

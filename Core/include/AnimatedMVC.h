@@ -17,16 +17,16 @@ namespace Ion
 		class Model;
 		class Texture;
 
-		class AnimatedModelVC
+		class AnimatedMVC final
 			: public Core::ModelVC
 		{
 		public:
-			explicit AnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
-			virtual ~AnimatedModelVC();
-			AnimatedModelVC(const AnimatedModelVC& other) = default;
-			AnimatedModelVC(AnimatedModelVC&& other) noexcept = default;
-			AnimatedModelVC& operator=(const AnimatedModelVC& other) = default;
-			AnimatedModelVC& operator=(AnimatedModelVC&& other) noexcept = default;
+			explicit AnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
+			virtual ~AnimatedMVC() = default;
+			AnimatedMVC(const AnimatedMVC& other) = default;
+			AnimatedMVC(AnimatedMVC&& other) noexcept = default;
+			AnimatedMVC& operator=(const AnimatedMVC& other) = default;
+			AnimatedMVC& operator=(AnimatedMVC&& other) noexcept = default;
 
 			void SetAnimation(const Core::AnimationClip& animationClip);
 			void SetAnimation(size_t clipNumber);

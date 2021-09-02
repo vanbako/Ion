@@ -19,7 +19,7 @@ namespace Ion
 			: public ViewC
 		{
 		public:
-			explicit MeshVC(bool isActive, Core::Object* pObject);
+			explicit MeshVC(const std::string& materialName, bool isActive, Core::Object* pObject);
 			virtual ~MeshVC() = default;
 			MeshVC(const MeshVC& other) = default;
 			MeshVC(MeshVC&& other) noexcept = default;
@@ -33,7 +33,7 @@ namespace Ion
 			virtual void Update(float delta) override;
 			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
 			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
-		private:
+		protected:
 			static const size_t mMaxVertices{ 900 };
 
 			bool mMeshChanged;

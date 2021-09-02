@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "AnimatedModelVC.h"
+#include "AnimatedMVC.h"
 #include "Application.h"
 #include "Material3D.h"
 #include "Object.h"
@@ -11,7 +11,7 @@
 
 using namespace Ion;
 
-Core::AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+Core::AnimatedMVC::AnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: Core::ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mBoneTransforms{}
 	, mAnimationClip{}
@@ -30,24 +30,20 @@ Core::AnimatedModelVC::AnimatedModelVC(const std::string& modelName, const std::
 	mpBonesConstantBufferData = (BonesConstantBuffer *)&mBoneTransforms[0];
 }
 
-Core::AnimatedModelVC::~AnimatedModelVC()
-{
-}
-
-void Core::AnimatedModelVC::SetAnimation(const Core::AnimationClip& animationClip)
+void Core::AnimatedMVC::SetAnimation(const Core::AnimationClip& animationClip)
 {
 	mAnimationClip = animationClip;
 	mIsClipSet = true;
 }
 
-void Core::AnimatedModelVC::SetAnimation(size_t clipNumber)
+void Core::AnimatedMVC::SetAnimation(size_t clipNumber)
 {
 	if (clipNumber >= mpModel->GetAnimationClips().size())
 		return;
 	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
 }
 
-void Core::AnimatedModelVC::SetIsAnimating(bool isAnimating)
+void Core::AnimatedMVC::SetIsAnimating(bool isAnimating)
 {
 	mIsAnimating = isAnimating;
 	if (!mIsAnimating || !mIsClipSet)
@@ -55,7 +51,7 @@ void Core::AnimatedModelVC::SetIsAnimating(bool isAnimating)
 	mBoneTransforms.assign(mAnimationClip.GetKeys()[0].GetBoneTransforms().begin(), mAnimationClip.GetKeys()[0].GetBoneTransforms().end());
 }
 
-void Core::AnimatedModelVC::Initialize()
+void Core::AnimatedMVC::Initialize()
 {
 	Core::ModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
@@ -93,7 +89,7 @@ void Core::AnimatedModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void Core::AnimatedModelVC::Update(float delta)
+void Core::AnimatedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
@@ -154,7 +150,7 @@ void Core::AnimatedModelVC::Update(float delta)
 	}
 }
 
-void Core::AnimatedModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+void Core::AnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{

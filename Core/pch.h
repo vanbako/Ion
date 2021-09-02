@@ -1,7 +1,7 @@
 #pragma once
 
 //#define ION_LOGGER
-#define ION_STATS
+//#define ION_STATS
 
 #define WIN32_LEAN_AND_MEAN
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING

@@ -55,6 +55,12 @@
     <Filter Include="Command\Control">
       <UniqueIdentifier>{3db15daf-263a-478a-ad39-c4fff14e2564}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Texture\Terrain">
+      <UniqueIdentifier>{c1a95e74-0d26-478b-9924-cf1c14cfc746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Terrain">
+      <UniqueIdentifier>{6171ec4a-d7d9-4e3a-a8f1-50c1526c30e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -132,6 +138,9 @@
     <None Include="..\Resources\Model\Wizard\Wizard.ovm">
       <Filter>Resources\Model</Filter>
     </None>
+    <None Include="..\Resources\Terrain\Hawai_HeightMap_128x128x16.raw">
+      <Filter>Resources\Terrain</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\Texture\Flower\Flower_Blue.png">
@@ -163,6 +172,9 @@
     </Image>
     <Image Include="..\Resources\Texture\Wizard\Wizard_Red_N.png">
       <Filter>Resources\Texture\Wizard</Filter>
+    </Image>
+    <Image Include="..\Resources\Texture\Terrain\Hawai_TexMap.png">
+      <Filter>Resources\Texture\Terrain</Filter>
     </Image>
   </ItemGroup>
 </Project>

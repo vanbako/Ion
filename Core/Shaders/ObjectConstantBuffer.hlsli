@@ -5,7 +5,7 @@ cbuffer ObjectConstantBuffer : register(b1)
 {
 	float4x4 gWorld;
 	float4x4 gWorldViewProj;
-	float4 oPadding0[8];
+	float4 gPadding0[8];
 }
 
 #endif

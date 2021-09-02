@@ -55,7 +55,7 @@ Core::Scene::Scene(Core::Application* pApplication)
 	sceneDesc.gravity = physx::PxVec3{ 0.0f, -9.81f, 0.0f };
 	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 	sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
-	mpPxScene = mpApplication->GetPhysics()->createScene(sceneDesc);
+	mpPxScene = mpApplication->GetPxPhysics()->createScene(sceneDesc);
 //#ifdef _DEBUG
 //	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.0f);
 //	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 2.0f);
@@ -75,11 +75,11 @@ Core::Scene::~Scene()
 	mpPxScene->release();
 	for (auto& pair : mpCanvases)
 	{
-		std::lock_guard<std::mutex> lk(pair.second.first);
+		pair.second.first.lock();
 		pair.first->SetThreadAction(Core::ThreadAction::Close);
 		pair.second.second.notify_one();
+		pair.second.first.unlock();
 	}
-	// TODO: wait for Canvases to finish
 }
 
 void Core::Scene::SetIsActive(bool isActive)

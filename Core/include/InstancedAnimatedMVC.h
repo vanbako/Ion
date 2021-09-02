@@ -18,16 +18,16 @@ namespace Ion
 		class Texture;
 		class InstancedTransformMC;
 
-		class InstancedAnimatedModelVC
+		class InstancedAnimatedMVC final
 			: public Core::ModelVC
 		{
 		public:
-			explicit InstancedAnimatedModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
-			virtual ~InstancedAnimatedModelVC();
-			InstancedAnimatedModelVC(const InstancedAnimatedModelVC& other) = default;
-			InstancedAnimatedModelVC(InstancedAnimatedModelVC&& other) noexcept = default;
-			InstancedAnimatedModelVC& operator=(const InstancedAnimatedModelVC& other) = default;
-			InstancedAnimatedModelVC& operator=(InstancedAnimatedModelVC&& other) noexcept = default;
+			explicit InstancedAnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
+			virtual ~InstancedAnimatedMVC() = default;
+			InstancedAnimatedMVC(const InstancedAnimatedMVC& other) = default;
+			InstancedAnimatedMVC(InstancedAnimatedMVC&& other) noexcept = default;
+			InstancedAnimatedMVC& operator=(const InstancedAnimatedMVC& other) = default;
+			InstancedAnimatedMVC& operator=(InstancedAnimatedMVC&& other) noexcept = default;
 
 			//void AddInstance(const Core::TransformMC& transform);
 			//void AddInstances(const std::vector<Core::TransformMC>& transforms);

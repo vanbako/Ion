@@ -52,7 +52,10 @@ Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 Core::Canvas::~Canvas()
 {
 	if (mThread.joinable())
+	{
+		mThreadAction = Core::ThreadAction::Close;
 		mThread.join();
+	}
 }
 
 void Core::Canvas::Initialize()
@@ -416,24 +419,22 @@ void Core::Canvas::SetThreadAction(Core::ThreadAction threadAction)
 void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 {
 	timeBeginPeriod(1);
+	std::chrono::milliseconds maxWait{ 32 };
 	bool close{ false };
 	while (!close)
 	{
-		if (!pCanvas->mRunThread.load())
-			std::this_thread::sleep_for(std::chrono::milliseconds{ 16 });
-		std::unique_lock<std::mutex> lk{ *pCanvas->mpMutex };
-		pCanvas->mpConditionVar->wait(lk);
-		lk.unlock();
-		switch (pCanvas->mThreadAction)
-		{
-		case Core::ThreadAction::Render:
-			pCanvas->Render();
-			break;
-		case Core::ThreadAction::Close:
+		if (pCanvas->mThreadAction == Core::ThreadAction::Close)
 			close = true;
-			break;
-		}
 		pCanvas->mThreadAction = Core::ThreadAction::Sleep;
+		if (!pCanvas->mRunThread.load())
+			std::this_thread::sleep_for(maxWait);
+		if (pCanvas->mpMutex == nullptr)
+			continue;
+		std::unique_lock<std::mutex> lk{ *pCanvas->mpMutex };
+		pCanvas->mpConditionVar->wait_for(lk, maxWait);
+		lk.unlock();
+		if (pCanvas->mThreadAction == Core::ThreadAction::Render)
+			pCanvas->Render();
 	}
 	timeEndPeriod(1);
 }

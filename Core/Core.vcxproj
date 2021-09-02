@@ -94,7 +94,7 @@
     <ClInclude Include="include\Behaviour.h" />
     <ClInclude Include="include\BehaviourCC.h" />
     <ClInclude Include="include\AngleUnit.h" />
-    <ClInclude Include="include\AnimatedModelVC.h" />
+    <ClInclude Include="include\AnimatedMVC.h" />
     <ClInclude Include="include\AnimationClip.h" />
     <ClInclude Include="include\AnimationKey.h" />
     <ClInclude Include="include\Application.h" />
@@ -117,8 +117,8 @@
     <ClInclude Include="include\InputCC.h" />
     <ClInclude Include="include\InputSemantic.h" />
     <ClInclude Include="include\InstanceBuffer.h" />
-    <ClInclude Include="include\InstancedAnimatedModelVC.h" />
-    <ClInclude Include="include\InstancedModelVC.h" />
+    <ClInclude Include="include\InstancedAnimatedMVC.h" />
+    <ClInclude Include="include\InstancedMVC.h" />
     <ClInclude Include="include\InstancedSteeringRMC.h" />
     <ClInclude Include="include\InstancedTransformMC.h" />
     <ClInclude Include="include\Int4.h" />
@@ -165,6 +165,7 @@
     <ClInclude Include="include\StatsWriter.h" />
     <ClInclude Include="include\SteeringCommand.h" />
     <ClInclude Include="include\SteeringRMC.h" />
+    <ClInclude Include="include\TerrainVC.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\TextVC.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Velocity.h" />
     <ClInclude Include="include\VertexPNC.h" />
+    <ClInclude Include="include\VertexPNT.h" />
     <ClInclude Include="include\ViewC.h" />
     <ClInclude Include="include\ViewST.h" />
     <ClInclude Include="include\WanderData.h" />
@@ -187,7 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehaviourCC.cpp" />
-    <ClCompile Include="AnimatedModelVC.cpp" />
+    <ClCompile Include="AnimatedMVC.cpp" />
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationKey.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -202,8 +204,8 @@
     <ClCompile Include="ControllerST.cpp" />
     <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
-    <ClCompile Include="InstancedAnimatedModelVC.cpp" />
-    <ClCompile Include="InstancedModelVC.cpp" />
+    <ClCompile Include="InstancedAnimatedMVC.cpp" />
+    <ClCompile Include="InstancedMVC.cpp" />
     <ClCompile Include="InstancedSteeringRMC.cpp" />
     <ClCompile Include="InstancedTransformMC.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -247,6 +249,7 @@
     <ClCompile Include="StatsWriter.cpp" />
     <ClCompile Include="SteeringCommand.cpp" />
     <ClCompile Include="SteeringRMC.cpp" />
+    <ClCompile Include="TerrainVC.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextVC.cpp" />
     <ClCompile Include="TransformMC.cpp" />
@@ -268,6 +271,8 @@
     <None Include="Shaders\PosNormTanTex_aVSInput.hlsli" />
     <None Include="Shaders\PosNormTanTex_PSInput.hlsli" />
     <None Include="Shaders\PosNormTanTex_VSInput.hlsli" />
+    <None Include="Shaders\Terrain_PSInput.hlsli" />
+    <None Include="Shaders\Terrain_VSInput.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PosNormCol_ps.hlsl">
@@ -409,6 +414,24 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\PosNorm_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_rs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rootsig_1.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">RootSignature</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rootsig_1.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Terrain_A_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
