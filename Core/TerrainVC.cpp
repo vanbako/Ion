@@ -12,6 +12,7 @@ using namespace Ion;
 Core::TerrainVC::TerrainVC(const std::string& filename, float width, float depth, std::size_t rowCount, std::size_t colCount, bool isActive, Core::Object* pObject)
 	: ViewC(isActive, pObject, "Terrain_A", "")
 	, mFileName{ filename }
+	, mScale{ width / float(rowCount), 128.f, depth / float(colCount) }
 	, mWidth{ width }
 	, mDepth{ depth }
 	, mRowCount{ rowCount }
@@ -64,6 +65,16 @@ void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::strin
 	}
 }
 
+float Core::TerrainVC::GetHeight(const DirectX::XMFLOAT2& xz)
+{
+	long long
+		x{ long long((xz.x + mWidth / 2.f) / mScale.x) },
+		z{ long long((xz.y + mDepth / 2.f) / mScale.z) };
+	if ((x < 0) || (x >= long long(mRowCount)) || (z < 0) || (z >= long long(mColCount)))
+		return 0.f;
+	return float(mHeights[x * mColCount + z]) / 65536.f * mScale.y;
+}
+
 void Core::TerrainVC::Initialize()
 {
 	using namespace DirectX;
@@ -76,10 +87,6 @@ void Core::TerrainVC::Initialize()
 	std::size_t vertexCount{ mRowCount * mColCount };
 	// TODO: Add enum for signed / unsigned heightmap
 	// TODO: Add parameter for y-scale
-	float
-		xScale{ mWidth / float(mRowCount) },
-		zScale{ mDepth / float(mColCount) },
-		yScale{ 128.f };
 
 	// Heights
 	mHeights.resize(vertexCount, 0);
@@ -112,7 +119,7 @@ void Core::TerrainVC::Initialize()
 		{
 			std::size_t vertexId{ row * mColCount + col };
 			mVertices[vertexId].mPosition.x = cellXPos;
-			mVertices[vertexId].mPosition.y = float(mHeights[vertexId]) / 65536.f * yScale;
+			mVertices[vertexId].mPosition.y = float(mHeights[vertexId]) / 65536.f * mScale.y;
 			mVertices[vertexId].mPosition.z = cellZPos;
 			mVertices[vertexId].mUV.x = float(col) / float(mColCount - 1);
 			mVertices[vertexId].mUV.y = float(row) / float(mRowCount - 1);
@@ -301,9 +308,9 @@ void Core::TerrainVC::Initialize()
 		hfDesc.samples.data = pSamples;
 		physx::PxHeightField* pHeightField{ pCooking->createHeightField(hfDesc, physX->getPhysicsInsertionCallback()) };
 		physx::PxTransform pose{ physx::PxIdentity };
-		pose.p = physx::PxVec3(-(float(mRowCount) / 2.f * xScale), 0, -(float(mColCount) / 2.f * zScale));
+		pose.p = physx::PxVec3(-(float(mRowCount) / 2.f * mScale.x), 0, -(float(mColCount) / 2.f * mScale.z));
 		physx::PxRigidStatic* pHfActor{ physX->createRigidStatic(pose) };
-		physx::PxHeightFieldGeometry heightFieldGeom{ pHeightField, physx::PxMeshGeometryFlag::eDOUBLE_SIDED, 0.5f / yScale, xScale, zScale };
+		physx::PxHeightFieldGeometry heightFieldGeom{ pHeightField, physx::PxMeshGeometryFlag::eDOUBLE_SIDED, 0.5f / mScale.y, mScale.x, mScale.z };
 		physx::PxShape* pHfShape{ physx::PxRigidActorExt::createExclusiveShape(*pHfActor, heightFieldGeom, *physX->createMaterial(0.5f, 0.5f, 0.1f)) };
 		(pHfShape);
 		mpObject->GetScene()->GetPxScene()->addActor(*pHfActor);

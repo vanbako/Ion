@@ -75,7 +75,7 @@ void Core::InstancedTransformMC::Update(float delta)
 {
 	if (!mIsActive || mIsStatic)
 		return;
-	for (auto& transform : mTransforms)
+	for (Core::TransformMC& transform : mTransforms)
 		transform.Update(delta);
 }
 
@@ -101,6 +101,12 @@ void Core::InstancedTransformMC::SetHasBehaviour(bool hasBehaviour)
 {
 	if (mTransforms.empty())
 		mHasBehaviour = hasBehaviour;
+}
+
+void Core::InstancedTransformMC::ApplyTerrain(Core::TerrainVC* pTerrainVC)
+{
+	for (Core::TransformMC& transform : mTransforms)
+		transform.ApplyTerrain(pTerrainVC);
 }
 
 const size_t Core::InstancedTransformMC::GetMaxInstances()

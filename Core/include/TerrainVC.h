@@ -26,6 +26,7 @@ namespace Ion
 			TerrainVC& operator=(TerrainVC&& other) noexcept = default;
 
 			void AddTexture(Core::TextureType textureType, const std::string& name);
+			float GetHeight(const DirectX::XMFLOAT2& xz);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
@@ -33,6 +34,7 @@ namespace Ion
 			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); };
 		private:
 			const std::string mFileName;
+			DirectX::XMFLOAT3 mScale;
 			const float
 				mWidth,
 				mDepth;

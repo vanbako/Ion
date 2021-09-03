@@ -4,6 +4,7 @@
 #include "MeshVC.h"
 #include "ModelVC.h"
 #include "InstancedTransformMC.h"
+#include "TerrainVC.h"
 #include "TriangleVC.h"
 #include "TextVC.h"
 #include "InstancedMVC.h"
@@ -177,8 +178,18 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 	pFlowerModelVC->AddCanvas(pCanvas);
 	std::vector<Core::TransformMC> transforms{};
 	std::vector<Core::Behaviour> behaviours{};
-	for (size_t i{ 0 }; i < 10000; ++i)
-		transforms.emplace_back(true, pFlower).SetPosition(DirectX::XMFLOAT4{ 10.f * float(i / 100 + 1), 0.f, 10.f * float(i % 100 + 1), 0.f });
+	DirectX::XMFLOAT4 pos{};
+	float scale{ 1.f };
+	for (size_t i{ 0 }; i < 16384; ++i)
+	{
+		Core::TransformMC& transformMC{ transforms.emplace_back(true, pFlower) };
+		pos.x = float((long long(i) / 128 - 64) * 16) + float(std::rand() % 11) - 5.f;
+		pos.z = float((long long(i) % 128 - 64) * 16) + float(std::rand() % 11) - 5.f;
+		transformMC.SetPosition(pos);
+		scale = 0.5f + float(std::rand() % 1000) / 1000.f;
+		transformMC.SetScale(DirectX::XMFLOAT4{ scale, scale, scale, 0.f });
+		transformMC.SetRotation(DirectX::XMFLOAT3{ 0.f, float(std::rand() % 360), 0.f });
+	}
 	pFlowerTransformMC->AddInstances(transforms, behaviours);
 	pFlowerModelVC->SetInstancedTransform(pFlowerTransformMC);
 	return pFlower;
@@ -274,7 +285,8 @@ Core::Object* AddControl(Core::Scene* pScene, Core::Canvas* pCanvas)
 	Core::InputCC* pInput{ pControl->AddControllerC<Core::InputCC>(false) };
 	Core::TextVC* pTextVC{ pControl->AddViewC<Core::TextVC>(false) };
 	pTextVC->SetRect(D2D1_RECT_F{ 40.f, 40.f, 680.f, 400.f });
-	pTextVC->SetText(L"wasd/qe/rf: Move Camera\nArrows/Del/End/PgUp/PgDn: Move Object\nTab: Cycle Object");
+	//pTextVC->SetText(L"wasd/qe/rf: Move Camera\nArrows/Del/End/PgUp/PgDn: Move Object\nTab: Cycle Object");
+	pTextVC->SetText(L"wasd/qe/rf: Move Camera");
 	pTextVC->AddCanvas(pCanvas);
 	pScene->GetControllerST()->Register(pInput, pControlRMC->GetName(), pControlRMC->GetCommands());
 	return pControl;
@@ -332,6 +344,7 @@ Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1
 
 	Core::Object* pTerrain{ AddTerrain(pScene, pCanvas1) };
 	Core::Object* pCube{ AddCube(pScene, pCanvas1) };
+	Core::Object* pFlower{ AddFlower(pScene, pCanvas1) };
 	Core::Object* pWizard{ AddWizard(pScene, pCanvas1) };
 	Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
 	pCamera1->GetModelC<Core::TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 0.f, 120.f, -400.f, 0.f });
@@ -344,12 +357,17 @@ Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1
 
 	pScene->Initialize();
 
+	Core::InstancedTransformMC* pInstancedTransformMC{ pFlower->GetModelC<Core::InstancedTransformMC>() };
+	pInstancedTransformMC->ApplyTerrain(pTerrain->GetViewC<Core::TerrainVC>());
+	pFlower->GetViewC<Core::InstancedMVC>()->SetInstancedTransform(pInstancedTransformMC);
+
 	Core::Factory::CreatePhysicsPlane(pApplication->GetPxPhysics(), pScene->GetPxScene());
 
 	pCube->SetIsActive(true, true);
 	pCamera1->SetIsActive(true, true);
 	pTerrain->SetIsActive(true, true);
 	pWizard->SetIsActive(true, true);
+	pFlower->SetIsActive(true, true);
 	pControl->SetIsActive(true, true);
 
 	Core::InstancedAnimatedMVC* pWizardModelVC{ pWizard->GetViewC<Core::InstancedAnimatedMVC>() };

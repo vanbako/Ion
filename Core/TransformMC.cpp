@@ -2,6 +2,7 @@
 #include "TransformMC.h"
 #include "Object.h"
 #include "Scene.h"
+#include "TerrainVC.h"
 
 using namespace Ion;
 
@@ -179,6 +180,13 @@ const DirectX::XMFLOAT4& Core::TransformMC::GetRight() const
 const DirectX::XMFLOAT4X4& Core::TransformMC::GetWorld() const
 {
 	return mWorld[mCurrent];
+}
+
+void Core::TransformMC::ApplyTerrain(Core::TerrainVC* pTerrainVC)
+{
+	mPosition[0].y = pTerrainVC->GetHeight(DirectX::XMFLOAT2{ mPosition[mCurrent].x, mPosition[mCurrent].z });
+	mPosition[1].y = mPosition[0].y;
+	InternalUpdate(0.f);
 }
 
 void Core::TransformMC::InternalUpdate(float delta)

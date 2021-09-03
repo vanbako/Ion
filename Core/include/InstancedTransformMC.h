@@ -10,6 +10,7 @@ namespace Ion
 	namespace Core
 	{
 		class Object;
+		class TerrainVC;
 
 		class InstancedTransformMC final
 			: public Core::ModelC
@@ -35,6 +36,8 @@ namespace Ion
 			bool GetIsStatic();
 			void SetIsStatic(bool isStatic);
 			void SetHasBehaviour(bool hasBehaviour);
+			void ApplyTerrain(Core::TerrainVC* pTerrainVC);
+
 			static const size_t GetMaxInstances();
 		private:
 			static const size_t mMaxInstances;

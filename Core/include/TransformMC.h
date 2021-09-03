@@ -8,6 +8,8 @@ namespace Ion
 {
 	namespace Core
 	{
+		class TerrainVC;
+
 		class TransformMC final
 			: public Core::ModelC
 		{
@@ -40,6 +42,7 @@ namespace Ion
 			const DirectX::XMFLOAT4& GetUp() const;
 			const DirectX::XMFLOAT4& GetRight() const;
 			const DirectX::XMFLOAT4X4& GetWorld() const;
+			void ApplyTerrain(Core::TerrainVC* pTerrainVC);
 		private:
 			void InternalUpdate(float delta);
 			void InternalSwitch();
