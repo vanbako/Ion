@@ -38,6 +38,7 @@ namespace Ion
 			Core::Application* GetApplication();
 			Core::ControllerST* GetControllerST();
 			physx::PxScene* GetPxScene();
+			physx::PxControllerManager* GetPxControllerManager();
 			std::map<const std::string, Core::SceneThread*>& GetSceneThreads();
 
 			void Initialize();
@@ -89,6 +90,7 @@ namespace Ion
 #endif
 			std::map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
 			physx::PxScene* mpPxScene;
+			physx::PxControllerManager* mpPxControllerManager;
 		};
 	}
 }

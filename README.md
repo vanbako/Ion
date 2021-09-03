@@ -10,6 +10,8 @@ Materials, Meshes, Textures<br>
 Input using command pattern: keyboard<br>
 Hardware Instancing<br>
 Animation<br>
+Terrain (heightmap, physx) <br>
+Instanced physx<br>
 Audio, Logger using ServiceLocator pattern<br>
 Steering behaviour (Wander, Seek)<br>
 Direct2D Text<br>

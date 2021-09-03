@@ -23,6 +23,7 @@ namespace Ion
 			void Update(float delta) override;
 			void Switch() override;
 
+			void Move(float delta, const DirectX::XMFLOAT3& vel);
 			void SetPosition(const DirectX::XMFLOAT4& position);
 			void SetScale(const DirectX::XMFLOAT4& scale);
 			void SetRotation(const DirectX::XMFLOAT4& rotation);
@@ -31,6 +32,7 @@ namespace Ion
 			void SetUp(const DirectX::XMFLOAT4& up);
 			void SetRight(const DirectX::XMFLOAT4& right);
 			void SetPxRigidActor(physx::PxRigidActor* pPxRigidActor);
+			void SetPxController(physx::PxController* pPxController);
 
 			const DirectX::XMFLOAT4& GetRotation();
 			const DirectX::XMFLOAT4& GetWorldPosition() const;
@@ -51,7 +53,12 @@ namespace Ion
 				mScale[2],
 				mRotation[2];
 			DirectX::XMFLOAT4X4 mWorld[2];
-			physx::PxRigidActor* mPxRigidActor;
+			physx::PxRigidActor* mpPxRigidActor;
+			physx::PxController* mpPxController;
+
+			static const physx::PxVec3 mGravity;
+			static const physx::PxF32 mMinMoveDist;
+			static const physx::PxControllerFilters mControllerFilters;
 		};
 	}
 }

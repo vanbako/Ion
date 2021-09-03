@@ -7,6 +7,7 @@
 #include "CameraRMC.h"
 #include "Model.h"
 #include "Canvas.h"
+#include "InstancedTransformMC.h"
 #include "d3dx12.h"
 
 using namespace Ion;
@@ -245,7 +246,11 @@ void Core::ModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsT
 {
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
+	DirectX::XMMATRIX world{ DirectX::XMMatrixIdentity() };
+	Core::InstancedTransformMC* pInstancedTransformMC{ mpObject->GetModelC<InstancedTransformMC>() };
+	if (pInstancedTransformMC != nullptr)
+		if (pInstancedTransformMC->GetIsStatic())
+			world = DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld());
 	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 

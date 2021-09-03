@@ -23,7 +23,8 @@
 #include <iostream>
 
 //#define TEST_SOUND
-
+//#define SCENE1
+#define SCENE2
 using namespace Ion;
 
 Core::Object* AddCamera(Core::Scene* pScene, Core::Canvas* pCanvas);
@@ -60,21 +61,25 @@ int main()
 
 		application.Initialize();
 
+#ifdef SCENE1
 		Core::Window* pWindow2{ application.AddWindow(L"Render Window 2", rectangle) };
 		Core::Canvas* pCanvas2{ pWindow2->AddCanvas(rectangle) };
 		pCanvas2->Initialize();
+#endif
 		Core::Window* pWindow1{ application.AddWindow(L"Render Window 1", rectangle) };
 		Core::Canvas* pCanvas1{ pWindow1->AddCanvas(rectangle) };
 		pCanvas1->Initialize();
-
-		//Core::Scene* pScene1{ AddSceneOne(&application, pCanvas1, pCanvas2) };
+#ifdef SCENE1
+		Core::Scene* pScene1{ AddSceneOne(&application, pCanvas1, pCanvas2) };
+		pScene1->Initialize();
+		pScene1->SetIsActive(true);
+#endif
+#ifdef SCENE2
 		Core::Scene* pScene2{ AddSceneTwo(&application, pCanvas1) };
-
-		//pScene1->Initialize();
 		pScene2->Initialize();
-
-		//pScene1->SetIsActive(true);
 		pScene2->SetIsActive(true);
+#endif
+
 #ifdef TEST_SOUND
 		int
 			startSound{ serviceLocator.GetAudio()->AddSound("bbc_world-war-_07017169.mp3", false) },
@@ -92,14 +97,17 @@ int main()
 		serviceLocator.GetAudio()->PlaySound(stopSound);
 		std::this_thread::sleep_for(std::chrono::seconds{ 4 });
 #endif
-
-		//pScene1->SetIsActive(false);
+#ifdef SCENE1
+		pScene1->SetIsActive(false);
+		pScene1->SetIsEnd(true);
+#endif
+#ifdef SCENE2
 		pScene2->SetIsActive(false);
+		pScene2->SetIsEnd(true);
+#endif
 #ifdef ION_LOGGER
 		application.GetServiceLocator().GetLogger()->Message(nullptr, Core::MsgType::Info, "Application shutdown");
 #endif
-		//pScene1->SetIsEnd(true);
-		pScene2->SetIsEnd(true);
 	}
 #ifdef _DEBUG
 	std::cout << "Done" << std::endl;
@@ -121,7 +129,7 @@ Core::Object* AddTerrain(Core::Scene* pScene, Core::Canvas* pCanvas1)
 	Core::Object* pTerrain{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pTerrain->AddModelC<Core::TransformMC>(false) };
 	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
-	Core::TerrainVC* pTerrainVC{ pTerrain->AddViewC<Core::TerrainVC>("Hawai_HeightMap_128x128x16.raw", 1024.f, 1024.f, 128, 128, false) };
+	Core::TerrainVC* pTerrainVC{ pTerrain->AddViewC<Core::TerrainVC>("Hawai_HeightMap_128x128x16.raw", 2048.f, 2048.f, 128, 128, false) };
 	pTerrainVC->AddTexture(Core::TextureType::Albedo, "Terrain/Hawai_TexMap.png");
 	pTerrainVC->AddCanvas(pCanvas1);
 
@@ -178,6 +186,12 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 
 Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2)
 {
+	physx::PxPhysics* pPxPhysics{ pScene->GetApplication()->GetPxPhysics() };
+	physx::PxControllerManager* pPxControllerManager{ pScene->GetPxControllerManager() };
+	physx::PxCapsuleControllerDesc ccDesc{};
+	ccDesc.radius = 10.f;
+	ccDesc.height = 20.f;
+	ccDesc.upDirection = physx::PxVec3{ 0.f, 1.f, 0.f };
 	Core::Object* pWizard{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pWizard->AddModelC<Core::TransformMC>(false) };
 	(pTransformMC);
@@ -199,10 +213,19 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	//pWizardModelVC->AddInstance(transformMC);
 	std::vector<Core::TransformMC> transforms{};
 	std::vector<Core::Behaviour> behaviours{};
-	for (size_t i{ 0 }; i < 10; ++i)
+	physx::PxController* pPxController{ nullptr };
+	DirectX::XMFLOAT4 pos{};
+	physx::PxMaterial* pPxMaterial{ pPxPhysics->createMaterial(0.5f, 0.5f, 0.1f) };
+	std::size_t maxWizard{ 20 };
+	for (std::size_t i{ 0 }; i < maxWizard; ++i)
 	{
-		transforms.emplace_back(true, pWizard).SetPosition(DirectX::XMFLOAT4{ 40.f * float(int(i) - 5), 0.f, 0.f, 0.f });
-		//transforms.back().SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
+		pos = DirectX::XMFLOAT4{ 40.f * float(int(i) - int(maxWizard / 2)), 150.f, 0.f, 0.f };
+		ccDesc.position = physx::PxExtendedVec3{ physx::PxExtended(pos.x), physx::PxExtended(pos.y), physx::PxExtended(pos.z) };
+		ccDesc.material = pPxMaterial;
+		pPxController = pPxControllerManager->createController(ccDesc);
+		Core::TransformMC& transformMC{ transforms.emplace_back(true, pWizard) };
+		transformMC.SetPosition(pos);
+		transformMC.SetPxController(pPxController);
 		behaviours.emplace_back(Core::Behaviour::Wander);
 	}
 	behaviours[0] = Core::Behaviour::Seek;
@@ -219,7 +242,7 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	pSeekBehaviour->SetBehaviour(Core::Behaviour::Seek);
 	pSeekBehaviour->SetSteeringRMC(pInstancedSteeringRMC);
 	pInstancedSteeringRMC->SetInstancedTransformMC(pWizardTransformMC);
-	pInstancedSteeringRMC->SetTarget(0, &pWizardTransformMC->GetInstances()[9]);
+	pInstancedSteeringRMC->SetTarget(0, &pWizardTransformMC->GetInstances()[maxWizard - 1]);
 
 	return pWizard;
 }
@@ -311,7 +334,7 @@ Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1
 	Core::Object* pCube{ AddCube(pScene, pCanvas1) };
 	Core::Object* pWizard{ AddWizard(pScene, pCanvas1) };
 	Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
-	pCamera1->GetModelC<Core::TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 0.f, 80.f, -400.f, 0.f });
+	pCamera1->GetModelC<Core::TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 0.f, 120.f, -400.f, 0.f });
 	Core::Object* pControl{ AddControl(pScene, pCanvas1) };
 	Core::ControlRMC* pControlRMC{ pControl->GetModelC<Core::ControlRMC>() };
 	pControlRMC->AddObject(pWizard);

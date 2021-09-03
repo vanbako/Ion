@@ -5,6 +5,10 @@
 
 using namespace Ion;
 
+const physx::PxVec3 Core::TransformMC::mGravity{ 0.f, -0.981f, 0.f };
+const physx::PxF32 Core::TransformMC::mMinMoveDist{ 0.01f };
+const physx::PxControllerFilters Core::TransformMC::mControllerFilters{ NULL, NULL, NULL };
+
 Core::TransformMC::TransformMC(bool isActive, Core::Object* pObject)
 	: ModelC(isActive, pObject)
 	, mPosition{ { 0.f, 0.f, 0.f, 0.f }, { 0.f, 0.f, 0.f, 0.f } }
@@ -15,7 +19,8 @@ Core::TransformMC::TransformMC(bool isActive, Core::Object* pObject)
 	, mScale{ { 1.f, 1.f, 1.f, 0.f }, { 1.f, 1.f, 1.f, 0.f } }
 	, mRotation{ { 0.f, 0.f, 0.f, 1.f }, { 0.f, 0.f, 0.f, 1.f } }
 	, mWorld{}
-	, mPxRigidActor{ nullptr }
+	, mpPxRigidActor{ nullptr }
+	, mpPxController{ nullptr }
 {
 }
 
@@ -35,14 +40,24 @@ void Core::TransformMC::Update(float delta)
 	(delta);
 	if (!mIsActive)
 		return;
-	if ((!mHasChanged) && (mPxRigidActor == nullptr))
+	if ((!mHasChanged) && (mpPxRigidActor == nullptr))
 		return;
- 	if (mPxRigidActor != nullptr)
+ 	if (mpPxRigidActor != nullptr)
 	{
 		mpObject->GetScene()->GetPxScene()->lockRead();
-		const physx::PxTransform& pxTransform{ mPxRigidActor->getGlobalPose()};
+		const physx::PxTransform& pxTransform{ mpPxRigidActor->getGlobalPose()};
 		mPosition[mCurrent] = DirectX::XMFLOAT4{ pxTransform.p.x, pxTransform.p.y, pxTransform.p.z, 0.f };
 		mRotation[mCurrent] = DirectX::XMFLOAT4{ pxTransform.q.x, pxTransform.q.y, pxTransform.q.z, pxTransform.q.w };
+		mpObject->GetScene()->GetPxScene()->unlockRead();
+	}
+	if (mpPxController != nullptr)
+	{
+		//mpObject->GetScene()->GetPxScene()->lockWrite();
+		//mpPxController->move(mGravity, mMinMoveDist, delta, mControllerFilters);
+		//mpObject->GetScene()->GetPxScene()->unlockWrite();
+		mpObject->GetScene()->GetPxScene()->lockRead();
+		const physx::PxExtendedVec3& pxFootPosition{ mpPxController->getFootPosition() };
+		mPosition[mCurrent] = DirectX::XMFLOAT4{ float(pxFootPosition.x), float(pxFootPosition.y), float(pxFootPosition.z), 0.f };
 		mpObject->GetScene()->GetPxScene()->unlockRead();
 	}
 	InternalUpdate(delta);
@@ -54,6 +69,23 @@ void Core::TransformMC::Switch()
 	if (!mIsActive)
 		return;
 	InternalSwitch();
+}
+
+void Core::TransformMC::Move(float delta, const DirectX::XMFLOAT3& vel)
+{
+	using namespace DirectX;
+	if (mpPxController == nullptr)
+	{
+		DirectX::XMVECTOR pos{ DirectX::XMLoadFloat4(&mWorldPosition[mCurrent]) + DirectX::XMLoadFloat3(&vel) };
+		DirectX::XMStoreFloat4(&mPosition[mCurrent], pos);
+	}
+	else
+	{
+		mpObject->GetScene()->GetPxScene()->lockWrite();
+		mpPxController->move(physx::PxVec3{ vel.x, mGravity.y, vel.z }, mMinMoveDist, delta, mControllerFilters);
+		mpObject->GetScene()->GetPxScene()->unlockWrite();
+	}
+	mHasChanged = true;
 }
 
 void Core::TransformMC::SetPosition(const DirectX::XMFLOAT4& position)
@@ -111,7 +143,12 @@ void Core::TransformMC::SetRight(const DirectX::XMFLOAT4& right)
 
 void Core::TransformMC::SetPxRigidActor(physx::PxRigidActor* pPxRigidActor)
 {
-	mPxRigidActor = pPxRigidActor;
+	mpPxRigidActor = pPxRigidActor;
+}
+
+void Core::TransformMC::SetPxController(physx::PxController* pPxController)
+{
+	mpPxController = pPxController;
 }
 
 const DirectX::XMFLOAT4& Core::TransformMC::GetRotation()

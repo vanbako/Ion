@@ -65,10 +65,11 @@ void Core::SteeringRMC::Steering(TransformMC* pTransform, Core::Velocity& veloci
 	XMVECTOR acc{ force /* TODO: divive by mass */ };
 	vel += acc * delta;
 	XMStoreFloat3(&velocity.mLinear, vel);
-	XMVECTOR pos{ XMLoadFloat4(&pTransform->GetWorldPosition()) + vel };
-	XMFLOAT4 newPos{};
-	XMStoreFloat4(&newPos, pos);
-	pTransform->SetPosition(newPos);
+	//XMVECTOR pos{ XMLoadFloat4(&pTransform->GetWorldPosition()) + vel };
+	//XMFLOAT4 newPos{};
+	//XMStoreFloat4(&newPos, pos);
+	//pTransform->SetPosition(newPos);
+	pTransform->Move(delta, velocity.mLinear);
 
 	XMVECTOR rot{ XMQuaternionRotationAxis(XMVECTOR{ 0.f, 1.f, 0.f }, GetOrientationFromVelocity(velocity)) };
 	XMFLOAT4 newRot{};

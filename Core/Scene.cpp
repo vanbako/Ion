@@ -12,15 +12,17 @@
 
 using namespace Ion;
 
-std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
-std::chrono::microseconds Core::Scene::mModelTime{ 3000 };
-std::chrono::microseconds Core::Scene::mControllerTime{ 3000 };
-std::chrono::microseconds Core::Scene::mViewTime{ 6500 };
-std::chrono::microseconds Core::Scene::mPhysicsTime{ 3000 };
+std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 2000 };
+std::chrono::microseconds Core::Scene::mModelTime{ 16000 };
+std::chrono::microseconds Core::Scene::mControllerTime{ 16000 };
+std::chrono::microseconds Core::Scene::mViewTime{ 16000 };
+std::chrono::microseconds Core::Scene::mPhysicsTime{ 16000 };
 
 #ifdef ION_STATS
 std::chrono::microseconds Core::Scene::mStatsTime{ 32000 };
 #endif
+
+// TODO: Add bool (default false) if you want the scene to have a PxControllerManager
 
 Core::Scene::Scene(Core::Application* pApplication)
 	: mpApplication{ pApplication }
@@ -41,6 +43,7 @@ Core::Scene::Scene(Core::Application* pApplication)
 #endif
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
+	, mpPxControllerManager{ nullptr }
 {
 	mpSceneThreads = {
 		{ "Model", mpModelST },
@@ -56,6 +59,8 @@ Core::Scene::Scene(Core::Application* pApplication)
 	sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 	sceneDesc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
 	mpPxScene = mpApplication->GetPxPhysics()->createScene(sceneDesc);
+	mpPxControllerManager = PxCreateControllerManager(*mpPxScene);
+	mpPxControllerManager->setPreciseSweeps(false);
 //#ifdef _DEBUG
 //	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.0f);
 //	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 2.0f);
@@ -72,6 +77,7 @@ Core::Scene::~Scene()
 #ifdef ION_STATS
 	delete mpStatsST;
 #endif
+	mpPxControllerManager->release();
 	mpPxScene->release();
 	for (auto& pair : mpCanvases)
 	{
@@ -120,6 +126,11 @@ Core::ControllerST* Core::Scene::GetControllerST()
 physx::PxScene* Core::Scene::GetPxScene()
 {
 	return mpPxScene;
+}
+
+physx::PxControllerManager* Core::Scene::GetPxControllerManager()
+{
+	return mpPxControllerManager;
 }
 
 std::map<const std::string, Core::SceneThread*>& Core::Scene::GetSceneThreads()

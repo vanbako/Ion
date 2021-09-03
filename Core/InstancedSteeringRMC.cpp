@@ -62,7 +62,7 @@ void Core::InstancedSteeringRMC::Update(float delta)
 			++targetIt;
 		}
 	}
-	mWanderDeltas.clear();
+	mSeekDeltas.clear();
 	mHasChanged = false;
 }
 
