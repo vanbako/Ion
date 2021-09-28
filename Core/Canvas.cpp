@@ -14,15 +14,12 @@ Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 	, mpCamera{ nullptr }
 	, mpSwapChain{}
 	, mpRenderTargets{}
-	, mpWrappedBackBuffers{}
 	, mpDepthStencilBuffer{}
-	, mpBitmaps{}
 	, mpRtvHeap{}
 	, mpDsvHeap{}
 	, mpCanvasCbvHeap{}
 	, mpCommandAllocator{}
 	, mpGraphicsCommandList{}
-	, mpBrush{}
 	, mCurrentBackBuffer{ 0 }
 	, mRtvDescriptorSize{ 0 }
 	, mDsvDescriptorSize{ 0 }
@@ -42,32 +39,22 @@ Core::Canvas::Canvas(Core::Window* pWindow, RECT rectangle)
 	, mpConditionVar{ nullptr }
 	, mThreadAction{}
 	, mRunThread{ false }
-	, mpD2DMultithread{ nullptr }
 {
-	mpWindow->GetApplication()->GetD2d1Factory()->QueryInterface(IID_PPV_ARGS(&mpD2DMultithread));
 	if (mThread.get_id() == std::thread::id{})
 		mThread = std::thread{ &ThreadRender, this };
 }
 
 Core::Canvas::~Canvas()
 {
-	if (mThread.joinable())
-	{
-		mThreadAction = Core::ThreadAction::Close;
-		mThread.join();
-	}
+	WaitThreadEnd();
 }
 
 void Core::Canvas::Initialize()
 {
 	Core::Application* pApp{ mpWindow->GetApplication() };
 	auto pDxgiFactory{ pApp->GetDxgiFactory() };
-	auto pD2d1Factory{ pApp->GetD2d1Factory() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCommandQueue{ pApp->GetCommandQueue() };
-	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
-	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
-
 	// Swap Chain
 	{
 		Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
@@ -82,24 +69,23 @@ void Core::Canvas::Initialize()
 		scd.SampleDesc.Count = 1;
 		scd.SampleDesc.Quality = 0;
 		scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		scd.BufferCount = 2;
+		scd.BufferCount = mBackBufferCount;
 		scd.OutputWindow = mpWindow->GetHandle();
 		scd.Windowed = true;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-		mpWindow->GetApplication()->ThrowIfFailed(pDxgiFactory->CreateSwapChain(pCommandQueue.Get(), &scd, &pSwapChain));
-		mpWindow->GetApplication()->ThrowIfFailed(pSwapChain.As(&mpSwapChain));
+		pApp->ThrowIfFailed(pDxgiFactory->CreateSwapChain(pCommandQueue.Get(), &scd, &pSwapChain));
+		pApp->ThrowIfFailed(pSwapChain.As(&mpSwapChain));
 	}
-
 	// Descriptor Heaps
 	mRtvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-		rtvHeapDesc.NumDescriptors = 2;
+		rtvHeapDesc.NumDescriptors = mBackBufferCount;
 		rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 		rtvHeapDesc.NodeMask = 0;
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mpRtvHeap)));
+		pApp->ThrowIfFailed(pDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mpRtvHeap)));
 	}
 	mDsvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 	{
@@ -108,7 +94,7 @@ void Core::Canvas::Initialize()
 		dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 		dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 		dsvHeapDesc.NodeMask = 0;
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mpDsvHeap)));
+		pApp->ThrowIfFailed(pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mpDsvHeap)));
 	}
 	mCbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	{
@@ -116,9 +102,8 @@ void Core::Canvas::Initialize()
 		cbvHeapDesc.NumDescriptors = 1;
 		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpCanvasCbvHeap)));
+		pApp->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpCanvasCbvHeap)));
 	}
-
 	// Render Targets
 	{
 		UINT dpi{ GetDpiForWindow(mpWindow->GetHandle()) };
@@ -131,36 +116,20 @@ void Core::Canvas::Initialize()
 			float(dpi))
 		};
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle{ mpRtvHeap->GetCPUDescriptorHandleForHeapStart() };
-		for (size_t i{ 0 }; i < 2; ++i)
+		for (size_t i{ 0 }; i < mBackBufferCount; ++i)
 		{
-			mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->GetBuffer(UINT(i), IID_PPV_ARGS(&mpRenderTargets[i])));
+			pApp->ThrowIfFailed(mpSwapChain->GetBuffer(UINT(i), IID_PPV_ARGS(&mpRenderTargets[i])));
 			pDevice->CreateRenderTargetView(mpRenderTargets[i].Get(), nullptr, rtvHeapHandle);
-			D3D11_RESOURCE_FLAGS d3d11Flags{ D3D11_BIND_RENDER_TARGET };
-			mpWindow->GetApplication()->ThrowIfFailed(pD3D11On12Device->CreateWrappedResource(
-				mpRenderTargets[i].Get(),
-				&d3d11Flags,
-				D3D12_RESOURCE_STATE_RENDER_TARGET,
-				D3D12_RESOURCE_STATE_PRESENT,
-				IID_PPV_ARGS(&mpWrappedBackBuffers[i])
-			));
-			Microsoft::WRL::ComPtr<IDXGISurface> surface;
-			mpWindow->GetApplication()->ThrowIfFailed(mpWrappedBackBuffers[i].As(&surface));
-			mpWindow->GetApplication()->ThrowIfFailed(pD2d1DeviceContext->CreateBitmapFromDxgiSurface(
-				surface.Get(),
-				&bmProp,
-				&mpBitmaps[i]
-			));
 			rtvHeapHandle.Offset(1, mRtvDescriptorSize);
 		}
 	}
-
 	// Depth Stencil
 	{
 		D3D12_RESOURCE_DESC dsDesc{};
 		dsDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 		dsDesc.Alignment = 0;
-		dsDesc.Width = mRectangle.right - mRectangle.left;;
-		dsDesc.Height = mRectangle.bottom - mRectangle.top;
+		dsDesc.Width = UINT64(mRectangle.right) - UINT64(mRectangle.left);
+		dsDesc.Height = UINT(mRectangle.bottom) - UINT(mRectangle.top);
 		dsDesc.DepthOrArraySize = 1;
 		dsDesc.MipLevels = 1;
 		dsDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -174,24 +143,22 @@ void Core::Canvas::Initialize()
 		clearValue.DepthStencil.Depth = 1.0f;
 		clearValue.DepthStencil.Stencil = 0;
 		D3D12_HEAP_PROPERTIES heapProps{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT) };
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
+		pApp->ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProps,
 			D3D12_HEAP_FLAG_NONE,
 			&dsDesc,
-			//D3D12_RESOURCE_STATE_COMMON,
 			D3D12_RESOURCE_STATE_DEPTH_WRITE,
 			&clearValue,
 			IID_PPV_ARGS(mpDepthStencilBuffer.GetAddressOf())));
 		pDevice->CreateDepthStencilView(mpDepthStencilBuffer.Get(), nullptr, mpDsvHeap->GetCPUDescriptorHandleForHeapStart());
 	}
-
 	// Constant Buffer
 	{
 		const UINT canvasConstantBufferSize{ sizeof(CanvasConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(canvasConstantBufferSize) };
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
+		pApp->ThrowIfFailed(pDevice->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
 			&resDesc,
@@ -205,7 +172,7 @@ void Core::Canvas::Initialize()
 		pDevice->CreateConstantBufferView(&cbvDesc, mpCanvasCbvHeap->GetCPUDescriptorHandleForHeapStart());
 
 		CD3DX12_RANGE readRange(0, 0);
-		mpWindow->GetApplication()->ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
+		pApp->ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
 		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mView, DirectX::XMMatrixIdentity());
 		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mViewProj, DirectX::XMMatrixIdentity());
 		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
@@ -221,7 +188,7 @@ void Core::Canvas::Initialize()
 	}
 	// Graphics Command List
 	{
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateCommandList(
+		pApp->ThrowIfFailed(pDevice->CreateCommandList(
 			0,
 			D3D12_COMMAND_LIST_TYPE_DIRECT,
 			mpCommandAllocator.Get(),
@@ -231,16 +198,12 @@ void Core::Canvas::Initialize()
 	}
 	// Fence
 	{
-		mpWindow->GetApplication()->ThrowIfFailed(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mpFence)));
+		pApp->ThrowIfFailed(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mpFence)));
 		mFenceValue = 1;
 		mFenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 		if (mFenceEvent == nullptr)
-			mpWindow->GetApplication()->ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+			pApp->ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
 		WaitForPreviousFrame();
-	}
-	// Brush
-	{
-		mpWindow->GetApplication()->ThrowIfFailed(pD2d1DeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &mpBrush));
 	}
 	mIsInitialized = true;
 }
@@ -249,7 +212,7 @@ void Core::Canvas::SetCamera(Core::Object* pCamera)
 {
 	mpCamera = pCamera;
 	if (pCamera != nullptr)
-	pCamera->GetModelC<CameraRMC>()->SetCanvas(this);
+		pCamera->GetModelC<CameraRMC>()->SetCanvas(this);
 }
 
 Core::Object* Core::Canvas::GetCamera()
@@ -262,11 +225,6 @@ float Core::Canvas::GetRatio()
 	return mRatio;
 }
 
-const Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>& Core::Canvas::GetBrush()
-{
-	return mpBrush;
-}
-
 D3D12_CPU_DESCRIPTOR_HANDLE Core::Canvas::GetCurrentBackBufferView()
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE{
@@ -275,7 +233,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE Core::Canvas::GetCurrentBackBufferView()
 		mRtvDescriptorSize };
 }
 
-Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& Core::Canvas::GetGraphicsCommandList()
+Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& Core::Canvas::GetGraphicsCommandList()
 {
 	return mpGraphicsCommandList;
 }
@@ -299,10 +257,11 @@ void Core::Canvas::SetDescriptor()
 
 void Core::Canvas::Render()
 {
+	Application* pApp{ mpWindow->GetApplication() };
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
-		mpWindow->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Canvas.Render() while mIsInitialized == false");
+		pApp->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Canvas.Render() while mIsInitialized == false");
 #endif
 		return;
 	}
@@ -310,15 +269,13 @@ void Core::Canvas::Render()
 		return;
 	if (mpMaterials2D.empty() && mpMaterials3D.empty())
 		return;
-	Application* pApp{ mpWindow->GetApplication() };
 	auto pDevice{ pApp->GetDevice() };
 	auto pCmdQueue{ pApp->GetCommandQueue() };
-	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
-	auto pD3D11On12Device{ pApp->GetD3D11On12Device() };
-	auto pD3d11DeviceContext{ pApp->GetD3d11DeviceContext() };
 
-	mpWindow->GetApplication()->ThrowIfFailed(mpCommandAllocator->Reset());
-	mpWindow->GetApplication()->ThrowIfFailed(mpGraphicsCommandList->Reset(mpCommandAllocator.Get(), nullptr));
+	mCurrentBackBuffer = mpSwapChain->GetCurrentBackBufferIndex();
+
+	pApp->ThrowIfFailed(mpCommandAllocator->Reset());
+	pApp->ThrowIfFailed(mpGraphicsCommandList->Reset(mpCommandAllocator.Get(), nullptr));
 
 	if (!mpMaterials3D.empty())
 	{
@@ -346,42 +303,18 @@ void Core::Canvas::Render()
 	for (Material3D* pMaterial : mpMaterials3D)
 		pMaterial->Render(this);
 
-	mpD2DMultithread->Enter();
-	if (mpMaterials2D.empty())
-	{
-		D3D12_RESOURCE_BARRIER rbTransition2{ CD3DX12_RESOURCE_BARRIER::Transition(
-			mpRenderTargets[mCurrentBackBuffer].Get(),
-			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_PRESENT) };
-		mpGraphicsCommandList->ResourceBarrier(1, &rbTransition2);
-		mpWindow->GetApplication()->ThrowIfFailed(mpGraphicsCommandList->Close());
-		ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
-		pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
-	}
-	else
-	{
-		mpWindow->GetApplication()->ThrowIfFailed(mpGraphicsCommandList->Close());
-		ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
-		pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
-		pD3D11On12Device->AcquireWrappedResources(mpWrappedBackBuffers[mCurrentBackBuffer].GetAddressOf(), 1);
-		pD2d1DeviceContext->SetTarget(mpBitmaps[mCurrentBackBuffer].Get());
-		pD2d1DeviceContext->BeginDraw();
-		for (Material2D* pMaterial : mpMaterials2D)
-			pMaterial->Render(this);
-		mpWindow->GetApplication()->ThrowIfFailed(pD2d1DeviceContext->EndDraw());
-		pD3D11On12Device->ReleaseWrappedResources(mpWrappedBackBuffers[mCurrentBackBuffer].GetAddressOf(), 1);
-		pD3d11DeviceContext->Flush();
-	}
-	mpD2DMultithread->Leave();
+	D3D12_RESOURCE_BARRIER rbTransition2{ CD3DX12_RESOURCE_BARRIER::Transition(
+		mpRenderTargets[mCurrentBackBuffer].Get(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET,
+		D3D12_RESOURCE_STATE_PRESENT) };
+	mpGraphicsCommandList->ResourceBarrier(1, &rbTransition2);
+	pApp->ThrowIfFailed(mpGraphicsCommandList->Close());
+	ID3D12CommandList* pCmdsLists[]{ mpGraphicsCommandList.Get() };
+	pCmdQueue->ExecuteCommandLists(_countof(pCmdsLists), pCmdsLists);
 
-	mpWindow->GetApplication()->ThrowIfFailed(mpSwapChain->Present(1, 0));
+	pApp->ThrowIfFailed(mpSwapChain->Present(1, 0));
 
 	WaitForPreviousFrame();
-
-	if (mCurrentBackBuffer == 0)
-		mCurrentBackBuffer = 1;
-	else
-		mCurrentBackBuffer = 0;
 }
 
 void Core::Canvas::WaitForPreviousFrame()
@@ -392,12 +325,12 @@ void Core::Canvas::WaitForPreviousFrame()
 
 	const UINT64 fence{ mFenceValue };
 
-	mpWindow->GetApplication()->ThrowIfFailed(pCommandQueue->Signal(mpFence.Get(), fence));
+	pApp->ThrowIfFailed(pCommandQueue->Signal(mpFence.Get(), fence));
 
 	mFenceValue++;
 	if (mpFence->GetCompletedValue() < fence)
 	{
-		mpWindow->GetApplication()->ThrowIfFailed(mpFence->SetEventOnCompletion(fence, mFenceEvent));
+		pApp->ThrowIfFailed(mpFence->SetEventOnCompletion(fence, mFenceEvent));
 		WaitForSingleObject(mFenceEvent, INFINITE);
 	}
 }
@@ -413,27 +346,37 @@ void Core::Canvas::RunThread(std::condition_variable* pConditionVar, std::mutex*
 
 void Core::Canvas::SetThreadAction(Core::ThreadAction threadAction)
 {
-	mThreadAction = threadAction;
+	mThreadAction.store(threadAction);
+}
+
+void Core::Canvas::WaitThreadEnd()
+{
+	if (mThread.joinable())
+	{
+		mThreadAction.store(Core::ThreadAction::Close);
+		mThread.join();
+	}
 }
 
 void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 {
 	timeBeginPeriod(1);
 	std::chrono::milliseconds maxWait{ 32 };
-	bool close{ false };
-	while (!close)
+	while (true)
 	{
-		if (pCanvas->mThreadAction == Core::ThreadAction::Close)
-			close = true;
-		pCanvas->mThreadAction = Core::ThreadAction::Sleep;
+		if (pCanvas->mThreadAction.load() == Core::ThreadAction::Close)
+			break;
+		pCanvas->mThreadAction.store(Core::ThreadAction::Sleep);
 		if (!pCanvas->mRunThread.load())
 			std::this_thread::sleep_for(maxWait);
+		if (pCanvas->mThreadAction.load() == Core::ThreadAction::Close)
+			break;
 		if (pCanvas->mpMutex == nullptr)
 			continue;
 		std::unique_lock<std::mutex> lk{ *pCanvas->mpMutex };
 		pCanvas->mpConditionVar->wait_for(lk, maxWait);
 		lk.unlock();
-		if (pCanvas->mThreadAction == Core::ThreadAction::Render)
+		if (pCanvas->mThreadAction.load() == Core::ThreadAction::Render)
 			pCanvas->Render();
 	}
 	timeEndPeriod(1);

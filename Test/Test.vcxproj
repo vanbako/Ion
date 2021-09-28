@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -47,12 +48,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)PhysX/bin/debug;$(SolutionDir)FMOD/bin/debug;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/native/lib/x64/Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Test/include;$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)FMOD/include;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Test/include;$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)FMOD/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(SolutionDir)PhysX/bin/release;$(SolutionDir)FMOD/bin/release;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/native/lib/x64/Release;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Test/include;$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)FMOD/include;$(SolutionDir)packages/directxtk12_desktop_2017.2021.6.10.2/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Test/include;$(SolutionDir)PhysX/include;$(SolutionDir)Core/include;$(SolutionDir)FMOD/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -60,7 +61,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -84,7 +85,7 @@ xcopy "$(SolutionDir)FMOD\bin\debug\*.dll" "$(TargetDir)" /v /k /y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -103,8 +104,10 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ControlCommand.cpp" />
-    <ClCompile Include="ControlRMC.cpp" />
+    <ClCompile Include="ControlOneCommand.cpp" />
+    <ClCompile Include="ControlOneRMC.cpp" />
+    <ClCompile Include="ControlZeroCommand.cpp" />
+    <ClCompile Include="ControlZeroRMC.cpp" />
     <ClCompile Include="NextObjectCmd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -114,14 +117,20 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     <ClCompile Include="PrevObjectCmd.cpp" />
     <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="ToggleSceneOneCmd.cpp" />
+    <ClCompile Include="ToggleSceneTwoCmd.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ControlCommand.h" />
-    <ClInclude Include="include\ControlRMC.h" />
+    <ClInclude Include="include\ControlOneCommand.h" />
+    <ClInclude Include="include\ControlOneRMC.h" />
+    <ClInclude Include="include\ControlZeroCommand.h" />
+    <ClInclude Include="include\ControlZeroRMC.h" />
     <ClInclude Include="include\FmodAudio.h" />
     <ClInclude Include="include\NextObjectCmd.h" />
     <ClInclude Include="include\PrevObjectCmd.h" />
     <ClInclude Include="include\ShowControlsCmd.h" />
+    <ClInclude Include="include\ToggleSceneOneCmd.h" />
+    <ClInclude Include="include\ToggleSceneTwoCmd.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +142,8 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </Text>
-    <Text Include="..\Resources\Input\Control.txt" />
+    <Text Include="..\Resources\Input\ControlOne.txt" />
+    <Text Include="..\Resources\Input\ControlZero.txt" />
     <Text Include="..\Resources\Input\MoveObject.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +152,7 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
     <None Include="..\Resources\Model\RoyalHighness\RoyalHighness1.ovm" />
     <None Include="..\Resources\Model\Wizard\Wizard.ovm" />
     <None Include="..\Resources\Terrain\Hawai_HeightMap_128x128x16.raw" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">
@@ -163,5 +174,15 @@ xcopy "$(SolutionDir)FMOD\bin\release\*.dll" "$(TargetDir)" /v /k /y</Command>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets" Condition="Exists('..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets')" />
+    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
+  </Target>
 </Project>

@@ -61,6 +61,12 @@
     <Filter Include="Resources\Terrain">
       <UniqueIdentifier>{6171ec4a-d7d9-4e3a-a8f1-50c1526c30e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command\Control\ControlOneCommand">
+      <UniqueIdentifier>{bf535a93-33ab-426e-93ae-ac97d3ce5dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Control\ControlZeroCommand">
+      <UniqueIdentifier>{73c34340-92bf-4aa4-91bb-02264099cb64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -72,20 +78,32 @@
     <ClCompile Include="FmodAudio.cpp">
       <Filter>ServiceLocator\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="ControlRMC.cpp">
+    <ClCompile Include="ControlOneRMC.cpp">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
-    <ClCompile Include="ControlCommand.cpp">
-      <Filter>Command\Control</Filter>
+    <ClCompile Include="ControlZeroRMC.cpp">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlOneCommand.cpp">
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="NextObjectCmd.cpp">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="PrevObjectCmd.cpp">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="ShowControlsCmd.cpp">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleSceneOneCmd.cpp">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleSceneTwoCmd.cpp">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlZeroCommand.cpp">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,20 +113,32 @@
     <ClInclude Include="include\FmodAudio.h">
       <Filter>ServiceLocator\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\ControlRMC.h">
+    <ClInclude Include="include\ControlOneRMC.h">
       <Filter>Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
-    <ClInclude Include="include\ControlCommand.h">
-      <Filter>Command\Control</Filter>
+    <ClInclude Include="include\ControlZeroRMC.h">
+      <Filter>Component\ModelC\ReceiverMC</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlOneCommand.h">
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\NextObjectCmd.h">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\PrevObjectCmd.h">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\ShowControlsCmd.h">
-      <Filter>Command\Control</Filter>
+      <Filter>Command\Control\ControlOneCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToggleSceneOneCmd.h">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToggleSceneTwoCmd.h">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlZeroCommand.h">
+      <Filter>Command\Control\ControlZeroCommand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,10 +148,13 @@
     <Text Include="..\Resources\Input\Character.txt">
       <Filter>Resources\Input</Filter>
     </Text>
-    <Text Include="..\Resources\Input\Control.txt">
+    <Text Include="..\Resources\Input\MoveObject.txt">
       <Filter>Resources\Input</Filter>
     </Text>
-    <Text Include="..\Resources\Input\MoveObject.txt">
+    <Text Include="..\Resources\Input\ControlOne.txt">
+      <Filter>Resources\Input</Filter>
+    </Text>
+    <Text Include="..\Resources\Input\ControlZero.txt">
       <Filter>Resources\Input</Filter>
     </Text>
   </ItemGroup>
@@ -141,6 +174,7 @@
     <None Include="..\Resources\Terrain\Hawai_HeightMap_128x128x16.raw">
       <Filter>Resources\Terrain</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\Texture\Flower\Flower_Blue.png">

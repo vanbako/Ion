@@ -4,7 +4,7 @@
 
 using namespace Ion;
 
-Core::PhysicsST::PhysicsST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+Core::PhysicsST::PhysicsST(Core::Scene* pScene, std::chrono::milliseconds updateTime)
 	: Core::SceneThread(pScene, updateTime)
 {
 }

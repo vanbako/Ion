@@ -5,11 +5,11 @@
 using namespace Ion;
 
 #ifdef ION_STATS
-const std::chrono::microseconds Core::SceneThread::mStatsMutexDuration{ 1000 };
-const std::chrono::microseconds Core::SceneThread::mStatsTime{ 32000 };
+const std::chrono::milliseconds Core::SceneThread::mStatsMutexDuration{ 1 };
+const std::chrono::milliseconds Core::SceneThread::mStatsTime{ 32 };
 #endif
 
-Core::SceneThread::SceneThread(Core::Scene* pScene, std::chrono::microseconds updateTime)
+Core::SceneThread::SceneThread(Core::Scene* pScene, std::chrono::milliseconds updateTime)
 	: mpScene{ pScene }
 	, mUpdateTime{ updateTime }
 	, mThread{}
@@ -37,12 +37,12 @@ Core::Scene* Core::SceneThread::GetScene()
 	return mpScene;
 }
 
-void Core::SceneThread::setUpdateTime(std::chrono::microseconds updateTime)
+void Core::SceneThread::setUpdateTime(std::chrono::milliseconds updateTime)
 {
 	mUpdateTime.store(updateTime);
 }
 
-const std::chrono::microseconds Core::SceneThread::GetUpdateTime() const
+const std::chrono::milliseconds Core::SceneThread::GetUpdateTime() const
 {
 	return mUpdateTime.load();
 }
@@ -119,7 +119,8 @@ void Core::SceneThread::Loop(Core::SceneThread* pSceneThread)
 				pSceneThread->mStatCount = mStatMax;
 			if (pSceneThread->mStatCurrent >= mStatMax)
 				pSceneThread->mStatCurrent = 0;
-			pSceneThread->mStats[pSceneThread->mStatCurrent] = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);			pSceneThread->UnlockStats();
+			pSceneThread->mStats[pSceneThread->mStatCurrent] = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);
+			pSceneThread->UnlockStats();
 			pSceneThread->mStatSeqs[pSceneThread->mStatCurrent] = pSceneThread->mStatSeq;
 		}
 #endif

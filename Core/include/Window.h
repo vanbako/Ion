@@ -11,7 +11,7 @@ namespace Ion
 		{
 		public:
 			explicit Window(Core::Application* pApplication, const std::wstring title, RECT rectangle);
-			~Window() = default;
+			~Window();
 			Window(const Window& other) = delete;
 			Window(Window&& other) noexcept = delete;
 			Window& operator=(const Window& other) = delete;

@@ -2,7 +2,6 @@
 #include "Material3D.h"
 #include "Application.h"
 #include "Canvas.h"
-#include "d3dx12.h"
 #include <d3dcompiler.h>
 
 using namespace Ion;

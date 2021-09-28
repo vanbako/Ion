@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "ControlRMC.h"
+#include "ControlOneRMC.h"
 #include "TransformMC.h"
+#include "Application.h"
 #include "Object.h"
 #include "Scene.h"
 #include "NextObjectCmd.h"
@@ -12,9 +13,9 @@
 
 using namespace Ion;
 
-const std::string Core::ControlRMC::mName{ "Control" };
+const std::string Core::ControlOneRMC::mName{ "ControlOne" };
 
-Core::ControlRMC::ControlRMC(bool isActive, Core::Object* pObject)
+Core::ControlOneRMC::ControlOneRMC(bool isActive, Core::Object* pObject)
 	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
 		{ "NextObject", new Core::NextObjectCmd{ this } },
@@ -28,18 +29,18 @@ Core::ControlRMC::ControlRMC(bool isActive, Core::Object* pObject)
 {
 }
 
-Core::ControlRMC::~ControlRMC()
+Core::ControlOneRMC::~ControlOneRMC()
 {
 	for (std::pair<std::string, Core::Command*>& command : mCommands)
 		delete command.second;
 }
 
-void Core::ControlRMC::Initialize()
+void Core::ControlOneRMC::Initialize()
 {
 	mIsInitialized = true;
 }
 
-void Core::ControlRMC::Update(float delta)
+void Core::ControlOneRMC::Update(float delta)
 {
 	(delta);
 	using namespace DirectX;
@@ -88,7 +89,7 @@ void Core::ControlRMC::Update(float delta)
 	}
 }
 
-void Core::ControlRMC::Switch()
+void Core::ControlOneRMC::Switch()
 {
 	if (!mIsActive)
 		return;
@@ -106,22 +107,22 @@ void Core::ControlRMC::Switch()
 	mShowControls[mCurrent] = false;
 }
 
-const std::vector<std::pair<std::string, Core::Command*>>& Core::ControlRMC::GetCommands() const
+const std::vector<std::pair<std::string, Core::Command*>>& Core::ControlOneRMC::GetCommands() const
 {
 	return mCommands;
 }
 
-const std::string& Core::ControlRMC::GetName() const
+const std::string& Core::ControlOneRMC::GetName() const
 {
 	return mName;
 }
 
-void Core::ControlRMC::AddObject(Core::Object* pObject)
+void Core::ControlOneRMC::AddObject(Core::Object* pObject)
 {
 	mpObjects.emplace_back(pObject);
 }
 
-void Core::ControlRMC::NextObject(long long value)
+void Core::ControlOneRMC::NextObject(long long value)
 {
 	if (KeyboardState(value) != KeyboardState::KeyDown)
 		return;
@@ -129,7 +130,7 @@ void Core::ControlRMC::NextObject(long long value)
 	mHasChanged = true;
 }
 
-void Core::ControlRMC::PrevObject(long long value)
+void Core::ControlOneRMC::PrevObject(long long value)
 {
 	if (KeyboardState(value) != KeyboardState::KeyDown)
 		return;
@@ -137,7 +138,7 @@ void Core::ControlRMC::PrevObject(long long value)
 	mHasChanged = true;
 }
 
-void Core::ControlRMC::ShowControls(long long value)
+void Core::ControlOneRMC::ShowControls(long long value)
 {
 	(value);
 	mShowControls[mCurrent] = true;

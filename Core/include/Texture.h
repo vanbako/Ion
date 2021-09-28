@@ -19,10 +19,8 @@ namespace Ion
 
 			const Microsoft::WRL::ComPtr<ID3D12Resource>& GetTexture() const;
 		private:
-			bool mIsInitialized;
 			Core::Application* mpApplication;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpTexture;
-			DirectX::ResourceUploadBatch mUploadBatch;
 		};
 	}
 }

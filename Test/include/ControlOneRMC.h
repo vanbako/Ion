@@ -1,7 +1,7 @@
 #pragma once
 #include "ReceiverMC.h"
 
-// Camera Model Component
+// Control(Scene)One Receiver Model Component
 
 namespace Ion
 {
@@ -10,16 +10,16 @@ namespace Ion
 		class Canvas;
 		class TransformMC;
 
-		class ControlRMC final
+		class ControlOneRMC final
 			: public Core::ReceiverMC
 		{
 		public:
-			explicit ControlRMC(bool isActive, Core::Object* pObject);
-			virtual ~ControlRMC();
-			ControlRMC(const ControlRMC& other) = default;
-			ControlRMC(ControlRMC&& other) noexcept = default;
-			ControlRMC& operator=(const ControlRMC& other) = default;
-			ControlRMC& operator=(ControlRMC&& other) noexcept = default;
+			explicit ControlOneRMC(bool isActive, Core::Object* pObject);
+			virtual ~ControlOneRMC();
+			ControlOneRMC(const ControlOneRMC& other) = default;
+			ControlOneRMC(ControlOneRMC&& other) noexcept = default;
+			ControlOneRMC& operator=(const ControlOneRMC& other) = default;
+			ControlOneRMC& operator=(ControlOneRMC&& other) noexcept = default;
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;

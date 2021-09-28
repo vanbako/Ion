@@ -25,8 +25,8 @@ namespace Ion
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override { (pCanvas); (pMaterial); };
-			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override;
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override { (pCanvas); (pMaterial); return false; };
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override;
 
 			void SetText(const std::wstring& text);
 			void SetRect(const D2D1_RECT_F& rect);

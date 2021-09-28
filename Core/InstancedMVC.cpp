@@ -8,7 +8,6 @@
 #include "Model.h"
 #include "Canvas.h"
 #include "InstancedTransformMC.h"
-#include "d3dx12.h"
 
 using namespace Ion;
 
@@ -70,20 +69,21 @@ void Core::InstancedMVC::Update(float delta)
 	Core::ModelVC::Update(delta);
 }
 
-void Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
 		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
 #endif
-		return;
+		return false;
 	}
-	(pMaterial);
+	if (!Core::ViewC::Render(pCanvas, pMaterial))
+		return false;
 	if (!mIsActive)
-		return;
+		return false;
 	if (mInstanceBufferData.empty())
-		return;
+		return false;
 
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
@@ -99,4 +99,5 @@ void Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
 	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), UINT(mInstanceBufferData.size()), 0, 0, 0);
+	return true;
 }

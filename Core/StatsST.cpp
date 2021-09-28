@@ -5,12 +5,12 @@
 #ifdef ION_STATS
 using namespace Ion;
 
-Core::StatsST::StatsST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+Core::StatsST::StatsST(Core::Scene* pScene, std::chrono::milliseconds updateTime)
 	: Core::SceneThread(pScene, updateTime)
 {
 	auto& pSceneThreads{ mpScene->GetSceneThreads() };
 	for (auto& pSceneThread : pSceneThreads)
-		mpSceneThreads.emplace(pSceneThread.first, std::pair<Core::SceneThread*, std::ofstream>{ pSceneThread.second, std::ofstream{ pSceneThread.first + ".log", std::ios::out} });
+		mpSceneThreads.emplace(pSceneThread.first, std::pair<Core::SceneThread*, std::ofstream>{ pSceneThread.second, std::ofstream{ mpScene->GetName() + "_" + pSceneThread.first + ".log", std::ios::out} });
 }
 
 Core::StatsST::~StatsST()
@@ -29,7 +29,7 @@ void Core::StatsST::Inner(float delta)
 
 void Core::StatsST::Stats(std::pair<Core::SceneThread*, std::ofstream>& pSceneThread)
 {
-	std::memcpy(mStats, pSceneThread.first->GetStats(), mStatMax * sizeof(std::chrono::microseconds));
+	std::memcpy(mStats, pSceneThread.first->GetStats(), mStatMax * sizeof(std::chrono::milliseconds));
 	std::memcpy(mStatSeqs, pSceneThread.first->GetStatSeqs(), mStatMax * sizeof(size_t));
 	std::size_t statCurrent{ pSceneThread.first->GetStatCurrent() };
 	std::size_t statCount{ pSceneThread.first->GetStatCount() };

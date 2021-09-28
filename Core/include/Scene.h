@@ -23,7 +23,7 @@ namespace Ion
 		class Scene final
 		{
 		public:
-			explicit Scene(Core::Application* pApplication);
+			explicit Scene(const std::string& name, Core::Application* pApplication);
 			~Scene();
 			Scene(const Scene& other) = delete;
 			Scene(Scene&& other) noexcept = delete;
@@ -34,6 +34,7 @@ namespace Ion
 			const bool GetIsActive() const;
 			void SetIsEnd(bool isEnd);
 			const bool GetIsEnd() const;
+			const std::string& GetName();
 			std::list<Core::Object>& GetObjects();
 			Core::Application* GetApplication();
 			Core::ControllerST* GetControllerST();
@@ -62,12 +63,13 @@ namespace Ion
 			void AddCanvas(Core::Canvas* pCanvas);
 			void Render();
 		private:
-			static std::chrono::microseconds mObjectsMutexDuration;
-			static std::chrono::microseconds
+			static std::chrono::milliseconds mObjectsMutexDuration;
+			static std::chrono::milliseconds
 				mModelTime,
 				mControllerTime,
 				mViewTime,
 				mPhysicsTime;
+			const std::string mName;
 			Core::Application* mpApplication;
 			std::atomic<bool>
 				mIsInitialized,
@@ -85,7 +87,7 @@ namespace Ion
 			Core::ViewST* mpViewST;
 			Core::PhysicsST* mpPhysicsST;
 #ifdef ION_STATS
-			static std::chrono::microseconds mStatsTime;
+			static std::chrono::milliseconds mStatsTime;
 			Core::StatsST* mpStatsST;
 #endif
 			std::map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;

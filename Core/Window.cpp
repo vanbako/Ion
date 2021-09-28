@@ -25,6 +25,14 @@ Core::Window::Window(Core::Application* pApplication, const std::wstring title, 
 	UpdateWindow(mhWindow);
 }
 
+Core::Window::~Window()
+{
+	for (auto& canvas : mCanvases)
+		canvas.WaitThreadEnd();
+	mCanvases.clear();
+	DestroyWindow(mhWindow);
+}
+
 Core::Application* Core::Window::GetApplication()
 {
 	return mpApplication;

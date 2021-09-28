@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
-#include "d3dx12.h"
 
 using namespace Ion;
 
@@ -326,18 +325,19 @@ void Core::TerrainVC::Update(float delta)
 		return;
 }
 
-void Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
-	(pMaterial);
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
 		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "MeshVC.Render() while mIsInitialized == false");
 #endif
-		return;
+		return false;
 	}
+	if (!Core::ViewC::Render(pCanvas, pMaterial))
+		return false;
 	if (!mIsActive)
-		return;
+		return false;
 
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
@@ -348,6 +348,7 @@ void Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
 	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndices.size()), 1, 0, 0, 0);
+	return true;
 }
 
 void Core::TerrainVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)

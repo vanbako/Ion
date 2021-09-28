@@ -13,7 +13,7 @@ namespace Ion
 		class SceneThread
 		{
 		public:
-			explicit SceneThread(Core::Scene* pScene, std::chrono::microseconds updateTime);
+			explicit SceneThread(Core::Scene* pScene, std::chrono::milliseconds updateTime);
 			virtual ~SceneThread();
 			SceneThread(const SceneThread& other) = delete;
 			SceneThread(SceneThread&& other) noexcept = delete;
@@ -21,8 +21,8 @@ namespace Ion
 			SceneThread& operator=(SceneThread&& other) noexcept = delete;
 
 			Core::Scene* GetScene();
-			void setUpdateTime(std::chrono::microseconds updateTime);
-			const std::chrono::microseconds GetUpdateTime() const;
+			void setUpdateTime(std::chrono::milliseconds updateTime);
+			const std::chrono::milliseconds GetUpdateTime() const;
 #ifdef ION_STATS
 			std::chrono::microseconds* GetStats();
 			std::size_t* GetStatSeqs();
@@ -37,11 +37,11 @@ namespace Ion
 			virtual void Inner(float delta) = 0;
 
 			Core::Scene* mpScene;
-			std::atomic<std::chrono::microseconds> mUpdateTime;
+			std::atomic<std::chrono::milliseconds> mUpdateTime;
 			std::thread mThread;
 #ifdef ION_STATS
-			static const std::chrono::microseconds mStatsMutexDuration;
-			static const std::chrono::microseconds mStatsTime;
+			static const std::chrono::milliseconds mStatsMutexDuration;
+			static const std::chrono::milliseconds mStatsTime;
 			static const std::size_t mStatMax{ 256 };
 
 			std::timed_mutex mStatsMutex;

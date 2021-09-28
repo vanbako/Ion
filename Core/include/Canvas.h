@@ -1,7 +1,6 @@
 #pragma once
 #include "CanvasConstantBuffer.h"
 #include "ThreadAction.h"
-#include "d3dx12.h"
 
 namespace Ion
 {
@@ -26,10 +25,9 @@ namespace Ion
 			void SetCamera(Core::Object* pCamera);
 			Core::Object* GetCamera();
 			float GetRatio();
-			const Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>& GetBrush();
 
 			D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView();
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>& GetGraphicsCommandList();
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& GetGraphicsCommandList();
 
 			void AddMaterial(Core::Material3D* pMaterial);
 			void AddMaterial(Core::Material2D* pMaterial);
@@ -38,25 +36,24 @@ namespace Ion
 
 			void RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex);
 			void SetThreadAction(Core::ThreadAction threadAction);
+			void WaitThreadEnd();
 		private:
+			static const size_t mBackBufferCount{ 2 };
 			bool mIsInitialized;
 			Core::Window* mpWindow;
 			RECT mRectangle;
 			float mRatio;
 			Core::Object* mpCamera;
-			Microsoft::WRL::ComPtr<IDXGISwapChain3> mpSwapChain;
+			Microsoft::WRL::ComPtr<IDXGISwapChain4> mpSwapChain;
 			Microsoft::WRL::ComPtr<ID3D12Resource>
-				mpRenderTargets[2],
+				mpRenderTargets[mBackBufferCount],
 				mpDepthStencilBuffer;
-			Microsoft::WRL::ComPtr<ID3D11Resource> mpWrappedBackBuffers[2];
-			Microsoft::WRL::ComPtr<ID2D1Bitmap1> mpBitmaps[2];
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>
 				mpRtvHeap,
 				mpDsvHeap,
 				mpCanvasCbvHeap;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
-			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> mpGraphicsCommandList;
-			Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> mpBrush;
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5> mpGraphicsCommandList;
 			int mCurrentBackBuffer;
 			UINT
 				mRtvDescriptorSize,
@@ -75,7 +72,7 @@ namespace Ion
 			std::thread mThread;
 			std::mutex* mpMutex;
 			std::condition_variable* mpConditionVar;
-			Core::ThreadAction mThreadAction;
+			std::atomic<Core::ThreadAction> mThreadAction;
 			std::atomic<bool> mRunThread;
 			ID2D1Multithread* mpD2DMultithread;
 

@@ -2,8 +2,8 @@
 
 // Make sure that these defines are the same as the Core Build
 // Otherwise you get "Run-Time Check Failure #2 - Stack around the variable 'application' was corrupted."
-//#define ION_LOGGER
-//#define ION_STATS
+#define ION_LOGGER
+#define ION_STATS
 
 #define WIN32_LEAN_AND_MEAN
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
@@ -30,11 +30,13 @@
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 
+#include "d3dx12.h"
 #include <wrl.h>
 #include <dxgi.h>
 #include <dxgi1_2.h>
 #include <dxgi1_3.h>
 #include <dxgi1_4.h>
+#include <dxgi1_5.h>
 #include <d3d12.h>
 #include <d3d12shader.h>
 #include <d3d12sdklayers.h>

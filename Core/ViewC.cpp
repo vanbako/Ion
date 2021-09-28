@@ -39,3 +39,17 @@ void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)
 	if (mpMaterial2D != nullptr)
 		pCanvas->AddMaterial(mpMaterial2D);
 }
+
+bool Core::ViewC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+{
+	(pCanvas);
+	(pMaterial);
+	return mpObject->GetScene()->GetIsActive();
+}
+
+bool Core::ViewC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
+{
+	(pCanvas);
+	(pMaterial);
+	return mpObject->GetScene()->GetIsActive();
+}

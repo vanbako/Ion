@@ -17,7 +17,7 @@ void Core::Material2D::Initialize()
 {
 	if (mIsInitialized)
 		return;
-	auto pD2d1Factory{ mpApplication->GetD2d1Factory() };
+	//auto pD2d1Factory{ mpApplication->GetD2d1Factory() };
 	mIsInitialized = true;
 }
 

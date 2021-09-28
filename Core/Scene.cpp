@@ -12,20 +12,21 @@
 
 using namespace Ion;
 
-std::chrono::microseconds Core::Scene::mObjectsMutexDuration{ 1000 };
-std::chrono::microseconds Core::Scene::mModelTime{ 4000 };
-std::chrono::microseconds Core::Scene::mControllerTime{ 3000 };
-std::chrono::microseconds Core::Scene::mViewTime{ 8000 };
-std::chrono::microseconds Core::Scene::mPhysicsTime{ 4000 };
+std::chrono::milliseconds Core::Scene::mObjectsMutexDuration{ 1 };
+std::chrono::milliseconds Core::Scene::mModelTime{ 4 };
+std::chrono::milliseconds Core::Scene::mControllerTime{ 3 };
+std::chrono::milliseconds Core::Scene::mViewTime{ 8 };
+std::chrono::milliseconds Core::Scene::mPhysicsTime{ 4 };
 
 #ifdef ION_STATS
-std::chrono::microseconds Core::Scene::mStatsTime{ 32000 };
+std::chrono::milliseconds Core::Scene::mStatsTime{ 32 };
 #endif
 
 // TODO: Add bool (default false) if you want the scene to have a PxControllerManager
 
-Core::Scene::Scene(Core::Application* pApplication)
-	: mpApplication{ pApplication }
+Core::Scene::Scene(const std::string& name, Core::Application* pApplication)
+	: mName{ name }
+	, mpApplication{ pApplication }
 	, mIsInitialized{ false }
 	, mIsActive{ false }
 	, mIsEnd{ false }
@@ -85,6 +86,7 @@ Core::Scene::~Scene()
 		pair.first->SetThreadAction(Core::ThreadAction::Close);
 		pair.second.second.notify_one();
 		pair.second.first.unlock();
+		pair.first->WaitThreadEnd();
 	}
 }
 
@@ -106,6 +108,11 @@ void Core::Scene::SetIsEnd(bool isEnd)
 const bool Core::Scene::GetIsEnd() const
 {
 	return mIsEnd.load();
+}
+
+const std::string& Core::Scene::GetName()
+{
+	return mName;
 }
 
 std::list<Core::Object>& Core::Scene::GetObjects()
@@ -254,10 +261,12 @@ void Core::Scene::Render()
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
-		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Scene.Render() while mIsInitialized == false");
+		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Scene:Render while mIsInitialized == false");
 #endif
 		return;
 	}
+	if (!mIsActive)
+		return;
 	for (auto& pair : mpCanvases)
 	{
 		pair.second.first.lock();

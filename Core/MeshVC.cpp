@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
-#include "d3dx12.h"
 
 using namespace Ion;
 
@@ -118,20 +117,22 @@ void Core::MeshVC::Update(float delta)
 	}
 }
 
-void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
 		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "MeshVC.Render() while mIsInitialized == false");
 #endif
-		return;
+		return false;
 	}
 	(pMaterial);
+	if (!Core::ViewC::Render(pCanvas, pMaterial))
+		return false;
 	if (!mIsActive)
-		return;
+		return false;
 	if (mVertexCount == 0)
-		return;
+		return false;
 
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
@@ -156,4 +157,5 @@ void Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
 	pGraphicsCommandList->DrawInstanced(UINT(mVertexCount), 1, 0, 0);
+	return true;
 }

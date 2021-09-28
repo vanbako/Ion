@@ -12,7 +12,7 @@ namespace Ion
 			: public Core::SceneThread
 		{
 		public:
-			explicit PhysicsST(Core::Scene* pScene, std::chrono::microseconds updateTime);
+			explicit PhysicsST(Core::Scene* pScene, std::chrono::milliseconds updateTime);
 			virtual ~PhysicsST() = default;
 			PhysicsST(const PhysicsST& other) = delete;
 			PhysicsST(PhysicsST&& other) noexcept = delete;

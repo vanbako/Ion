@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "ShowControlsCmd.h"
-#include "ControlRMC.h"
+#include "ControlOneRMC.h"
 
 using namespace Ion;
 
-Core::ShowControlsCmd::ShowControlsCmd(Core::ControlRMC* pControlRMC)
-	: Core::ControlCommand(pControlRMC)
+Core::ShowControlsCmd::ShowControlsCmd(Core::ControlOneRMC* pControlOneRMC)
+	: Core::ControlOneCommand(pControlOneRMC)
 {
 }
 
-Core::ControlCommand* Core::ShowControlsCmd::Duplicate()
+Core::ControlOneCommand* Core::ShowControlsCmd::Duplicate()
 {
-	return new Core::ShowControlsCmd{ mpControlRMC };
+	return new Core::ShowControlsCmd{ mpControlOneRMC };
 }
 
 void Core::ShowControlsCmd::Execute()
 {
-	mpControlRMC->ShowControls(mLongLongValue);
+	mpControlOneRMC->ShowControls(mLongLongValue);
 }

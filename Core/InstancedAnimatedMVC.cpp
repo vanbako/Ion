@@ -8,7 +8,6 @@
 #include "Model.h"
 #include "Canvas.h"
 #include "InstancedTransformMC.h"
-#include "d3dx12.h"
 
 using namespace Ion;
 
@@ -190,18 +189,19 @@ void Core::InstancedAnimatedMVC::Update(float delta)
 	}
 }
 
-void Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
 		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "InstancedModelVC.Render() while mIsInitialized == false");
 #endif
-		return;
+		return false;
 	}
-	(pMaterial);
+	if (!Core::ViewC::Render(pCanvas, pMaterial))
+		return false;
 	if (!mIsActive)
-		return;
+		return false;
 
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
@@ -224,4 +224,5 @@ void Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
 	pGraphicsCommandList->DrawIndexedInstanced(UINT(mIndexCount), UINT(mInstanceBufferData.size()), 0, 0, 0);
+	return true;
 }

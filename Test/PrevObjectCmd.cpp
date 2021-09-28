@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "PrevObjectCmd.h"
-#include "ControlRMC.h"
+#include "ControlOneRMC.h"
 
 using namespace Ion;
 
-Core::PrevObjectCmd::PrevObjectCmd(Core::ControlRMC* pControlRMC)
-	: Core::ControlCommand(pControlRMC)
+Core::PrevObjectCmd::PrevObjectCmd(Core::ControlOneRMC* pControlOneRMC)
+	: Core::ControlOneCommand(pControlOneRMC)
 {
 }
 
-Core::ControlCommand* Core::PrevObjectCmd::Duplicate()
+Core::ControlOneCommand* Core::PrevObjectCmd::Duplicate()
 {
-	return new Core::PrevObjectCmd{ mpControlRMC };
+	return new Core::PrevObjectCmd{ mpControlOneRMC };
 }
 
 void Core::PrevObjectCmd::Execute()
 {
-	mpControlRMC->PrevObject(mLongLongValue);
+	mpControlOneRMC->PrevObject(mLongLongValue);
 }

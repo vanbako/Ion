@@ -232,7 +232,7 @@ const std::map<std::string, int> Core::ControllerST::mKeyNames{
 	{ "VK_OEM_CLEAR", VK_OEM_CLEAR }
 };
 
-Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::microseconds updateTime)
+Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::milliseconds updateTime)
 	: Core::SceneThread(pScene, updateTime)
 	, mKeyboard{}
 	, mpCurrKeyboard{}
@@ -243,7 +243,7 @@ Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::microseconds 
 	mpLastKeyboard = mKeyboard + 256;
 }
 
-// Do not call Register while Scene is active, because it us not thread-safe!
+// Do not call Register while Scene is active, because it is not thread-safe!
 // If you really need to, make it thread-safe :-)
 void Core::ControllerST::Register(Core::InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Core::Command*>>& commands)
 {

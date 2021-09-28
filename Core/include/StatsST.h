@@ -11,7 +11,7 @@ namespace Ion
 			: public Core::SceneThread
 		{
 		public:
-			explicit StatsST(Core::Scene* pScene, std::chrono::microseconds updateTime);
+			explicit StatsST(Core::Scene* pScene, std::chrono::milliseconds updateTime);
 			virtual ~StatsST();
 			StatsST(const StatsST& other) = delete;
 			StatsST(StatsST&& other) noexcept = delete;
@@ -23,7 +23,7 @@ namespace Ion
 			void Stats(std::pair<Core::SceneThread*, std::ofstream>& pSceneThread);
 
 			std::map<const std::string, std::pair<Core::SceneThread*, std::ofstream>> mpSceneThreads;
-			std::chrono::microseconds mStats[mStatMax];
+			std::chrono::milliseconds mStats[mStatMax];
 			std::size_t mStatSeqs[mStatMax];
 		};
 	}

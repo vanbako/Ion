@@ -21,14 +21,20 @@ LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-const std::chrono::microseconds Core::Application::mRunSleep{ 4000 };
-const std::chrono::microseconds Core::Application::mKeyboardMutexDuration{ 1000 };
+const std::chrono::milliseconds Core::Application::mRunSleep{ 4 };
+const std::chrono::milliseconds Core::Application::mKeyboardMutexDuration{ 1 };
+const std::chrono::milliseconds Core::Application::mTextureMutexDuration{ 100 };
+const std::chrono::milliseconds Core::Application::mModelMutexDuration{ 100 };
+const std::chrono::milliseconds Core::Application::mMaterialMutexDuration{ 100 };
 
 Core::Application::Application()
 	: mIsInitialized{ false }
 	, mIsActive{ false }
 	, mKeyboard{}
 	, mKeyboardMutex{}
+	, mTextureMutex{}
+	, mMaterialMutex{}
+	, mModelMutex{}
 	, mScenes{}
 	, mWindows{}
 	, mMaterials3D{}
@@ -39,14 +45,6 @@ Core::Application::Application()
 	, mpD3d12Device{}
 	, mpDxgiDevice{}
 	, mpCommandQueue{}
-	, mpD3d11On12Device{}
-	, mpD3d11DeviceContext{}
-	, mpD2d1Device{}
-	, mpD2d1DeviceContext{}
-	, mpD2d1Factory{}
-	, mpDWriteFactory{}
-	, mpFontCollection{}
-	, mpDWriteFormat{}
 	, mpPhysics{ nullptr }
 	, mPxToleranceScale{}
 	, mIonAllocatorCallback{}
@@ -104,23 +102,15 @@ bool Core::Application::Initialize()
 {
 	if (mIsInitialized)
 		return true;
-	// 3D
-	// Factory
-	UINT dxgiFactoryFlags{ 0 };
-	UINT d3d11DeviceFlags{ D3D11_CREATE_DEVICE_BGRA_SUPPORT };
-	D2D1_FACTORY_OPTIONS d2dFactoryOptions{};
 
-#if defined(_DEBUG)
+	UINT dxgiFactoryFlags{ 0 };
+#ifdef _DEBUG
 	{
 		Microsoft::WRL::ComPtr<ID3D12Debug> pDebugController;
 		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
 		{
 			pDebugController->EnableDebugLayer();
-
-			// Enable additional debug layers.
 			dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
-			d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-			d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 		}
 	}
 #endif
@@ -139,42 +129,6 @@ bool Core::Application::Initialize()
 		ThrowIfFailed(mpD3d12Device->CreateCommandQueue(
 			&queueDesc,
 			IID_PPV_ARGS(&mpCommandQueue)));
-	}
-	// 2D & D3D11On12
-	// Device & Factory
-	{
-
-		Microsoft::WRL::ComPtr<ID3D11Device> pD3d11Device{};
-		ThrowIfFailed(D3D11On12CreateDevice(
-			mpD3d12Device.Get(),
-			d3d11DeviceFlags,
-			nullptr,
-			0,
-			reinterpret_cast<IUnknown**>(mpCommandQueue.GetAddressOf()),
-			1,
-			0,
-			&pD3d11Device,
-			&mpD3d11DeviceContext,
-			nullptr
-		));
-		ThrowIfFailed(pD3d11Device.As(&mpD3d11On12Device));
-
-		D2D1_DEVICE_CONTEXT_OPTIONS deviceOptions{ D2D1_DEVICE_CONTEXT_OPTIONS_NONE };
-		ThrowIfFailed(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory3), &d2dFactoryOptions, &mpD2d1Factory));
-		ThrowIfFailed(mpD3d11On12Device.As(&mpDxgiDevice));
-		ThrowIfFailed(mpD2d1Factory->CreateDevice(mpDxgiDevice.Get(), &mpD2d1Device));
-		ThrowIfFailed(mpD2d1Device->CreateDeviceContext(deviceOptions, &mpD2d1DeviceContext));
-		ThrowIfFailed(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &mpDWriteFactory));
-		ThrowIfFailed(mpDWriteFactory->GetSystemFontCollection(&mpFontCollection));
-		ThrowIfFailed(mpDWriteFactory->CreateTextFormat(
-			L"Arial",
-			mpFontCollection.Get(),
-			DWRITE_FONT_WEIGHT_REGULAR,
-			DWRITE_FONT_STYLE_NORMAL,
-			DWRITE_FONT_STRETCH_NORMAL,
-			18.f,
-			L"en-us",
-			&mpDWriteFormat));
 	}
 	mIsInitialized = true;
 #ifdef ION_LOGGER
@@ -228,9 +182,25 @@ PBYTE Core::Application::GetKeyboard()
 	return mKeyboard;
 }
 
-Core::Scene* Core::Application::AddScene()
+Core::Scene* Core::Application::AddScene(const std::string& name)
 {
-	return &mScenes.emplace_back(this);
+	return &mScenes.emplace_back(name, this);
+}
+
+Core::Scene* Core::Application::GetScene(size_t num)
+{
+#ifdef _DEBUG
+	if (num >= mScenes.size())
+	{
+#ifdef ION_LOGGER
+		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::GetScene, num >= mScenes.size()");
+#endif
+	}
+#endif
+	auto it{ mScenes.begin() };
+	for (size_t i{ 0 }; i < num; ++i)
+		++it;
+	return &(*it);
 }
 
 Core::Window* Core::Application::AddWindow(const std::wstring& title, RECT rectangle)
@@ -249,12 +219,12 @@ LRESULT Core::Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-const Microsoft::WRL::ComPtr<IDXGIFactory4>& Core::Application::GetDxgiFactory()
+const Microsoft::WRL::ComPtr<IDXGIFactory5>& Core::Application::GetDxgiFactory()
 {
 	return mpDxgiFactory;
 }
 
-const Microsoft::WRL::ComPtr<ID3D12Device>& Core::Application::GetDevice()
+const Microsoft::WRL::ComPtr<ID3D12Device5>& Core::Application::GetDevice()
 {
 	return mpD3d12Device;
 }
@@ -262,36 +232,6 @@ const Microsoft::WRL::ComPtr<ID3D12Device>& Core::Application::GetDevice()
 const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& Core::Application::GetCommandQueue()
 {
 	return mpCommandQueue;
-}
-
-const Microsoft::WRL::ComPtr<ID2D1Factory3>& Core::Application::GetD2d1Factory()
-{
-	return mpD2d1Factory;
-}
-
-const Microsoft::WRL::ComPtr<IDXGIDevice>& Core::Application::GetDxgiDevice()
-{
-	return mpDxgiDevice;
-}
-
-const Microsoft::WRL::ComPtr<ID3D11On12Device>& Core::Application::GetD3D11On12Device()
-{
-	return mpD3d11On12Device;
-}
-
-const Microsoft::WRL::ComPtr<ID2D1Device2>& Core::Application::GetD2d1Device()
-{
-	return mpD2d1Device;
-}
-
-const Microsoft::WRL::ComPtr<ID3D11DeviceContext>& Core::Application::GetD3d11DeviceContext()
-{
-	return mpD3d11DeviceContext;
-}
-
-const Microsoft::WRL::ComPtr<ID2D1DeviceContext2>& Core::Application::GetD2d1DeviceContext()
-{
-	return mpD2d1DeviceContext;
 }
 
 physx::PxPhysics* Core::Application::GetPxPhysics()
@@ -314,44 +254,66 @@ Core::ServiceLocator& Core::Application::GetServiceLocator()
 	return mServiceLocator;
 }
 
-const Microsoft::WRL::ComPtr<IDWriteFactory>& Core::Application::GetDWriteFactory()
-{
-	return mpDWriteFactory;
-}
-
-const Microsoft::WRL::ComPtr<IDWriteTextFormat>& Core::Application::GetDWriteTextFormat()
-{
-	return mpDWriteFormat;
-}
-
 Core::Material3D* Core::Application::AddMaterial3D(const std::string& name)
 {
+	if (!mMaterialMutex.try_lock_for(mMaterialMutexDuration))
+	{
+#ifdef ION_LOGGER
+		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddMaterial3D failed, could not get lock");
+#endif
+		return nullptr;
+	}
 	auto ret{ mMaterials3D.try_emplace(name, this, name) };
 	Material3D* pMaterial{ &((*(ret.first)).second) };
 	pMaterial->Initialize();
+	mMaterialMutex.unlock();
 	return pMaterial;
 }
 
 Core::Material2D* Core::Application::AddMaterial2D(const std::string& name)
 {
+	if (!mMaterialMutex.try_lock_for(mMaterialMutexDuration))
+	{
+#ifdef ION_LOGGER
+		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddMaterial2D failed, could not get lock");
+#endif
+		return nullptr;
+	}
 	auto ret{ mMaterials2D.try_emplace(name, this, name) };
 	Material2D* pMaterial{ &((*(ret.first)).second) };
 	pMaterial->Initialize();
+	mMaterialMutex.unlock();
 	return pMaterial;
 }
 
 Core::Model* Core::Application::AddModel(const std::string& fileName, const std::string& fileExtension, Winding winding, CoordSystem coordSystem)
 {
+	if (!mModelMutex.try_lock_for(mModelMutexDuration))
+	{
+#ifdef ION_LOGGER
+		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddModel failed, could not get lock");
+#endif
+		return nullptr;
+	}
 	auto ret{ mModels.try_emplace(fileName, this, fileName, fileExtension, winding, coordSystem) };
 	Model* pModel{ &((*(ret.first)).second) };
 	pModel->Initialize();
+	mModelMutex.unlock();
 	return pModel;
 }
 
 Core::Texture* Core::Application::AddTexture(const std::string& name)
 {
+	if (!mTextureMutex.try_lock_for(mTextureMutexDuration))
+	{
+#ifdef ION_LOGGER
+		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddTexture failed, could not get lock");
+#endif
+		return nullptr;
+	}
 	auto ret{ mTextures.try_emplace(name, this, name) };
 	Texture* pTexture{ &((*(ret.first)).second) };
+	mTextureMutex.unlock();
 	return pTexture;
 }
 

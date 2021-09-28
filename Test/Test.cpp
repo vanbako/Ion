@@ -12,7 +12,8 @@
 #include "InstancedAnimatedMVC.h"
 #include "TerrainVC.h"
 #include "MoveObjectRMC.h"
-#include "ControlRMC.h"
+#include "ControlZeroRMC.h"
+#include "ControlOneRMC.h"
 #include "ObjectSteeringRMC.h"
 #include "InstancedSteeringRMC.h"
 #include "InputCC.h"
@@ -24,19 +25,20 @@
 #include <iostream>
 
 //#define TEST_SOUND
-//#define SCENE1
+#define SCENE1
 #define SCENE2
 using namespace Ion;
 
 Core::Object* AddCamera(Core::Scene* pScene, Core::Canvas* pCanvas);
-Core::Object* AddTerrain(Core::Scene* pScene, Core::Canvas* pCanvas1);
-Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2 = nullptr);
-Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas);
-Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2 = nullptr);
+Core::Object* AddTerrain(Core::Scene* pScene, Core::Canvas* pCanvas);
+Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas);
+Core::Object* AddFlowerOne(Core::Scene* pScene, Core::Canvas* pCanvas);
+Core::Object* AddFlowerTwo(Core::Scene* pScene, Core::Canvas* pCanvas);
+Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas);
 Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas);
-Core::Object* AddControl(Core::Scene* pScene, Core::Canvas* pCanvas);
-Core::Scene* AddSceneOne(Core::Application* pApplication, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2);
-Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1);
+Core::Scene* AddSceneOne(Core::Application* pApplication, Core::Canvas* pCanvas);
+Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas);
+Core::Scene* AddSceneZero(Core::Application* pApplication);
 
 int main()
 {
@@ -61,22 +63,26 @@ int main()
 #endif
 
 		application.Initialize();
-
 #ifdef SCENE1
+		Core::Window* pWindow1{ application.AddWindow(L"Render Window 1", rectangle) };
+		Core::Canvas* pCanvas1{ pWindow1->AddCanvas(rectangle) };
+		pCanvas1->Initialize();
+#endif
+#ifdef SCENE2
 		Core::Window* pWindow2{ application.AddWindow(L"Render Window 2", rectangle) };
 		Core::Canvas* pCanvas2{ pWindow2->AddCanvas(rectangle) };
 		pCanvas2->Initialize();
 #endif
-		Core::Window* pWindow1{ application.AddWindow(L"Render Window 1", rectangle) };
-		Core::Canvas* pCanvas1{ pWindow1->AddCanvas(rectangle) };
-		pCanvas1->Initialize();
+		Core::Scene* pScene0{ AddSceneZero(&application) };
+		pScene0->Initialize();
+		pScene0->SetIsActive(true);
 #ifdef SCENE1
-		Core::Scene* pScene1{ AddSceneOne(&application, pCanvas1, pCanvas2) };
+		Core::Scene* pScene1{ AddSceneOne(&application, pCanvas1) };
 		pScene1->Initialize();
 		pScene1->SetIsActive(true);
 #endif
 #ifdef SCENE2
-		Core::Scene* pScene2{ AddSceneTwo(&application, pCanvas1) };
+		Core::Scene* pScene2{ AddSceneTwo(&application, pCanvas2) };
 		pScene2->Initialize();
 		pScene2->SetIsActive(true);
 #endif
@@ -98,6 +104,8 @@ int main()
 		serviceLocator.GetAudio()->PlaySound(stopSound);
 		std::this_thread::sleep_for(std::chrono::seconds{ 4 });
 #endif
+		pScene0->SetIsActive(false);
+		pScene0->SetIsEnd(true);
 #ifdef SCENE1
 		pScene1->SetIsActive(false);
 		pScene1->SetIsEnd(true);
@@ -125,22 +133,22 @@ Core::Object* AddCamera(Core::Scene* pScene, Core::Canvas* pCanvas)
 	return pCamera;
 }
 
-Core::Object* AddTerrain(Core::Scene* pScene, Core::Canvas* pCanvas1)
+Core::Object* AddTerrain(Core::Scene* pScene, Core::Canvas* pCanvas)
 {
 	Core::Object* pTerrain{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pTerrain->AddModelC<Core::TransformMC>(false) };
 	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
 	Core::TerrainVC* pTerrainVC{ pTerrain->AddViewC<Core::TerrainVC>("Hawai_HeightMap_128x128x16.raw", 2048.f, 2048.f, 128, 128, false) };
 	pTerrainVC->AddTexture(Core::TextureType::Albedo, "Terrain/Hawai_TexMap.png");
-	pTerrainVC->AddCanvas(pCanvas1);
+	pTerrainVC->AddCanvas(pCanvas);
 
 	return pTerrain;
 }
 
-Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2)
+Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas)
 {
 	Core::Object* pCube{ Core::Factory::AddCube(pScene) };
-	pCube->GetViewC<Core::MeshVC>()->AddCanvas(pCanvas1);
+	pCube->GetViewC<Core::MeshVC>()->AddCanvas(pCanvas);
 	Core::TransformMC* pTransformMC{ pCube->GetModelC<Core::TransformMC>() };
 	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 20.f, 160.0f, 0.f, 0.f });
 
@@ -153,27 +161,45 @@ Core::Object* AddCube(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas*
 	pPxRigidDynamic->wakeUp();
 
 	pTransformMC->SetPxRigidActor(pPxRigidDynamic);
-	pCube->GetViewC<Core::TriangleVC>()->AddCanvas(pCanvas1);
-	if (pCanvas2 != nullptr)
-		pCube->GetViewC<Core::TriangleVC>()->AddCanvas(pCanvas2);
+	pCube->GetViewC<Core::TriangleVC>()->AddCanvas(pCanvas);
 	return pCube;
 }
 
-Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
+Core::Object* AddFlowerOne(Core::Scene* pScene, Core::Canvas* pCanvas)
 {
 	Core::Object* pFlower{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pFlower->AddModelC<Core::TransformMC>(false) };
-	//Core::MoveObjectRMC* pMoveObject{ pFlower->AddModelC<Core::MoveObjectRMC>(false) };
-	//Core::InputCC* pInput{ pFlower->AddControllerC<Core::InputCC>(false) };
-	//pScene->GetControllerST()->Register(pInput, pMoveObject->GetName(), pMoveObject->GetCommands());
 	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
-	//DirectX::XMVECTOR axis{ 0.f, 1.f, 0.f };
-	//DirectX::XMVECTOR rotVec{ DirectX::XMQuaternionRotationAxis(axis, -float(M_PI_4)) };
-	//DirectX::XMFLOAT4 rot{};
-	//XMStoreFloat4(&rot, rotVec);
-	//pTransformMC->SetRotation(rot);
 	Core::InstancedTransformMC* pFlowerTransformMC{ pFlower->AddModelC<Core::InstancedTransformMC>(false) };
 	Core::InstancedMVC* pFlowerModelVC{ pFlower->AddViewC<Core::InstancedMVC>("Flower/Flower", "ovm", "PosNormTanTex_iA", false, Core::Winding::CCW)};
+	pFlowerModelVC->AddTexture(Core::TextureType::Albedo, "Flower/Flower_Blue.png");
+	pFlowerModelVC->AddCanvas(pCanvas);
+	std::vector<Core::TransformMC> transforms{};
+	std::vector<Core::Behaviour> behaviours{};
+	DirectX::XMFLOAT4 pos{};
+	float scale{ 1.f };
+	for (size_t i{ 0 }; i < 256; ++i)
+	{
+		Core::TransformMC& transformMC{ transforms.emplace_back(true, pFlower) };
+		pos.x = float((long long(i) / 16 - 8) * 16) + float(std::rand() % 11) - 5.f;
+		pos.z = float((long long(i) % 16 - 8) * 16) + float(std::rand() % 11) - 5.f;
+		transformMC.SetPosition(pos);
+		scale = 0.5f + float(std::rand() % 1000) / 1000.f;
+		transformMC.SetScale(DirectX::XMFLOAT4{ scale, scale, scale, 0.f });
+		transformMC.SetRotation(DirectX::XMFLOAT3{ 0.f, float(std::rand() % 360), 0.f });
+	}
+	pFlowerTransformMC->AddInstances(transforms, behaviours);
+	pFlowerModelVC->SetInstancedTransform(pFlowerTransformMC);
+	return pFlower;
+}
+
+Core::Object* AddFlowerTwo(Core::Scene* pScene, Core::Canvas* pCanvas)
+{
+	Core::Object* pFlower{ pScene->AddObject(false) };
+	Core::TransformMC* pTransformMC{ pFlower->AddModelC<Core::TransformMC>(false) };
+	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 0.f });
+	Core::InstancedTransformMC* pFlowerTransformMC{ pFlower->AddModelC<Core::InstancedTransformMC>(false) };
+	Core::InstancedMVC* pFlowerModelVC{ pFlower->AddViewC<Core::InstancedMVC>("Flower/Flower", "ovm", "PosNormTanTex_iA", false, Core::Winding::CCW) };
 	pFlowerModelVC->AddTexture(Core::TextureType::Albedo, "Flower/Flower_Blue.png");
 	pFlowerModelVC->AddCanvas(pCanvas);
 	std::vector<Core::TransformMC> transforms{};
@@ -195,7 +221,7 @@ Core::Object* AddFlower(Core::Scene* pScene, Core::Canvas* pCanvas)
 	return pFlower;
 }
 
-Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2)
+Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas)
 {
 	physx::PxPhysics* pPxPhysics{ pScene->GetApplication()->GetPxPhysics() };
 	physx::PxControllerManager* pPxControllerManager{ pScene->GetPxControllerManager() };
@@ -206,22 +232,11 @@ Core::Object* AddWizard(Core::Scene* pScene, Core::Canvas* pCanvas1, Core::Canva
 	Core::Object* pWizard{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pWizard->AddModelC<Core::TransformMC>(false) };
 	(pTransformMC);
-	//pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.25f, 0.f, 0.f, 0.f });
-	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
 	Core::InstancedAnimatedMVC* pWizardModelVC{ pWizard->AddViewC<Core::InstancedAnimatedMVC>("Wizard/Wizard", "ovm", "PosNormTanTex_iaAN", false, Core::Winding::CCW, Core::CoordSystem::RightHanded) };
 	Core::InstancedTransformMC* pWizardTransformMC{ pWizard->AddModelC<Core::InstancedTransformMC>(false) };
 	pWizardModelVC->AddTexture(Core::TextureType::Albedo, "Wizard/Wizard_Blue_A.png");
 	pWizardModelVC->AddTexture(Core::TextureType::Normal, "Wizard/Wizard_Blue_N.png");
-	pWizardModelVC->AddCanvas(pCanvas1);
-	if (pCanvas2 != nullptr)
-		pWizardModelVC->AddCanvas(pCanvas2);
-	//TransformMC transformMC{ true, pWizard };
-	//transformMC.SetPosition(DirectX::XMFLOAT4{ 10.f, 0.f, 0.f, 0.f });
-	//transformMC.SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	//pWizardModelVC->AddInstance(transformMC);
-	//transformMC.SetPosition(DirectX::XMFLOAT4{ -10.f, 0.f, 0.f, 0.f });
-	//transformMC.SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, AngleUnit::Degree);
-	//pWizardModelVC->AddInstance(transformMC);
+	pWizardModelVC->AddCanvas(pCanvas);
 	std::vector<Core::TransformMC> transforms{};
 	std::vector<Core::Behaviour> behaviours{};
 	physx::PxController* pPxController{ nullptr };
@@ -263,10 +278,7 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas)
 	Core::Object* pRoyalHighness{ pScene->AddObject(false) };
 	Core::TransformMC* pTransformMC{ pRoyalHighness->AddModelC<Core::TransformMC>(false) };
 	pTransformMC->SetPosition(DirectX::XMFLOAT4{ 0.f, 0.f, -25.f, 0.f });
-	//pTransformMC->SetScale(DirectX::XMFLOAT4{ 0.5f, 0.5f, 0.5f, 0.f });
-	//pTransformMC->SetRotation(DirectX::XMFLOAT3{ 90.f, 0.f, 0.f }, Core::AngleUnit::Degree);
 	Core::AnimatedMVC* pRoyalHighnessModelVC{ pRoyalHighness->AddViewC<Core::AnimatedMVC>("RoyalHighness/RoyalHighness1", "ovm", "PosNormTanTex_aAN", false, Core::Winding::CCW, Core::CoordSystem::RightHanded) };
-	//ModelVC* pRoyalHighnessModelVC{ pRoyalHighness->AddViewC<ModelVC>("RoyalHighness/RoyalHighness1", "PosNormTanTex_AN", false, Winding::CCW, CoordSystem::RightHanded) };
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Albedo, "RoyalHighness/RoyalHighness_Red_A.png");
 	pRoyalHighnessModelVC->AddTexture(Core::TextureType::Normal, "RoyalHighness/RoyalHighness_Red_N.png");
 	pRoyalHighnessModelVC->AddCanvas(pCanvas);
@@ -278,57 +290,41 @@ Core::Object* AddRoyalHighness(Core::Scene* pScene, Core::Canvas* pCanvas)
 	return pRoyalHighness;
 }
 
-Core::Object* AddControl(Core::Scene* pScene, Core::Canvas* pCanvas)
+Core::Scene* AddSceneOne(Core::Application* pApplication, Core::Canvas* pCanvas)
 {
-	Core::Object* pControl{ pScene->AddObject(false) };
-	Core::ControlRMC* pControlRMC{ pControl->AddModelC<Core::ControlRMC>(false) };
-	Core::InputCC* pInput{ pControl->AddControllerC<Core::InputCC>(false) };
-	Core::TextVC* pTextVC{ pControl->AddViewC<Core::TextVC>(false) };
-	pTextVC->SetRect(D2D1_RECT_F{ 40.f, 40.f, 680.f, 400.f });
+	Core::Scene* pScene{ pApplication->AddScene("SceneOne")};
+
+	pScene->AddCanvas(pCanvas);
+
+	Core::Object* pCube{ AddCube(pScene, pCanvas) };
+	Core::Object* pFlower{ AddFlowerOne(pScene, pCanvas) };
+	Core::Object* pRoyalHighness{ AddRoyalHighness(pScene, pCanvas) };
+	Core::Object* pCamera{ AddCamera(pScene, pCanvas) };
+
+	Core::Object* pControlOne{ pScene->AddObject(false) };
+	Core::ControlOneRMC* pControlOneRMC{ pControlOne->AddModelC<Core::ControlOneRMC>(false) };
+	Core::InputCC* pInputControl{ pControlOne->AddControllerC<Core::InputCC>(false) };
+	//Core::TextVC* pTextVC{ pControlOne->AddViewC<Core::TextVC>(false) };
+	//pTextVC->SetRect(D2D1_RECT_F{ 40.f, 40.f, 680.f, 400.f });
 	//pTextVC->SetText(L"wasd/qe/rf: Move Camera\nArrows/Del/End/PgUp/PgDn: Move Object\nTab: Cycle Object");
-	pTextVC->SetText(L"wasd/qe/rf: Move Camera");
-	pTextVC->AddCanvas(pCanvas);
-	pScene->GetControllerST()->Register(pInput, pControlRMC->GetName(), pControlRMC->GetCommands());
-	return pControl;
-}
+	//pTextVC->AddCanvas(pCanvas);
+	pControlOneRMC->AddObject(pFlower);
+	pControlOneRMC->AddObject(pRoyalHighness);
+	pScene->GetControllerST()->Register(pInputControl, pControlOneRMC->GetName(), pControlOneRMC->GetCommands());
 
-Core::Scene* AddSceneOne(Core::Application* pApplication, Core::Canvas* pCanvas1, Core::Canvas* pCanvas2)
-{
-	Core::Scene* pScene{ pApplication->AddScene() };
-
-	pScene->AddCanvas(pCanvas2);
-	pScene->AddCanvas(pCanvas1);
-
-	Core::Object* pCube{ AddCube(pScene, pCanvas1, pCanvas2) };
-	Core::Object* pFlower{ AddFlower(pScene, pCanvas1) };
-	Core::Object* pWizard{ AddWizard(pScene, pCanvas1, pCanvas2) };
-	Core::Object* pRoyalHighness{ AddRoyalHighness(pScene, pCanvas1) };
-	Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
-	Core::Object* pCamera2{ AddCamera(pScene, pCanvas2) };
-	Core::Object* pControl{ AddControl(pScene, pCanvas1) };
-	Core::ControlRMC* pControlRMC{ pControl->GetModelC<Core::ControlRMC>() };
-	pControlRMC->AddObject(pFlower);
 	Core::MoveObjectRMC* pMoveObject{ pFlower->AddModelC<Core::MoveObjectRMC>(false) };
-	Core::InputCC* pInput{ pFlower->AddControllerC<Core::InputCC>(false) };
-	pScene->GetControllerST()->Register(pInput, pMoveObject->GetName(), pMoveObject->GetCommands());
-	pControlRMC->AddObject(pWizard);
-	pControlRMC->AddObject(pRoyalHighness);
+	Core::InputCC* pInputMove{ pFlower->AddControllerC<Core::InputCC>(false) };
+	pScene->GetControllerST()->Register(pInputMove, pMoveObject->GetName(), pMoveObject->GetCommands());
 
 	pScene->Initialize();
 
 	Core::Factory::CreatePhysicsPlane(pApplication->GetPxPhysics(), pScene->GetPxScene());
 
 	pCube->SetIsActive(true, true);
-	pCamera1->SetIsActive(true, true);
-	pCamera2->SetIsActive(true, true);
+	pCamera->SetIsActive(true, true);
 	pFlower->SetIsActive(true, true);
-	pWizard->SetIsActive(true, true);
 	pRoyalHighness->SetIsActive(true, true);
-	pControl->SetIsActive(true, true);
-
-	Core::InstancedAnimatedMVC* pWizardModelVC{ pWizard->GetViewC<Core::InstancedAnimatedMVC>() };
-	pWizardModelVC->SetAnimation(0);
-	pWizardModelVC->SetIsAnimating(true);
+	pControlOne->SetIsActive(true, true);
 
 	Core::AnimatedMVC* pRoyalHighnessModelVC{ pRoyalHighness->GetViewC<Core::AnimatedMVC>() };
 	pRoyalHighnessModelVC->SetAnimation(0);
@@ -336,24 +332,18 @@ Core::Scene* AddSceneOne(Core::Application* pApplication, Core::Canvas* pCanvas1
 	return pScene;
 }
 
-Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1)
+Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas)
 {
-	Core::Scene* pScene{ pApplication->AddScene() };
+	Core::Scene* pScene{ pApplication->AddScene("SceneTwo") };
 
-	pScene->AddCanvas(pCanvas1);
+	pScene->AddCanvas(pCanvas);
 
-	Core::Object* pTerrain{ AddTerrain(pScene, pCanvas1) };
-	Core::Object* pCube{ AddCube(pScene, pCanvas1) };
-	Core::Object* pFlower{ AddFlower(pScene, pCanvas1) };
-	Core::Object* pWizard{ AddWizard(pScene, pCanvas1) };
-	Core::Object* pCamera1{ AddCamera(pScene, pCanvas1) };
-	pCamera1->GetModelC<Core::TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 0.f, 120.f, -400.f, 0.f });
-	Core::Object* pControl{ AddControl(pScene, pCanvas1) };
-	Core::ControlRMC* pControlRMC{ pControl->GetModelC<Core::ControlRMC>() };
-	pControlRMC->AddObject(pWizard);
-	Core::MoveObjectRMC* pMoveObject{ pWizard->AddModelC<Core::MoveObjectRMC>(false) };
-	Core::InputCC* pInput{ pWizard->AddControllerC<Core::InputCC>(false) };
-	pScene->GetControllerST()->Register(pInput, pMoveObject->GetName(), pMoveObject->GetCommands());
+	Core::Object* pTerrain{ AddTerrain(pScene, pCanvas) };
+	Core::Object* pCube{ AddCube(pScene, pCanvas) };
+	Core::Object* pFlower{ AddFlowerTwo(pScene, pCanvas) };
+	Core::Object* pWizard{ AddWizard(pScene, pCanvas) };
+	Core::Object* pCamera{ AddCamera(pScene, pCanvas) };
+	pCamera->GetModelC<Core::TransformMC>()->SetPosition(DirectX::XMFLOAT4{ 0.f, 120.f, -400.f, 0.f });
 
 	pScene->Initialize();
 
@@ -364,15 +354,30 @@ Core::Scene* AddSceneTwo(Core::Application* pApplication, Core::Canvas* pCanvas1
 	Core::Factory::CreatePhysicsPlane(pApplication->GetPxPhysics(), pScene->GetPxScene());
 
 	pCube->SetIsActive(true, true);
-	pCamera1->SetIsActive(true, true);
+	pCamera->SetIsActive(true, true);
 	pTerrain->SetIsActive(true, true);
 	pWizard->SetIsActive(true, true);
 	pFlower->SetIsActive(true, true);
-	pControl->SetIsActive(true, true);
 
 	Core::InstancedAnimatedMVC* pWizardModelVC{ pWizard->GetViewC<Core::InstancedAnimatedMVC>() };
 	pWizardModelVC->SetAnimation(0);
 	pWizardModelVC->SetIsAnimating(true);
+
+	return pScene;
+}
+
+Core::Scene* AddSceneZero(Core::Application* pApplication)
+{
+	Core::Scene* pScene{ pApplication->AddScene("SceneZero") };
+
+	Core::Object* pControlZero{ pScene->AddObject(false) };
+	Core::ControlZeroRMC* pControlZeroRMC{ pControlZero->AddModelC<Core::ControlZeroRMC>(false) };
+	Core::InputCC* pInput{ pControlZero->AddControllerC<Core::InputCC>(false) };
+	pScene->GetControllerST()->Register(pInput, pControlZeroRMC->GetName(), pControlZeroRMC->GetCommands());
+
+	pScene->Initialize();
+
+	pControlZero->SetIsActive(true, true);
 
 	return pScene;
 }

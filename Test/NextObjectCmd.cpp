@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "NextObjectCmd.h"
-#include "ControlRMC.h"
+#include "ControlOneRMC.h"
 
 using namespace Ion;
 
-Core::NextObjectCmd::NextObjectCmd(Core::ControlRMC* pControlRMC)
-	: Core::ControlCommand(pControlRMC)
+Core::NextObjectCmd::NextObjectCmd(Core::ControlOneRMC* pControlOneRMC)
+	: Core::ControlOneCommand(pControlOneRMC)
 {
 }
 
-Core::ControlCommand* Core::NextObjectCmd::Duplicate()
+Core::ControlOneCommand* Core::NextObjectCmd::Duplicate()
 {
-	return new Core::NextObjectCmd{ mpControlRMC };
+	return new Core::NextObjectCmd{ mpControlOneRMC };
 }
 
 void Core::NextObjectCmd::Execute()
 {
-	mpControlRMC->NextObject(mLongLongValue);
+	mpControlOneRMC->NextObject(mLongLongValue);
 }

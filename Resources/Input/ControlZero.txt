@@ -1,0 +1,2 @@
+ToggleSceneOne VK_1
+ToggleSceneTwo VK_2

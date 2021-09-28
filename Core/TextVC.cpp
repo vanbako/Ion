@@ -28,27 +28,29 @@ void Core::TextVC::Update(float delta)
 		return;
 }
 
-void Core::TextVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
+bool Core::TextVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
 {
 	if (!mIsInitialized)
 	{
 #ifdef ION_LOGGER
 		mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "TriangleVC.Render() while mIsInitialized == false");
 #endif
-		return;
+		return false;
 	}
-	(pMaterial);
+	if (!Core::ViewC::Render(pCanvas, pMaterial))
+		return false;
 	if (!mIsActive)
-		return;
-	Core::Application* pApp{ mpObject->GetScene()->GetApplication() };
-	auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
+		return false;
+	//Core::Application* pApp{ mpObject->GetScene()->GetApplication() };
+	//auto pD2d1DeviceContext{ pApp->GetD2d1DeviceContext() };
 
-	pD2d1DeviceContext->DrawText(
-		mText.c_str(),
-		(UINT32)mText.length(),
-		pApp->GetDWriteTextFormat().Get(),
-		mRect,
-		pCanvas->GetBrush().Get());
+	//pD2d1DeviceContext->DrawText(
+	//	mText.c_str(),
+	//	(UINT32)mText.length(),
+	//	pApp->GetDWriteTextFormat().Get(),
+	//	mRect,
+	//	pCanvas->GetBrush().Get());
+	return true;
 }
 
 void Core::TextVC::SetText(const std::wstring& text)

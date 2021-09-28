@@ -24,8 +24,8 @@ namespace Ion
 
 			void AddCanvas(Core::Canvas* pCanvas);
 
-			virtual void Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) = 0;
-			virtual void Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) = 0;
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial);
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial);
 		protected:
 			Core::Material3D* mpMaterial3D;
 			Core::Material2D* mpMaterial2D;

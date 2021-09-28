@@ -12,7 +12,7 @@ namespace Ion
 			: public Core::SceneThread
 		{
 		public:
-			explicit ControllerST(Core::Scene* pScene, std::chrono::microseconds updateTime);
+			explicit ControllerST(Core::Scene* pScene, std::chrono::milliseconds updateTime);
 			virtual ~ControllerST() = default;
 			ControllerST(const ControllerST& other) = delete;
 			ControllerST(ControllerST&& other) noexcept = delete;
