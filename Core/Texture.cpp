@@ -31,3 +31,7 @@ const Microsoft::WRL::ComPtr<ID3D12Resource>& Core::Texture::GetTexture() const
 {
 	return mpTexture;
 }
+
+void Core::Texture::Initialize()
+{
+}

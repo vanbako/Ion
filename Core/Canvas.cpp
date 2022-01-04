@@ -116,7 +116,7 @@ void Core::Canvas::Initialize()
 			float(dpi))
 		};
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle{ mpRtvHeap->GetCPUDescriptorHandleForHeapStart() };
-		for (size_t i{ 0 }; i < mBackBufferCount; ++i)
+		for (std::size_t i{ 0 }; i < mBackBufferCount; ++i)
 		{
 			pApp->ThrowIfFailed(mpSwapChain->GetBuffer(UINT(i), IID_PPV_ARGS(&mpRenderTargets[i])));
 			pDevice->CreateRenderTargetView(mpRenderTargets[i].Get(), nullptr, rtvHeapHandle);
@@ -175,6 +175,8 @@ void Core::Canvas::Initialize()
 		pApp->ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
 		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mView, DirectX::XMMatrixIdentity());
 		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mViewProj, DirectX::XMMatrixIdentity());
+		DirectX::XMStoreFloat4x4(&mCanvasConstantBufferData.mViewInverse, DirectX::XMMatrixIdentity());
+		mCanvasConstantBufferData.mViewPos = DirectX::XMFLOAT4{ 0.f, 0.f, 0.f, 1.f };
 		mCanvasConstantBufferData.mLightDirection = DirectX::XMFLOAT3{ -0.577f, -0.577f, 0.577f };
 		mCanvasConstantBufferData.mColorDiffuse = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
 		mCanvasConstantBufferData.mColorAmbient = DirectX::XMFLOAT4{ 1.f, 1.f, 1.f, 1.f };
@@ -279,9 +281,17 @@ void Core::Canvas::Render()
 
 	if (!mpMaterials3D.empty())
 	{
-		mCanvasConstantBufferData.mView = mpCamera->GetModelC<CameraRMC>()->GetView();
-		mCanvasConstantBufferData.mViewProj = mpCamera->GetModelC<CameraRMC>()->GetViewProjection();
-		memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(Core::CanvasConstantBuffer));
+		CameraRMC* pCameraRMC{ mpCamera->GetModelC<CameraRMC>() };
+		if (pCameraRMC != nullptr)
+		{
+			mCanvasConstantBufferData.mView = pCameraRMC->GetView();
+			mCanvasConstantBufferData.mViewProj = pCameraRMC->GetViewProjection();
+			mCanvasConstantBufferData.mViewInverse = pCameraRMC->GetViewInverse();
+			Core::TransformMC* pTransform{ pCameraRMC->GetTransform() };
+			if (pTransform != nullptr)
+				mCanvasConstantBufferData.mViewPos = pTransform->GetWorldPosition();
+			memcpy(mpCanvasCbvDataBegin, &mCanvasConstantBufferData, sizeof(Core::CanvasConstantBuffer));
+		}
 	}
 
 	mpGraphicsCommandList->RSSetViewports(1, &mViewport);

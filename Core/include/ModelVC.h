@@ -31,16 +31,16 @@ namespace Ion
 			ModelVC& operator=(ModelVC&& other) noexcept = default;
 
 			void AddTexture(Core::TextureType textureType, const std::string& name);
-
+			void SetShininess(float shininess);
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); return false; };
 		protected:
+			std::string mName;
 			Core::Model* mpModel;
-			std::map<Core::TextureType, Core::Texture*> mpTextures;
 			char* mpVertices;
-			size_t
+			std::size_t
 				mIndexCount,
 				mVertexCount;
 
@@ -57,6 +57,8 @@ namespace Ion
 			Core::MeshVCConstantBuffer mObjectConstantBufferData;
 			UINT8* mpObjectCbvDataBegin;
 
+			std::vector<std::string> mTextureNames;
+			std::map<Core::TextureType, Core::Texture*> mpTextures;
 			std::map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 
 			void SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable);

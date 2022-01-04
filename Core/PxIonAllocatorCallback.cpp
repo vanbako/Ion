@@ -3,7 +3,7 @@
 
 using namespace physx;
 
-void* PxIonAllocatorCallback::allocate(size_t size, const char* typeName, const char* filename, int line)
+void* PxIonAllocatorCallback::allocate(std::size_t size, const char* typeName, const char* filename, int line)
 {
     (typeName);
     (filename);

@@ -21,6 +21,7 @@ Core::MeshVC::MeshVC(const std::string& materialName, bool isActive, Core::Objec
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
 {
+	mObjectConstantBufferData.mShininess = 20.f;
 }
 
 void Core::MeshVC::AddTriangle(const Core::VertexPNC& a, const Core::VertexPNC& b, const Core::VertexPNC& c)
@@ -38,6 +39,11 @@ void Core::MeshVC::AddQuadrilateral(const Core::Quadrilateral<Core::VertexPNC>& 
 {
 	AddTriangle(quadrilateral.GetA(), quadrilateral.GetB(), quadrilateral.GetC());
 	AddTriangle(quadrilateral.GetC(), quadrilateral.GetD(), quadrilateral.GetA());
+}
+
+void Core::MeshVC::SetShininess(float shininess)
+{
+	mObjectConstantBufferData.mShininess = shininess;
 }
 
 void Core::MeshVC::Initialize()

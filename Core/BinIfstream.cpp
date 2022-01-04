@@ -24,7 +24,7 @@ std::wstring Core::BinIfstream::ReadLongString()
 	UINT stringLength{ Read<UINT>() };
 	std::wstringstream ss{};
 #ifdef _DEBUG
-	if ((size_t(mFile.tellg()) + size_t(stringLength)) > mSize)
+	if ((std::size_t(mFile.tellg()) + std::size_t(stringLength)) > mSize)
 	{
 #ifdef ION_LOGGER
 		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "BinIfstream reading past eof " + mName);
@@ -49,7 +49,7 @@ std::wstring Core::BinIfstream::ReadString()
 	int stringLength{ int(Read<char>()) };
 	std::wstringstream ss{};
 #ifdef _DEBUG
-	if ((size_t(mFile.tellg()) + size_t(stringLength)) > mSize)
+	if ((std::size_t(mFile.tellg()) + std::size_t(stringLength)) > mSize)
 	{
 #ifdef ION_LOGGER
 		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "BinIfstream reading past eof " + mName);
@@ -70,7 +70,7 @@ std::streampos Core::BinIfstream::GetPosition()
 void Core::BinIfstream::SetPosition(std::streampos pos)
 {
 #ifdef _DEBUG
-	if (size_t(pos) > mSize)
+	if (std::size_t(pos) > mSize)
 	{
 #ifdef ION_LOGGER
 		mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "BinIfstream position past eof " + mName);
@@ -81,14 +81,14 @@ void Core::BinIfstream::SetPosition(std::streampos pos)
 	mFile.seekg(pos);
 }
 
-void Core::BinIfstream::MovePosition(size_t move)
+void Core::BinIfstream::MovePosition(std::size_t move)
 {
 	std::streampos currPos{ GetPosition() };
 	if (currPos > 0)
 		SetPosition(currPos + std::streampos(move));
 }
 
-size_t Core::BinIfstream::GetSize()
+std::size_t Core::BinIfstream::GetSize()
 {
 	return mSize;
 }

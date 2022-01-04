@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ToggleSceneTwoCmd.h"
-#include "ControlZeroRMC.h"
+#include "../Test/include/ToggleSceneTwoCmd.h"
+#include "../Test/include/ControlZeroRMC.h"
 
 using namespace Ion;
 

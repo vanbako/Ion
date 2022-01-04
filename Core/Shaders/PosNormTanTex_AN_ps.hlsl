@@ -1,4 +1,5 @@
 #include "../../Core/Shaders/CanvasConstantBuffer.hlsli"
+#include "../../Core/Shaders/ObjectConstantBuffer.hlsli"
 
 SamplerState gTextureSampler : register(s0);
 
@@ -6,6 +7,7 @@ SamplerState gTextureSampler : register(s0);
 
 #include "../../Core/Shaders/CalculateAlbedo.hlsli"
 #include "../../Core/Shaders/CalculateNormal.hlsli"
+#include "../../Core/Shaders/CalculatePhong.hlsli"
 
 float4 main(PSInput input) : SV_TARGET
 {
@@ -13,9 +15,13 @@ float4 main(PSInput input) : SV_TARGET
 	input.tangent = normalize(input.tangent);
 	
 	float3 newNormal = CalculateNormal(input.tangent, input.normal, input.texcoord);
+	float3 viewDirection = normalize(input.worldposition.xyz - gViewPos.xyz);
 	float3 albedoColor = CalculateAlbedo(newNormal, input.texcoord);
 	float3 ambientColor = gColorAmbient.xyz * gAmbientIntensity;
-	float3 finalColor = saturate(albedoColor + ambientColor);
-	
-	return float4(finalColor, 1.0f);
+	float3 phongColor = float3(0.f, 0.f, 0.f);
+	if (gShininess != 0.f)
+		phongColor = CalculatePhong(viewDirection, newNormal);
+	float4 finalColor = float4(saturate(albedoColor + ambientColor + phongColor), 1.f);
+
+	return finalColor;
 }

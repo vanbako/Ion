@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "PxIonErrorCallback.h"
-#include <iostream>
 
 using namespace physx;
 

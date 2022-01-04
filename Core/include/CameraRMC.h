@@ -29,6 +29,8 @@ namespace Ion
 			void SetCanvas(Core::Canvas* pCanvas);
 			const DirectX::XMFLOAT4X4& GetView() const;
 			const DirectX::XMFLOAT4X4& GetViewProjection() const;
+			const DirectX::XMFLOAT4X4& GetViewInverse() const;
+			Core::TransformMC* GetTransform();
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
@@ -40,6 +42,7 @@ namespace Ion
 				mFOV;
 			DirectX::XMFLOAT4X4 mView;
 			DirectX::XMFLOAT4X4 mViewProjection;
+			DirectX::XMFLOAT4X4 mViewInverse;
 			Core::TransformMC* mpTransform;
 		};
 	}

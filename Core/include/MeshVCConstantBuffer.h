@@ -8,7 +8,10 @@ namespace Ion
 		{
 			DirectX::XMFLOAT4X4 mWorld;
 			DirectX::XMFLOAT4X4 mWorldViewProj;
-			DirectX::XMFLOAT4 mPadding[8]; // Total 256 bytes
+			float mShininess;
+			DirectX::XMFLOAT3 mPadding0;
+			DirectX::XMFLOAT4 mPadding1[7];
+			// Total 256 bytes
 		};
 	}
 }

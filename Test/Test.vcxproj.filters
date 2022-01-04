@@ -67,6 +67,12 @@
     <Filter Include="Command\Control\ControlZeroCommand">
       <UniqueIdentifier>{73c34340-92bf-4aa4-91bb-02264099cb64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Factory">
+      <UniqueIdentifier>{e2347886-d286-41b3-9ba8-ea68ca539a9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sound">
+      <UniqueIdentifier>{81332d1e-d97d-4f60-9294-5bb20e3c8637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -105,6 +111,9 @@
     <ClCompile Include="ControlZeroCommand.cpp">
       <Filter>Command\Control\ControlZeroCommand</Filter>
     </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>Factory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -139,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="include\ControlZeroCommand.h">
       <Filter>Command\Control\ControlZeroCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Factory.h">
+      <Filter>Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,5 +222,13 @@
     <Image Include="..\Resources\Texture\Terrain\Hawai_TexMap.png">
       <Filter>Resources\Texture\Terrain</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\Resources\Sound\bbc_peugeot-20_07055235.mp3">
+      <Filter>Resources\Sound</Filter>
+    </Media>
+    <Media Include="..\Resources\Sound\bbc_world-war-_07017169.mp3">
+      <Filter>Resources\Sound</Filter>
+    </Media>
   </ItemGroup>
 </Project>

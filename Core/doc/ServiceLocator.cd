@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::Audio">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="~Audio" Hidden="true" />
+      <Method Name="Audio" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAEAAAkAAAAAAAAAAAAgAAAAIAA=</HashCode>
+      <FileName>include\Audio.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Logger">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="~Logger" Hidden="true" />
+      <Method Name="Logger" Hidden="true" />
+      <Field Name="mLocation" Hidden="true" />
+      <Field Name="mTypeStrings" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAQAIAAAAIAAAAAAAAAAAAAAAAAAAAAAAAgKAAAAAA=</HashCode>
+      <FileName>include\Logger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::StatsWriter">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="~StatsWriter" Hidden="true" />
+      <Field Name="mUrl" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="StatsWriter" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAABAABAAAAAAAAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>include\StatsWriter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ServiceLocator">
+    <Position X="3.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Method Name="~ServiceLocator" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ServiceLocator" Hidden="true" />
+    </Members>
+    <AssociationLine Name="mNullAudioService" Type="Ion::Core::NullAudio" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.5" Y="1.875" />
+        <Point X="3.125" Y="1.875" />
+        <Point X="3.125" Y="2.909" />
+        <Point X="2" Y="2.909" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="mNullStatsWriterService" Type="Ion::Core::NullStatsWriter" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="1.878" />
+        <Point X="6.125" Y="1.878" />
+        <Point X="6.125" Y="2.875" />
+        <Point X="8" Y="2.875" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAQAACIAAQAAQAEgAAwBABAAgCAACAAA=</HashCode>
+      <FileName>include\ServiceLocator.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpAudioService" />
+      <Field Name="mNullAudioService" />
+      <Field Name="mpLoggerService" />
+      <Field Name="mNullLoggerService" />
+      <Field Name="mpStatsWriterService" />
+      <Field Name="mNullStatsWriterService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::NullAudio" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAgAAAgAAAAAAAAgAAAAIBA=</HashCode>
+      <FileName>include\NullAudio.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::NullLogger" Collapsed="true">
+    <Position X="3.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\NullLogger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::NullStatsWriter" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>include\NullStatsWriter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::FileLogger" Collapsed="true">
+    <Position X="5.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAEAAAAAAAAAAAAAAgIAAAAAA=</HashCode>
+      <FileName>include\FileLogger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

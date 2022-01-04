@@ -1,5 +1,5 @@
 #pragma once
-#include "ControlOneCommand.h"
+#include "../Test/include/ControlOneCommand.h"
 
 namespace Ion
 {

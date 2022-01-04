@@ -28,17 +28,18 @@ namespace Ion
 
 			void AddTriangle(const Core::VertexPNC& a, const Core::VertexPNC& b, const Core::VertexPNC& c);
 			void AddQuadrilateral(const Core::Quadrilateral<Core::VertexPNC>& quadrilateral);
+			void SetShininess(float shininess);
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); return false; };
 		protected:
-			static const size_t mMaxVertices{ 900 };
+			static const std::size_t mMaxVertices{ 900 };
 
 			bool mMeshChanged;
 			Core::VertexPNC mVertices[mMaxVertices];
-			size_t mVertexCount;
+			std::size_t mVertexCount;
 
 			Microsoft::WRL::ComPtr<ID3D12Resource> mVertexBuffer;
 			D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;

@@ -35,7 +35,7 @@ namespace Ion
 			const std::vector<Core::Int4>& GetBlendIndices() const;
 			const std::vector<DirectX::XMFLOAT4>& GetBlendWeights() const;
 			const std::vector<Core::AnimationClip>& GetAnimationClips() const;
-			size_t GetElementCount();
+			std::size_t GetElementCount();
 			bool HasInputElem(Core::InputSemantic inputSemantic);
 			bool HasInputElem(const std::string& inputSemantic);
 			const std::vector<Core::Transform>& ReadInstances();
@@ -48,7 +48,7 @@ namespace Ion
 			Core::Winding mWinding;
 			Core::CoordSystem mCoordSystem;
 			std::wstring mName;
-			size_t
+			std::size_t
 				mTexCoordCount,
 				mBoneCount;
 			std::vector<DWORD> mIndices;
@@ -62,7 +62,7 @@ namespace Ion
 			std::vector<DirectX::XMFLOAT4> mBlendWeights;
 			std::vector<Core::AnimationClip> mAnimationClips;
 			std::vector<Core::Transform> mInstances;
-			std::bitset<size_t(Core::InputSemantic::Count)> mElem;
+			std::bitset<std::size_t(Core::InputSemantic::Count)> mElem;
 			bool mHasAnimation;
 
 			void ReadModel();

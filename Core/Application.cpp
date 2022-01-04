@@ -23,24 +23,18 @@ LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 const std::chrono::milliseconds Core::Application::mRunSleep{ 4 };
 const std::chrono::milliseconds Core::Application::mKeyboardMutexDuration{ 1 };
-const std::chrono::milliseconds Core::Application::mTextureMutexDuration{ 100 };
-const std::chrono::milliseconds Core::Application::mModelMutexDuration{ 100 };
-const std::chrono::milliseconds Core::Application::mMaterialMutexDuration{ 100 };
 
 Core::Application::Application()
 	: mIsInitialized{ false }
 	, mIsActive{ false }
 	, mKeyboard{}
 	, mKeyboardMutex{}
-	, mTextureMutex{}
-	, mMaterialMutex{}
-	, mModelMutex{}
 	, mScenes{}
 	, mWindows{}
-	, mMaterials3D{}
-	, mMaterials2D{}
-	, mModels{}
-	, mTextures{}
+	, mTextureR{ this }
+	, mModelR{ this }
+	, mMaterial2DR{ this }
+	, mMaterial3DR{ this }
 	, mpDxgiFactory{}
 	, mpD3d12Device{}
 	, mpDxgiDevice{}
@@ -77,9 +71,10 @@ Core::Application::~Application()
 	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
 	mWindows.clear();
-	mMaterials2D.clear();
-	mMaterials3D.clear();
-	mModels.clear();
+	mTextureR.Clear();
+	mModelR.Clear();
+	mMaterial2DR.Clear();
+	mMaterial3DR.Clear();
 
 	mpCooking->release();
 	physx::PxFoundation& foundation{ mpPhysics->getFoundation() };
@@ -187,7 +182,7 @@ Core::Scene* Core::Application::AddScene(const std::string& name)
 	return &mScenes.emplace_back(name, this);
 }
 
-Core::Scene* Core::Application::GetScene(size_t num)
+Core::Scene* Core::Application::GetScene(std::size_t num)
 {
 #ifdef _DEBUG
 	if (num >= mScenes.size())
@@ -198,7 +193,7 @@ Core::Scene* Core::Application::GetScene(size_t num)
 	}
 #endif
 	auto it{ mScenes.begin() };
-	for (size_t i{ 0 }; i < num; ++i)
+	for (std::size_t i{ 0 }; i < num; ++i)
 		++it;
 	return &(*it);
 }
@@ -252,69 +247,6 @@ const physx::PxTolerancesScale& Core::Application::GetToleranceScale()
 Core::ServiceLocator& Core::Application::GetServiceLocator()
 {
 	return mServiceLocator;
-}
-
-Core::Material3D* Core::Application::AddMaterial3D(const std::string& name)
-{
-	if (!mMaterialMutex.try_lock_for(mMaterialMutexDuration))
-	{
-#ifdef ION_LOGGER
-		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddMaterial3D failed, could not get lock");
-#endif
-		return nullptr;
-	}
-	auto ret{ mMaterials3D.try_emplace(name, this, name) };
-	Material3D* pMaterial{ &((*(ret.first)).second) };
-	pMaterial->Initialize();
-	mMaterialMutex.unlock();
-	return pMaterial;
-}
-
-Core::Material2D* Core::Application::AddMaterial2D(const std::string& name)
-{
-	if (!mMaterialMutex.try_lock_for(mMaterialMutexDuration))
-	{
-#ifdef ION_LOGGER
-		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddMaterial2D failed, could not get lock");
-#endif
-		return nullptr;
-	}
-	auto ret{ mMaterials2D.try_emplace(name, this, name) };
-	Material2D* pMaterial{ &((*(ret.first)).second) };
-	pMaterial->Initialize();
-	mMaterialMutex.unlock();
-	return pMaterial;
-}
-
-Core::Model* Core::Application::AddModel(const std::string& fileName, const std::string& fileExtension, Winding winding, CoordSystem coordSystem)
-{
-	if (!mModelMutex.try_lock_for(mModelMutexDuration))
-	{
-#ifdef ION_LOGGER
-		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddModel failed, could not get lock");
-#endif
-		return nullptr;
-	}
-	auto ret{ mModels.try_emplace(fileName, this, fileName, fileExtension, winding, coordSystem) };
-	Model* pModel{ &((*(ret.first)).second) };
-	pModel->Initialize();
-	mModelMutex.unlock();
-	return pModel;
-}
-
-Core::Texture* Core::Application::AddTexture(const std::string& name)
-{
-	if (!mTextureMutex.try_lock_for(mTextureMutexDuration))
-	{
-#ifdef ION_LOGGER
-		GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Application::AddTexture failed, could not get lock");
-#endif
-		return nullptr;
-	}
-	auto ret{ mTextures.try_emplace(name, this, name) };
-	Texture* pTexture{ &((*(ret.first)).second) };
-	mTextureMutex.unlock();
-	return pTexture;
 }
 
 void Core::Application::KeyboardState()

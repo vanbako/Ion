@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ControlZeroCommand.h"
-#include "ControlZeroRMC.h"
+#include "../Test/include/ControlZeroCommand.h"
+#include "../Test/include/ControlZeroRMC.h"
 
 using namespace Ion;
 

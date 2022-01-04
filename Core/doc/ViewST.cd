@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::ViewST">
+    <Position X="4" Y="2.5" Width="2" />
+    <Members>
+      <Method Name="~ViewST" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ViewST" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAACAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\ViewST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::SceneThread">
+    <Position X="4" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="~SceneThread" Hidden="true" />
+      <Method Name="Done" Hidden="true" />
+      <Method Name="GetScene" Hidden="true" />
+      <Method Name="GetStatCount" Hidden="true" />
+      <Method Name="GetStatCurrent" Hidden="true" />
+      <Method Name="GetStats" Hidden="true" />
+      <Method Name="GetStatSeqs" Hidden="true" />
+      <Method Name="GetUpdateTime" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="SceneThread" Hidden="true" />
+      <Method Name="setUpdateTime" Hidden="true" />
+      <Method Name="TryLockStats" Hidden="true" />
+      <Method Name="UnlockStats" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEBAAEAICABAEAAAECAAIADBAFAAAABBCEQiAAARIAg=</HashCode>
+      <FileName>include\SceneThread.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Scene">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="~Scene" Hidden="true" />
+      <Method Name="AddCanvas" Hidden="true" />
+      <Method Name="AddObject" Hidden="true" />
+      <Method Name="GetApplication" Hidden="true" />
+      <Method Name="GetControllerST" Hidden="true" />
+      <Method Name="GetIsActive" Hidden="true" />
+      <Method Name="GetIsEnd" Hidden="true" />
+      <Method Name="GetName" Hidden="true" />
+      <Method Name="GetObjects" Hidden="true" />
+      <Method Name="GetPxControllerManager" Hidden="true" />
+      <Method Name="GetPxScene" Hidden="true" />
+      <Method Name="GetSceneThreads" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Field Name="mControllerCMutex" Hidden="true" />
+      <Field Name="mControllerTime" Hidden="true" />
+      <Field Name="mIsActive" Hidden="true" />
+      <Field Name="mIsEnd" Hidden="true" />
+      <Field Name="mIsInitialized" Hidden="true" />
+      <Field Name="mModelCMutex" Hidden="true" />
+      <Field Name="mModelTime" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mObjects" Hidden="true" />
+      <Field Name="mObjectsMutex" Hidden="true" />
+      <Field Name="mObjectsMutexDuration" Hidden="true" />
+      <Field Name="mpApplication" Hidden="true" />
+      <Field Name="mpControllerST" Hidden="true" />
+      <Field Name="mPhysicsTime" Hidden="true" />
+      <Field Name="mpModelST" Hidden="true" />
+      <Field Name="mpPhysicsST" Hidden="true" />
+      <Field Name="mpPxControllerManager" Hidden="true" />
+      <Field Name="mpPxScene" Hidden="true" />
+      <Field Name="mpSceneThreads" Hidden="true" />
+      <Field Name="mpStatsST" Hidden="true" />
+      <Field Name="mStatsTime" Hidden="true" />
+      <Field Name="mViewCMutex" Hidden="true" />
+      <Field Name="mViewTime" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="Scene" Hidden="true" />
+      <Method Name="SetIsActive" Hidden="true" />
+      <Method Name="SetIsEnd" Hidden="true" />
+      <Method Name="TryLockExclusiveControllerCs" Hidden="true" />
+      <Method Name="TryLockExclusiveModelCs" Hidden="true" />
+      <Method Name="TryLockExclusiveObjects" Hidden="true" />
+      <Method Name="TryLockExclusiveViewCs" Hidden="true" />
+      <Method Name="TryLockSharedControllerCs" Hidden="true" />
+      <Method Name="TryLockSharedModelCs" Hidden="true" />
+      <Method Name="TryLockSharedObjects" Hidden="true" />
+      <Method Name="TryLockSharedViewCs" Hidden="true" />
+      <Method Name="UnlockExclusiveControllerCs" Hidden="true" />
+      <Method Name="UnlockExclusiveModelCs" Hidden="true" />
+      <Method Name="UnlockExclusiveObjects" Hidden="true" />
+      <Method Name="UnlockExclusiveViewCs" Hidden="true" />
+      <Method Name="UnlockSharedControllerCs" Hidden="true" />
+      <Method Name="UnlockSharedModelCs" Hidden="true" />
+      <Method Name="UnlockSharedObjects" Hidden="true" />
+      <Method Name="UnlockSharedViewCs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <FileName>include\Scene.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpViewST" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Canvas">
+    <Position X="0.5" Y="4.25" Width="2" />
+    <Members>
+      <Method Name="~Canvas" Hidden="true" />
+      <Method Name="AddMaterial" Hidden="true" />
+      <Method Name="Canvas" Hidden="true" />
+      <Method Name="GetCamera" Hidden="true" />
+      <Method Name="GetCurrentBackBufferView" Hidden="true" />
+      <Method Name="GetGraphicsCommandList" Hidden="true" />
+      <Method Name="GetRatio" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Field Name="mBackBufferCount" Hidden="true" />
+      <Field Name="mCanvasConstantBufferData" Hidden="true" />
+      <Field Name="mCbvDescriptorSize" Hidden="true" />
+      <Field Name="mCurrentBackBuffer" Hidden="true" />
+      <Field Name="mDsvDescriptorSize" Hidden="true" />
+      <Field Name="mFenceEvent" Hidden="true" />
+      <Field Name="mFenceValue" Hidden="true" />
+      <Field Name="mIsInitialized" Hidden="true" />
+      <Field Name="mpCamera" Hidden="true" />
+      <Field Name="mpCanvasCbvDataBegin" Hidden="true" />
+      <Field Name="mpCanvasCbvHeap" Hidden="true" />
+      <Field Name="mpCanvasConstantBuffer" Hidden="true" />
+      <Field Name="mpCommandAllocator" Hidden="true" />
+      <Field Name="mpConditionVar" Hidden="true" />
+      <Field Name="mpD2DMultithread" Hidden="true" />
+      <Field Name="mpDepthStencilBuffer" Hidden="true" />
+      <Field Name="mpDsvHeap" Hidden="true" />
+      <Field Name="mpFence" Hidden="true" />
+      <Field Name="mpGraphicsCommandList" Hidden="true" />
+      <Field Name="mpMaterials2D" Hidden="true" />
+      <Field Name="mpMutex" Hidden="true" />
+      <Field Name="mpRenderTargets" Hidden="true" />
+      <Field Name="mpRtvHeap" Hidden="true" />
+      <Field Name="mpSwapChain" Hidden="true" />
+      <Field Name="mpWindow" Hidden="true" />
+      <Field Name="mRatio" Hidden="true" />
+      <Field Name="mRectangle" Hidden="true" />
+      <Field Name="mRtvDescriptorSize" Hidden="true" />
+      <Field Name="mRunThread" Hidden="true" />
+      <Field Name="mScissorRect" Hidden="true" />
+      <Field Name="mThread" Hidden="true" />
+      <Field Name="mThreadAction" Hidden="true" />
+      <Field Name="mViewport" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="RunThread" Hidden="true" />
+      <Method Name="SetCamera" Hidden="true" />
+      <Method Name="SetDescriptor" Hidden="true" />
+      <Method Name="SetThreadAction" Hidden="true" />
+      <Method Name="ThreadRender" Hidden="true" />
+      <Method Name="WaitForPreviousFrame" Hidden="true" />
+      <Method Name="WaitThreadEnd" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AABAAIwEQQACwwGEALdDoBABwEEAAACIAtAyCggAAAQ=</HashCode>
+      <FileName>include\Canvas.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Material3D">
+    <Position X="4" Y="4.25" Width="2" />
+    <Members>
+      <Method Name="~Material3D" Hidden="true" />
+      <Method Name="AddViewC" Hidden="true" />
+      <Method Name="GetInputElementCount" Hidden="true" />
+      <Method Name="GetInputElementDescs" Hidden="true" />
+      <Method Name="GetLayoutSize" Hidden="true" />
+      <Method Name="GetPipelineState" Hidden="true" />
+      <Method Name="GetRootSignature" Hidden="true" />
+      <Method Name="GetSemanticStrings" Hidden="true" />
+      <Method Name="GetTextureTypeSet" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="Material3D" Hidden="true" />
+      <Field Name="mConstantBufferCount" Hidden="true" />
+      <Field Name="mInputElementCount" Hidden="true" />
+      <Field Name="mIsInitialized" Hidden="true" />
+      <Field Name="mLayoutSize" Hidden="true" />
+      <Field Name="mMaxInputParam" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mpApplication" Hidden="true" />
+      <Field Name="mpInputElementDescs" Hidden="true" />
+      <Field Name="mpPipelineState" Hidden="true" />
+      <Field Name="mpRootSignature" Hidden="true" />
+      <Field Name="mPS" Hidden="true" />
+      <Field Name="mRS" Hidden="true" />
+      <Field Name="mSemanticStrings" Hidden="true" />
+      <Field Name="mSigParDescs" Hidden="true" />
+      <Field Name="mTextureTypes" Hidden="true" />
+      <Field Name="mTextureTypeStrings" Hidden="true" />
+      <Field Name="mVS" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAIAEABQABAJACQAAASACAAAIAIBggYBEiAA0=</HashCode>
+      <FileName>include\Material3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewC">
+    <Position X="7.5" Y="4.25" Width="2" />
+    <Members>
+      <Method Name="~ViewC" Hidden="true" />
+      <Method Name="AddCanvas" Hidden="true" />
+      <Field Name="mpMaterial2D" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ViewC" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>DIAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <FileName>include\ViewC.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpMaterial3D" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

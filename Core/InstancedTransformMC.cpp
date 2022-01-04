@@ -7,7 +7,7 @@
 
 using namespace Ion;
 
-const size_t Core::InstancedTransformMC::mMaxInstances{ 40960 };
+const std::size_t Core::InstancedTransformMC::mMaxInstances{ 40960 };
 
 Core::InstancedTransformMC::InstancedTransformMC(bool isActive, Core::Object* pObject)
 	: ModelC(isActive, pObject)
@@ -109,7 +109,7 @@ void Core::InstancedTransformMC::ApplyTerrain(Core::TerrainVC* pTerrainVC)
 		transform.ApplyTerrain(pTerrainVC);
 }
 
-const size_t Core::InstancedTransformMC::GetMaxInstances()
+const std::size_t Core::InstancedTransformMC::GetMaxInstances()
 {
 	return mMaxInstances;
 }

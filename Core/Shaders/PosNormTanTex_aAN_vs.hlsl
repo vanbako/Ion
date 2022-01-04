@@ -25,6 +25,7 @@ PSInput main(VSInput input)
 	transformedPosition.w = 1.0f;
 
 	output.position = mul(gWorldViewProj, transformedPosition);
+	output.worldposition = mul(transformedPosition, gWorld);
 	output.normal = normalize(mul((float3x3)gWorld, transformedNormal));
 	output.tangent = mul((float3x3)gWorld, transformedTangent);
 	output.texcoord = input.texcoord;

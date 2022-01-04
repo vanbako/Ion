@@ -15,15 +15,15 @@ Core::BinOfstream::~BinOfstream(void)
 
 void Core::BinOfstream::WriteString(const std::string& toWrite)
 {
-	size_t length{ toWrite.length() };
-	mFile.write((const char*)&length, sizeof(size_t));
+	std::size_t length{ toWrite.length() };
+	mFile.write((const char*)&length, sizeof(std::size_t));
 	mFile.write((const char*)(toWrite.c_str()), length);
 }
 
 void Core::BinOfstream::WriteString(const std::wstring& toWrite)
 {
-	size_t length{ toWrite.length() * sizeof(wchar_t) };
-	mFile.write((const char*)&length, sizeof(size_t));
+	std::size_t length{ toWrite.length() * sizeof(wchar_t) };
+	mFile.write((const char*)&length, sizeof(std::size_t));
 	mFile.write((const char*)(toWrite.c_str()), length);
 }
 

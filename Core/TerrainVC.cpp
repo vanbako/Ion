@@ -28,9 +28,18 @@ Core::TerrainVC::TerrainVC(const std::string& filename, float width, float depth
 	, mpObjectConstantBuffer{}
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
+	, mTextureNames{}
 	, mpTextures{}
 	, mpTextureSrvHeaps{}
 {
+	mObjectConstantBufferData.mShininess = 40.f;
+}
+
+Core::TerrainVC::~TerrainVC()
+{
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	for (std::string& name : mTextureNames)
+		pApplication->GetResource<Texture>()->RemoveResource(name);
 }
 
 void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::string& name)
@@ -41,7 +50,8 @@ void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::strin
 		return;
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->AddTexture(name) };
+	mTextureNames.emplace_back(name);
+	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResource<Texture>()->AddResource(name) };
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -74,6 +84,11 @@ float Core::TerrainVC::GetHeight(const DirectX::XMFLOAT2& xz)
 	return float(mHeights[x * mColCount + z]) / 65536.f * mScale.y;
 }
 
+void Core::TerrainVC::SetShininess(float shininess)
+{
+	mObjectConstantBufferData.mShininess = shininess;
+}
+
 void Core::TerrainVC::Initialize()
 {
 	using namespace DirectX;
@@ -103,7 +118,7 @@ void Core::TerrainVC::Initialize()
 	heightsFile.close();
 
 	// Vertices
-	Core::VertexPNT zero{};
+	Core::VertexPNU zero{};
 	mVertices.assign(vertexCount, zero);
 	float
 		cellWidth{ mWidth / float(mColCount) },
@@ -243,7 +258,7 @@ void Core::TerrainVC::Initialize()
 		mIndexBufferView.SizeInBytes = indexBufferSize;
 	}
 	{
-		const UINT vertexBufferSize{ UINT(mVertices.size() * sizeof(Core::VertexPNT)) };
+		const UINT vertexBufferSize{ UINT(mVertices.size() * sizeof(Core::VertexPNU)) };
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize) };
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateCommittedResource(
@@ -259,7 +274,7 @@ void Core::TerrainVC::Initialize()
 		memcpy(mpVertexDataBegin, mVertices.data(), vertexBufferSize);
 
 		mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
-		mVertexBufferView.StrideInBytes = sizeof(Core::VertexPNT);
+		mVertexBufferView.StrideInBytes = sizeof(Core::VertexPNU);
 		mVertexBufferView.SizeInBytes = vertexBufferSize;
 	}
 	{

@@ -91,7 +91,7 @@ void Core::InstancedSteeringRMC::SetInstancedTransformMC(InstancedTransformMC* p
 	}
 }
 
-void Core::InstancedSteeringRMC::SetTarget(size_t index, TransformMC* pTarget)
+void Core::InstancedSteeringRMC::SetTarget(std::size_t index, TransformMC* pTarget)
 {
 	if (mpTargets.size() > index)
 		mpTargets[index] = pTarget;

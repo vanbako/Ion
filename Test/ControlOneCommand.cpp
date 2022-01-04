@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ControlOneCommand.h"
-#include "ControlOneRMC.h"
+#include "../Test/include/ControlOneCommand.h"
+#include "../Test/include/ControlOneRMC.h"
 
 using namespace Ion;
 

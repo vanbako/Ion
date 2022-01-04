@@ -136,6 +136,9 @@
     <Filter Include="Shader\Terrain">
       <UniqueIdentifier>{4eb9e2a3-84a5-4aaf-a990-2874dc694f23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -312,9 +315,6 @@
     <ClInclude Include="include\BinOfstream.h">
       <Filter>Helper</Filter>
     </ClInclude>
-    <ClInclude Include="ModelFormat.h">
-      <Filter>Enum</Filter>
-    </ClInclude>
     <ClInclude Include="include\VertexPNC.h">
       <Filter>Struct</Filter>
     </ClInclude>
@@ -420,8 +420,17 @@
     <ClInclude Include="include\MeshVC.h">
       <Filter>Component\ViewC</Filter>
     </ClInclude>
-    <ClInclude Include="include\VertexPNT.h">
+    <ClInclude Include="include\VertexPNU.h">
       <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VertexPNTU.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelFormat.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resource.h">
+      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -628,9 +637,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd">
-      <Filter>Documentation</Filter>
-    </None>
     <None Include="Shaders\BonesBuffer.hlsli">
       <Filter>Shader\Buffer</Filter>
     </None>
@@ -664,6 +670,42 @@
     </None>
     <None Include="Shaders\Terrain_VSInput.hlsli">
       <Filter>Shader\Input</Filter>
+    </None>
+    <None Include="Shaders\CalculatePhong.hlsli">
+      <Filter>Shader\Function</Filter>
+    </None>
+    <None Include="doc\Application.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ClassDiagram.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Command.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Component.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ControllerST.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Core.htm">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ModelST.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Object.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Scene.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ServiceLocator.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ViewST.cd">
+      <Filter>Documentation</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace Ion
 			T Read()
 			{
 #ifdef _DEBUG
-				if ((size_t(mFile.tellg()) + sizeof(T)) > mSize)
+				if ((std::size_t(mFile.tellg()) + sizeof(T)) > mSize)
 				{
 					Fatal();
 					return T{};
@@ -38,13 +38,13 @@ namespace Ion
 			std::wstring ReadNullString();
 			std::streampos GetPosition();
 			void SetPosition(std::streampos pos);
-			void MovePosition(size_t move);
-			size_t GetSize();
+			void MovePosition(std::size_t move);
+			std::size_t GetSize();
 		private:
 			Core::Application* mpApplication;
 			const std::string mName;
 			std::ifstream mFile;
-			size_t mSize;
+			std::size_t mSize;
 
 #ifdef _DEBUG
 			void Fatal();

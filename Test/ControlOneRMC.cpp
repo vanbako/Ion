@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "ControlOneRMC.h"
-#include "TransformMC.h"
-#include "Application.h"
-#include "Object.h"
-#include "Scene.h"
-#include "NextObjectCmd.h"
-#include "PrevObjectCmd.h"
-#include "ShowControlsCmd.h"
-#include "MoveObjectRMC.h"
-#include "InputCC.h"
-#include "KeyboardState.h"
+#include "../Test/include/ControlOneRMC.h"
+#include "../Core/include/TransformMC.h"
+#include "../Core/include/Application.h"
+#include "../Core/include/Object.h"
+#include "../Core/include/Scene.h"
+#include "../Test/include/NextObjectCmd.h"
+#include "../Test/include/PrevObjectCmd.h"
+#include "../Test/include/ShowControlsCmd.h"
+#include "../Core/include/MoveObjectRMC.h"
+#include "../Core/include/InputCC.h"
+#include "../Core/include/KeyboardState.h"
 
 using namespace Ion;
 
@@ -52,7 +52,7 @@ void Core::ControlOneRMC::Update(float delta)
 		return;
 	if (mNextObject[mCurrent])
 	{
-		size_t nextObject{ mCurrObject + 1 };
+		std::size_t nextObject{ mCurrObject + 1 };
 		if (nextObject == mpObjects.size())
 			nextObject = 0;
 		if (mpObjects[mCurrObject]->GetScene()->TryLockExclusiveControllerCs() &&
@@ -69,7 +69,7 @@ void Core::ControlOneRMC::Update(float delta)
 	}
 	if (mPrevObject[mCurrent])
 	{
-		size_t prevObject{ mpObjects.size() - 1 };
+		std::size_t prevObject{ mpObjects.size() - 1 };
 		if (mCurrObject != 0)
 			prevObject = mCurrObject - 1;
 		if (mpObjects[mCurrObject]->GetScene()->TryLockExclusiveControllerCs() &&

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::Application" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>UwJQKEAAAJACkQBEBABAEBJARAASABixCQQggMKgqAY=</HashCode>
+      <FileName>include\Application.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelST" Collapsed="true">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAACgAAAAAAA=</HashCode>
+      <FileName>include\ModelST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ControllerST" Collapsed="true">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAIgAAAEAAAAAIAEAAEAABAAAAgAAgAAAAAAA=</HashCode>
+      <FileName>include\ControllerST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewST" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAACAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\ViewST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::PhysicsST" Collapsed="true">
+    <Position X="11.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAABBAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\PhysicsST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::StatsST" Collapsed="true">
+    <Position X="9" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAAEAACAAAAAAAAAAAAAAAAAABAIAAAAAgAAAAIAA=</HashCode>
+      <FileName>include\StatsST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::SceneThread" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEBAAEAICABAEAAAECAAIADBAFAAAABBCEQiAAARIAg=</HashCode>
+      <FileName>include\SceneThread.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Scene">
+    <Position X="3.5" Y="1.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <FileName>include\Scene.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+      <Field Name="mpModelST" />
+      <Field Name="mpPhysicsST" />
+      <Field Name="mpControllerST" />
+      <Field Name="mpStatsST" />
+      <Field Name="mpViewST" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Object" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQhgAQxJAKBAgAQYQAAg=</HashCode>
+      <FileName>include\Object.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

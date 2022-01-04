@@ -13,7 +13,9 @@ using namespace Ion;
 
 Core::ModelVC::ModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: Core::ViewC(isActive, pObject, materialName, "")
-	, mpModel{ pObject->GetScene()->GetApplication()->AddModel(modelName, modelExtension, winding, coordSystem) }
+	, mName{ modelName }
+	, mpModel{ pObject->GetScene()->GetApplication()->GetResource<Model>()->AddResource(modelName, modelExtension, winding, coordSystem) }
+	, mTextureNames{}
 	, mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}
@@ -30,12 +32,17 @@ Core::ModelVC::ModelVC(const std::string& modelName, const std::string& modelExt
 	, mpObjectCbvDataBegin{ nullptr }
 	, mpTextureSrvHeaps{}
 {
+	mObjectConstantBufferData.mShininess = 20.f;
 }
 
 Core::ModelVC::~ModelVC()
 {
 	if (mpVertices != nullptr)
 		delete[] mpVertices;
+	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
+	pApplication->GetResource<Model>()->RemoveResource(mName);
+	for (std::string& name : mTextureNames)
+		pApplication->GetResource<Texture>()->RemoveResource(name);
 }
 
 void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string& name)
@@ -46,7 +53,8 @@ void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string&
 		return;
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->AddTexture(name) };
+	mTextureNames.emplace_back(name);
+	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResource<Texture>()->AddResource(name) };
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -69,6 +77,11 @@ void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string&
 	}
 }
 
+void Core::ModelVC::SetShininess(float shininess)
+{
+	mObjectConstantBufferData.mShininess = shininess;
+}
+
 void Core::ModelVC::Initialize()
 {
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
@@ -80,14 +93,14 @@ void Core::ModelVC::Initialize()
 	for (UINT i{ 0 }; i < inputElementCount; ++i)
 		if (!mpModel->HasInputElem(pInputElementDescs[i].SemanticName))
 			return;
-	size_t layoutSize{ mpMaterial3D->GetLayoutSize() };
+	std::size_t layoutSize{ mpMaterial3D->GetLayoutSize() };
 	mVertexCount = mpModel->GetPositions().size();
 	mpVertices = new char[mVertexCount * layoutSize];
 	char* pPos{ mpVertices };
 	Core::InputSemantic* pInputSemantics{ new Core::InputSemantic[inputElementCount]{} };
 	for (UINT j{ 0 }; j < inputElementCount; ++j)
 		pInputSemantics[j] = Core::Material3D::GetSemanticStrings().at(pInputElementDescs[j].SemanticName).inputSemantic;
-	for (size_t i{ 0 }; i < mVertexCount; ++i)
+	for (std::size_t i{ 0 }; i < mVertexCount; ++i)
 		for (UINT j{ 0 }; j < inputElementCount; ++j)
 		{
 			switch (pInputSemantics[j])
@@ -249,9 +262,12 @@ void Core::ModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsT
 
 	DirectX::XMMATRIX world{ DirectX::XMMatrixIdentity() };
 	Core::InstancedTransformMC* pInstancedTransformMC{ mpObject->GetModelC<InstancedTransformMC>() };
-	if (pInstancedTransformMC != nullptr)
+	Core::TransformMC* pTransformMC{ mpObject->GetModelC<TransformMC>() };
+	if (pInstancedTransformMC == nullptr)
+		world = DirectX::XMLoadFloat4x4(&pTransformMC->GetWorld());
+	else
 		if (pInstancedTransformMC->GetIsStatic())
-			world = DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld());
+			world = DirectX::XMLoadFloat4x4(&pTransformMC->GetWorld());
 	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
 	DirectX::XMMATRIX wvp{ world * viewProjection };
 

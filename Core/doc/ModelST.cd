@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::ModelST">
+    <Position X="3.75" Y="2.75" Width="1.5" />
+    <Members>
+      <Method Name="~ModelST" Hidden="true" />
+      <Method Name="ModelST" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAACgAAAAAAA=</HashCode>
+      <FileName>include\ModelST.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::SceneThread">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="~SceneThread" Hidden="true" />
+      <Method Name="Done" Hidden="true" />
+      <Method Name="GetScene" Hidden="true" />
+      <Method Name="GetStatCount" Hidden="true" />
+      <Method Name="GetStatCurrent" Hidden="true" />
+      <Method Name="GetStats" Hidden="true" />
+      <Method Name="GetStatSeqs" Hidden="true" />
+      <Method Name="GetUpdateTime" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="SceneThread" Hidden="true" />
+      <Method Name="setUpdateTime" Hidden="true" />
+      <Method Name="TryLockStats" Hidden="true" />
+      <Method Name="UnlockStats" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEBAAEAICABAEAAAECAAIADBAFAAAABBCEQiAAARIAg=</HashCode>
+      <FileName>include\SceneThread.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Scene" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <FileName>include\Scene.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpModelST" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::ModelC">
+    <Position X="3.75" Y="5.5" Width="1.5" />
+    <Members>
+      <Method Name="~ModelC" Hidden="true" />
+      <Method Name="ModelC" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAEAAAAIAAAAAAAAAAAAAAAAAAAAggAAAACAA=</HashCode>
+      <FileName>include\ModelC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Object">
+    <Position X="0.5" Y="4.5" Width="2" />
+    <Members>
+      <Method Name="~Object" Hidden="true" />
+      <Method Name="AddChildObject" Hidden="true" />
+      <Method Name="AddControllerC" Hidden="true" />
+      <Method Name="AddModelC" Hidden="true" />
+      <Method Name="AddViewC" Hidden="true" />
+      <Method Name="AttachControllerC" Hidden="true" />
+      <Method Name="AttachModelC" Hidden="true" />
+      <Method Name="ControllerCInitialize" Hidden="true" />
+      <Method Name="ControllerCUpdate" Hidden="true" />
+      <Method Name="DetachControllerC" Hidden="true" />
+      <Method Name="DetachModelC" Hidden="true" />
+      <Method Name="GetControllerC" Hidden="true" />
+      <Method Name="GetControllerCs" Hidden="true" />
+      <Method Name="GetIsActive" Hidden="true" />
+      <Method Name="GetModelC" Hidden="true" />
+      <Method Name="GetModelCs" Hidden="true" />
+      <Method Name="GetParent" Hidden="true" />
+      <Method Name="GetScene" Hidden="true" />
+      <Method Name="GetViewC" Hidden="true" />
+      <Method Name="GetViewCs" Hidden="true" />
+      <Method Name="HasControllerC" Hidden="true" />
+      <Method Name="HasModelC" Hidden="true" />
+      <Field Name="mChildObjects" Hidden="true" />
+      <Field Name="mIsActive" Hidden="true" />
+      <Method Name="ModelCInitialize" Hidden="true" />
+      <Field Name="mpControllerCs" Hidden="true" />
+      <Method Name="Object" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="SetIsActive" Hidden="true" />
+      <Method Name="ViewCInitialize" Hidden="true" />
+      <Method Name="ViewCUpdate" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQhgAQxJAKBAgAQYQAAg=</HashCode>
+      <FileName>include\Object.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Component" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQgIAAAAAAAIQAAAwAAAAAAAAAAABAAAABgAAAAAAQ=</HashCode>
+      <FileName>include\Component.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpObject" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

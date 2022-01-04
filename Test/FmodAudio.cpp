@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/FmodAudio.h"
+#include "../Test/include/FmodAudio.h"
 
 FmodAudio::FmodAudio()
 	: mpFmodSystem{ nullptr }

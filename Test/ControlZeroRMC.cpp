@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "ControlZeroRMC.h"
-#include "TransformMC.h"
-#include "Application.h"
-#include "Object.h"
-#include "Scene.h"
-#include "ToggleSceneOneCmd.h"
-#include "ToggleSceneTwoCmd.h"
-#include "InputCC.h"
-#include "KeyboardState.h"
+#include "../Test/include/ControlZeroRMC.h"
+#include "../Core/include/TransformMC.h"
+#include "../Core/include/Application.h"
+#include "../Core/include/Object.h"
+#include "../Core/include/Scene.h"
+#include "../Test/include/ToggleSceneOneCmd.h"
+#include "../Test/include/ToggleSceneTwoCmd.h"
+#include "../Core/include/InputCC.h"
+#include "../Core/include/KeyboardState.h"
 
 using namespace Ion;
 

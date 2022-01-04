@@ -18,6 +18,7 @@ namespace Ion
 			Texture& operator=(Texture&& other) noexcept = delete;
 
 			const Microsoft::WRL::ComPtr<ID3D12Resource>& GetTexture() const;
+			void Initialize();
 		private:
 			Core::Application* mpApplication;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpTexture;

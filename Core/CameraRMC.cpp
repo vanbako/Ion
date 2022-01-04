@@ -133,13 +133,17 @@ void Core::CameraRMC::Update(float delta)
 	{
 		DirectX::XMMATRIX projection{ DirectX::XMMatrixPerspectiveFovLH(mFOV, mpCanvas->GetRatio(), mNearPlane, mFarPlane) };
 		const DirectX::XMVECTOR worldPosition{ DirectX::XMLoadFloat4(&mpTransform->GetWorldPosition()) };
-		const DirectX::XMVECTOR forward{ DirectX::XMLoadFloat4(&mpTransform->GetForward()) };
+		DirectX::XMFLOAT4 fw{ mpTransform->GetForward() };
+		fw.w = 0.f;
+		const DirectX::XMVECTOR forward{ DirectX::XMLoadFloat4(&fw) };
 		const DirectX::XMVECTOR up{ DirectX::XMLoadFloat4(&mpTransform->GetUp()) };
 
 		const DirectX::XMMATRIX view{ DirectX::XMMatrixLookAtLH(worldPosition, worldPosition + forward, up) };
+		const DirectX::XMMATRIX viewInv{ DirectX::XMMatrixInverse(nullptr, view * projection) };
 
 		DirectX::XMStoreFloat4x4(&mView, view);
 		DirectX::XMStoreFloat4x4(&mViewProjection, view * projection);
+		DirectX::XMStoreFloat4x4(&mViewInverse, viewInv);
 	}
 }
 
@@ -166,4 +170,14 @@ const DirectX::XMFLOAT4X4& Core::CameraRMC::GetView() const
 const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewProjection() const
 {
 	return mViewProjection;
+}
+
+const DirectX::XMFLOAT4X4& Core::CameraRMC::GetViewInverse() const
+{
+	return mViewInverse;
+}
+
+Core::TransformMC* Core::CameraRMC::GetTransform()
+{
+	return mpTransform;
 }

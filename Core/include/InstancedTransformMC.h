@@ -38,9 +38,9 @@ namespace Ion
 			void SetHasBehaviour(bool hasBehaviour);
 			void ApplyTerrain(Core::TerrainVC* pTerrainVC);
 
-			static const size_t GetMaxInstances();
+			static const std::size_t GetMaxInstances();
 		private:
-			static const size_t mMaxInstances;
+			static const std::size_t mMaxInstances;
 			bool
 				mIsStatic,
 				mHasBehaviour;

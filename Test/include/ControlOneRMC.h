@@ -1,5 +1,5 @@
 #pragma once
-#include "ReceiverMC.h"
+#include "../Core/include/ReceiverMC.h"
 
 // Control(Scene)One Receiver Model Component
 
@@ -36,7 +36,7 @@ namespace Ion
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
 			std::vector<Core::Object*> mpObjects;
-			size_t mCurrObject;
+			std::size_t mCurrObject;
 
 			// My best guess is that boolean operations are thread-safe
 			// Implement std::atomic if needed

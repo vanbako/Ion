@@ -34,7 +34,7 @@ namespace Ion
 			void SetInstancedTransform(InstancedTransformMC* pInstancedTransform);
 
 			void SetAnimation(const Core::AnimationClip& animationClip);
-			void SetAnimation(size_t clipNumber);
+			void SetAnimation(std::size_t clipNumber);
 			void SetIsAnimating(bool isAnimating);
 
 			virtual void Initialize() override;

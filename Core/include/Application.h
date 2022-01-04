@@ -1,9 +1,10 @@
 #pragma once
 #include "Scene.h"
-#include "Material3D.h"
-#include "Material2D.h"
-#include "Model.h"
+#include "Resource.h"
 #include "Texture.h"
+#include "Model.h"
+#include "Material2D.h"
+#include "Material3D.h"
 #include "Window.h"
 #include "PxIonAllocatorCallback.h"
 #include "PxIonErrorCallback.h"
@@ -33,7 +34,7 @@ namespace Ion
 			PBYTE GetKeyboard();
 
 			Core::Scene* AddScene(const std::string& name);
-			Core::Scene* GetScene(size_t num);
+			Core::Scene* GetScene(std::size_t num);
 			Core::Window* AddWindow(const std::wstring& title, RECT rectangle = RECT{ 0, 0, 1280, 720 });
 			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			const Microsoft::WRL::ComPtr<IDXGIFactory5>& GetDxgiFactory();
@@ -43,34 +44,32 @@ namespace Ion
 			physx::PxCooking* GetPxCooking();
 			const physx::PxTolerancesScale& GetToleranceScale();
 			Core::ServiceLocator& GetServiceLocator();
-
-			Core::Material3D* AddMaterial3D(const std::string& name);
-			Core::Material2D* AddMaterial2D(const std::string& name);
-			Core::Model* AddModel(const std::string& fileName, const std::string& fileExtension, Winding winding, CoordSystem coordSystem);
-			Core::Texture* AddTexture(const std::string& name);
+			template<class T>
+			Core::Resource<T>* GetResource() { return nullptr; }
+			template<>
+			Core::Resource<Texture>* GetResource() { return &mTextureR; }
+			template<>
+			Core::Resource<Model>* GetResource() { return &mModelR; }
+			template<>
+			Core::Resource<Material2D>* GetResource() { return &mMaterial2DR; }
+			template<>
+			Core::Resource<Material3D>* GetResource() { return &mMaterial3DR; }
 		private:
 			static const std::chrono::milliseconds
 				mRunSleep,
-				mKeyboardMutexDuration,
-				mTextureMutexDuration,
-				mModelMutexDuration,
-				mMaterialMutexDuration;
+				mKeyboardMutexDuration;
 
 			bool
 				mIsInitialized,
 				mIsActive;
 			BYTE mKeyboard[256];
-			std::shared_timed_mutex
-				mKeyboardMutex,
-				mMaterialMutex,
-				mModelMutex,
-				mTextureMutex;
+			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Core::Scene> mScenes;
 			std::list<Core::Window> mWindows;
-			std::map<std::string, Core::Material3D> mMaterials3D;
-			std::map<std::string, Core::Material2D> mMaterials2D;
-			std::map<std::string, Core::Model> mModels;
-			std::map<std::string, Core::Texture> mTextures;
+			Core::Resource<Texture> mTextureR;
+			Core::Resource<Model> mModelR;
+			Core::Resource<Material2D> mMaterial2DR;
+			Core::Resource<Material3D> mMaterial3DR;
 			Microsoft::WRL::ComPtr<IDXGIFactory5> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device5> mpD3d12Device;
 			Microsoft::WRL::ComPtr<IDXGIDevice1> mpDxgiDevice;

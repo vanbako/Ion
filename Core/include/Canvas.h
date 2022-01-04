@@ -38,7 +38,7 @@ namespace Ion
 			void SetThreadAction(Core::ThreadAction threadAction);
 			void WaitThreadEnd();
 		private:
-			static const size_t mBackBufferCount{ 2 };
+			static const std::size_t mBackBufferCount{ 2 };
 			bool mIsInitialized;
 			Core::Window* mpWindow;
 			RECT mRectangle;

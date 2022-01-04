@@ -5,11 +5,13 @@ cbuffer CanvasConstantBuffer : register(b0)
 {
 	float4x4 gView;
 	float4x4 gViewProj;
+	float4x4 gViewInverse;
+	float4 gViewPos;
 	float3 gLightDirection;
 	float gAmbientIntensity;
 	float4 gColorDiffuse;
 	float4 gColorAmbient;
-	float4 cPadding4[5];
+	// Total 256 bytes
 };
 
 #endif

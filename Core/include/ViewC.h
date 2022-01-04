@@ -16,7 +16,7 @@ namespace Ion
 		{
 		public:
 			explicit ViewC(bool isActive, Core::Object* pObject, const std::string& material3D, const std::string& material2D);
-			virtual ~ViewC() = default;
+			virtual ~ViewC();
 			ViewC(const ViewC& other) = default;
 			ViewC(ViewC&& other) noexcept = default;
 			ViewC& operator=(const ViewC& other) = default;
@@ -27,6 +27,9 @@ namespace Ion
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial);
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial);
 		protected:
+			std::string
+				mMaterial3D,
+				mMaterial2D;
 			Core::Material3D* mpMaterial3D;
 			Core::Material2D* mpMaterial2D;
 			std::set<Core::Canvas*> mpCanvases;

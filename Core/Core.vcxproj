@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" />
+  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -22,13 +22,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -131,6 +131,7 @@
     <ClInclude Include="include\MeshVCConstantBuffer.h" />
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\ModelC.h" />
+    <ClInclude Include="include\ModelFormat.h" />
     <ClInclude Include="include\ModelST.h" />
     <ClInclude Include="include\ModelVC.h" />
     <ClInclude Include="include\MoveBackCmd.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="include\PxIonErrorCallback.h" />
     <ClInclude Include="include\Quadrilateral.h" />
     <ClInclude Include="include\ReceiverMC.h" />
+    <ClInclude Include="include\Resource.h" />
     <ClInclude Include="include\RotateLeftCmd.h" />
     <ClInclude Include="include\RotateRightCmd.h" />
     <ClInclude Include="include\Scene.h" />
@@ -177,14 +179,14 @@
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Velocity.h" />
     <ClInclude Include="include\VertexPNC.h" />
-    <ClInclude Include="include\VertexPNT.h" />
+    <ClInclude Include="include\VertexPNTU.h" />
+    <ClInclude Include="include\VertexPNU.h" />
     <ClInclude Include="include\ViewC.h" />
     <ClInclude Include="include\ViewST.h" />
     <ClInclude Include="include\WanderData.h" />
     <ClInclude Include="include\WanderCmd.h" />
     <ClInclude Include="include\Winding.h" />
     <ClInclude Include="include\Window.h" />
-    <ClInclude Include="ModelFormat.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -260,11 +262,24 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="doc\Application.cd" />
+    <None Include="doc\ClassDiagram.cd" />
+    <None Include="doc\Command.cd" />
+    <None Include="doc\Component.cd" />
+    <None Include="doc\ControllerST.cd" />
+    <None Include="doc\Core.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="doc\ModelST.cd" />
+    <None Include="doc\Object.cd" />
+    <None Include="doc\Scene.cd" />
+    <None Include="doc\ServiceLocator.cd" />
+    <None Include="doc\ViewST.cd" />
     <None Include="packages.config" />
     <None Include="Shaders\BonesBuffer.hlsli" />
     <None Include="Shaders\CalculateAlbedo.hlsli" />
     <None Include="Shaders\CalculateNormal.hlsli" />
+    <None Include="Shaders\CalculatePhong.hlsli" />
     <None Include="Shaders\CanvasConstantBuffer.hlsli" />
     <None Include="Shaders\InstanceBuffer.hlsli" />
     <None Include="Shaders\ObjectConstantBuffer.hlsli" />
@@ -440,15 +455,15 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
-    <Import Project="..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets" Condition="Exists('..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets')" />
+    <Import Project="..\packages\directxtk12_desktop_2017.2021.11.8.1\build\native\directxtk12_desktop_2017.targets" Condition="Exists('..\packages\directxtk12_desktop_2017.2021.11.8.1\build\native\directxtk12_desktop_2017.targets')" />
+    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.4.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk12_desktop_2017.2021.8.2.1\build\native\directxtk12_desktop_2017.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtk12_desktop_2017.2021.11.8.1\build\native\directxtk12_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk12_desktop_2017.2021.11.8.1\build\native\directxtk12_desktop_2017.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
   </Target>
 </Project>

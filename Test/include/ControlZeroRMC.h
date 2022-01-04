@@ -1,5 +1,5 @@
 #pragma once
-#include "ReceiverMC.h"
+#include "../Core/include/ReceiverMC.h"
 
 // Control(Scene)Zero Receiver Model Component
 

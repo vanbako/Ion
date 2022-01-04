@@ -46,7 +46,7 @@ namespace Ion
 				mPS;
 			Microsoft::WRL::ComPtr<ID3D12RootSignature> mpRootSignature;
 			Microsoft::WRL::ComPtr<ID3D12PipelineState> mpPipelineState;
-			D3D12_SIGNATURE_PARAMETER_DESC mSigParDescs[(size_t)InputSemantic::Count];
+			D3D12_SIGNATURE_PARAMETER_DESC mSigParDescs[(std::size_t)InputSemantic::Count];
 			D3D12_INPUT_ELEMENT_DESC* mpInputElementDescs;
 			UINT
 				mConstantBufferCount,

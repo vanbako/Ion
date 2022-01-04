@@ -61,7 +61,7 @@ void Core::InstancedAnimatedMVC::SetAnimation(const Core::AnimationClip& animati
 	mIsClipSet = true;
 }
 
-void Core::InstancedAnimatedMVC::SetAnimation(size_t clipNumber)
+void Core::InstancedAnimatedMVC::SetAnimation(std::size_t clipNumber)
 {
 	if (clipNumber >= mpModel->GetAnimationClips().size())
 		return;
@@ -162,8 +162,8 @@ void Core::InstancedAnimatedMVC::Update(float delta)
 
 	mBoneTransforms.clear();
 
-	size_t boneCount{ keyA.GetBoneTransforms().size() };
-	for (size_t bone{ 0 }; bone < boneCount; ++bone)
+	std::size_t boneCount{ keyA.GetBoneTransforms().size() };
+	for (std::size_t bone{ 0 }; bone < boneCount; ++bone)
 	{
 		DirectX::XMFLOAT4X4 trsA{ keyA.GetBoneTransforms()[bone] };
 		DirectX::XMFLOAT4X4 trsB{ keyB.GetBoneTransforms()[bone] };

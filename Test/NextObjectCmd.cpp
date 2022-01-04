@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "NextObjectCmd.h"
-#include "ControlOneRMC.h"
+#include "../Test/include/NextObjectCmd.h"
+#include "../Test/include/ControlOneRMC.h"
 
 using namespace Ion;
 

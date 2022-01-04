@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::Object" Collapsed="true">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQhgAQxJAKBAgAQYQAAg=</HashCode>
+      <FileName>include\Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Component">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQgIAAAAAAAIQAAAwAAAAAAAAAAABAAAABgAAAAAAQ=</HashCode>
+      <FileName>include\Component.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpObject" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::ControllerC" Collapsed="true">
+    <Position X="1.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\ControllerC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::BehaviourCC" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAAAABAAAEIAAAAAAACAAAAQAAgAAIAAAA=</HashCode>
+      <FileName>include\BehaviourCC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::InputCC" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\InputCC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelC" Collapsed="true">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAEAAAAIAAAAAAAAAAAAAAAAAAAAggAAAACAA=</HashCode>
+      <FileName>include\ModelC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::TransformMC" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAAAAQBYCAAYgACgAAIQkAEEEACgkgAgEhAsACAgQ=</HashCode>
+      <FileName>include\TransformMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::InstancedTransformMC" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQQIBAAAggEIYABAAgAAAAABAAAgAAAAgCgAAAAIAA=</HashCode>
+      <FileName>include\InstancedTransformMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ReceiverMC" Collapsed="true">
+    <Position X="8" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAAAAAAIAAAAAAAAAAAAAAAAAAgAAgAAAABAg=</HashCode>
+      <FileName>include\ReceiverMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::MoveRMC" Collapsed="true">
+    <Position X="6" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAIAAAAAgAgIAIQCAAAAAAAAEAgCQIwAAgBCAAJAQ=</HashCode>
+      <FileName>include\MoveRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::MoveObjectRMC" Collapsed="true">
+    <Position X="4.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAUAAAAACQAAAAAAAAAAAgAwgAAAABAA=</HashCode>
+      <FileName>include\MoveObjectRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::CharacterRMC" Collapsed="true">
+    <Position X="7.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACUAIAAAAAgAAUAAAAAAQAAAAAEAAAAMwAggAAAAJAA=</HashCode>
+      <FileName>include\CharacterRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::CameraRMC" Collapsed="true">
+    <Position X="6" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIgAAgQQEAAcAAAABAAAAAAABAAAAAgAwhAAAAFCA=</HashCode>
+      <FileName>include\CameraRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::SteeringRMC" Collapsed="true">
+    <Position X="10.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAACAIcAACAAgAACIAAAgIIAAgAggAAAABBA=</HashCode>
+      <FileName>include\SteeringRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ObjectSteeringRMC" Collapsed="true">
+    <Position X="9.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAcAAAAAAQAAAAAAACAAAAAggAAABAEI=</HashCode>
+      <FileName>include\ObjectSteeringRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::InstancedSteeringRMC" Collapsed="true">
+    <Position X="11.5" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAgYAAAAACAASAAAAACACAAEAgAAAAAAI=</HashCode>
+      <FileName>include\InstancedSteeringRMC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewC" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DIAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <FileName>include\ViewC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::MeshVC" Collapsed="true">
+    <Position X="10.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQQAAABIAAAQQQAQAAgAAAAAAAAAAAgABMgIAAAAAg=</HashCode>
+      <FileName>include\MeshVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::TerrainVC" Collapsed="true">
+    <Position X="12.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BRUAhgBAIAABRwAAQAAAEABAAAAACAAsABUgJBAQAAg=</HashCode>
+      <FileName>include\TerrainVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelVC" Collapsed="true">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQABgAAIgAAQQAAQAAAAAAAAAABEAAMABcgJCAYAAg=</HashCode>
+      <FileName>include\ModelVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::AnimatedMVC" Collapsed="true">
+    <Position X="12.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAkAAQwAAAAAAACAAAAAEARAABggICogAAA=</HashCode>
+      <FileName>include\AnimatedMVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::InstancedMVC" Collapsed="true">
+    <Position X="14.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAgAAAQYEAAACAAAAAAQAAAAAABAgAAAACAA=</HashCode>
+      <FileName>include\InstancedMVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::InstancedAnimatedMVC" Collapsed="true">
+    <Position X="16" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAgkAAQQEAAACBACAAAQAEARAABggIgogAAA=</HashCode>
+      <FileName>include\InstancedAnimatedMVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
