@@ -5,6 +5,8 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
+#include "TextureResource.h"
+#include "Texture.h"
 
 using namespace Ion;
 
@@ -39,7 +41,7 @@ Core::TerrainVC::~TerrainVC()
 {
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	for (std::string& name : mTextureNames)
-		pApplication->GetResource<Texture>()->RemoveResource(name);
+		pApplication->GetResourceManager()->GetResource<TextureResource>()->RemoveTexture(name);
 }
 
 void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::string& name)
@@ -51,7 +53,7 @@ void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::strin
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 	mTextureNames.emplace_back(name);
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResource<Texture>()->AddResource(name) };
+	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name)};
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{

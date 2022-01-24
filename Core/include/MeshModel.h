@@ -1,5 +1,4 @@
 #pragma once
-
 #include "AnimationClip.h"
 #include "BinIfstream.h"
 #include "InputSemantic.h"
@@ -14,15 +13,15 @@ namespace Ion
 	{
 		class Application;
 
-		class Model final
+		class MeshModel final
 		{
 		public:
-			explicit Model(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem);
-			~Model() = default;
-			Model(const Model& other) = delete;
-			Model(Model&& other) noexcept = delete;
-			Model& operator=(const Model& other) = delete;
-			Model& operator=(Model&& other) noexcept = delete;
+			explicit MeshModel(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem);
+			~MeshModel() = default;
+			MeshModel(const MeshModel& other) = delete;
+			MeshModel(MeshModel&& other) noexcept = delete;
+			MeshModel& operator=(const MeshModel& other) = delete;
+			MeshModel& operator=(MeshModel&& other) noexcept = delete;
 
 			void Initialize();
 			const std::vector<DWORD>& GetIndices() const;

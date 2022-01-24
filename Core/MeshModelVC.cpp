@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ModelVC.h"
+#include "MeshModelVC.h"
 #include "Application.h"
 #include "Material3D.h"
 #include "Object.h"
@@ -8,13 +8,18 @@
 #include "Model.h"
 #include "Canvas.h"
 #include "InstancedTransformMC.h"
+#include "MeshModel.h"
+#include "MeshModelResource.h"
+#include "TextureResource.h"
+#include "Texture.h"
+#include "Model.h"
 
 using namespace Ion;
 
-Core::ModelVC::ModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
+Core::MeshModelVC::MeshModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
 	: Core::ViewC(isActive, pObject, materialName, "")
 	, mName{ modelName }
-	, mpModel{ pObject->GetScene()->GetApplication()->GetResource<Model>()->AddResource(modelName, modelExtension, winding, coordSystem) }
+	, mpMeshModel{ pObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<MeshModelResource>()->AddMeshModel(modelName, modelExtension, winding, coordSystem) }
 	, mTextureNames{}
 	, mpTextures{}
 	, mpVertices{ nullptr }
@@ -35,17 +40,17 @@ Core::ModelVC::ModelVC(const std::string& modelName, const std::string& modelExt
 	mObjectConstantBufferData.mShininess = 20.f;
 }
 
-Core::ModelVC::~ModelVC()
+Core::MeshModelVC::~MeshModelVC()
 {
 	if (mpVertices != nullptr)
 		delete[] mpVertices;
-	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
-	pApplication->GetResource<Model>()->RemoveResource(mName);
+	Core::ResourceManager* pResourceManager{ mpObject->GetScene()->GetApplication()->GetResourceManager() };
+	pResourceManager->GetResource<MeshModelResource>()->RemoveModel(mName);
 	for (std::string& name : mTextureNames)
-		pApplication->GetResource<Texture>()->RemoveResource(name);
+		pResourceManager->GetResource<TextureResource>()->RemoveTexture(name);
 }
 
-void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string& name)
+void Core::MeshModelVC::AddTexture(Core::TextureType textureType, const std::string& name)
 {
 	if (mpTextures.contains(textureType))
 		return;
@@ -54,7 +59,7 @@ void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string&
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 	mTextureNames.emplace_back(name);
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResource<Texture>()->AddResource(name) };
+	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name) };
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -77,12 +82,12 @@ void Core::ModelVC::AddTexture(Core::TextureType textureType, const std::string&
 	}
 }
 
-void Core::ModelVC::SetShininess(float shininess)
+void Core::MeshModelVC::SetShininess(float shininess)
 {
 	mObjectConstantBufferData.mShininess = shininess;
 }
 
-void Core::ModelVC::Initialize()
+void Core::MeshModelVC::Initialize()
 {
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
@@ -91,10 +96,10 @@ void Core::ModelVC::Initialize()
 	D3D12_INPUT_ELEMENT_DESC* pInputElementDescs{ mpMaterial3D->GetInputElementDescs() };
 	UINT inputElementCount{ mpMaterial3D->GetInputElementCount() };
 	for (UINT i{ 0 }; i < inputElementCount; ++i)
-		if (!mpModel->HasInputElem(pInputElementDescs[i].SemanticName))
+		if (!mpMeshModel->HasInputElem(pInputElementDescs[i].SemanticName))
 			return;
 	std::size_t layoutSize{ mpMaterial3D->GetLayoutSize() };
-	mVertexCount = mpModel->GetPositions().size();
+	mVertexCount = mpMeshModel->GetPositions().size();
 	mpVertices = new char[mVertexCount * layoutSize];
 	char* pPos{ mpVertices };
 	Core::InputSemantic* pInputSemantics{ new Core::InputSemantic[inputElementCount]{} };
@@ -106,42 +111,42 @@ void Core::ModelVC::Initialize()
 			switch (pInputSemantics[j])
 			{
 			case Core::InputSemantic::Position:
-				std::memcpy(pPos, &mpModel->GetPositions()[i], sizeof(DirectX::XMFLOAT3));
+				std::memcpy(pPos, &mpMeshModel->GetPositions()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetPositions()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case Core::InputSemantic::Normal:
-				std::memcpy(pPos, &mpModel->GetNormals()[i], sizeof(DirectX::XMFLOAT3));
+				std::memcpy(pPos, &mpMeshModel->GetNormals()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetNormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case Core::InputSemantic::Tangent:
-				std::memcpy(pPos, &mpModel->GetTangents()[i], sizeof(DirectX::XMFLOAT3));
+				std::memcpy(pPos, &mpMeshModel->GetTangents()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetTangents()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case Core::InputSemantic::Binormal:
-				std::memcpy(pPos, &mpModel->GetBinormals()[i], sizeof(DirectX::XMFLOAT3));
+				std::memcpy(pPos, &mpMeshModel->GetBinormals()[i], sizeof(DirectX::XMFLOAT3));
 				//*((DirectX::XMFLOAT3*)pPos) = mpModel->GetBinormals()[i];
 				pPos += sizeof(DirectX::XMFLOAT3);
 				break;
 			case Core::InputSemantic::TexCoord:
-				std::memcpy(pPos, &mpModel->GetTexCoords()[i], sizeof(DirectX::XMFLOAT2));
+				std::memcpy(pPos, &mpMeshModel->GetTexCoords()[i], sizeof(DirectX::XMFLOAT2));
 				//*((DirectX::XMFLOAT2*)pPos) = mpModel->GetTexCoords()[i];
 				pPos += sizeof(DirectX::XMFLOAT2);
 				break;
 			case Core::InputSemantic::Color:
-				std::memcpy(pPos, &mpModel->GetColors()[i], sizeof(DirectX::XMFLOAT4));
+				std::memcpy(pPos, &mpMeshModel->GetColors()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetColors()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case Core::InputSemantic::BlendIndices:
-				std::memcpy(pPos, &mpModel->GetBlendIndices()[i], sizeof(DirectX::XMFLOAT4));
+				std::memcpy(pPos, &mpMeshModel->GetBlendIndices()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendIndices()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
 			case Core::InputSemantic::BlendWeight:
-				std::memcpy(pPos, &mpModel->GetBlendWeights()[i], sizeof(DirectX::XMFLOAT4));
+				std::memcpy(pPos, &mpMeshModel->GetBlendWeights()[i], sizeof(DirectX::XMFLOAT4));
 				//*((DirectX::XMFLOAT4*)pPos) = mpModel->GetBlendWeights()[i];
 				pPos += sizeof(DirectX::XMFLOAT4);
 				break;
@@ -157,7 +162,7 @@ void Core::ModelVC::Initialize()
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpObjectCbvHeap)));
 	}
 
-	mIndexCount = mpModel->GetIndices().size();
+	mIndexCount = mpMeshModel->GetIndices().size();
 	{
 		const UINT indexBufferSize{ UINT(mIndexCount * sizeof(DWORD)) };
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
@@ -172,7 +177,7 @@ void Core::ModelVC::Initialize()
 
 		CD3DX12_RANGE readRange(0, 0);
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mIndexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpIndexDataBegin)));
-		memcpy(mpIndexDataBegin, mpModel->GetIndices().data(), indexBufferSize);
+		memcpy(mpIndexDataBegin, mpMeshModel->GetIndices().data(), indexBufferSize);
 
 		mIndexBufferView.BufferLocation = mIndexBuffer->GetGPUVirtualAddress();
 		mIndexBufferView.Format = DXGI_FORMAT_R32_UINT;
@@ -223,14 +228,14 @@ void Core::ModelVC::Initialize()
 	mIsInitialized = true;
 }
 
-void Core::ModelVC::Update(float delta)
+void Core::MeshModelVC::Update(float delta)
 {
 	(delta);
 	//if (!mIsActive)
 	//	return;
 }
 
-bool Core::ModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 {
 	if (!mIsInitialized)
 	{
@@ -256,7 +261,7 @@ bool Core::ModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 	return true;
 }
 
-void Core::ModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
+void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
 {
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
@@ -283,7 +288,7 @@ void Core::ModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsT
 	++dsTable;
 }
 
-void Core::ModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
+void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
 {
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 

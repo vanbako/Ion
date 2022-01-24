@@ -4,7 +4,9 @@
 #include "Scene.h"
 #include "Application.h"
 #include "Material3D.h"
+#include "Material3DResource.h"
 #include "Material2D.h"
+#include "Material2DResource.h"
 #include "Canvas.h"
 
 using namespace Ion;
@@ -19,12 +21,12 @@ Core::ViewC::ViewC(bool isActive, Core::Object* pObject, const std::string& mate
 {
 	if (material3D != "")
 	{
-		mpMaterial3D = pObject->GetScene()->GetApplication()->GetResource<Material3D>()->AddResource(material3D);
+		mpMaterial3D = pObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<Material3DResource>()->AddMaterial3D(material3D);
 		mpMaterial3D->Initialize();
 	}
 	if (material2D != "")
 	{
-		mpMaterial2D = pObject->GetScene()->GetApplication()->GetResource<Material2D>()->AddResource(material2D);
+		mpMaterial2D = pObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<Material2DResource>()->AddMaterial2D(material2D);
 		mpMaterial2D->Initialize();
 	}
 }
@@ -32,9 +34,9 @@ Core::ViewC::ViewC(bool isActive, Core::Object* pObject, const std::string& mate
 Core::ViewC::~ViewC()
 {
 	if (mMaterial3D != "")
-		mpObject->GetScene()->GetApplication()->GetResource<Material3D>()->RemoveResource(mMaterial3D);
+		mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<Material3DResource>()->RemoveMaterial3D(mMaterial3D);
 	if (mMaterial2D != "")
-		mpObject->GetScene()->GetApplication()->GetResource<Material2D>()->RemoveResource(mMaterial2D);
+		mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<Material2DResource>()->RemoveMaterial2D(mMaterial2D);
 }
 
 void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)

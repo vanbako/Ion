@@ -1,88 +1,29 @@
 #pragma once
-
 #include "MsgType.h"
-#include "Model.h"
-#include "Texture.h"
-#include "Material2D.h"
-#include "Material3D.h"
 
 namespace Ion
 {
 	namespace Core
 	{
-		class Application;
+		class ResourceManager;
 
-		template<class T>
-		class Resource final
+		class Resource
 		{
 		public:
-			explicit Resource(Application* pApplication)
-				: mpApplication{ pApplication }
-				, mMutexDuration{ 100 }
-				, mMutex{}
-				, mDeleteOnZero{ false }
-				, mReferenceCounts{}
-				, mResources{}
-			{
-			}
-			virtual ~Resource() {}
+			explicit Resource(Core::ResourceManager* pResourceManager);
+			virtual ~Resource() = default;
 			Resource(const Resource& other) = delete;
 			Resource(Resource&& other) noexcept = delete;
 			Resource& operator=(const Resource& other) = delete;
 			Resource& operator=(Resource&& other) noexcept = delete;
-
-			void Clear()
-			{
-				// Debug mode: check for ReferenceCount 0?
-				mReferenceCounts.clear();
-				mResources.clear();
-			}
-
-			T* AddResource(const std::string& name)
-			{
-				if (!mMutex.try_lock_for(mMutexDuration))
-				{
-#ifdef ION_LOGGER
-					mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Resource::AddResource failed, could not get lock");
-#endif
-					return nullptr;
-				}
-				auto ret{ mResources.try_emplace(name, mpApplication, name) };
-				IncrementReference(name);
-				T* pResource{ &((*(ret.first)).second) };
-				pResource->Initialize();
-				mMutex.unlock();
-				return pResource;
-			}
-			Core::Model* AddResource(const std::string& name, const std::string& fileExtension, Winding winding, CoordSystem coordSystem)
-			{
-				if (!mMutex.try_lock_for(mMutexDuration))
-				{
-#ifdef ION_LOGGER
-					mpApplication->GetServiceLocator().GetLogger()->Message(typeid(this).name(), Core::MsgType::Fatal, "Core::Resource::AddResource failed, could not get lock");
-#endif
-					return nullptr;
-				}
-				auto ret{ mResources.try_emplace(name, mpApplication, name, fileExtension, winding, coordSystem) };
-				IncrementReference(name);
-				Core::Model* pResource{ &((*(ret.first)).second) };
-				pResource->Initialize();
-				mMutex.unlock();
-				return pResource;
-			}
-			void RemoveResource(const std::string& name)
-			{
-				if (mResources.contains(name))
-					DecrementReference(name);
-			}
-		private:
+		protected:
 			const std::chrono::milliseconds mMutexDuration;
 
-			Application* mpApplication;
+			Core::ResourceManager* mpResourceManager;
 			std::shared_timed_mutex mMutex;
 			bool mDeleteOnZero;
+#ifdef _DEBUG
 			std::map<std::string, std::size_t> mReferenceCounts;
-			std::map<std::string, T> mResources;
 
 			void IncrementReference(const std::string& name)
 			{
@@ -98,6 +39,8 @@ namespace Ion
 				if (ret != mReferenceCounts.end())
 					--mReferenceCounts.at(name);
 			}
+#endif
+			virtual void Clear();
 		};
 	}
 }

@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Model.h"
+#include "MeshModel.h"
 #include "Application.h"
 #include "MeshType.h"
 #include "Material3D.h"
 
 using namespace Ion;
 
-Core::Model::Model(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem)
+Core::MeshModel::MeshModel(Core::Application* pApplication, const std::string& fileName, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem)
 	: mIsInitialized{ false }
 	, mpApplication{ pApplication }
 	, mFileName{ fileName }
@@ -32,64 +32,64 @@ Core::Model::Model(Core::Application* pApplication, const std::string& fileName,
 	ReadModel();
 }
 
-void Core::Model::Initialize()
+void Core::MeshModel::Initialize()
 {
 	if (mIsInitialized)
 		return;
 	mIsInitialized = true;
 }
 
-const std::vector<DWORD>& Core::Model::GetIndices() const
+const std::vector<DWORD>& Core::MeshModel::GetIndices() const
 {
 	return mIndices;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Core::Model::GetPositions() const
+const std::vector<DirectX::XMFLOAT3>& Core::MeshModel::GetPositions() const
 {
 	return mPositions;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Core::Model::GetNormals() const
+const std::vector<DirectX::XMFLOAT3>& Core::MeshModel::GetNormals() const
 {
 	return mNormals;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Core::Model::GetTangents() const
+const std::vector<DirectX::XMFLOAT3>& Core::MeshModel::GetTangents() const
 {
 	return mTangents;
 }
 
-const std::vector<DirectX::XMFLOAT3>& Core::Model::GetBinormals() const
+const std::vector<DirectX::XMFLOAT3>& Core::MeshModel::GetBinormals() const
 {
 	return mBinormals;
 }
 
-const std::vector<DirectX::XMFLOAT2>& Core::Model::GetTexCoords() const
+const std::vector<DirectX::XMFLOAT2>& Core::MeshModel::GetTexCoords() const
 {
 	return mTexCoords;
 }
 
-const std::vector<DirectX::XMFLOAT4>& Core::Model::GetColors() const
+const std::vector<DirectX::XMFLOAT4>& Core::MeshModel::GetColors() const
 {
 	return mColors;
 }
 
-const std::vector<Core::Int4>& Core::Model::GetBlendIndices() const
+const std::vector<Core::Int4>& Core::MeshModel::GetBlendIndices() const
 {
 	return mBlendIndices;
 }
 
-const std::vector<DirectX::XMFLOAT4>& Core::Model::GetBlendWeights() const
+const std::vector<DirectX::XMFLOAT4>& Core::MeshModel::GetBlendWeights() const
 {
 	return mBlendWeights;
 }
 
-const std::vector<Core::AnimationClip>& Core::Model::GetAnimationClips() const
+const std::vector<Core::AnimationClip>& Core::MeshModel::GetAnimationClips() const
 {
 	return mAnimationClips;
 }
 
-std::size_t Core::Model::GetElementCount()
+std::size_t Core::MeshModel::GetElementCount()
 {
 	std::size_t cnt{ 0 };
 	for (std::size_t i{ 0 }; i < std::size_t(Core::InputSemantic::Count); ++i)
@@ -97,17 +97,17 @@ std::size_t Core::Model::GetElementCount()
 	return cnt;
 }
 
-bool Core::Model::HasInputElem(Core::InputSemantic inputSemantic)
+bool Core::MeshModel::HasInputElem(Core::InputSemantic inputSemantic)
 {
 	return (mElem[std::size_t(inputSemantic)] == 1);
 }
 
-bool Core::Model::HasInputElem(const std::string& inputSemantic)
+bool Core::MeshModel::HasInputElem(const std::string& inputSemantic)
 {
 	return HasInputElem(Core::Material3D::GetSemanticStrings().at(inputSemantic).inputSemantic);
 }
 
-const std::vector<Core::Transform>& Core::Model::ReadInstances()
+const std::vector<Core::Transform>& Core::MeshModel::ReadInstances()
 {
 	if (mInstances.empty())
 	{
@@ -119,12 +119,12 @@ const std::vector<Core::Transform>& Core::Model::ReadInstances()
 	return mInstances;
 }
 
-const std::vector<Core::Transform>& Core::Model::GetInstances() const
+const std::vector<Core::Transform>& Core::MeshModel::GetInstances() const
 {
 	return mInstances;
 }
 
-void Core::Model::ReadModel()
+void Core::MeshModel::ReadModel()
 {
 	using namespace DirectX;
 	Core::BinIfstream file{ mpApplication, "../Resources/Model/" + mFileName + "." + mFileExtension };

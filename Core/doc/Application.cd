@@ -29,14 +29,10 @@
       <Method Name="WindowsProcedure" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>UgJQqEAAABACgQBEBMBAEAJAAAASABihCQQgCMKAqAY=</HashCode>
+      <HashCode>UgJQKEAAABACgQAEBABAEAJBAAASABihCQQhAMKAqAY=</HashCode>
       <FileName>include\Application.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mTextureR" />
-      <Field Name="mModelR" />
-      <Field Name="mMaterial2DR" />
-      <Field Name="mMaterial3DR" />
       <Field Name="mServiceLocator" />
     </ShowAsAssociation>
   </Class>
@@ -99,18 +95,18 @@
       <Field Name="mpWindow" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Ion::Core::Resource&lt;T&gt;">
-    <Position X="7.25" Y="1" Width="2.25" />
+  <Class Name="Ion::Core::ResourceManager">
+    <Position X="7.25" Y="1" Width="2.5" />
     <Members>
-      <Method Name="~Resource" Hidden="true" />
-      <Method Name="DecrementReference" Hidden="true" />
-      <Method Name="IncrementReference" Hidden="true" />
+      <Method Name="~ResourceManager" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="GetApplication" Hidden="true" />
       <Method Name="operator=" Hidden="true" />
-      <Method Name="Resource" Hidden="true" />
+      <Method Name="ResourceManager" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAEAIAAAAAAkAAAABAAAQIACAAAAAAAgAARAAAA=</HashCode>
-      <FileName>include\Resource.h</FileName>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAEAAAQAABAAAAAAAgCARIAAA=</HashCode>
+      <FileName>include\ResourceManager.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpApplication" />

@@ -37,9 +37,6 @@
     <Filter Include="Texture">
       <UniqueIdentifier>{9b7bd6b1-8973-476a-98b4-6b2324517d7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Canvas">
       <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
     </Filter>
@@ -130,14 +127,17 @@
     <Filter Include="ServiceLocator\StatsWriter">
       <UniqueIdentifier>{5c5b75a6-dfca-4592-83dd-d1e65ad15be9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\ViewC\ModelVC">
-      <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\Terrain">
       <UniqueIdentifier>{4eb9e2a3-84a5-4aaf-a990-2874dc694f23}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshModel">
+      <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\ViewC\MeshModelVC">
+      <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -196,13 +196,13 @@
       <Filter>Material</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimationClip.h">
-      <Filter>Model</Filter>
+      <Filter>MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimationKey.h">
-      <Filter>Model</Filter>
+      <Filter>MeshModel</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="include\MeshModel.h">
+      <Filter>MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="include\Object.h">
       <Filter>Object</Filter>
@@ -403,16 +403,16 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimatedMVC.h">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedAnimatedMVC.h">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedMVC.h">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
-    <ClInclude Include="include\ModelVC.h">
-      <Filter>Component\ViewC\ModelVC</Filter>
+    <ClInclude Include="include\MeshModelVC.h">
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\TerrainVC.h">
       <Filter>Component\ViewC</Filter>
@@ -430,6 +430,21 @@
       <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextureResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Material2DResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Material3DResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshModelResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
@@ -497,14 +512,14 @@
     <ClCompile Include="ViewST.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="MeshModel.cpp">
+      <Filter>MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
-      <Filter>Model</Filter>
+      <Filter>MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="AnimationKey.cpp">
-      <Filter>Model</Filter>
+      <Filter>MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="BinIfstream.cpp">
       <Filter>Helper</Filter>
@@ -618,22 +633,40 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedMVC.cpp">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedAnimatedMVC.cpp">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedMVC.cpp">
-      <Filter>Component\ViewC\ModelVC</Filter>
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
-    <ClCompile Include="ModelVC.cpp">
-      <Filter>Component\ViewC\ModelVC</Filter>
+    <ClCompile Include="MeshModelVC.cpp">
+      <Filter>Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="TerrainVC.cpp">
       <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="MeshVC.cpp">
       <Filter>Component\ViewC</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Material2DResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Material3DResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshModelResource.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -677,9 +710,6 @@
     <None Include="doc\Application.cd">
       <Filter>Documentation</Filter>
     </None>
-    <None Include="doc\ClassDiagram.cd">
-      <Filter>Documentation</Filter>
-    </None>
     <None Include="doc\Command.cd">
       <Filter>Documentation</Filter>
     </None>
@@ -705,6 +735,9 @@
       <Filter>Documentation</Filter>
     </None>
     <None Include="doc\ViewST.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\ResourceManager.cd">
       <Filter>Documentation</Filter>
     </None>
   </ItemGroup>

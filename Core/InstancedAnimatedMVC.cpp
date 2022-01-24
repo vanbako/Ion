@@ -5,14 +5,14 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
-#include "Model.h"
+#include "MeshModel.h"
 #include "Canvas.h"
 #include "InstancedTransformMC.h"
 
 using namespace Ion;
 
 Core::InstancedAnimatedMVC::InstancedAnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
-	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
+	: MeshModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mpInstancedTransform{ nullptr }
 	, mpInstanceBuffer{}
 	, mInstanceBufferData{}
@@ -63,9 +63,9 @@ void Core::InstancedAnimatedMVC::SetAnimation(const Core::AnimationClip& animati
 
 void Core::InstancedAnimatedMVC::SetAnimation(std::size_t clipNumber)
 {
-	if (clipNumber >= mpModel->GetAnimationClips().size())
+	if (clipNumber >= mpMeshModel->GetAnimationClips().size())
 		return;
-	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
+	SetAnimation(mpMeshModel->GetAnimationClips()[clipNumber]);
 }
 
 void Core::InstancedAnimatedMVC::SetIsAnimating(bool isAnimating)
@@ -78,7 +78,7 @@ void Core::InstancedAnimatedMVC::SetIsAnimating(bool isAnimating)
 
 void Core::InstancedAnimatedMVC::Initialize()
 {
-	Core::ModelVC::Initialize();
+	Core::MeshModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 	{
@@ -132,7 +132,7 @@ void Core::InstancedAnimatedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
-	Core::ModelVC::Update(delta);
+	Core::MeshModelVC::Update(delta);
 	if (!(mIsAnimating && mIsClipSet))
 		return;
 

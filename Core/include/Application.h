@@ -1,10 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "Resource.h"
-#include "Texture.h"
-#include "Model.h"
-#include "Material2D.h"
-#include "Material3D.h"
+#include "ResourceManager.h"
 #include "Window.h"
 #include "PxIonAllocatorCallback.h"
 #include "PxIonErrorCallback.h"
@@ -44,16 +40,7 @@ namespace Ion
 			physx::PxCooking* GetPxCooking();
 			const physx::PxTolerancesScale& GetToleranceScale();
 			Core::ServiceLocator& GetServiceLocator();
-			template<class T>
-			Core::Resource<T>* GetResource() { return nullptr; }
-			template<>
-			Core::Resource<Texture>* GetResource() { return &mTextureR; }
-			template<>
-			Core::Resource<Model>* GetResource() { return &mModelR; }
-			template<>
-			Core::Resource<Material2D>* GetResource() { return &mMaterial2DR; }
-			template<>
-			Core::Resource<Material3D>* GetResource() { return &mMaterial3DR; }
+			ResourceManager* GetResourceManager();
 		private:
 			static const std::chrono::milliseconds
 				mRunSleep,
@@ -66,10 +53,7 @@ namespace Ion
 			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Core::Scene> mScenes;
 			std::list<Core::Window> mWindows;
-			Core::Resource<Texture> mTextureR;
-			Core::Resource<Model> mModelR;
-			Core::Resource<Material2D> mMaterial2DR;
-			Core::Resource<Material3D> mMaterial3DR;
+			Core::ResourceManager mResourceManager;
 			Microsoft::WRL::ComPtr<IDXGIFactory5> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device5> mpD3d12Device;
 			Microsoft::WRL::ComPtr<IDXGIDevice1> mpDxgiDevice;

@@ -1,5 +1,5 @@
 #pragma once
-#include "ModelVC.h"
+#include "MeshModelVC.h"
 #include "InstanceBuffer.h"
 
 // Instanced Model View Component
@@ -11,12 +11,12 @@ namespace Ion
 		class Object;
 		class Material3D;
 		class Canvas3D;
-		class Model;
+		class MeshModel;
 		class Texture;
 		class InstancedTransformMC;
 
 		class InstancedMVC final
-			: public Core::ModelVC
+			: public Core::MeshModelVC
 		{
 		public:
 			explicit InstancedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);

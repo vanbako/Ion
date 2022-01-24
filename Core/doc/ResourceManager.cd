@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::ResourceManager">
+    <Position X="3.25" Y="0.5" Width="2.5" />
+    <Members>
+      <Method Name="~ResourceManager" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="GetApplication" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ResourceManager" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAEAAAQAABAAAAAAAgCARIAAA=</HashCode>
+      <FileName>include\ResourceManager.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpApplication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Resource" Collapsed="true">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAEAIAAAAAAkAAAABAAAQAACAAAAAAAgAABAAAA=</HashCode>
+      <FileName>include\Resource.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpResourceManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::TextureResource">
+    <Position X="4.5" Y="3" Width="1.75" />
+    <Members>
+      <Method Name="~TextureResource" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="TextureResource" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAwAAAAAAAAAAAAABAAAAAAQgAABAAAA=</HashCode>
+      <FileName>include\TextureResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Application" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UgJQKEAAABACgQAEBABAEAJBAAASABihCQQhAMKAqAY=</HashCode>
+      <FileName>include\Application.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::MeshModelResource">
+    <Position X="6.5" Y="3" Width="1.75" />
+    <Members>
+      <Method Name="~MeshModelResource" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="MeshModelResource" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAEAAAAAAAAAAAAgAAAAABAAAAAAAgAAJAAAA=</HashCode>
+      <FileName>include\MeshModelResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Material3DResource">
+    <Position X="8.5" Y="3" Width="1.75" />
+    <Members>
+      <Method Name="~Material3DResource" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="Material3DResource" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAIAAAAAAAAAAAAAAAAABAAAABAAoAABAAAA=</HashCode>
+      <FileName>include\Material3DResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Material2DResource">
+    <Position X="10.5" Y="3" Width="1.75" />
+    <Members>
+      <Method Name="~Material2DResource" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="Material2DResource" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAIAAAAAAAAAEAAAAAAABAAAABAAgAABAAAA=</HashCode>
+      <FileName>include\Material2DResource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

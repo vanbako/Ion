@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "Application.h"
+#include "TextureResource.h"
+#include "MeshModelResource.h"
+#include "Material2DResource.h"
+#include "Material3DResource.h"
 #include "Logger.h"
 #include <timeapi.h>
 
@@ -31,10 +35,7 @@ Core::Application::Application()
 	, mKeyboardMutex{}
 	, mScenes{}
 	, mWindows{}
-	, mTextureR{ this }
-	, mModelR{ this }
-	, mMaterial2DR{ this }
-	, mMaterial3DR{ this }
+	, mResourceManager{ this }
 	, mpDxgiFactory{}
 	, mpD3d12Device{}
 	, mpDxgiDevice{}
@@ -46,6 +47,10 @@ Core::Application::Application()
 	, mpCooking{ nullptr }
 	, mServiceLocator{}
 {
+	mResourceManager.AddResource<TextureResource>();
+	mResourceManager.AddResource<MeshModelResource>();
+	mResourceManager.AddResource<Material2DResource>();
+	mResourceManager.AddResource<Material3DResource>();
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc = AppWinProc;
@@ -71,10 +76,7 @@ Core::Application::~Application()
 	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
 	mWindows.clear();
-	mTextureR.Clear();
-	mModelR.Clear();
-	mMaterial2DR.Clear();
-	mMaterial3DR.Clear();
+	//mResourceManager.Clear();
 
 	mpCooking->release();
 	physx::PxFoundation& foundation{ mpPhysics->getFoundation() };
@@ -247,6 +249,11 @@ const physx::PxTolerancesScale& Core::Application::GetToleranceScale()
 Core::ServiceLocator& Core::Application::GetServiceLocator()
 {
 	return mServiceLocator;
+}
+
+Core::ResourceManager* Core::Application::GetResourceManager()
+{
+	return &mResourceManager;
 }
 
 void Core::Application::KeyboardState()

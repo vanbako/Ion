@@ -42,6 +42,13 @@
   </Class>
   <Class Name="Ion::Core::Scene" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="2" />
+    <AssociationLine Name="mpModelST" Type="Ion::Core::ModelST" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.938" Y="1.062" />
+        <Point X="1.938" Y="3.366" />
+        <Point X="3.75" Y="3.366" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
@@ -103,6 +110,12 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <AssociationLine Name="mpScene" Type="Ion::Core::Scene" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="4.5" />
+        <Point X="1.5" Y="1.062" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQhgAQxJAKBAgAQYQAAg=</HashCode>
       <FileName>include\Object.h</FileName>

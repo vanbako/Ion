@@ -16,19 +16,19 @@ namespace Ion
 		class Object;
 		class Material3D;
 		class Canvas;
-		class Model;
+		class MeshModel;
 		class Texture;
 
-		class ModelVC
+		class MeshModelVC
 			: public ViewC
 		{
 		public:
-			explicit ModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
-			virtual ~ModelVC();
-			ModelVC(const ModelVC& other) = default;
-			ModelVC(ModelVC&& other) noexcept = default;
-			ModelVC& operator=(const ModelVC& other) = default;
-			ModelVC& operator=(ModelVC&& other) noexcept = default;
+			explicit MeshModelVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
+			virtual ~MeshModelVC();
+			MeshModelVC(const MeshModelVC& other) = default;
+			MeshModelVC(MeshModelVC&& other) noexcept = default;
+			MeshModelVC& operator=(const MeshModelVC& other) = default;
+			MeshModelVC& operator=(MeshModelVC&& other) noexcept = default;
 
 			void AddTexture(Core::TextureType textureType, const std::string& name);
 			void SetShininess(float shininess);
@@ -38,7 +38,7 @@ namespace Ion
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); return false; };
 		protected:
 			std::string mName;
-			Core::Model* mpModel;
+			Core::MeshModel* mpMeshModel;
 			char* mpVertices;
 			std::size_t
 				mIndexCount,

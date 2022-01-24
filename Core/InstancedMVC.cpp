@@ -12,7 +12,7 @@
 using namespace Ion;
 
 Core::InstancedMVC::InstancedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
-	: ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
+	: MeshModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mpInstancedTransform{ nullptr }
 	, mpInstanceBuffer{}
 	, mInstanceBufferData{}
@@ -42,7 +42,7 @@ void Core::InstancedMVC::SetInstancedTransform(InstancedTransformMC* pInstancedT
 
 void Core::InstancedMVC::Initialize()
 {
-	Core::ModelVC::Initialize();
+	Core::MeshModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 	{
@@ -66,7 +66,7 @@ void Core::InstancedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
-	Core::ModelVC::Update(delta);
+	Core::MeshModelVC::Update(delta);
 }
 
 bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)

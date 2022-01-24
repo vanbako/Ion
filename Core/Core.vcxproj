@@ -125,15 +125,18 @@
     <ClInclude Include="include\KeyboardState.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Material2D.h" />
+    <ClInclude Include="include\Material2DResource.h" />
     <ClInclude Include="include\Material3D.h" />
+    <ClInclude Include="include\Material3DResource.h" />
     <ClInclude Include="include\MeshType.h" />
     <ClInclude Include="include\MeshVC.h" />
     <ClInclude Include="include\MeshVCConstantBuffer.h" />
-    <ClInclude Include="include\Model.h" />
+    <ClInclude Include="include\MeshModel.h" />
     <ClInclude Include="include\ModelC.h" />
     <ClInclude Include="include\ModelFormat.h" />
+    <ClInclude Include="include\MeshModelResource.h" />
     <ClInclude Include="include\ModelST.h" />
-    <ClInclude Include="include\ModelVC.h" />
+    <ClInclude Include="include\MeshModelVC.h" />
     <ClInclude Include="include\MoveBackCmd.h" />
     <ClInclude Include="include\MoveCommand.h" />
     <ClInclude Include="include\MoveDownCmd.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="include\Quadrilateral.h" />
     <ClInclude Include="include\ReceiverMC.h" />
     <ClInclude Include="include\Resource.h" />
+    <ClInclude Include="include\ResourceManager.h" />
     <ClInclude Include="include\RotateLeftCmd.h" />
     <ClInclude Include="include\RotateRightCmd.h" />
     <ClInclude Include="include\Scene.h" />
@@ -169,6 +173,7 @@
     <ClInclude Include="include\SteeringRMC.h" />
     <ClInclude Include="include\TerrainVC.h" />
     <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\TextureResource.h" />
     <ClInclude Include="include\TextureType.h" />
     <ClInclude Include="include\TextVC.h" />
     <ClInclude Include="include\ThreadAction.h" />
@@ -212,12 +217,15 @@
     <ClCompile Include="InstancedTransformMC.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Material2D.cpp" />
+    <ClCompile Include="Material2DResource.cpp" />
     <ClCompile Include="Material3D.cpp" />
+    <ClCompile Include="Material3DResource.cpp" />
     <ClCompile Include="MeshVC.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="ModelC.cpp" />
+    <ClCompile Include="MeshModelResource.cpp" />
     <ClCompile Include="ModelST.cpp" />
-    <ClCompile Include="ModelVC.cpp" />
+    <ClCompile Include="MeshModelVC.cpp" />
     <ClCompile Include="MoveBackCmd.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="MoveDownCmd.cpp" />
@@ -241,6 +249,8 @@
     <ClCompile Include="PxIonAllocatorCallback.cpp" />
     <ClCompile Include="PxIonErrorCallback.cpp" />
     <ClCompile Include="ReceiverMC.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RotateLeftCmd.cpp" />
     <ClCompile Include="RotateRightCmd.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -253,6 +263,7 @@
     <ClCompile Include="SteeringRMC.cpp" />
     <ClCompile Include="TerrainVC.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureResource.cpp" />
     <ClCompile Include="TextVC.cpp" />
     <ClCompile Include="TransformMC.cpp" />
     <ClCompile Include="TriangleVC.cpp" />
@@ -263,7 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\Application.cd" />
-    <None Include="doc\ClassDiagram.cd" />
     <None Include="doc\Command.cd" />
     <None Include="doc\Component.cd" />
     <None Include="doc\ControllerST.cd" />
@@ -272,6 +282,7 @@
     </None>
     <None Include="doc\ModelST.cd" />
     <None Include="doc\Object.cd" />
+    <None Include="doc\ResourceManager.cd" />
     <None Include="doc\Scene.cd" />
     <None Include="doc\ServiceLocator.cd" />
     <None Include="doc\ViewST.cd" />

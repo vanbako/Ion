@@ -2,6 +2,7 @@
 #include "Canvas.h"
 #include "Application.h"
 #include "CameraRMC.h"
+#include "Material3D.h"
 #include <timeapi.h>
 
 using namespace Ion;

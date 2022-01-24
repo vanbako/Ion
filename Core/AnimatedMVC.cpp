@@ -5,13 +5,13 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
-#include "Model.h"
+#include "MeshModel.h"
 #include "Canvas.h"
 
 using namespace Ion;
 
 Core::AnimatedMVC::AnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject)
-	: Core::ModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
+	: Core::MeshModelVC(modelName, modelExtension, materialName, isActive, winding, coordSystem, pObject)
 	, mBoneTransforms{}
 	, mAnimationClip{}
 	, mTickCount{ 0.f }
@@ -37,9 +37,9 @@ void Core::AnimatedMVC::SetAnimation(const Core::AnimationClip& animationClip)
 
 void Core::AnimatedMVC::SetAnimation(std::size_t clipNumber)
 {
-	if (clipNumber >= mpModel->GetAnimationClips().size())
+	if (clipNumber >= mpMeshModel->GetAnimationClips().size())
 		return;
-	SetAnimation(mpModel->GetAnimationClips()[clipNumber]);
+	SetAnimation(mpMeshModel->GetAnimationClips()[clipNumber]);
 }
 
 void Core::AnimatedMVC::SetIsAnimating(bool isAnimating)
@@ -52,7 +52,7 @@ void Core::AnimatedMVC::SetIsAnimating(bool isAnimating)
 
 void Core::AnimatedMVC::Initialize()
 {
-	Core::ModelVC::Initialize();
+	Core::MeshModelVC::Initialize();
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
 
@@ -92,7 +92,7 @@ void Core::AnimatedMVC::Update(float delta)
 {
 	if (!mIsActive)
 		return;
-	Core::ModelVC::Update(delta);
+	Core::MeshModelVC::Update(delta);
 	if (!(mIsAnimating && mIsClipSet))
 		return;
 

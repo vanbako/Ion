@@ -121,7 +121,7 @@
   <Class Name="Ion::Core::ViewC" Collapsed="true">
     <Position X="12.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>DIAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <HashCode>DIAAAAAAAAAAAAAAAMAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
       <FileName>include\ViewC.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -135,15 +135,8 @@
   <Class Name="Ion::Core::TerrainVC" Collapsed="true">
     <Position X="12.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BRUAhgBAIAABRwAAQAAAEABAAAAACAAsABUgJBAQAAg=</HashCode>
+      <HashCode>BRUAhgBAIAABRwAAQAAAEABAAAAACAAsABUiJBAQAAg=</HashCode>
       <FileName>include\TerrainVC.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Ion::Core::ModelVC" Collapsed="true">
-    <Position X="14.25" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>BQQABgAAIgAAQQAAQAAAAAAAAAABEAAMABcgJCAYAAg=</HashCode>
-      <FileName>include\ModelVC.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::AnimatedMVC" Collapsed="true">
@@ -165,6 +158,13 @@
     <TypeIdentifier>
       <HashCode>AAQAAAAAAgkAAQQEAAACBACAAAQAEARAABggIgogAAA=</HashCode>
       <FileName>include\InstancedAnimatedMVC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::MeshModelVC" Collapsed="true">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQABiAAIAAAQQAAQAAAQAACAAAAAAAMAB8iJCAYAAg=</HashCode>
+      <FileName>include\MeshModelVC.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "ModelVC.h"
+#include "MeshModelVC.h"
 #include "InstanceBuffer.h"
 #include "TransformMC.h"
 #include "AnimationClip.h"
@@ -14,11 +14,11 @@ namespace Ion
 		class Object;
 		class Material3D;
 		class Canvas3D;
-		class Model;
+		class MeshModel;
 		class Texture;
 
 		class AnimatedMVC final
-			: public Core::ModelVC
+			: public Core::MeshModelVC
 		{
 		public:
 			explicit AnimatedMVC(const std::string& modelName, const std::string& modelExtension, const std::string& materialName, bool isActive, Core::Winding winding, Core::CoordSystem coordSystem, Core::Object* pObject);
