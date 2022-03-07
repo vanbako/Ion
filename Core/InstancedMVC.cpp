@@ -84,6 +84,8 @@ bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
 		return false;
 	if (mInstanceBufferData.empty())
 		return false;
+	if (mpTextures.empty())
+		return false;
 
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 

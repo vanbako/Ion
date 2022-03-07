@@ -23,7 +23,7 @@ namespace Ion
 			Core::Material3D* AddMaterial3D(const std::string& name);
 			void RemoveMaterial3D(const std::string& name);
 		private:
-			std::map<std::string, Core::Material3D*> mpResources;
+			std::unordered_map<std::string, Core::Material3D*> mpMaterial3Ds;
 
 			virtual void Clear() override;
 		};

@@ -26,7 +26,7 @@ namespace Ion
 			bool mIsInitialized;
 			Core::Application* mpApplication;
 			std::string mName;
-			std::map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
+			std::unordered_map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
 		};
 	}
 }

@@ -39,7 +39,7 @@ namespace Ion
 			Core::Application* GetApplication();
 		private:
 			Core::Application* mpApplication;
-			std::map<std::size_t, Resource*> mpResources;
+			std::unordered_map<std::size_t, Resource*> mpResources;
 		};
 	}
 }

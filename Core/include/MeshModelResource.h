@@ -24,7 +24,7 @@ namespace Ion
 			Core::MeshModel* AddMeshModel(const std::string& name, const std::string& fileExtension, Core::Winding winding, Core::CoordSystem coordSystem);
 			void RemoveModel(const std::string& name);
 		private:
-			std::map<std::string, Core::MeshModel*> mpResources;
+			std::unordered_map<std::string, Core::MeshModel*> mpMeshModels;
 
 			virtual void Clear() override;
 		};

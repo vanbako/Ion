@@ -130,14 +130,14 @@
     <Filter Include="Shader\Terrain">
       <UniqueIdentifier>{4eb9e2a3-84a5-4aaf-a990-2874dc694f23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MeshModel">
       <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\ViewC\MeshModelVC">
       <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -430,22 +430,22 @@
       <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\Resource.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="include\ResourceManager.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="include\TextureResource.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="include\Material2DResource.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="include\Material3DResource.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshModelResource.h">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -651,22 +651,22 @@
       <Filter>Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="TextureResource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Material2DResource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Material3DResource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="MeshModelResource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>ResourceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

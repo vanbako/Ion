@@ -23,7 +23,7 @@ namespace Ion
 			std::shared_timed_mutex mMutex;
 			bool mDeleteOnZero;
 #ifdef _DEBUG
-			std::map<std::string, std::size_t> mReferenceCounts;
+			std::unordered_map<std::string, std::size_t> mReferenceCounts;
 
 			void IncrementReference(const std::string& name)
 			{

@@ -7,13 +7,13 @@ using namespace Ion;
 
 Core::TextureResource::TextureResource(Core::ResourceManager* pResourceManager)
 	: Resource(pResourceManager)
-	, mpResources{}
+	, mpTextures{}
 {
 }
 
 Core::TextureResource::~TextureResource()
 {
-	for (auto& pResource : mpResources)
+	for (auto& pResource : mpTextures)
 		delete pResource.second;
 	Clear();
 }
@@ -27,9 +27,9 @@ Core::Texture* Core::TextureResource::AddTexture(const std::string& name)
 #endif
 		return nullptr;
 	}
-	auto it{ mpResources.find(name) };
-	if (it == mpResources.end())
-		it = (mpResources.emplace(name, new Core::Texture{ mpResourceManager->GetApplication(), name })).first;
+	auto it{ mpTextures.find(name) };
+	if (it == mpTextures.end())
+		it = (mpTextures.emplace(name, new Core::Texture{ mpResourceManager->GetApplication(), name })).first;
 #ifdef _DEBUG
 	IncrementReference(name);
 #endif
@@ -42,7 +42,7 @@ Core::Texture* Core::TextureResource::AddTexture(const std::string& name)
 void Core::TextureResource::RemoveTexture(const std::string& name)
 {
 #ifdef _DEBUG
-	if (mpResources.contains(name))
+	if (mpTextures.contains(name))
 		DecrementReference(name);
 #else
 	(name);
@@ -52,5 +52,5 @@ void Core::TextureResource::RemoveTexture(const std::string& name)
 void Core::TextureResource::Clear()
 {
 	Core::Resource::Clear();
-	mpResources.clear();
+	mpTextures.clear();
 }

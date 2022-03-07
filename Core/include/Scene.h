@@ -40,7 +40,7 @@ namespace Ion
 			Core::ControllerST* GetControllerST();
 			physx::PxScene* GetPxScene();
 			physx::PxControllerManager* GetPxControllerManager();
-			std::map<const std::string, Core::SceneThread*>& GetSceneThreads();
+			std::unordered_map<std::string, Core::SceneThread*>& GetSceneThreads();
 
 			void Initialize();
 			Core::Object* AddObject(bool isActive);
@@ -81,7 +81,7 @@ namespace Ion
 				mModelCMutex,
 				mViewCMutex;
 			std::list<Core::Object> mObjects;
-			std::map<const std::string, Core::SceneThread*> mpSceneThreads;
+			std::unordered_map<std::string, Core::SceneThread*> mpSceneThreads;
 			Core::ModelST* mpModelST;
 			Core::ControllerST* mpControllerST;
 			Core::ViewST* mpViewST;
@@ -90,7 +90,7 @@ namespace Ion
 			static std::chrono::milliseconds mStatsTime;
 			Core::StatsST* mpStatsST;
 #endif
-			std::map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
+			std::unordered_map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
 			physx::PxScene* mpPxScene;
 			physx::PxControllerManager* mpPxControllerManager;
 		};

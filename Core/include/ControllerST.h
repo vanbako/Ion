@@ -23,7 +23,7 @@ namespace Ion
 		protected:
 			virtual void Inner(float delta) override;
 		private:
-			static const std::map<std::string, int> mKeyNames;
+			static const std::unordered_map<std::string, int> mKeyNames;
 			BYTE mKeyboard[512];
 			PBYTE
 				mpCurrKeyboard,
@@ -31,7 +31,7 @@ namespace Ion
 
 			void Input();
 
-			std::map<int, std::vector<std::pair<Core::Command*, Core::InputCC*>>> mCommands;
+			std::unordered_map<int, std::vector<std::pair<Core::Command*, Core::InputCC*>>> mCommands;
 		};
 	}
 }

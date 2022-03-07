@@ -22,7 +22,7 @@ namespace Ion
 		private:
 			void Stats(std::pair<Core::SceneThread*, std::ofstream>& pSceneThread);
 
-			std::map<const std::string, std::pair<Core::SceneThread*, std::ofstream>> mpSceneThreads;
+			std::unordered_map<std::string, std::pair<Core::SceneThread*, std::ofstream>> mpSceneThreads;
 			std::chrono::milliseconds mStats[mStatMax];
 			std::size_t mStatSeqs[mStatMax];
 		};

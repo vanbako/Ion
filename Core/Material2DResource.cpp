@@ -7,13 +7,13 @@ using namespace Ion;
 
 Core::Material2DResource::Material2DResource(Core::ResourceManager* pResourceManager)
 	: Resource(pResourceManager)
-	, mpResources{}
+	, mpMaterial2Ds{}
 {
 }
 
 Core::Material2DResource::~Material2DResource()
 {
-	for (auto& pResource : mpResources)
+	for (auto& pResource : mpMaterial2Ds)
 		delete pResource.second;
 	Clear();
 }
@@ -27,9 +27,9 @@ Core::Material2D* Core::Material2DResource::AddMaterial2D(const std::string& nam
 #endif
 		return nullptr;
 	}
-	auto it{ mpResources.find(name) };
-	if (it == mpResources.end())
-		it = (mpResources.emplace(name, new Core::Material2D{ mpResourceManager->GetApplication(), name })).first;
+	auto it{ mpMaterial2Ds.find(name) };
+	if (it == mpMaterial2Ds.end())
+		it = (mpMaterial2Ds.emplace(name, new Core::Material2D{ mpResourceManager->GetApplication(), name })).first;
 #ifdef _DEBUG
 	IncrementReference(name);
 #endif
@@ -42,7 +42,7 @@ Core::Material2D* Core::Material2DResource::AddMaterial2D(const std::string& nam
 void Core::Material2DResource::RemoveMaterial2D(const std::string& name)
 {
 #ifdef _DEBUG
-	if (mpResources.contains(name))
+	if (mpMaterial2Ds.contains(name))
 		DecrementReference(name);
 #else
 	(name);
@@ -52,5 +52,5 @@ void Core::Material2DResource::RemoveMaterial2D(const std::string& name)
 void Core::Material2DResource::Clear()
 {
 	Core::Resource::Clear();
-	mpResources.clear();
+	mpMaterial2Ds.clear();
 }

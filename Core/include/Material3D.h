@@ -1,6 +1,7 @@
 #pragma once
 #include "TextureType.h"
 #include "SemanticInfo.h"
+#include <dxcapi.h>
 
 namespace Ion
 {
@@ -31,11 +32,11 @@ namespace Ion
 
 			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC);
 
-			static const std::map<std::string, Core::SemanticInfo>& GetSemanticStrings();
+			static const std::unordered_map<std::string, Core::SemanticInfo>& GetSemanticStrings();
 		private:
 			static const UINT mMaxInputParam;
-			static const std::map<std::string, Core::SemanticInfo> mSemanticStrings;
-			static const std::map<std::string, Core::TextureType> mTextureTypeStrings;
+			static const std::unordered_map<std::string, Core::SemanticInfo> mSemanticStrings;
+			static const std::unordered_map<std::string, Core::TextureType> mTextureTypeStrings;
 
 			bool mIsInitialized;
 			Core::Application* mpApplication;
@@ -52,7 +53,7 @@ namespace Ion
 				mConstantBufferCount,
 				mInputElementCount,
 				mLayoutSize;
-			std::map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
+			std::unordered_map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
 			std::set<Core::TextureType> mTextureTypes;
 		};
 	}

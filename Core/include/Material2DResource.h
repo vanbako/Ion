@@ -22,7 +22,7 @@ namespace Ion
 			Core::Material2D* AddMaterial2D(const std::string& name);
 			void RemoveMaterial2D(const std::string& name);
 		private:
-			std::map<std::string, Core::Material2D*> mpResources;
+			std::unordered_map<std::string, Core::Material2D*> mpMaterial2Ds;
 
 			virtual void Clear() override;
 		};

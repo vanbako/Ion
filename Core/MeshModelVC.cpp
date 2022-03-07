@@ -296,8 +296,8 @@ void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTabl
 	{
 		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
 		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
+		//CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
+		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, pair.second->GetGPUDescriptorHandleForHeapStart());
 		++dsTable;
 	}
 }

@@ -7,13 +7,13 @@ using namespace Ion;
 
 Core::MeshModelResource::MeshModelResource(Core::ResourceManager* pResourceManager)
 	: Resource(pResourceManager)
-	, mpResources{}
+	, mpMeshModels{}
 {
 }
 
 Core::MeshModelResource::~MeshModelResource()
 {
-	for (auto& pResource : mpResources)
+	for (auto& pResource : mpMeshModels)
 		delete pResource.second;
 	Clear();
 }
@@ -27,9 +27,9 @@ Core::MeshModel* Core::MeshModelResource::AddMeshModel(const std::string& name, 
 #endif
 		return nullptr;
 	}
-	auto it{ mpResources.find(name) };
-	if (it == mpResources.end())
-		it = (mpResources.emplace(name, new Core::MeshModel{ mpResourceManager->GetApplication(), name, fileExtension, winding, coordSystem })).first;
+	auto it{ mpMeshModels.find(name) };
+	if (it == mpMeshModels.end())
+		it = (mpMeshModels.emplace(name, new Core::MeshModel{ mpResourceManager->GetApplication(), name, fileExtension, winding, coordSystem })).first;
 #ifdef _DEBUG
 	IncrementReference(name);
 #endif
@@ -42,7 +42,7 @@ Core::MeshModel* Core::MeshModelResource::AddMeshModel(const std::string& name, 
 void Core::MeshModelResource::RemoveModel(const std::string& name)
 {
 #ifdef _DEBUG
-	if (mpResources.contains(name))
+	if (mpMeshModels.contains(name))
 		DecrementReference(name);
 #else
 	(name);
@@ -52,5 +52,5 @@ void Core::MeshModelResource::RemoveModel(const std::string& name)
 void Core::MeshModelResource::Clear()
 {
 	Core::Resource::Clear();
-	mpResources.clear();
+	mpMeshModels.clear();
 }

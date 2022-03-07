@@ -23,7 +23,7 @@ namespace Ion
 			Core::Texture* AddTexture(const std::string& name);
 			void RemoveTexture(const std::string& name);
 		private:
-			std::map<std::string, Core::Texture*> mpResources;
+			std::unordered_map<std::string, Core::Texture*> mpTextures;
 
 			virtual void Clear() override;
 		};

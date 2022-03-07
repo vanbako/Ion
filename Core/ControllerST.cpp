@@ -7,7 +7,7 @@
 
 using namespace Ion;
 
-const std::map<std::string, int> Core::ControllerST::mKeyNames{
+const std::unordered_map<std::string, int> Core::ControllerST::mKeyNames{
 	{ "VK_LBUTTON", VK_LBUTTON },
 	{ "VK_RBUTTON", VK_RBUTTON },
 	{ "VK_CANCEL", VK_CANCEL },
@@ -247,7 +247,7 @@ Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::milliseconds 
 // If you really need to, make it thread-safe :-)
 void Core::ControllerST::Register(Core::InputCC* pInvoker, const std::string& name, const std::vector<std::pair<std::string, Core::Command*>>& commands)
 {
-	std::map<std::string, std::string> nameValues{};
+	std::unordered_map<std::string, std::string> nameValues{};
 	std::string
 		nm{},
 		vl{};

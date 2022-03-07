@@ -140,7 +140,7 @@ physx::PxControllerManager* Core::Scene::GetPxControllerManager()
 	return mpPxControllerManager;
 }
 
-std::map<const std::string, Core::SceneThread*>& Core::Scene::GetSceneThreads()
+std::unordered_map<std::string, Core::SceneThread*>& Core::Scene::GetSceneThreads()
 {
 	return mpSceneThreads;
 }

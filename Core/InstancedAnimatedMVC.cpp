@@ -202,6 +202,8 @@ bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
 		return false;
 	if (!mIsActive)
 		return false;
+	if (mpTextures.empty())
+		return false;
 
 	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
