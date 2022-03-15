@@ -31,7 +31,7 @@ namespace Ion
 
 			virtual void Initialize() override;
 			virtual void Update(float delta) override;
-			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial) override;
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq) override;
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial) override { (pCanvas); (pMaterial); return false; };
 		private:
 			const std::string mFileName;

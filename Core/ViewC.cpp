@@ -18,6 +18,7 @@ Core::ViewC::ViewC(bool isActive, Core::Object* pObject, const std::string& mate
 	, mpMaterial3D{ nullptr }
 	, mpMaterial2D{ nullptr }
 	, mpCanvases{}
+	, mpCube{ nullptr }
 {
 	if (material3D != "")
 	{
@@ -39,6 +40,26 @@ Core::ViewC::~ViewC()
 		mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<Material2DResource>()->RemoveMaterial2D(mMaterial2D);
 }
 
+void Core::ViewC::Update(float)
+{
+	TransformMC* pTransform{ mpObject->GetModelC<TransformMC>() };
+	if (!mIsActive || (mpMaterial3D == nullptr) || (mpCube == nullptr) || !pTransform->GetHasMoved())
+		return;
+	pTransform->SetHasMoved(true);
+	for (Core::Canvas* pCanvas : mpCanvases)
+		mpMaterial3D->MoveViewC(pCanvas, this, mpCube);
+}
+
+void Core::ViewC::SetCube(Core::Cube* pCube)
+{
+	mpCube = pCube;
+}
+
+Core::Cube* Core::ViewC::GetCube()
+{
+	return mpCube;
+}
+
 void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)
 {
 	if (mpMaterial3D != nullptr)
@@ -52,10 +73,11 @@ void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)
 		pCanvas->AddMaterial(mpMaterial2D);
 }
 
-bool Core::ViewC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::ViewC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
 {
 	(pCanvas);
 	(pMaterial);
+	(distSq);
 	return mpObject->GetScene()->GetIsActive();
 }
 

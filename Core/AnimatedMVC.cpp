@@ -149,7 +149,7 @@ void Core::AnimatedMVC::Update(float delta)
 	}
 }
 
-bool Core::AnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::AnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
 {
 	if (!mIsInitialized)
 	{
@@ -158,7 +158,7 @@ bool Core::AnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 #endif
 		return false;
 	}
-	if (!Core::ViewC::Render(pCanvas, pMaterial))
+	if (!Core::ViewC::Render(pCanvas, pMaterial, distSq))
 		return false;
 	if (!mIsActive)
 		return false;

@@ -7,6 +7,7 @@
 
 using namespace Ion;
 
+Core::Vector<long long> Core::Material3D::mCubeSize{ 100, 100, 100 };
 const UINT Core::Material3D::mMaxInputParam{ 20 };
 const std::unordered_map<std::string, Core::SemanticInfo> Core::Material3D::mSemanticStrings
 {
@@ -48,7 +49,7 @@ Core::Material3D::Material3D(Core::Application* pApplication, const std::string&
 	, mConstantBufferCount{ 0 }
 	, mInputElementCount{ 0 }
 	, mLayoutSize{ 0 }
-	, mpCanvasViewCs{}
+	, mpCanvasCubes{}
 {
 	auto pDevice{ mpApplication->GetDevice() };
 #ifdef _DEBUG
@@ -185,9 +186,9 @@ void Core::Material3D::Render(Core::Canvas* pCanvas)
 
 	pCanvas->SetDescriptor();
 
-	auto& pViewCs{ mpCanvasViewCs[pCanvas] };
-	for (auto pViewC : pViewCs)
-		pViewC->Render(pCanvas, this);
+	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
+	for (auto& cube : cubes)
+		cube.second.Render(pCanvas, this);
 }
 
 const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Core::Material3D::GetRootSignature()
@@ -222,10 +223,96 @@ const std::set<Core::TextureType>& Core::Material3D::GetTextureTypeSet() const
 
 void Core::Material3D::AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC)
 {
-	mpCanvasViewCs[pCanvas].emplace_back(pViewC);
+	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
+	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition()};
+	long long
+		x{ long long(pos.x) },
+		y{ long long(pos.y) },
+		z{ long long(pos.z) };
+	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
+	long long key{ x * x + y * y + z * z };
+	std::multimap<long long, Core::Cube>::iterator itCube{ cubes.end() };
+	for(auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
+		while (it != cubes.upper_bound(key))
+			if ((*it).second.GetLocation() == cubePos)
+			{
+				itCube = it;
+				break;
+			}
+	if (itCube == cubes.end())
+	{
+		itCube = cubes.emplace(key, this);
+		(*itCube).second.SetLocation(cubePos);
+	}
+	(*itCube).second.AddViewC(false, pViewC);
+	pViewC->SetCube(&(*itCube).second);
 }
 
 const std::unordered_map<std::string, Core::SemanticInfo>& Core::Material3D::GetSemanticStrings()
 {
 	return mSemanticStrings;
+}
+
+// If new pos is in the same cube as current pos
+//   return
+// hasmoved = true in current
+// if exists in new cube
+//   hasmoved = false in new
+// else
+//   add in new with hasMoved = false
+
+void Ion::Core::Material3D::MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::Cube* pCurrCube)
+{
+	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
+	long long
+		x{ long long(pos.x) },
+		y{ long long(pos.y) },
+		z{ long long(pos.z) };
+	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
+	if (pCurrCube->GetLocation() == cubePos)
+		return;
+	pCurrCube->SetHasMoved(pViewC, true);
+	long long int key{ x * x + y * y + z * z };
+	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
+	std::multimap<long long, Cube>::iterator itCube{ cubes.end() };
+	for (auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
+		while (it != cubes.upper_bound(key))
+			if ((*it).second.GetLocation() == cubePos)
+			{
+				itCube = it;
+				break;
+			}
+	if (itCube == cubes.end())
+	{
+		itCube = cubes.emplace(key, this);
+		(*itCube).second.SetLocation(cubePos);
+	}
+	(*itCube).second.AddViewCCheckExistence(false, pViewC);
+	pViewC->SetCube(&(*itCube).second);
+}
+
+void Core::Material3D::AddViewCToCube(std::multimap<long long, Core::Cube>& cubes, Core::ViewC* pViewC)
+{
+	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
+	long long
+		x{ long long(pos.x) },
+		y{ long long(pos.y) },
+		z{ long long(pos.z) };
+	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
+	long long int key{ x * x + y * y + z * z };
+	std::multimap<long long, Cube>::iterator itCube{ cubes.end() };
+	for(auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
+		while (it != cubes.upper_bound(key))
+			if ((*it).second.GetLocation() == cubePos)
+			{
+				itCube = it;
+				break;
+			}
+	if (itCube == cubes.end())
+	{
+		itCube = cubes.emplace(key, this);
+		(*itCube).second.SetLocation(cubePos);
+	}
+	(*itCube).second.AddViewC(false, pViewC);
+	pViewC->SetCube(&(*itCube).second);
 }

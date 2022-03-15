@@ -10,62 +10,17 @@
     <Filter Include="Documentation">
       <UniqueIdentifier>{311127b4-4016-4200-9344-897dd5349d6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Factory">
-      <UniqueIdentifier>{bdfa4e65-c1b1-4ee8-ba22-1e9dbc4d90f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{6ca18f1c-bba7-4260-8db4-d8007b53a12b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PrecompiledHeader">
       <UniqueIdentifier>{44a9aa32-bca8-4ef0-b563-f1109763be4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{f64835f3-042c-4738-8a95-2d9a18aab783}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Material">
-      <UniqueIdentifier>{a83f9b7e-72a8-4475-81ca-3d23d4526eaf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Helper">
       <UniqueIdentifier>{942ad244-e602-49ae-bf02-2f5c8699f04f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command">
-      <UniqueIdentifier>{808bb631-bc16-4bcc-bcac-6c0875879cac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Texture">
-      <UniqueIdentifier>{9b7bd6b1-8973-476a-98b4-6b2324517d7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Canvas">
-      <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Window">
       <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
     </Filter>
     <Filter Include="PhysX">
       <UniqueIdentifier>{7a337638-d083-45a3-bec0-a6bf415ffcdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator">
-      <UniqueIdentifier>{176e75a0-3fec-41ea-be99-1ebe5ffadf6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator\Audio">
-      <UniqueIdentifier>{833da238-a6e3-4915-9b23-84771b458643}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator\Logger">
-      <UniqueIdentifier>{7ad3b09f-4809-4c24-a05d-be0b7c255347}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ModelC">
-      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ModelC\ReceiverMC">
-      <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ControllerC">
-      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ViewC">
-      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Enum">
       <UniqueIdentifier>{fdde2177-c662-4fc4-bdf5-a36ac7f8861f}</UniqueIdentifier>
@@ -115,29 +70,83 @@
     <Filter Include="Shader\Input">
       <UniqueIdentifier>{32bf445a-2d98-45ec-bfa5-1d105ec78e09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\ModelC\ReceiverMC\SteeringRMC">
-      <UniqueIdentifier>{3b355340-b61f-4bda-a5a6-58a4e5fb88ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Steering">
-      <UniqueIdentifier>{e1fcea85-41f0-4282-996e-8019f31e6972}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Move">
-      <UniqueIdentifier>{444ae89a-538f-456e-b0bf-547644c50fc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator\StatsWriter">
-      <UniqueIdentifier>{5c5b75a6-dfca-4592-83dd-d1e65ad15be9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\Terrain">
       <UniqueIdentifier>{4eb9e2a3-84a5-4aaf-a990-2874dc694f23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MeshModel">
-      <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ViewC\MeshModelVC">
-      <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Canvas">
+      <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager\Texture">
+      <UniqueIdentifier>{9b7bd6b1-8973-476a-98b4-6b2324517d7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager\Material">
+      <UniqueIdentifier>{a83f9b7e-72a8-4475-81ca-3d23d4526eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager\MeshModel">
+      <UniqueIdentifier>{e423941c-88fd-4639-b09b-ceadb94a4514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene">
+      <UniqueIdentifier>{f64835f3-042c-4738-8a95-2d9a18aab783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object">
+      <UniqueIdentifier>{6ca18f1c-bba7-4260-8db4-d8007b53a12b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component">
+      <UniqueIdentifier>{64756865-9de9-4900-b9d0-1b034be32a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ModelC">
+      <UniqueIdentifier>{02aa49ba-5b40-4f4b-9548-8305cf370d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ModelC\ReceiverMC">
+      <UniqueIdentifier>{f8a1785b-844e-4934-8a04-98e069bc97e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC">
+      <UniqueIdentifier>{3b355340-b61f-4bda-a5a6-58a4e5fb88ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ControllerC">
+      <UniqueIdentifier>{0f6db336-0847-4060-a6a6-d48e1a69043d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ViewC">
+      <UniqueIdentifier>{eb95efd8-ce66-43a3-9d72-84a8c53d8cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ViewC\MeshModelVC">
+      <UniqueIdentifier>{6b272b79-c8f3-4bef-a815-4abc327599a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern">
+      <UniqueIdentifier>{be083501-e1af-467c-9407-70c1742409ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command">
+      <UniqueIdentifier>{808bb631-bc16-4bcc-bcac-6c0875879cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command\Steering">
+      <UniqueIdentifier>{e1fcea85-41f0-4282-996e-8019f31e6972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command\Move">
+      <UniqueIdentifier>{444ae89a-538f-456e-b0bf-547644c50fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Factory">
+      <UniqueIdentifier>{bdfa4e65-c1b1-4ee8-ba22-1e9dbc4d90f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator">
+      <UniqueIdentifier>{176e75a0-3fec-41ea-be99-1ebe5ffadf6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator\Audio">
+      <UniqueIdentifier>{833da238-a6e3-4915-9b23-84771b458643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator\Logger">
+      <UniqueIdentifier>{7ad3b09f-4809-4c24-a05d-be0b7c255347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator\StatsWriter">
+      <UniqueIdentifier>{5c5b75a6-dfca-4592-83dd-d1e65ad15be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\SceneThread">
+      <UniqueIdentifier>{0d61cdcd-2c48-423d-8d29-004b1c276f0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Cube">
+      <UniqueIdentifier>{401bac89-8c09-4e07-9037-00eac686b061}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,64 +157,64 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="include\Canvas.h">
-      <Filter>Canvas</Filter>
+      <Filter>Window\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="include\Command.h">
-      <Filter>Command</Filter>
+      <Filter>DesignPattern\Command</Filter>
     </ClInclude>
     <ClInclude Include="include\Component.h">
-      <Filter>Component</Filter>
+      <Filter>Application\Scene\Object\Component</Filter>
     </ClInclude>
     <ClInclude Include="include\ControllerC.h">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClInclude>
     <ClInclude Include="include\InputCC.h">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClInclude>
     <ClInclude Include="include\CameraRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\CharacterRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ReceiverMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ModelC.h">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\TransformMC.h">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\TriangleVC.h">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\ViewC.h">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\Factory.h">
-      <Filter>Factory</Filter>
+      <Filter>DesignPattern\Factory</Filter>
     </ClInclude>
     <ClInclude Include="include\BinIfstream.h">
       <Filter>Helper</Filter>
     </ClInclude>
     <ClInclude Include="include\Material2D.h">
-      <Filter>Material</Filter>
+      <Filter>ResourceManager\Material</Filter>
     </ClInclude>
     <ClInclude Include="include\Material3D.h">
-      <Filter>Material</Filter>
+      <Filter>ResourceManager\Material</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimationClip.h">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="include\AnimationKey.h">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshModel.h">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClInclude>
     <ClInclude Include="include\Object.h">
-      <Filter>Object</Filter>
+      <Filter>Application\Scene\Object</Filter>
     </ClInclude>
     <ClInclude Include="include\PxIonAllocatorCallback.h">
       <Filter>PhysX</Filter>
@@ -214,22 +223,7 @@
       <Filter>PhysX</Filter>
     </ClInclude>
     <ClInclude Include="include\Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ControllerST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ModelST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PhysicsST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SceneThread.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ViewST.h">
-      <Filter>Scene</Filter>
+      <Filter>Application\Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\CanvasConstantBuffer.h">
       <Filter>Struct\Buffer</Filter>
@@ -253,7 +247,7 @@
       <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="include\Texture.h">
-      <Filter>Texture</Filter>
+      <Filter>ResourceManager\Texture</Filter>
     </ClInclude>
     <ClInclude Include="include\Transform.h">
       <Filter>Struct</Filter>
@@ -292,22 +286,22 @@
       <Filter>Struct\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="include\Audio.h">
-      <Filter>ServiceLocator\Audio</Filter>
+      <Filter>DesignPattern\ServiceLocator\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\FileLogger.h">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClInclude>
     <ClInclude Include="include\Logger.h">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClInclude>
     <ClInclude Include="include\NullAudio.h">
-      <Filter>ServiceLocator\Audio</Filter>
+      <Filter>DesignPattern\ServiceLocator\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\NullLogger.h">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClInclude>
     <ClInclude Include="include\ServiceLocator.h">
-      <Filter>ServiceLocator</Filter>
+      <Filter>DesignPattern\ServiceLocator</Filter>
     </ClInclude>
     <ClInclude Include="include\MsgType.h">
       <Filter>Enum</Filter>
@@ -319,19 +313,19 @@
       <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\TextVC.h">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveObjectRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\KeyboardState.h">
       <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedTransformMC.h">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClInclude>
     <ClInclude Include="include\Velocity.h">
       <Filter>Struct</Filter>
@@ -340,85 +334,82 @@
       <Filter>Enum</Filter>
     </ClInclude>
     <ClInclude Include="include\BehaviourCC.h">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClInclude>
     <ClInclude Include="include\WanderData.h">
       <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="include\SteeringRMC.h">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedSteeringRMC.h">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ObjectSteeringRMC.h">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClInclude>
     <ClInclude Include="include\SteeringCommand.h">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClInclude>
     <ClInclude Include="include\WanderCmd.h">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveBackCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveCommand.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveDownCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveForwardCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveLeftCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveRightCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\MoveUpCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\RotateLeftCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\RotateRightCmd.h">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClInclude>
     <ClInclude Include="include\SeekCmd.h">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClInclude>
     <ClInclude Include="include\NullStatsWriter.h">
-      <Filter>ServiceLocator\StatsWriter</Filter>
+      <Filter>DesignPattern\ServiceLocator\StatsWriter</Filter>
     </ClInclude>
     <ClInclude Include="include\StatsWriter.h">
-      <Filter>ServiceLocator\StatsWriter</Filter>
+      <Filter>DesignPattern\ServiceLocator\StatsWriter</Filter>
     </ClInclude>
     <ClInclude Include="include\Stat.h">
       <Filter>Enum</Filter>
     </ClInclude>
-    <ClInclude Include="include\StatsST.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="include\AnimatedMVC.h">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedAnimatedMVC.h">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\InstancedMVC.h">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshModelVC.h">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClInclude>
     <ClInclude Include="include\TerrainVC.h">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshVC.h">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClInclude>
     <ClInclude Include="include\VertexPNU.h">
       <Filter>Struct</Filter>
@@ -447,28 +438,52 @@
     <ClInclude Include="include\MeshModelResource.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
+    <ClInclude Include="include\ControllerST.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelST.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysicsST.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneThread.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StatsST.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ViewST.h">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Cube.h">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CubeViewC.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
-      <Filter>Component</Filter>
+      <Filter>Application\Scene\Object\Component</Filter>
     </ClCompile>
     <ClCompile Include="TransformMC.cpp">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClCompile>
     <ClCompile Include="ModelC.cpp">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClCompile>
     <ClCompile Include="ControllerC.cpp">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClCompile>
     <ClCompile Include="ViewC.cpp">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Application\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Factory.cpp">
-      <Filter>Factory</Filter>
+      <Filter>DesignPattern\Factory</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Window</Filter>
@@ -477,64 +492,52 @@
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="Material3D.cpp">
-      <Filter>Material</Filter>
+      <Filter>ResourceManager\Material</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
+      <Filter>Application\Scene\Object</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>PrecompiledHeader</Filter>
     </ClCompile>
     <ClCompile Include="InputCC.cpp">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
-      <Filter>Command</Filter>
+      <Filter>DesignPattern\Command</Filter>
     </ClCompile>
     <ClCompile Include="ReceiverMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="CharacterRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="CameraRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneThread.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ControllerST.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelST.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewST.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="MeshModel.cpp">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="AnimationClip.cpp">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="AnimationKey.cpp">
-      <Filter>MeshModel</Filter>
+      <Filter>ResourceManager\MeshModel</Filter>
     </ClCompile>
     <ClCompile Include="BinIfstream.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Texture</Filter>
+      <Filter>ResourceManager\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Canvas.cpp">
-      <Filter>Canvas</Filter>
+      <Filter>Window\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Material2D.cpp">
-      <Filter>Material</Filter>
+      <Filter>ResourceManager\Material</Filter>
     </ClCompile>
     <ClCompile Include="TriangleVC.cpp">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="PxIonAllocatorCallback.cpp">
       <Filter>PhysX</Filter>
@@ -542,113 +545,107 @@
     <ClCompile Include="PxIonErrorCallback.cpp">
       <Filter>PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsST.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="FileLogger.cpp">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClCompile>
     <ClCompile Include="NullAudio.cpp">
-      <Filter>ServiceLocator\Audio</Filter>
+      <Filter>DesignPattern\ServiceLocator\Audio</Filter>
     </ClCompile>
     <ClCompile Include="NullLogger.cpp">
-      <Filter>ServiceLocator\Logger</Filter>
+      <Filter>DesignPattern\ServiceLocator\Logger</Filter>
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
-      <Filter>ServiceLocator</Filter>
+      <Filter>DesignPattern\ServiceLocator</Filter>
     </ClCompile>
     <ClCompile Include="BinOfstream.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
     <ClCompile Include="TextVC.cpp">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="MoveObjectRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="MoveRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedTransformMC.cpp">
-      <Filter>Component\ModelC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC</Filter>
     </ClCompile>
     <ClCompile Include="BehaviourCC.cpp">
-      <Filter>Component\ControllerC</Filter>
+      <Filter>Application\Scene\Object\Component\ControllerC</Filter>
     </ClCompile>
     <ClCompile Include="SteeringRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedSteeringRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClCompile>
     <ClCompile Include="ObjectSteeringRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC\SteeringRMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC\SteeringRMC</Filter>
     </ClCompile>
     <ClCompile Include="SteeringCommand.cpp">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClCompile>
     <ClCompile Include="WanderCmd.cpp">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClCompile>
     <ClCompile Include="MoveBackCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveDownCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveForwardCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveLeftCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveRightCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="MoveUpCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="RotateLeftCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="RotateRightCmd.cpp">
-      <Filter>Command\Move</Filter>
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
     <ClCompile Include="SeekCmd.cpp">
-      <Filter>Command\Steering</Filter>
+      <Filter>DesignPattern\Command\Steering</Filter>
     </ClCompile>
     <ClCompile Include="NullStatsWriter.cpp">
-      <Filter>ServiceLocator\StatsWriter</Filter>
+      <Filter>DesignPattern\ServiceLocator\StatsWriter</Filter>
     </ClCompile>
     <ClCompile Include="StatsWriter.cpp">
-      <Filter>ServiceLocator\StatsWriter</Filter>
-    </ClCompile>
-    <ClCompile Include="StatsST.cpp">
-      <Filter>Scene</Filter>
+      <Filter>DesignPattern\ServiceLocator\StatsWriter</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedMVC.cpp">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedAnimatedMVC.cpp">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="InstancedMVC.cpp">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="MeshModelVC.cpp">
-      <Filter>Component\ViewC\MeshModelVC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC\MeshModelVC</Filter>
     </ClCompile>
     <ClCompile Include="TerrainVC.cpp">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="MeshVC.cpp">
-      <Filter>Component\ViewC</Filter>
+      <Filter>Application\Scene\Object\Component\ViewC</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>ResourceManager</Filter>
@@ -667,6 +664,27 @@
     </ClCompile>
     <ClCompile Include="MeshModelResource.cpp">
       <Filter>ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerST.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelST.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsST.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneThread.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsST.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewST.cpp">
+      <Filter>Application\Scene\SceneThread</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Application\Scene\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

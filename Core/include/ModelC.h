@@ -11,6 +11,7 @@ namespace Ion
 			: public Core::Component
 		{
 		public:
+			explicit ModelC();
 			explicit ModelC(bool isActive, Core::Object* pObject);
 			virtual ~ModelC() = default;
 			ModelC(const ModelC& other) = default;

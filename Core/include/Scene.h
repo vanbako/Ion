@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Cube.h"
 #include "ModelC.h"
 #include "ControllerC.h"
 #include "ViewC.h"

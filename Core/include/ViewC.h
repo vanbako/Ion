@@ -10,6 +10,7 @@ namespace Ion
 		class Canvas;
 		class Material3D;
 		class Material2D;
+		class Cube;
 
 		class ViewC
 			: public Core::Component
@@ -22,9 +23,13 @@ namespace Ion
 			ViewC& operator=(const ViewC& other) = default;
 			ViewC& operator=(ViewC&& other) noexcept = default;
 
+			virtual void Update(float) override;
+
+			void SetCube(Core::Cube* pCube);
+			Core::Cube* GetCube();
 			void AddCanvas(Core::Canvas* pCanvas);
 
-			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial);
+			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq);
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial);
 		protected:
 			std::string
@@ -33,6 +38,7 @@ namespace Ion
 			Core::Material3D* mpMaterial3D;
 			Core::Material2D* mpMaterial2D;
 			std::set<Core::Canvas*> mpCanvases;
+			Core::Cube* mpCube;
 		};
 	}
 }

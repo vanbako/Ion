@@ -28,6 +28,14 @@ void Core::TextVC::Update(float delta)
 		return;
 }
 
+bool Core::TextVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
+{
+	(pCanvas);
+	(pMaterial);
+	(distSq);
+	return false;
+}
+
 bool Core::TextVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
 {
 	if (!mIsInitialized)

@@ -16,15 +16,17 @@ namespace Ion
 		public:
 			explicit TransformMC(bool isActive, Core::Object* pObject);
 			~TransformMC() = default;
-			TransformMC(const TransformMC& other) = default;
-			TransformMC(TransformMC&& other) noexcept = default;
-			TransformMC& operator=(const TransformMC& other) = default;
-			TransformMC& operator=(TransformMC&& other) noexcept = default;
+			TransformMC(const TransformMC& other);
+			TransformMC(TransformMC&& other) noexcept;
+			TransformMC& operator=(const TransformMC& other) = delete;
+			TransformMC& operator=(TransformMC&& other) noexcept = delete;
 
 			void Initialize() override;
 			void Update(float delta) override;
 			void Switch() override;
 
+			bool GetHasMoved();
+			void SetHasMoved(bool hasMoved);
 			void Move(float delta, const DirectX::XMFLOAT3& vel);
 			void SetPosition(const DirectX::XMFLOAT4& position);
 			void SetScale(const DirectX::XMFLOAT4& scale);
@@ -47,6 +49,7 @@ namespace Ion
 			void InternalUpdate(float delta);
 			void InternalSwitch();
 
+			std::atomic<bool> mHasMoved;
 			DirectX::XMFLOAT4
 				mPosition[2],
 				mWorldPosition[2],

@@ -3,6 +3,11 @@
 
 using namespace Ion;
 
+Core::ModelC::ModelC()
+	: Core::Component(false, nullptr)
+{
+}
+
 Core::ModelC::ModelC(bool isActive, Core::Object* pObject)
 	: Core::Component(isActive, pObject)
 	, mCurrent{ 0 }

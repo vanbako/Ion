@@ -69,7 +69,7 @@ void Core::InstancedMVC::Update(float delta)
 	Core::MeshModelVC::Update(delta);
 }
 
-bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
 {
 	if (!mIsInitialized)
 	{
@@ -78,7 +78,7 @@ bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
 #endif
 		return false;
 	}
-	if (!Core::ViewC::Render(pCanvas, pMaterial))
+	if (!Core::ViewC::Render(pCanvas, pMaterial, distSq))
 		return false;
 	if (!mIsActive)
 		return false;

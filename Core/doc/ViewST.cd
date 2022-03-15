@@ -200,12 +200,12 @@
       <Method Name="operator=" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AgAAEAAAIAEABQABAJACQAAASACAAAIAIBggYBEiAA0=</HashCode>
+      <HashCode>AgAAEAEAIAEABQAAAZACQAACSACAAAKAIBggYBEiAA0=</HashCode>
       <FileName>include\Material3D.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ViewC">
-    <Position X="7.5" Y="4.25" Width="2" />
+    <Position X="7.25" Y="7.5" Width="2" />
     <Members>
       <Method Name="~ViewC" Hidden="true" />
       <Method Name="AddCanvas" Hidden="true" />
@@ -214,11 +214,26 @@
       <Method Name="ViewC" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>DIAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <HashCode>DIQAAAAAAQAAIAACAMAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
       <FileName>include\ViewC.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mpMaterial3D" />
+      <Field Name="mpCube" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Cube">
+    <Position X="7.25" Y="4.25" Width="2" />
+    <Members>
+      <Method Name="~Cube" Hidden="true" />
+      <Method Name="Cube" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAMAAjAAAAAAAAAAAAAAAAAAAAAAAhABIgiAAAAAA=</HashCode>
+      <FileName>include\Cube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpMaterial" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

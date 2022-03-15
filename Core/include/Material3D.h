@@ -1,4 +1,5 @@
 #pragma once
+#include "Cube.h"
 #include "TextureType.h"
 #include "SemanticInfo.h"
 #include <dxcapi.h>
@@ -33,7 +34,10 @@ namespace Ion
 			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC);
 
 			static const std::unordered_map<std::string, Core::SemanticInfo>& GetSemanticStrings();
+			void MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::Cube* pCurrCube);
+			void AddViewCToCube(std::multimap<long long, Core::Cube>& cubes, Core::ViewC* pViewC);
 		private:
+			static Core::Vector<long long> mCubeSize;
 			static const UINT mMaxInputParam;
 			static const std::unordered_map<std::string, Core::SemanticInfo> mSemanticStrings;
 			static const std::unordered_map<std::string, Core::TextureType> mTextureTypeStrings;
@@ -53,7 +57,7 @@ namespace Ion
 				mConstantBufferCount,
 				mInputElementCount,
 				mLayoutSize;
-			std::unordered_map<Core::Canvas*, std::vector<Core::ViewC*>> mpCanvasViewCs;
+			std::unordered_map<Core::Canvas*, std::multimap<long long, Core::Cube>> mpCanvasCubes;
 			std::set<Core::TextureType> mTextureTypes;
 		};
 	}

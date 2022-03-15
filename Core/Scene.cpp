@@ -34,7 +34,6 @@ Core::Scene::Scene(const std::string& name, Core::Application* pApplication)
 	, mControllerCMutex{}
 	, mModelCMutex{}
 	, mViewCMutex{}
-	, mObjects{}
 	, mpModelST{ new Core::ModelST{ this, mModelTime } }
 	, mpControllerST{ new Core::ControllerST{ this, mControllerTime } }
 	, mpViewST{ new Core::ViewST{ this, mViewTime } }

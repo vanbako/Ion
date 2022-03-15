@@ -37,6 +37,14 @@ void Core::TriangleVC::Update(float delta)
 		return;
 }
 
+bool Core::TriangleVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
+{
+	(pCanvas);
+	(pMaterial);
+	(distSq);
+	return false;
+}
+
 bool Core::TriangleVC::Render(Core::Canvas* pCanvas, Core::Material2D* pMaterial)
 {
 	if (!mIsInitialized)

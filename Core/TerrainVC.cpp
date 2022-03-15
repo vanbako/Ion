@@ -342,7 +342,7 @@ void Core::TerrainVC::Update(float delta)
 		return;
 }
 
-bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
+bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)
 {
 	if (!mIsInitialized)
 	{
@@ -351,7 +351,7 @@ bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial)
 #endif
 		return false;
 	}
-	if (!Core::ViewC::Render(pCanvas, pMaterial))
+	if (!Core::ViewC::Render(pCanvas, pMaterial, distSq))
 		return false;
 	if (!mIsActive)
 		return false;

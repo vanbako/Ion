@@ -1,234 +1,246 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{c1ca3bf5-3a5a-44c3-9a05-a63f9f3c9d4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PrecompiledHeaders">
-      <UniqueIdentifier>{7c5b86b8-8c6a-446b-b4ac-440dcdeb6fe9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{3fdab4fb-ab17-4093-b70c-5f00340d75ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{1b8e0f9b-9444-498e-bd4d-2fecef71ef37}</UniqueIdentifier>
+    <Filter Include="DesignPattern">
+      <UniqueIdentifier>{9626a3b0-ba59-4d4d-be56-b451bb80a116}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Input">
-      <UniqueIdentifier>{fcda3af4-7819-4eec-b8c5-9e77aaed229c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Model">
-      <UniqueIdentifier>{3d2b1952-5222-414e-8aa0-3923fde31e61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture">
-      <UniqueIdentifier>{e67b8da2-97e4-4578-8aa0-7c10c46aa1c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator">
-      <UniqueIdentifier>{73710fda-0961-4e38-81da-02b4022902c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ServiceLocator\Audio">
-      <UniqueIdentifier>{e90a1257-90dd-4152-b5ee-30fc333de73c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{76da5e13-c949-4651-aeed-2b1d5aac3526}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ModelC">
-      <UniqueIdentifier>{92d3dd1b-02b4-4d79-b040-40be82664dd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\ModelC\ReceiverMC">
-      <UniqueIdentifier>{b4378cba-11c2-4b63-b72a-9627b95990ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command">
-      <UniqueIdentifier>{f7f3beca-9eac-4abf-9c13-65f3e649f91d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture\Flower">
-      <UniqueIdentifier>{68516ac1-7985-4299-832f-9d547fc32e9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture\RoyalHighness">
-      <UniqueIdentifier>{1b18e6b7-9968-4f43-aa10-5f2204908d47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture\Wizard">
-      <UniqueIdentifier>{2a66d109-911a-493f-a9b0-5b591faf5c8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Instance">
-      <UniqueIdentifier>{970506c3-b5dc-46db-98ae-6204dda8d629}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Control">
-      <UniqueIdentifier>{3db15daf-263a-478a-ad39-c4fff14e2564}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture\Terrain">
-      <UniqueIdentifier>{c1a95e74-0d26-478b-9924-cf1c14cfc746}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Terrain">
-      <UniqueIdentifier>{6171ec4a-d7d9-4e3a-a8f1-50c1526c30e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Control\ControlOneCommand">
-      <UniqueIdentifier>{bf535a93-33ab-426e-93ae-ac97d3ce5dbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Control\ControlZeroCommand">
-      <UniqueIdentifier>{73c34340-92bf-4aa4-91bb-02264099cb64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Factory">
+    <Filter Include="DesignPattern\Factory">
       <UniqueIdentifier>{e2347886-d286-41b3-9ba8-ea68ca539a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Sound">
+    <Filter Include="DesignPattern\Command">
+      <UniqueIdentifier>{f7f3beca-9eac-4abf-9c13-65f3e649f91d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command\Control">
+      <UniqueIdentifier>{3db15daf-263a-478a-ad39-c4fff14e2564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command\Control\ControlOneCommand">
+      <UniqueIdentifier>{bf535a93-33ab-426e-93ae-ac97d3ce5dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\Command\Control\ControlZeroCommand">
+      <UniqueIdentifier>{73c34340-92bf-4aa4-91bb-02264099cb64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator">
+      <UniqueIdentifier>{73710fda-0961-4e38-81da-02b4022902c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPattern\ServiceLocator\Audio">
+      <UniqueIdentifier>{e90a1257-90dd-4152-b5ee-30fc333de73c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{431add39-867b-458a-b810-4cd8a22c9a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene">
+      <UniqueIdentifier>{d25de8d6-10e0-4e7e-b7e3-995af43169ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object">
+      <UniqueIdentifier>{f136ab07-1988-41ec-a8aa-80b91d637be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component">
+      <UniqueIdentifier>{76da5e13-c949-4651-aeed-2b1d5aac3526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ModelC">
+      <UniqueIdentifier>{92d3dd1b-02b4-4d79-b040-40be82664dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Object\Component\ModelC\ReceiverMC">
+      <UniqueIdentifier>{b4378cba-11c2-4b63-b72a-9627b95990ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{c1ca3bf5-3a5a-44c3-9a05-a63f9f3c9d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{1b8e0f9b-9444-498e-bd4d-2fecef71ef37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Input">
+      <UniqueIdentifier>{fcda3af4-7819-4eec-b8c5-9e77aaed229c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Model">
+      <UniqueIdentifier>{3d2b1952-5222-414e-8aa0-3923fde31e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{e67b8da2-97e4-4578-8aa0-7c10c46aa1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture\Flower">
+      <UniqueIdentifier>{68516ac1-7985-4299-832f-9d547fc32e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture\RoyalHighness">
+      <UniqueIdentifier>{1b18e6b7-9968-4f43-aa10-5f2204908d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture\Wizard">
+      <UniqueIdentifier>{2a66d109-911a-493f-a9b0-5b591faf5c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture\Terrain">
+      <UniqueIdentifier>{c1a95e74-0d26-478b-9924-cf1c14cfc746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Instance">
+      <UniqueIdentifier>{970506c3-b5dc-46db-98ae-6204dda8d629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Terrain">
+      <UniqueIdentifier>{6171ec4a-d7d9-4e3a-a8f1-50c1526c30e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Sound">
       <UniqueIdentifier>{81332d1e-d97d-4f60-9294-5bb20e3c8637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PrecompiledHeader">
+      <UniqueIdentifier>{7c5b86b8-8c6a-446b-b4ac-440dcdeb6fe9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>PrecompiledHeaders</Filter>
+      <Filter>PrecompiledHeader</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="FmodAudio.cpp">
-      <Filter>ServiceLocator\Audio</Filter>
+      <Filter>DesignPattern\ServiceLocator\Audio</Filter>
     </ClCompile>
     <ClCompile Include="ControlOneRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="ControlZeroRMC.cpp">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClCompile>
     <ClCompile Include="ControlOneCommand.cpp">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="NextObjectCmd.cpp">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="PrevObjectCmd.cpp">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="ShowControlsCmd.cpp">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClCompile>
     <ClCompile Include="ToggleSceneOneCmd.cpp">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClCompile>
     <ClCompile Include="ToggleSceneTwoCmd.cpp">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClCompile>
     <ClCompile Include="ControlZeroCommand.cpp">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClCompile>
     <ClCompile Include="Factory.cpp">
-      <Filter>Factory</Filter>
+      <Filter>DesignPattern\Factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>PrecompiledHeaders</Filter>
+      <Filter>PrecompiledHeader</Filter>
     </ClInclude>
     <ClInclude Include="include\FmodAudio.h">
-      <Filter>ServiceLocator\Audio</Filter>
+      <Filter>DesignPattern\ServiceLocator\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlOneRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlZeroRMC.h">
-      <Filter>Component\ModelC\ReceiverMC</Filter>
+      <Filter>Application\Scene\Object\Component\ModelC\ReceiverMC</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlOneCommand.h">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\NextObjectCmd.h">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\PrevObjectCmd.h">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\ShowControlsCmd.h">
-      <Filter>Command\Control\ControlOneCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlOneCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\ToggleSceneOneCmd.h">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\ToggleSceneTwoCmd.h">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlZeroCommand.h">
-      <Filter>Command\Control\ControlZeroCommand</Filter>
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClInclude>
     <ClInclude Include="include\Factory.h">
-      <Filter>Factory</Filter>
+      <Filter>DesignPattern\Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Resources\Input\Camera.txt">
-      <Filter>Resources\Input</Filter>
+      <Filter>Resource\Input</Filter>
     </Text>
     <Text Include="..\Resources\Input\Character.txt">
-      <Filter>Resources\Input</Filter>
+      <Filter>Resource\Input</Filter>
     </Text>
     <Text Include="..\Resources\Input\MoveObject.txt">
-      <Filter>Resources\Input</Filter>
+      <Filter>Resource\Input</Filter>
     </Text>
     <Text Include="..\Resources\Input\ControlOne.txt">
-      <Filter>Resources\Input</Filter>
+      <Filter>Resource\Input</Filter>
     </Text>
     <Text Include="..\Resources\Input\ControlZero.txt">
-      <Filter>Resources\Input</Filter>
+      <Filter>Resource\Input</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Instances\Flower.ins">
-      <Filter>Resources\Instance</Filter>
+      <Filter>Resource\Instance</Filter>
     </None>
     <None Include="..\Resources\Model\RoyalHighness\RoyalHighness1.ovm">
-      <Filter>Resources\Model</Filter>
+      <Filter>Resource\Model</Filter>
     </None>
     <None Include="..\Resources\Model\Flower\Flower.ovm">
-      <Filter>Resources\Model</Filter>
+      <Filter>Resource\Model</Filter>
     </None>
     <None Include="..\Resources\Model\Wizard\Wizard.ovm">
-      <Filter>Resources\Model</Filter>
+      <Filter>Resource\Model</Filter>
     </None>
     <None Include="..\Resources\Terrain\Hawai_HeightMap_128x128x16.raw">
-      <Filter>Resources\Terrain</Filter>
+      <Filter>Resource\Terrain</Filter>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\Texture\Flower\Flower_Blue.png">
-      <Filter>Resources\Texture\Flower</Filter>
+      <Filter>Resource\Texture\Flower</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Flower\Flower_Red.png">
-      <Filter>Resources\Texture\Flower</Filter>
+      <Filter>Resource\Texture\Flower</Filter>
     </Image>
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Blue_A.png">
-      <Filter>Resources\Texture\RoyalHighness</Filter>
+      <Filter>Resource\Texture\RoyalHighness</Filter>
     </Image>
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Blue_N.png">
-      <Filter>Resources\Texture\RoyalHighness</Filter>
+      <Filter>Resource\Texture\RoyalHighness</Filter>
     </Image>
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_A.png">
-      <Filter>Resources\Texture\RoyalHighness</Filter>
+      <Filter>Resource\Texture\RoyalHighness</Filter>
     </Image>
     <Image Include="..\Resources\Texture\RoyalHighness\RoyalHighness_Red_N.png">
-      <Filter>Resources\Texture\RoyalHighness</Filter>
+      <Filter>Resource\Texture\RoyalHighness</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_A.png">
-      <Filter>Resources\Texture\Wizard</Filter>
+      <Filter>Resource\Texture\Wizard</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Wizard\Wizard_Blue_N.png">
-      <Filter>Resources\Texture\Wizard</Filter>
+      <Filter>Resource\Texture\Wizard</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Wizard\Wizard_Red_A.png">
-      <Filter>Resources\Texture\Wizard</Filter>
+      <Filter>Resource\Texture\Wizard</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Wizard\Wizard_Red_N.png">
-      <Filter>Resources\Texture\Wizard</Filter>
+      <Filter>Resource\Texture\Wizard</Filter>
     </Image>
     <Image Include="..\Resources\Texture\Terrain\Hawai_TexMap.png">
-      <Filter>Resources\Texture\Terrain</Filter>
+      <Filter>Resource\Texture\Terrain</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\Resources\Sound\bbc_peugeot-20_07055235.mp3">
-      <Filter>Resources\Sound</Filter>
+      <Filter>Resource\Sound</Filter>
     </Media>
     <Media Include="..\Resources\Sound\bbc_world-war-_07017169.mp3">
-      <Filter>Resources\Sound</Filter>
+      <Filter>Resource\Sound</Filter>
     </Media>
   </ItemGroup>
 </Project>

@@ -23,6 +23,39 @@ Core::TransformMC::TransformMC(bool isActive, Core::Object* pObject)
 	, mpPxRigidActor{ nullptr }
 	, mpPxController{ nullptr }
 {
+	mHasMoved.store(false);
+}
+
+Core::TransformMC::TransformMC(const TransformMC& other)
+	: ModelC(other)
+	, mPosition{ other.mPosition[0], other.mPosition[1] }
+	, mWorldPosition{ other.mWorldPosition[0], other.mWorldPosition[1] }
+	, mForward{ other.mForward[0], other.mForward[1] }
+	, mUp{ other.mUp[0], other.mUp[1] }
+	, mRight{ other.mRight[0], other.mRight[1] }
+	, mScale{ other.mScale[0], other.mScale[1] }
+	, mRotation{ other.mRotation[0], other.mRotation[1] }
+	, mWorld{ other.mWorld[0], other.mWorld[1] }
+	, mpPxRigidActor{ other.mpPxRigidActor }
+	, mpPxController{ other.mpPxController }
+{
+	mHasMoved.store(other.mHasMoved.load());
+}
+
+Core::TransformMC::TransformMC(TransformMC&& other) noexcept
+	: ModelC(other)
+	, mPosition{ other.mPosition[0], other.mPosition[1] }
+	, mWorldPosition{ other.mWorldPosition[0], other.mWorldPosition[1] }
+	, mForward{ other.mForward[0], other.mForward[1] }
+	, mUp{ other.mUp[0], other.mUp[1] }
+	, mRight{ other.mRight[0], other.mRight[1] }
+	, mScale{ other.mScale[0], other.mScale[1] }
+	, mRotation{ other.mRotation[0], other.mRotation[1] }
+	, mWorld{ other.mWorld[0], other.mWorld[1] }
+	, mpPxRigidActor{ other.mpPxRigidActor }
+	, mpPxController{ other.mpPxController }
+{
+	mHasMoved.store(other.mHasMoved.load());
 }
 
 void Core::TransformMC::Initialize()
@@ -70,6 +103,16 @@ void Core::TransformMC::Switch()
 	if (!mIsActive)
 		return;
 	InternalSwitch();
+}
+
+bool Core::TransformMC::GetHasMoved()
+{
+	return mHasMoved.load();
+}
+
+void Core::TransformMC::SetHasMoved(bool hasMoved)
+{
+	mHasMoved.store(hasMoved);
 }
 
 void Core::TransformMC::Move(float delta, const DirectX::XMFLOAT3& vel)
@@ -223,6 +266,11 @@ void Core::TransformMC::InternalSwitch()
 	int next{ 0 };
 	if (mCurrent == 0)
 		next = 1;
+	if ((mPosition[mCurrent].x != mPosition[next].x) ||
+		(mPosition[mCurrent].y != mPosition[next].y) ||
+		(mPosition[mCurrent].z != mPosition[next].z)
+		)
+		mHasMoved.store(true);
 	mPosition[next] = mPosition[mCurrent];
 	mWorldPosition[next] = mWorldPosition[mCurrent];
 	mForward[next] = mForward[mCurrent];
