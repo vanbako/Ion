@@ -130,8 +130,6 @@ void Core::InstancedAnimatedMVC::Initialize()
 
 void Core::InstancedAnimatedMVC::Update(float delta)
 {
-	if (!mIsActive)
-		return;
 	Core::MeshModelVC::Update(delta);
 	if (!(mIsAnimating && mIsClipSet))
 		return;

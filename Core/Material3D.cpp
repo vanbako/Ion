@@ -36,9 +36,7 @@ const std::unordered_map<std::string, Core::TextureType> Core::Material3D::mText
 };
 
 Core::Material3D::Material3D(Core::Application* pApplication, const std::string& name)
-	: mIsInitialized{ false }
-	, mpApplication{ pApplication }
-	, mName{ name }
+	: Core::Material(pApplication, name)
 	, mRS{}
 	, mVS{}
 	, mPS{}
@@ -139,8 +137,10 @@ Core::Material3D::~Material3D()
 
 void Core::Material3D::Initialize()
 {
+	// TODO: This should not happen, so only in debug and throw error
 	if (mIsInitialized)
 		return;
+	Core::Material::Initialize();
 	if (mpInputElementDescs == nullptr)
 		return;
 	auto pDxgiFactory{ mpApplication->GetDxgiFactory() };
@@ -186,9 +186,16 @@ void Core::Material3D::Render(Core::Canvas* pCanvas)
 
 	pCanvas->SetDescriptor();
 
-	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
+	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
 	for (auto& cube : cubes)
 		cube.second.Render(pCanvas, this);
+}
+
+void Core::Material3D::ViewCUpdate(Core::Canvas* pCanvas, float delta)
+{
+	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
+	for (auto& cube : cubes)
+		cube.second.ViewCUpdate(pCanvas, delta);
 }
 
 const Microsoft::WRL::ComPtr<ID3D12RootSignature>& Core::Material3D::GetRootSignature()
@@ -223,27 +230,9 @@ const std::set<Core::TextureType>& Core::Material3D::GetTextureTypeSet() const
 
 void Core::Material3D::AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC)
 {
-	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
-	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition()};
-	long long
-		x{ long long(pos.x) },
-		y{ long long(pos.y) },
-		z{ long long(pos.z) };
-	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
-	long long key{ x * x + y * y + z * z };
-	std::multimap<long long, Core::Cube>::iterator itCube{ cubes.end() };
-	for(auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
-		while (it != cubes.upper_bound(key))
-			if ((*it).second.GetLocation() == cubePos)
-			{
-				itCube = it;
-				break;
-			}
-	if (itCube == cubes.end())
-	{
-		itCube = cubes.emplace(key, this);
-		(*itCube).second.SetLocation(cubePos);
-	}
+	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
+	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
+	auto itCube{ GetCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewC(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
 }
@@ -261,58 +250,49 @@ const std::unordered_map<std::string, Core::SemanticInfo>& Core::Material3D::Get
 // else
 //   add in new with hasMoved = false
 
-void Ion::Core::Material3D::MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::Cube* pCurrCube)
+void Core::Material3D::MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::ViewCCube* pCurrCube)
 {
-	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
-	long long
-		x{ long long(pos.x) },
-		y{ long long(pos.y) },
-		z{ long long(pos.z) };
-	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
+	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
 	if (pCurrCube->GetLocation() == cubePos)
 		return;
 	pCurrCube->SetHasMoved(pViewC, true);
-	long long int key{ x * x + y * y + z * z };
-	std::multimap<long long, Core::Cube>& cubes{ mpCanvasCubes[pCanvas] };
-	std::multimap<long long, Cube>::iterator itCube{ cubes.end() };
-	for (auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
-		while (it != cubes.upper_bound(key))
-			if ((*it).second.GetLocation() == cubePos)
-			{
-				itCube = it;
-				break;
-			}
-	if (itCube == cubes.end())
-	{
-		itCube = cubes.emplace(key, this);
-		(*itCube).second.SetLocation(cubePos);
-	}
+	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
+	auto itCube{ GetCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewCCheckExistence(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
 }
 
-void Core::Material3D::AddViewCToCube(std::multimap<long long, Core::Cube>& cubes, Core::ViewC* pViewC)
+void Core::Material3D::AddViewCToCube(std::multimap<long long, Core::ViewCCube>& cubes, Core::ViewC* pViewC)
 {
-	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
-	long long
-		x{ long long(pos.x) },
-		y{ long long(pos.y) },
-		z{ long long(pos.z) };
-	Core::Vector<long long> cubePos{ x / mCubeSize.GetA(), y / mCubeSize.GetB(), z / mCubeSize.GetC() };
-	long long int key{ x * x + y * y + z * z };
-	std::multimap<long long, Cube>::iterator itCube{ cubes.end() };
-	for(auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
-		while (it != cubes.upper_bound(key))
-			if ((*it).second.GetLocation() == cubePos)
-			{
-				itCube = it;
-				break;
-			}
-	if (itCube == cubes.end())
-	{
-		itCube = cubes.emplace(key, this);
-		(*itCube).second.SetLocation(cubePos);
-	}
+	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
+	auto itCube{ GetCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewC(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
+}
+
+Core::Vector<long long> Core::Material3D::GetCubePos(Core::ViewC* pViewC)
+{
+	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
+	return Core::Vector<long long>{
+		long long(pos.x / mCubeSize.GetA()),
+		long long(pos.y / mCubeSize.GetB()),
+		long long(pos.z / mCubeSize.GetC()) };
+}
+
+std::multimap<long long, Core::ViewCCube>::iterator Core::Material3D::GetCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes)
+{
+	long long key{ cubePos.GetA() * cubePos.GetA() + cubePos.GetB() * cubePos.GetB() + cubePos.GetC() * cubePos.GetC() };
+	auto itCube{ cubes.end() };
+	for (auto it{ cubes.lower_bound(key) }; it != cubes.upper_bound(key); ++it)
+		if ((*it).second.GetLocation() == cubePos)
+		{
+			itCube = it;
+			break;
+		}
+	if (itCube == cubes.end())
+	{
+		itCube = cubes.emplace(key, cubePos);
+		(*itCube).second.SetMaterial3D(this);
+	}
+	return itCube;
 }

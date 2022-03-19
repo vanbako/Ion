@@ -459,8 +459,11 @@
     <ClInclude Include="include\Cube.h">
       <Filter>Application\Scene\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="include\CubeViewC.h">
-      <Filter>Struct</Filter>
+    <ClInclude Include="include\ViewCCube.h">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Material.h">
+      <Filter>ResourceManager\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -685,6 +688,12 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Application\Scene\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewCCube.cpp">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>ResourceManager\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

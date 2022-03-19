@@ -37,6 +37,7 @@ namespace Ion
 			void RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex);
 			void SetThreadAction(Core::ThreadAction threadAction);
 			void WaitThreadEnd();
+			void ViewCUpdate(float delta);
 		private:
 			static const std::size_t mBackBufferCount{ 2 };
 			bool mIsInitialized;

@@ -230,9 +230,7 @@ void Core::MeshModelVC::Initialize()
 
 void Core::MeshModelVC::Update(float delta)
 {
-	(delta);
-	//if (!mIsActive)
-	//	return;
+	Core::ViewC::Update(delta);
 }
 
 bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float distSq)

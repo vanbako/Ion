@@ -109,9 +109,7 @@ void Core::MeshVC::Initialize()
 
 void Core::MeshVC::Update(float delta)
 {
-	(delta);
-	if (!mIsActive)
-		return;
+	Core::ViewC::Update(delta);
 	if (mMeshChanged)
 	{
 		const UINT vertexBufferSize{ UINT(mVertexCount * sizeof(Core::VertexPNC)) };

@@ -62,6 +62,7 @@ namespace Ion
 			bool TryLockExclusiveViewCs();
 			void UnlockExclusiveViewCs();
 			void AddCanvas(Core::Canvas* pCanvas);
+			void ViewCUpdate(float delta);
 			void Render();
 		private:
 			static std::chrono::milliseconds mObjectsMutexDuration;

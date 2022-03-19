@@ -101,7 +101,7 @@
       <Method Name="UnlockSharedViewCs" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <HashCode>KcAA4GREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -162,7 +162,7 @@
       <Method Name="WaitThreadEnd" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AABAAIwEQQACwwGEALdDoBABwEEAAACIAtAyCggAAAQ=</HashCode>
+      <HashCode>AABAAMwEQQACwwGEALdDoBABwEEAAACIAtAyCggAAAQ=</HashCode>
       <FileName>include\Canvas.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -182,11 +182,8 @@
       <Method Name="Material3D" Hidden="true" />
       <Field Name="mConstantBufferCount" Hidden="true" />
       <Field Name="mInputElementCount" Hidden="true" />
-      <Field Name="mIsInitialized" Hidden="true" />
       <Field Name="mLayoutSize" Hidden="true" />
       <Field Name="mMaxInputParam" Hidden="true" />
-      <Field Name="mName" Hidden="true" />
-      <Field Name="mpApplication" Hidden="true" />
       <Field Name="mpInputElementDescs" Hidden="true" />
       <Field Name="mpPipelineState" Hidden="true" />
       <Field Name="mpRootSignature" Hidden="true" />
@@ -200,12 +197,12 @@
       <Method Name="operator=" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AgAAEAEAIAEABQAAAZACQAACSACAAAKAIBggYBEiAA0=</HashCode>
+      <HashCode>AgAAEEEAIAEABQAAAZACRAACCACAAAKAIBAgYBEiAQk=</HashCode>
       <FileName>include\Material3D.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ViewC">
-    <Position X="7.25" Y="7.5" Width="2" />
+    <Position X="7.25" Y="7.75" Width="2" />
     <Members>
       <Method Name="~ViewC" Hidden="true" />
       <Method Name="AddCanvas" Hidden="true" />
@@ -218,22 +215,35 @@
       <FileName>include\ViewC.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="mpMaterial3D" />
       <Field Name="mpCube" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Cube">
-    <Position X="7.25" Y="4.25" Width="2" />
+    <Position X="7.25" Y="1.5" Width="2" />
     <Members>
       <Method Name="~Cube" Hidden="true" />
       <Method Name="Cube" Hidden="true" />
       <Method Name="operator=" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAMAAjAAAAAAAAAAAAAAAAAAAAAAAhABIgiAAAAAA=</HashCode>
+      <HashCode>AAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAhAAAgCAAAAAA=</HashCode>
       <FileName>include\Cube.h</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewCCube">
+    <Position X="7.25" Y="3.75" Width="2" />
+    <Members>
+      <Method Name="~ViewCCube" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ViewCCube" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BCAAMEABAAAAAAQAAAABAADAAAAABEAAABIgAAAAAAA=</HashCode>
+      <FileName>include\ViewCCube.h</FileName>
+    </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mpMaterial" />
+      <Field Name="mpMaterial3D" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

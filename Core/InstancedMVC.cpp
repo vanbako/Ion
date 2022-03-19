@@ -64,8 +64,6 @@ void Core::InstancedMVC::Initialize()
 
 void Core::InstancedMVC::Update(float delta)
 {
-	if (!mIsActive)
-		return;
 	Core::MeshModelVC::Update(delta);
 }
 

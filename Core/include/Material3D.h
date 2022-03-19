@@ -1,8 +1,9 @@
 #pragma once
-#include "Cube.h"
+#include "ViewCCube.h"
 #include "TextureType.h"
 #include "SemanticInfo.h"
 #include <dxcapi.h>
+#include "Material.h"
 
 namespace Ion
 {
@@ -13,6 +14,7 @@ namespace Ion
 		class ViewC;
 
 		class Material3D final
+			: public Material
 		{
 		public:
 			explicit Material3D(Core::Application* pApplication, const std::string& name);
@@ -22,8 +24,11 @@ namespace Ion
 			Material3D& operator=(const Material3D& other) = delete;
 			Material3D& operator=(Material3D&& other) noexcept = delete;
 
-			void Initialize();
-			void Render(Core::Canvas* pCanvas);
+			void Initialize() override;
+			void Render(Core::Canvas* pCanvas) override;
+			void ViewCUpdate(Core::Canvas* pCanvas, float delta);
+			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC) override;
+
 			const Microsoft::WRL::ComPtr<ID3D12RootSignature>& GetRootSignature();
 			const Microsoft::WRL::ComPtr<ID3D12PipelineState>& GetPipelineState();
 			D3D12_INPUT_ELEMENT_DESC* GetInputElementDescs();
@@ -31,20 +36,15 @@ namespace Ion
 			UINT GetLayoutSize() const;
 			const std::set<Core::TextureType>& GetTextureTypeSet() const;
 
-			void AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC);
-
 			static const std::unordered_map<std::string, Core::SemanticInfo>& GetSemanticStrings();
-			void MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::Cube* pCurrCube);
-			void AddViewCToCube(std::multimap<long long, Core::Cube>& cubes, Core::ViewC* pViewC);
+			void MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::ViewCCube* pCurrCube);
+			void AddViewCToCube(std::multimap<long long, Core::ViewCCube>& cubes, Core::ViewC* pViewC);
 		private:
 			static Core::Vector<long long> mCubeSize;
 			static const UINT mMaxInputParam;
 			static const std::unordered_map<std::string, Core::SemanticInfo> mSemanticStrings;
 			static const std::unordered_map<std::string, Core::TextureType> mTextureTypeStrings;
 
-			bool mIsInitialized;
-			Core::Application* mpApplication;
-			std::string mName;
 			Microsoft::WRL::ComPtr<ID3DBlob>
 				mRS,
 				mVS,
@@ -57,8 +57,11 @@ namespace Ion
 				mConstantBufferCount,
 				mInputElementCount,
 				mLayoutSize;
-			std::unordered_map<Core::Canvas*, std::multimap<long long, Core::Cube>> mpCanvasCubes;
+			std::unordered_map<Core::Canvas*, std::multimap<long long, Core::ViewCCube>> mpCanvasCubes;
 			std::set<Core::TextureType> mTextureTypes;
+
+			Core::Vector<long long> GetCubePos(Core::ViewC* pViewC);
+			std::multimap<long long, Core::ViewCCube>::iterator GetCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes);
 		};
 	}
 }

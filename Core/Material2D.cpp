@@ -6,9 +6,7 @@
 using namespace Ion;
 
 Core::Material2D::Material2D(Core::Application* pApplication, const std::string& name)
-	: mIsInitialized{ false }
-	, mpApplication{ pApplication }
-	, mName{ name }
+	: Core::Material(pApplication, name)
 	, mpCanvasViewCs{}
 {
 }
@@ -17,8 +15,8 @@ void Core::Material2D::Initialize()
 {
 	if (mIsInitialized)
 		return;
+	Core::Material::Initialize();
 	//auto pD2d1Factory{ mpApplication->GetD2d1Factory() };
-	mIsInitialized = true;
 }
 
 void Core::Material2D::Render(Core::Canvas* pCanvas)

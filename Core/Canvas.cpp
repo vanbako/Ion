@@ -369,6 +369,12 @@ void Core::Canvas::WaitThreadEnd()
 	}
 }
 
+void Core::Canvas::ViewCUpdate(float delta)
+{
+	for (Material3D* pMaterial : mpMaterials3D)
+		pMaterial->ViewCUpdate(this, delta);
+}
+
 void Core::Canvas::ThreadRender(Core::Canvas* pCanvas)
 {
 	timeBeginPeriod(1);

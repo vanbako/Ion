@@ -255,6 +255,12 @@ void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 		pCanvas->RunThread(&(*pair.first).second.second, &(*pair.first).second.first);
 }
 
+void Core::Scene::ViewCUpdate(float delta)
+{
+	for (auto& pair : mpCanvases)
+		pair.first->ViewCUpdate(delta);
+}
+
 void Core::Scene::Render()
 {
 	if (!mIsInitialized)
