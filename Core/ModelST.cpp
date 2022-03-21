@@ -14,15 +14,17 @@ void Core::ModelST::Inner(float delta)
 		return;
 	if (mpScene->TryLockSharedModelCs())
 	{
-		for (auto& object : mpScene->GetObjects())
-			object.ModelCUpdate(delta);
+		//for (auto& object : mpScene->GetObjects())
+		//	object.ModelCUpdate(delta);
+		mpScene->ModelCUpdate(delta);
 		mpScene->UnlockSharedModelCs();
 	}
 
 	if (mpScene->TryLockExclusiveModelCs())
 	{
-		for (auto& object : mpScene->GetObjects())
-			object.ModelCSwitch();
+		//for (auto& object : mpScene->GetObjects())
+		//	object.ModelCSwitch();
+		mpScene->ModelCSwitch();
 		mpScene->UnlockExclusiveModelCs();
 	}
 	mpScene->UnlockExclusiveObjects();

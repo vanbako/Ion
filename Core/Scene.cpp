@@ -12,6 +12,8 @@
 
 using namespace Ion;
 
+Core::Vector<long long> Core::Scene::mModelCubeSize{ 1000, 1000, 1000 };
+Core::Vector<long long> Core::Scene::mControllerCubeSize{ 50, 50, 50 };
 std::chrono::milliseconds Core::Scene::mObjectsMutexDuration{ 1 };
 std::chrono::milliseconds Core::Scene::mModelTime{ 4 };
 std::chrono::milliseconds Core::Scene::mControllerTime{ 3 };
@@ -44,6 +46,8 @@ Core::Scene::Scene(const std::string& name, Core::Application* pApplication)
 	, mpCanvases{}
 	, mpPxScene{ nullptr }
 	, mpPxControllerManager{ nullptr }
+	, mModelCCubes{}
+	, mControllerCCubes{}
 {
 	mpSceneThreads = {
 		{ "Model", mpModelST },
@@ -61,11 +65,11 @@ Core::Scene::Scene(const std::string& name, Core::Application* pApplication)
 	mpPxScene = mpApplication->GetPxPhysics()->createScene(sceneDesc);
 	mpPxControllerManager = PxCreateControllerManager(*mpPxScene);
 	mpPxControllerManager->setPreciseSweeps(false);
-//#ifdef _DEBUG
-//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.0f);
-//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 2.0f);
-//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eBODY_LIN_VELOCITY, 2.0f);
-//#endif
+	//#ifdef _DEBUG
+	//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.0f);
+	//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 2.0f);
+	//	mpPxScene->setVisualizationParameter(physx::PxVisualizationParameter::eBODY_LIN_VELOCITY, 2.0f);
+	//#endif
 }
 
 Core::Scene::~Scene()
@@ -146,6 +150,8 @@ std::unordered_map<std::string, Core::SceneThread*>& Core::Scene::GetSceneThread
 
 void Core::Scene::Initialize()
 {
+	if (mIsInitialized)
+		return;
 	if (!TryLockExclusiveObjects())
 		return;
 	for (auto& object : mObjects)
@@ -255,6 +261,24 @@ void Core::Scene::AddCanvas(Core::Canvas* pCanvas)
 		pCanvas->RunThread(&(*pair.first).second.second, &(*pair.first).second.first);
 }
 
+void Core::Scene::ControllerCUpdate(float delta)
+{
+	for (auto& pair : mControllerCCubes)
+		pair.second.ControllerCUpdate(delta);
+}
+
+void Core::Scene::ModelCUpdate(float delta)
+{
+	for (auto& pair : mModelCCubes)
+		pair.second.ModelCUpdate(delta);
+}
+
+void Core::Scene::ModelCSwitch()
+{
+	for (auto& pair : mModelCCubes)
+		pair.second.ModelCSwitch();
+}
+
 void Core::Scene::ViewCUpdate(float delta)
 {
 	for (auto& pair : mpCanvases)
@@ -279,4 +303,132 @@ void Core::Scene::Render()
 		pair.second.second.notify_one();
 		pair.second.first.unlock();
 	}
+}
+
+void Core::Scene::AddModelC(Core::ModelC* pModelC)
+{
+	Core::Vector<long long> cubePos{ GetModelCubePos(pModelC) };
+	auto itCube{ GetModelCubeIterator(cubePos) };
+	(*itCube).second.AddModelC(false, pModelC);
+	pModelC->SetCube(&(*itCube).second);
+}
+
+void Core::Scene::MoveModelC(Core::ModelC* pModelC, Core::ModelCCube* pCurrCube)
+{
+	Core::Vector<long long> cubePos{ GetModelCubePos(pModelC) };
+	if (pCurrCube->GetLocation() == cubePos)
+		return;
+	pCurrCube->SetHasMoved(pModelC, true);
+	auto itCube{ GetModelCubeIterator(cubePos) };
+	(*itCube).second.AddModelCCheckExistence(false, pModelC);
+	pModelC->SetCube(&(*itCube).second);
+}
+
+void Core::Scene::AddModelCToCube(Core::ModelC* pModelC)
+{
+	Core::Vector<long long> cubePos{ GetModelCubePos(pModelC) };
+	auto itCube{ GetModelCubeIterator(cubePos) };
+	(*itCube).second.AddModelC(false, pModelC);
+	pModelC->SetCube(&(*itCube).second);
+}
+
+void Core::Scene::AddControllerC(Core::ControllerC* pControllerC)
+{
+	Core::Vector<long long> cubePos{ GetControllerCubePos(pControllerC) };
+	auto itCube{ GetControllerCubeIterator(cubePos) };
+	(*itCube).second.AddControllerC(false, pControllerC);
+	pControllerC->SetCube(&(*itCube).second);
+}
+
+void Core::Scene::MoveControllerC(Core::ControllerC* pControllerC, Core::ControllerCCube* pCurrCube)
+{
+	Core::Vector<long long> cubePos{ GetControllerCubePos(pControllerC) };
+	if (pCurrCube->GetLocation() == cubePos)
+		return;
+	pCurrCube->SetHasMoved(pControllerC, true);
+	auto itCube{ GetControllerCubeIterator(cubePos) };
+	(*itCube).second.AddControllerCCheckExistence(false, pControllerC);
+	pControllerC->SetCube(&(*itCube).second);
+}
+
+void Core::Scene::AddControllerCToCube(Core::ControllerC* pControllerC)
+{
+	Core::Vector<long long> cubePos{ GetControllerCubePos(pControllerC) };
+	auto itCube{ GetControllerCubeIterator(cubePos) };
+	(*itCube).second.AddControllerC(false, pControllerC);
+	pControllerC->SetCube(&(*itCube).second);
+}
+
+Core::Vector<long long> Core::Scene::GetModelCubePos(Core::ModelC* pModelC)
+{
+	TransformMC* pTransform{ pModelC->GetObject()->GetModelC<TransformMC>() };
+	if (pTransform == nullptr)
+		return Core::Vector<long long>{ LLONG_MAX, LLONG_MAX, LLONG_MAX };
+	else
+	{
+		DirectX::XMFLOAT4 pos{ pModelC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
+		return Core::Vector<long long>{
+			long long(pos.x / mModelCubeSize.GetA()),
+				long long(pos.y / mModelCubeSize.GetB()),
+				long long(pos.z / mModelCubeSize.GetC()) };
+	}
+}
+
+std::multimap<long long, Core::ModelCCube>::iterator Core::Scene::GetModelCubeIterator(Core::Vector<long long>& cubePos)
+{
+	long long key{};
+	if ((cubePos.GetA() == LLONG_MAX) && (cubePos.GetB() == LLONG_MAX) && (cubePos.GetC() == LLONG_MAX))
+		key = LLONG_MAX;
+	else
+		key = cubePos.GetA() * cubePos.GetA() + cubePos.GetB() * cubePos.GetB() + cubePos.GetC() * cubePos.GetC();
+	auto itCube{ mModelCCubes.end() };
+	for (auto it{ mModelCCubes.lower_bound(key) }; it != mModelCCubes.upper_bound(key); ++it)
+		if ((*it).second.GetLocation() == cubePos)
+		{
+			itCube = it;
+			break;
+		}
+	if (itCube == mModelCCubes.end())
+	{
+		itCube = mModelCCubes.emplace(key, cubePos);
+		(*itCube).second.SetScene(this);
+	}
+	return itCube;
+}
+
+Core::Vector<long long> Core::Scene::GetControllerCubePos(Core::ControllerC* pControllerC)
+{
+	TransformMC* pTransform{ pControllerC->GetObject()->GetModelC<TransformMC>() };
+	if (pTransform == nullptr)
+		return Core::Vector<long long>{ LLONG_MAX, LLONG_MAX, LLONG_MAX };
+	else
+	{
+		DirectX::XMFLOAT4 pos{ pTransform->GetWorldPosition() };
+		return Core::Vector<long long>{
+			long long(pos.x / mControllerCubeSize.GetA()),
+				long long(pos.y / mControllerCubeSize.GetB()),
+				long long(pos.z / mControllerCubeSize.GetC()) };
+	}
+}
+
+std::multimap<long long, Core::ControllerCCube>::iterator Core::Scene::GetControllerCubeIterator(Core::Vector<long long>& cubePos)
+{
+	long long key{};
+	if ((cubePos.GetA() == LLONG_MAX) && (cubePos.GetB() == LLONG_MAX) && (cubePos.GetC() == LLONG_MAX))
+		key = LLONG_MAX;
+	else
+		key = cubePos.GetA() * cubePos.GetA() + cubePos.GetB() * cubePos.GetB() + cubePos.GetC() * cubePos.GetC();
+	auto itCube{ mControllerCCubes.end() };
+	for (auto it{ mControllerCCubes.lower_bound(key) }; it != mControllerCCubes.upper_bound(key); ++it)
+		if ((*it).second.GetLocation() == cubePos)
+		{
+			itCube = it;
+			break;
+		}
+	if (itCube == mControllerCCubes.end())
+	{
+		itCube = mControllerCCubes.emplace(key, cubePos);
+		(*itCube).second.SetScene(this);
+	}
+	return itCube;
 }

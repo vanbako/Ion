@@ -36,7 +36,7 @@ void Core::CharacterRMC::Initialize()
 {
 	if (mpTransformMC == nullptr)
 		mpTransformMC = mpObject->GetModelC<Core::TransformMC>();
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::CharacterRMC::Update(float delta)
@@ -44,6 +44,7 @@ void Core::CharacterRMC::Update(float delta)
 	(delta);
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (mpTransformMC == nullptr)
 		return;
 	if (!mHasChanged)

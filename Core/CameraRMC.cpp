@@ -33,6 +33,7 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 	, mFOV{ DirectX::XM_PIDIV4 }
 	, mView{}
 	, mViewProjection{}
+	, mViewInverse{}
 	, mpTransform{ nullptr }
 {
 }
@@ -45,7 +46,7 @@ Core::CameraRMC::~CameraRMC()
 
 void Core::CameraRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::CameraRMC::Update(float delta)
@@ -54,6 +55,7 @@ void Core::CameraRMC::Update(float delta)
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (mpCanvas == nullptr)
 		return;
 	if (mpTransform == nullptr)

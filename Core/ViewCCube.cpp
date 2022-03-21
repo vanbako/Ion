@@ -12,6 +12,7 @@ Core::ViewCCube::ViewCCube(const Core::Vector<long long>& location)
 	: Cube(location)
 	, mpMaterial3D{ nullptr }
 	, mCubeViewCs{}
+	, mCanvasCameras{}
 {
 }
 
@@ -20,12 +21,12 @@ Core::ViewCCube::ViewCCube()
 {
 }
 
-void Ion::Core::ViewCCube::SetMaterial3D(Core::Material3D* pMaterial3D)
+void Core::ViewCCube::SetMaterial3D(Core::Material3D* pMaterial3D)
 {
 	mpMaterial3D = pMaterial3D;
 }
 
-Core::Material3D* Ion::Core::ViewCCube::GetMaterial3D()
+Core::Material3D* Core::ViewCCube::GetMaterial3D()
 {
 	return mpMaterial3D;
 }
@@ -49,48 +50,51 @@ void Core::ViewCCube::AddViewCCheckExistence(bool hasMoved, Core::ViewC* pViewC)
 {
 	auto it{ mCubeViewCs.begin() };
 	while (it != mCubeViewCs.end())
+	{
 		if ((*it).mpViewC == pViewC)
 		{
 			(*it).mHasMoved = hasMoved;
 			break;
 		}
+		++it;
+	}
 	if (it == mCubeViewCs.end())
 		AddViewC(hasMoved, pViewC);
 }
 
 void Core::ViewCCube::Render(Canvas* pCanvas, Material3D* pMaterial)
 {
-	CanvasCamera* pCanvasCamera{ GetCanvasCamera(pCanvas) };
-	if ((pCanvasCamera->mDot < 0.f) && (pCanvasCamera->mDist > mBackRenderDist))
+	CubeCanvasCamera* pCubeCanvasCamera{ GetCanvasCamera(pCanvas) };
+	if ((pCubeCanvasCamera->mDot < 0.f) && (pCubeCanvasCamera->mDist > mBackRenderDist))
 		return;
 	for (auto& cubeViewC : mCubeViewCs)
 		if (!cubeViewC.mHasMoved)
-			cubeViewC.mpViewC->Render(pCanvas, pMaterial, pCanvasCamera->mDist);
+			cubeViewC.mpViewC->Render(pCanvas, pMaterial, pCubeCanvasCamera->mDist);
 }
 
 void Core::ViewCCube::ViewCUpdate(Canvas* pCanvas, float delta)
 {
-	CanvasCamera* pCanvasCamera{ GetCanvasCamera(pCanvas) };
-	if ((pCanvasCamera->mDot < 0.f) && (pCanvasCamera->mDist > mBackRenderDist))
+	CubeCanvasCamera* pCubeCanvasCamera{ GetCanvasCamera(pCanvas) };
+	if ((pCubeCanvasCamera->mDot < 0.f) && (pCubeCanvasCamera->mDist > mBackRenderDist))
 		return;
 	for (auto& cubeViewC : mCubeViewCs)
 		if (!cubeViewC.mHasMoved)
 			cubeViewC.mpViewC->Update(delta);
 }
 
-Core::CanvasCamera* Core::ViewCCube::GetCanvasCamera(Canvas* pCanvas)
+Core::CubeCanvasCamera* Core::ViewCCube::GetCanvasCamera(Canvas* pCanvas)
 {
 	TransformMC* pTransform{ pCanvas->GetCamera()->GetModelC<TransformMC>() };
-	CanvasCamera* pCanvasCamera{ nullptr };
+	CubeCanvasCamera* pCubeCanvasCamera{ nullptr };
 	for (auto it{ mCanvasCameras.begin() }; it != mCanvasCameras.end(); ++it)
 		if ((*it).mpCanvas == pCanvas)
 		{
-			pCanvasCamera = &(*it);
+			pCubeCanvasCamera = &(*it);
 			break;
 		}
 	bool calc{ true };
-	if (pCanvasCamera == nullptr)
-		pCanvasCamera = &mCanvasCameras.emplace_back(pCanvas, 0.f, 0.f);
+	if (pCubeCanvasCamera == nullptr)
+		pCubeCanvasCamera = &mCanvasCameras.emplace_back(pCanvas, 0.f, 0.f);
 	else
 		if (!pTransform->GetHasMoved())
 			calc = false;
@@ -106,8 +110,8 @@ Core::CanvasCamera* Core::ViewCCube::GetCanvasCamera(Canvas* pCanvas)
 		XMVECTOR cubeDist{ XMVector3Length(cubeDir) };
 		cubeDir = XMVector3Normalize(cubeDir);
 		XMVECTOR dotProd{ XMVector3Dot(cubeDir, camForward) };
-		XMStoreFloat(&pCanvasCamera->mDot, dotProd);
-		XMStoreFloat(&pCanvasCamera->mDist, cubeDist);
+		XMStoreFloat(&pCubeCanvasCamera->mDot, dotProd);
+		XMStoreFloat(&pCubeCanvasCamera->mDist, cubeDist);
 	}
-	return pCanvasCamera;
+	return pCubeCanvasCamera;
 }

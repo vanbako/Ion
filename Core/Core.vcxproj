@@ -115,9 +115,11 @@
     <ClInclude Include="include\Command.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControllerC.h" />
+    <ClInclude Include="include\ControllerCCube.h" />
     <ClInclude Include="include\ControllerST.h" />
     <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\Cube.h" />
+    <ClInclude Include="include\CubeCanvasCamera.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\FileLogger.h" />
@@ -141,6 +143,7 @@
     <ClInclude Include="include\MeshVCConstantBuffer.h" />
     <ClInclude Include="include\MeshModel.h" />
     <ClInclude Include="include\ModelC.h" />
+    <ClInclude Include="include\ModelCCube.h" />
     <ClInclude Include="include\ModelFormat.h" />
     <ClInclude Include="include\MeshModelResource.h" />
     <ClInclude Include="include\ModelST.h" />
@@ -217,6 +220,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControllerC.cpp" />
+    <ClCompile Include="ControllerCCube.cpp" />
     <ClCompile Include="ControllerST.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="FileLogger.cpp" />
@@ -235,6 +239,7 @@
     <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="ModelC.cpp" />
     <ClCompile Include="MeshModelResource.cpp" />
+    <ClCompile Include="ModelCCube.cpp" />
     <ClCompile Include="ModelST.cpp" />
     <ClCompile Include="MeshModelVC.cpp" />
     <ClCompile Include="MoveBackCmd.cpp" />
@@ -286,6 +291,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\Application.cd" />
+    <None Include="doc\Cube.cd" />
     <None Include="doc\Command.cd" />
     <None Include="doc\Component.cd" />
     <None Include="doc\ControllerST.cd" />

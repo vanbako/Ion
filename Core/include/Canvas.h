@@ -6,6 +6,7 @@ namespace Ion
 {
 	namespace Core
 	{
+		class Application;
 		class Object;
 		class Window;
 		class Material3D;
@@ -14,7 +15,7 @@ namespace Ion
 		class Canvas final
 		{
 		public:
-			explicit Canvas(Core::Window* pWindow, RECT rectangle);
+			explicit Canvas(Core::Application* pApplication, RECT rectangle);
 			~Canvas();
 			Canvas(const Canvas& other) = delete;
 			Canvas(Canvas&& other) noexcept = delete;
@@ -22,6 +23,7 @@ namespace Ion
 			Canvas& operator=(Canvas&& other) noexcept = delete;
 
 			void Initialize();
+			void SetWindow(Core::Window* pWindow);
 			void SetCamera(Core::Object* pCamera);
 			Core::Object* GetCamera();
 			float GetRatio();
@@ -41,6 +43,7 @@ namespace Ion
 		private:
 			static const std::size_t mBackBufferCount{ 2 };
 			bool mIsInitialized;
+			Core::Application* mpApplication;
 			Core::Window* mpWindow;
 			RECT mRectangle;
 			float mRatio;

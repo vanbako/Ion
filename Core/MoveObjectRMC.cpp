@@ -39,15 +39,15 @@ Core::MoveObjectRMC::~MoveObjectRMC()
 
 void Core::MoveObjectRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::MoveObjectRMC::Update(float delta)
 {
-	(delta);
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (mpTransform == nullptr)
 	{
 		mpTransform = mpObject->GetModelC<Core::TransformMC>();

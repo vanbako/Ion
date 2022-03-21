@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "PxIonErrorCallback.h"
 
-using namespace physx;
-
-void PxIonErrorCallback::reportError(PxErrorCode::Enum code, const char* message, const char* file, int line)
+void physx::PxIonErrorCallback::reportError(PxErrorCode::Enum code, const char* message, const char* file, int line)
 {
 	//(code);
 	//(message);

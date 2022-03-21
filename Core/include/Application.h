@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "ResourceManager.h"
 #include "Window.h"
+#include "Canvas.h"
 #include "PxIonAllocatorCallback.h"
 #include "PxIonErrorCallback.h"
 #include "ServiceLocator.h"
@@ -10,6 +11,8 @@ namespace Ion
 {
 	namespace Core
 	{
+		LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 		class Application final
 		{
 		public:
@@ -32,6 +35,8 @@ namespace Ion
 			Core::Scene* AddScene(const std::string& name);
 			Core::Scene* GetScene(std::size_t num);
 			Core::Window* AddWindow(const std::wstring& title, RECT rectangle = RECT{ 0, 0, 1280, 720 });
+			Core::Canvas* AddCanvas(RECT rectangle);
+			std::list<Core::Canvas>& GetCanvases();
 			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			const Microsoft::WRL::ComPtr<IDXGIFactory5>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device5>& GetDevice();
@@ -53,6 +58,8 @@ namespace Ion
 			std::shared_timed_mutex mKeyboardMutex;
 			std::list<Core::Scene> mScenes;
 			std::list<Core::Window> mWindows;
+			// TODO: Add mutex for Canvas if you want to add/remove Canvases during gameplay
+			std::list<Core::Canvas> mCanvases;
 			Core::ResourceManager mResourceManager;
 			Microsoft::WRL::ComPtr<IDXGIFactory5> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device5> mpD3d12Device;

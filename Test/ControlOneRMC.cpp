@@ -37,15 +37,15 @@ Core::ControlOneRMC::~ControlOneRMC()
 
 void Core::ControlOneRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::ControlOneRMC::Update(float delta)
 {
-	(delta);
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (!mHasChanged)
 		return;
 	if (mpObjects.size() < 2)

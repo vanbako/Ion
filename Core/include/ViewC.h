@@ -25,8 +25,8 @@ namespace Ion
 
 			virtual void Update(float) override;
 
-			void SetCube(Core::ViewCCube* pCube);
-			Core::ViewCCube* GetCube();
+			//void SetCube(Core::ViewCCube* pCube);
+			//Core::ViewCCube* GetCube();
 			void AddCanvas(Core::Canvas* pCanvas);
 
 			virtual bool Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, float dist);
@@ -38,7 +38,7 @@ namespace Ion
 			Core::Material3D* mpMaterial3D;
 			Core::Material2D* mpMaterial2D;
 			std::set<Core::Canvas*> mpCanvases;
-			Core::ViewCCube* mpCube;
+			//Core::ViewCCube* mpCube;
 		};
 	}
 }

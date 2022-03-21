@@ -53,7 +53,7 @@ std::chrono::microseconds* Core::SceneThread::GetStats()
 	return mStats;
 }
 
-std::size_t* Ion::Core::SceneThread::GetStatSeqs()
+std::size_t* Core::SceneThread::GetStatSeqs()
 {
 	return mStatSeqs;
 }
@@ -78,7 +78,7 @@ bool Core::SceneThread::TryLockStats()
 	return mStatsMutex.try_lock_for(mStatsMutexDuration);
 }
 
-void Ion::Core::SceneThread::UnlockStats()
+void Core::SceneThread::UnlockStats()
 {
 	mStatsMutex.unlock();
 }

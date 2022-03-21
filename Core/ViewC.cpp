@@ -18,7 +18,7 @@ Core::ViewC::ViewC(bool isActive, Core::Object* pObject, const std::string& mate
 	, mpMaterial3D{ nullptr }
 	, mpMaterial2D{ nullptr }
 	, mpCanvases{}
-	, mpCube{ nullptr }
+	//, mpCube{ nullptr }
 {
 	if (material3D != "")
 	{
@@ -47,19 +47,9 @@ void Core::ViewC::Update(float)
 	TransformMC* pTransform{ mpObject->GetModelC<TransformMC>() };
 	if (!pTransform->GetHasMoved())
 		return;
-	pTransform->SetHasMoved(false);
+	//pTransform->SetHasMoved(false);
 	for (Core::Canvas* pCanvas : mpCanvases)
-		mpMaterial3D->MoveViewC(pCanvas, this, mpCube);
-}
-
-void Core::ViewC::SetCube(Core::ViewCCube* pCube)
-{
-	mpCube = pCube;
-}
-
-Core::ViewCCube* Core::ViewC::GetCube()
-{
-	return mpCube;
+		mpMaterial3D->MoveViewC(pCanvas, this, (Core::ViewCCube*)mpCube);
 }
 
 void Core::ViewC::AddCanvas(Core::Canvas* pCanvas)

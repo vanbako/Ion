@@ -31,15 +31,15 @@ Core::ControlZeroRMC::~ControlZeroRMC()
 
 void Core::ControlZeroRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::ControlZeroRMC::Update(float delta)
 {
-	(delta);
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (!mHasChanged)
 		return;
 	if (mToggleSceneOne[mCurrent])

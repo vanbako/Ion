@@ -38,29 +38,28 @@ int main()
 		application.Initialize();
 #ifdef SCENE0
 		Core::Scene* pScene0{ Test::Factory::AddSceneZero(&application) };
-		pScene0->Initialize();
 		pScene0->SetIsActive(true);
 #endif
 #ifdef SCENE1
 		Core::Scene* pScene1{ nullptr };
 		{
 			Core::Window* pWindow{ application.AddWindow(L"Render Window 1", rectangle) };
-			Core::Canvas* pCanvas{ pWindow->AddCanvas(rectangle) };
+			Core::Canvas* pCanvas{ application.AddCanvas(rectangle) };
+			pWindow->AddCanvas(pCanvas);
 			pCanvas->Initialize();
 			pScene1 = Test::Factory::AddSceneOne(&application, pCanvas);
 		}
-		pScene1->Initialize();
 		pScene1->SetIsActive(true);
 #endif
 #ifdef SCENE2
 		Core::Scene* pScene2{ nullptr };
 		{
 			Core::Window* pWindow{ application.AddWindow(L"Render Window 2", rectangle) };
-			Core::Canvas* pCanvas{ pWindow->AddCanvas(rectangle) };
+			Core::Canvas* pCanvas{ application.AddCanvas(rectangle) };
+			pWindow->AddCanvas(pCanvas);
 			pCanvas->Initialize();
 			pScene2 = Test::Factory::AddSceneTwo(&application, pCanvas);
 		}
-		pScene2->Initialize();
 		pScene2->SetIsActive(true);
 #endif
 

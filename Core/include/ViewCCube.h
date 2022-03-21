@@ -1,24 +1,18 @@
 #pragma once
 #include "Cube.h"
+#include "CubeCanvasCamera.h"
 
 namespace Ion
 {
 	namespace Core
 	{
 		class ViewC;
-		class Canvas;
 		class Material3D;
 
 		struct CubeViewC
 		{
 			bool mHasMoved;
 			ViewC* mpViewC;
-		};
-		struct CanvasCamera
-		{
-			Canvas* mpCanvas;
-			float mDot;
-			float mDist;
 		};
 
 		class ViewCCube
@@ -44,9 +38,9 @@ namespace Ion
 			static const float mBackRenderDist;
 			Core::Material3D* mpMaterial3D;
 			std::vector<CubeViewC> mCubeViewCs;
-			std::vector<CanvasCamera> mCanvasCameras;
+			std::vector<CubeCanvasCamera> mCanvasCameras;
 
-			Core::CanvasCamera* GetCanvasCamera(Core::Canvas* pCanvas);
+			Core::CubeCanvasCamera* GetCanvasCamera(Core::Canvas* pCanvas);
 		};
 	}
 }

@@ -29,7 +29,7 @@
       <Method Name="WindowsProcedure" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>UgJQKEAAABACgQAEBABAEAJBAAASABihCQQhAMKAqAY=</HashCode>
+      <HashCode>UgJQKEAAABACgQAEBABAUAJBAAASABihCQQhAMKAqAY=</HashCode>
       <FileName>include\Application.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -42,7 +42,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAQAAAAAAAEAAQAAAQQAAAAAAAAQgCAAAAAA=</HashCode>
+      <HashCode>CIAAAAAAAQAAAAAAAEAAAAAAQQAAAAAAAAQgCAAAAAA=</HashCode>
       <FileName>include\Window.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -74,7 +74,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <HashCode>KcAA4GREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -88,11 +88,12 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AABAAIwEQQACwwGEALdDoBABwEEAAACIAtAyCggAAAQ=</HashCode>
+      <HashCode>AABAAMwEQQACwwGEALdDoBABwEEAAACIAtAyCggAAAQ=</HashCode>
       <FileName>include\Canvas.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpWindow" />
+      <Field Name="mpApplication" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::ResourceManager">

@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "Window.h"
+#include "Canvas.h"
 
 using namespace Ion;
 
 Core::Window::Window(Core::Application* pApplication, const std::wstring title, RECT rectangle)
 	: mpApplication{ pApplication }
 	, mhWindow{}
-	, mCanvases{}
+	, mpCanvases{}
 {
 	mhWindow = CreateWindow(
 		L"IonEngineWindowClass",
@@ -27,9 +28,6 @@ Core::Window::Window(Core::Application* pApplication, const std::wstring title, 
 
 Core::Window::~Window()
 {
-	for (auto& canvas : mCanvases)
-		canvas.WaitThreadEnd();
-	mCanvases.clear();
 	DestroyWindow(mhWindow);
 }
 
@@ -43,7 +41,8 @@ HWND& Core::Window::GetHandle()
 	return mhWindow;
 }
 
-Core::Canvas* Core::Window::AddCanvas(RECT rectangle)
+void Core::Window::AddCanvas(Core::Canvas* pCanvas)
 {
-	return &mCanvases.emplace_back(this, rectangle);
+	pCanvas->SetWindow(this);
+	mpCanvases.emplace_back(pCanvas);
 }

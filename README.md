@@ -6,18 +6,18 @@ Using: Direct3D 12, <del>Direct2D</del>, DirectXTK12, NVidia Physx 4.1, FMOD 2.0
 Current Features:<br>
 Multiple Windows & Canvases with multithreaded rendering<br>
 Scenes - Objects - Components (Model, View, Controller)<br>
-Scene divided in Cubes (per material) for faster rendering and LOD usage (LOD's not implemented yet)<br>
+Scene divided in ModelC, ViewC and ControllerC "Cubes" (ViewC's per material) for optimized updates and rendering and also LOD usage (LOD's not implemented yet)<br>
 Materials, Meshes, Textures<br>
 Input using command pattern: keyboard<br>
 Hardware Instancing<br>
-Animation<br>
+Animation (the artifacts you see in the demo animation is bad skinning, if someone likes to fix that ...)<br>
 Terrain (heightmap, physx) <br>
 Instanced physx<br>
 Audio, Logger using ServiceLocator pattern<br>
 Steering behaviour (Wander, Seek)<br>
 <del>Direct2D Text</del><br>
 Threads: ControllerComponents, ModelComponents, ViewComponents, Canvas, Physics<br>
-D2D removed temporary because it was interfering with texture loading in combination with multithreaded rendering<br>
+D2D removed permanently because it was interfering with texture loading in combination with multithreaded rendering<br>
 <br>
 You can upvote enhancements in the Github Issue Tracker<br>
 <br>

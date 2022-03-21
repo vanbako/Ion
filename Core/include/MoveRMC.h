@@ -21,7 +21,6 @@ namespace Ion
 			MoveRMC& operator=(const MoveRMC& other) = default;
 			MoveRMC& operator=(MoveRMC&& other) noexcept = default;
 
-			virtual void Update(float) override = 0;
 			virtual void Switch() override;
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const = 0;
 			virtual const std::string& GetName() const = 0;

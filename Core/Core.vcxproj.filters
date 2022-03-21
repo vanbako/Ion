@@ -16,9 +16,6 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{942ad244-e602-49ae-bf02-2f5c8699f04f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PhysX">
       <UniqueIdentifier>{7a337638-d083-45a3-bec0-a6bf415ffcdd}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </Filter>
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{07342152-d581-4062-a386-8ac207d39b33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Window\Canvas">
-      <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ResourceManager\Texture">
       <UniqueIdentifier>{9b7bd6b1-8973-476a-98b4-6b2324517d7c}</UniqueIdentifier>
@@ -148,6 +142,12 @@
     <Filter Include="Application\Scene\Cube">
       <UniqueIdentifier>{401bac89-8c09-4e07-9037-00eac686b061}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Canvas">
+      <UniqueIdentifier>{4b51e81f-9e2a-4254-b5c4-186037930c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Window">
+      <UniqueIdentifier>{147c6bd2-ff2a-4a21-95ed-1fc5231cb315}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -157,7 +157,7 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="include\Canvas.h">
-      <Filter>Window\Canvas</Filter>
+      <Filter>Application\Canvas</Filter>
     </ClInclude>
     <ClInclude Include="include\Command.h">
       <Filter>DesignPattern\Command</Filter>
@@ -244,7 +244,7 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="include\Window.h">
-      <Filter>Window</Filter>
+      <Filter>Application\Window</Filter>
     </ClInclude>
     <ClInclude Include="include\Texture.h">
       <Filter>ResourceManager\Texture</Filter>
@@ -465,6 +465,15 @@
     <ClInclude Include="include\Material.h">
       <Filter>ResourceManager\Material</Filter>
     </ClInclude>
+    <ClInclude Include="include\ModelCCube.h">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CubeCanvasCamera.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControllerCCube.h">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -489,7 +498,7 @@
       <Filter>DesignPattern\Factory</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Window</Filter>
+      <Filter>Application\Window</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Application</Filter>
@@ -534,7 +543,7 @@
       <Filter>ResourceManager\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Canvas.cpp">
-      <Filter>Window\Canvas</Filter>
+      <Filter>Application\Canvas</Filter>
     </ClCompile>
     <ClCompile Include="Material2D.cpp">
       <Filter>ResourceManager\Material</Filter>
@@ -695,6 +704,12 @@
     <ClCompile Include="Material.cpp">
       <Filter>ResourceManager\Material</Filter>
     </ClCompile>
+    <ClCompile Include="ModelCCube.cpp">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerCCube.cpp">
+      <Filter>Application\Scene\Cube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BonesBuffer.hlsli">
@@ -765,6 +780,9 @@
       <Filter>Documentation</Filter>
     </None>
     <None Include="doc\ResourceManager.cd">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="doc\Cube.cd">
       <Filter>Documentation</Filter>
     </None>
   </ItemGroup>

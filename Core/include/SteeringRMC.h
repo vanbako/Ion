@@ -22,7 +22,6 @@ namespace Ion
 			SteeringRMC& operator=(const SteeringRMC& other) = default;
 			SteeringRMC& operator=(SteeringRMC&& other) noexcept = default;
 
-			virtual void Initialize() = 0;
 			virtual void Update(float delta) = 0;
 			virtual void Switch() override = 0;
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const override;

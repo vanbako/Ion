@@ -18,7 +18,7 @@ Core::InstancedSteeringRMC::InstancedSteeringRMC(bool isActive, Core::Object* pO
 
 void Core::InstancedSteeringRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::InstancedSteeringRMC::Update(float delta)
@@ -27,6 +27,7 @@ void Core::InstancedSteeringRMC::Update(float delta)
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (mpInstancedTransform == nullptr)
 	{
 		SetInstancedTransformMC(mpObject->GetModelC<Core::InstancedTransformMC>());

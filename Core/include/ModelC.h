@@ -11,7 +11,7 @@ namespace Ion
 			: public Core::Component
 		{
 		public:
-			explicit ModelC();
+			//explicit ModelC();
 			explicit ModelC(bool isActive, Core::Object* pObject);
 			virtual ~ModelC() = default;
 			ModelC(const ModelC& other) = default;
@@ -19,7 +19,8 @@ namespace Ion
 			ModelC& operator=(const ModelC& other) = default;
 			ModelC& operator=(ModelC&& other) noexcept = default;
 
-			virtual void Update(float) override = 0;
+			virtual void Initialize() override;
+			virtual void Update(float) override;
 			virtual void Switch() = 0;
 		protected:
 			int mCurrent;

@@ -9,7 +9,7 @@
 
 using namespace Ion;
 
-LRESULT CALLBACK AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Core::AppWinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE)
 	{
@@ -53,7 +53,7 @@ Core::Application::Application()
 	mResourceManager.AddResource<Material3DResource>();
 	WNDCLASS wndClass{};
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
-	wndClass.lpfnWndProc = AppWinProc;
+	wndClass.lpfnWndProc = Core::AppWinProc;
 	wndClass.cbClsExtra = 0;
 	wndClass.cbWndExtra = 0;
 	wndClass.hInstance = GetModuleHandle(nullptr);
@@ -75,6 +75,9 @@ Core::Application::~Application()
 {
 	// It is important to remove the scenes, ... before the DirectX components are released
 	mScenes.clear();
+	for (auto& canvas : mCanvases)
+		canvas.WaitThreadEnd();
+	mCanvases.clear();
 	mWindows.clear();
 	//mResourceManager.Clear();
 
@@ -205,6 +208,16 @@ Core::Window* Core::Application::AddWindow(const std::wstring& title, RECT recta
 	return &mWindows.emplace_back(this, title, rectangle);
 }
 
+Core::Canvas* Core::Application::AddCanvas(RECT rectangle)
+{
+	return &mCanvases.emplace_back(this, rectangle);
+}
+
+std::list<Core::Canvas>& Ion::Core::Application::GetCanvases()
+{
+	return mCanvases;
+}
+
 LRESULT Core::Application::WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -236,7 +249,7 @@ physx::PxPhysics* Core::Application::GetPxPhysics()
 	return mpPhysics;
 }
 
-physx::PxCooking* Ion::Core::Application::GetPxCooking()
+physx::PxCooking* Core::Application::GetPxCooking()
 {
 	return mpCooking;
 }

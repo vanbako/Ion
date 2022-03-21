@@ -6,6 +6,8 @@
 #include "ViewC.h"
 #include "Canvas.h"
 #include "Window.h"
+#include "ModelCCube.h"
+#include "ControllerCCube.h"
 
 namespace Ion
 {
@@ -62,9 +64,20 @@ namespace Ion
 			bool TryLockExclusiveViewCs();
 			void UnlockExclusiveViewCs();
 			void AddCanvas(Core::Canvas* pCanvas);
+			void ControllerCUpdate(float delta);
+			void ModelCUpdate(float delta);
+			void ModelCSwitch();
 			void ViewCUpdate(float delta);
 			void Render();
+			void AddModelC(Core::ModelC* pModelC);
+			void MoveModelC(Core::ModelC* pModelC, Core::ModelCCube* pCurrCube);
+			void AddModelCToCube(Core::ModelC* pModelC);
+			void AddControllerC(Core::ControllerC* pControllerC);
+			void MoveControllerC(Core::ControllerC* pControllerC, Core::ControllerCCube* pCurrCube);
+			void AddControllerCToCube(Core::ControllerC* pControllerC);
 		private:
+			static Core::Vector<long long> mModelCubeSize;
+			static Core::Vector<long long> mControllerCubeSize;
 			static std::chrono::milliseconds mObjectsMutexDuration;
 			static std::chrono::milliseconds
 				mModelTime,
@@ -95,6 +108,13 @@ namespace Ion
 			std::unordered_map<Core::Canvas*, std::pair<std::mutex, std::condition_variable>> mpCanvases;
 			physx::PxScene* mpPxScene;
 			physx::PxControllerManager* mpPxControllerManager;
+			std::multimap<long long, Core::ModelCCube> mModelCCubes;
+			std::multimap<long long, Core::ControllerCCube> mControllerCCubes;
+
+			Core::Vector<long long> GetModelCubePos(Core::ModelC* pModelC);
+			std::multimap<long long, Core::ModelCCube>::iterator GetModelCubeIterator(Core::Vector<long long>& cubePos);
+			Core::Vector<long long> GetControllerCubePos(Core::ControllerC* pControllerC);
+			std::multimap<long long, Core::ControllerCCube>::iterator GetControllerCubeIterator(Core::Vector<long long>& cubePos);
 		};
 	}
 }

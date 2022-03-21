@@ -1,10 +1,13 @@
 #pragma once
 #include "Vector.h"
+#include "CubeCanvasCamera.h"
 
 namespace Ion
 {
 	namespace Core
 	{
+		class Canvas;
+		class Scene;
 
 		class Cube
 		{
@@ -17,10 +20,16 @@ namespace Ion
 			Cube& operator=(const Cube& other) = delete;
 			Cube& operator=(Cube&& other) noexcept = delete;
 
+			void SetScene(Core::Scene* pScene);
+			Core::Scene* GetScene();
 			Core::Vector<long long>& GetLocation();
 			void SetLocation(const Core::Vector<long long>& loc);
 		protected:
 			Core::Vector<long long> mLocation;
+			std::vector<CubeCanvasCamera> mCubeCanvasCameras;
+			Core::Scene* mpScene;
+
+			void UpdateCanvasCamera(Core::Canvas* pCanvas);
 		};
 	}
 }

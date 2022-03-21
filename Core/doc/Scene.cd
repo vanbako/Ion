@@ -7,7 +7,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>UwJQKEAAAJACkQBEBABAEBJARAASABixCQQggMKgqAY=</HashCode>
+      <HashCode>UgJQKEAAABACgQAEBABAUAJBAAASABihCQQhAMKAqgY=</HashCode>
       <FileName>include\Application.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,16 +66,16 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>KcAA4CREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <HashCode>KcAA4GRMQREAA0AcyAWkIAjAdBQAFpAgKDygQRI0BAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpApplication" />
       <Field Name="mpModelST" />
-      <Field Name="mpPhysicsST" />
       <Field Name="mpControllerST" />
-      <Field Name="mpStatsST" />
       <Field Name="mpViewST" />
+      <Field Name="mpPhysicsST" />
+      <Field Name="mpStatsST" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Object" Collapsed="true">
@@ -85,7 +85,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQhgAQxJAKBAgAQYQAAg=</HashCode>
+      <HashCode>ECgAeEAAQQOEAQAgAAAAAAAAQggAQxJAKBAgAQYQAAg=</HashCode>
       <FileName>include\Object.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

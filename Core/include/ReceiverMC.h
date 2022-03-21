@@ -20,7 +20,6 @@ namespace Ion
 			ReceiverMC& operator=(const ReceiverMC& other) = default;
 			ReceiverMC& operator=(ReceiverMC&& other) noexcept = default;
 
-			virtual void Update(float) override = 0;
 			virtual void Switch() = 0;
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const = 0;
 			virtual const std::string& GetName() const = 0;

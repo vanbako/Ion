@@ -1,11 +1,11 @@
 #pragma once
-#include "Canvas.h"
 
 namespace Ion
 {
 	namespace Core
 	{
 		class Application;
+		class Canvas;
 
 		class Window final
 		{
@@ -19,11 +19,11 @@ namespace Ion
 
 			Core::Application* GetApplication();
 			HWND& GetHandle();
-			Core::Canvas* AddCanvas(RECT rectangle);
+			void AddCanvas(Core::Canvas* pCanvas);
 		private:
 			Core::Application* mpApplication;
 			HWND mhWindow;
-			std::list<Core::Canvas> mCanvases;
+			std::vector<Core::Canvas*> mpCanvases;
 		};
 	}
 }

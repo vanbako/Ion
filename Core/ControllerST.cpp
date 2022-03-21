@@ -277,8 +277,9 @@ void Core::ControllerST::Inner(float delta)
 		return;
 	if (mpScene->TryLockSharedControllerCs())
 	{
-		for (auto& object : mpScene->GetObjects())
-			object.ControllerCUpdate(delta);
+		//for (auto& object : mpScene->GetObjects())
+		//	object.ControllerCUpdate(delta);
+		mpScene->ControllerCUpdate(delta);
 		mpScene->UnlockSharedControllerCs();
 	}
 	mpScene->UnlockSharedObjects();

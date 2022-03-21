@@ -66,14 +66,14 @@ void Core::TransformMC::Initialize()
 	InternalSwitch();
 	mHasChanged = true;
 	InternalUpdate(0.f);
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::TransformMC::Update(float delta)
 {
-	(delta);
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if ((!mHasChanged) && (mpPxRigidActor == nullptr))
 		return;
  	if (mpPxRigidActor != nullptr)
@@ -266,6 +266,7 @@ void Core::TransformMC::InternalSwitch()
 	int next{ 0 };
 	if (mCurrent == 0)
 		next = 1;
+	mHasMoved.store(false);
 	if ((mPosition[mCurrent].x != mPosition[next].x) ||
 		(mPosition[mCurrent].y != mPosition[next].y) ||
 		(mPosition[mCurrent].z != mPosition[next].z)

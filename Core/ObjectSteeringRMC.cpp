@@ -18,7 +18,7 @@ Core::ObjectSteeringRMC::ObjectSteeringRMC(bool isActive, Core::Object* pObject)
 
 void Core::ObjectSteeringRMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::ObjectSteeringRMC::Update(float delta)
@@ -27,6 +27,7 @@ void Core::ObjectSteeringRMC::Update(float delta)
 	using namespace DirectX;
 	if (!mIsActive)
 		return;
+	Core::ModelC::Update(delta);
 	if (mpTransform == nullptr)
 	{
 		SetTransformMC(mpObject->GetModelC<Core::TransformMC>());

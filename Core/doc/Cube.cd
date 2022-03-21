@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ion::Core::Scene" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KcAA4GRMQREAA0AcyAWkIAjAdBQAFpAgKDygQRI0BAQ=</HashCode>
+      <FileName>include\Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::Cube">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="~Cube" Hidden="true" />
+      <Method Name="Cube" Hidden="true" />
+      <Method Name="GetScene" Hidden="true" />
+      <Field Name="mCubeCanvasCameras" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="SetLocation" Hidden="true" />
+      <Method Name="SetScene" Hidden="true" />
+      <Method Name="UpdateCanvasCamera" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAiAAAAAAAQAAAAAAAAAAAAAABhCACgCAAACAA=</HashCode>
+      <FileName>include\Cube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpScene" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::ViewC">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <Members>
+      <Method Name="~ViewC" Hidden="true" />
+      <Method Name="AddCanvas" Hidden="true" />
+      <Field Name="mMaterial2D" Hidden="true" />
+      <Field Name="mMaterial3D" Hidden="true" />
+      <Field Name="mpCanvases" Hidden="true" />
+      <Field Name="mpMaterial2D" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="ViewC" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>DIQAAAAAAAAAAAAAAMAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <FileName>include\ViewC.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpMaterial3D" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::Material3D" Collapsed="true">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEEEAIAEABQAAAZACRAACCACAAAKAIBAgYBEiAQk=</HashCode>
+      <FileName>include\Material3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ViewCCube" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAAMEABAAAAAAQAAAABAADAAAAABEAAABIgAAAAAAA=</HashCode>
+      <FileName>include\ViewCCube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpMaterial3D" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ion::Core::ModelC">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <Members>
+      <Method Name="~ModelC" Hidden="true" />
+      <Method Name="ModelC" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAEAAAAYAAAAAAAAAAAAAAAAAAAAggAAAACAA=</HashCode>
+      <FileName>include\ModelC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ModelCCube" Collapsed="true">
+    <Position X="3.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAABAAAAAAAAAAgAAAAAQBAAAAAgCAggAAAAAAA=</HashCode>
+      <FileName>include\ModelCCube.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ControllerC">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <Members>
+      <Method Name="~ControllerC" Hidden="true" />
+      <Method Name="ControllerC" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAgAQAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>include\ControllerC.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ion::Core::ControllerCCube" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIAAAABQAAAAAAAAAAAAAAAAAAAAAAAFCAgAAAQAAA=</HashCode>
+      <FileName>include\ControllerCCube.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Ion::Core::CubeViewC">
+    <Position X="6.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>include\ViewCCube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpViewC" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="Ion::Core::CubeModelC">
+    <Position X="3.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\ModelCCube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpModelC" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="Ion::Core::CubeControllerC">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\ControllerCCube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mpControllerC" />
+    </ShowAsAssociation>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

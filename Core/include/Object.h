@@ -136,8 +136,8 @@ namespace Ion
 						controllerCs.push_back((T*)pControllerC);
 			}
 			void ModelCInitialize();
-			void ModelCUpdate(float delta);
-			void ModelCSwitch();
+			//void ModelCUpdate(float delta);
+			//void ModelCSwitch();
 			void ControllerCInitialize();
 			void ControllerCUpdate(float delta);
 			template<class T>

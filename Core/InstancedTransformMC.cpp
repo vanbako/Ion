@@ -68,13 +68,14 @@ std::vector<Core::Behaviour>& Core::InstancedTransformMC::GetBehaviours()
 
 void Core::InstancedTransformMC::Initialize()
 {
-	mIsInitialized = true;
+	Core::ModelC::Initialize();
 }
 
 void Core::InstancedTransformMC::Update(float delta)
 {
 	if (!mIsActive || mIsStatic)
 		return;
+	Core::ModelC::Update(delta);
 	for (Core::TransformMC& transform : mTransforms)
 		transform.Update(delta);
 }

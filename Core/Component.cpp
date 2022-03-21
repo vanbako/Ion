@@ -15,6 +15,16 @@ void Core::Component::Initialize()
 	mIsInitialized = true;
 }
 
+void Core::Component::SetCube(Core::Cube* pCube)
+{
+	mpCube = pCube;
+}
+
+Core::Cube* Core::Component::GetCube()
+{
+	return mpCube;
+}
+
 void Core::Component::SetIsActive(bool isActive)
 {
 	mIsActive = isActive;

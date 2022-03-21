@@ -5,6 +5,7 @@ namespace Ion
 	namespace Core
 	{
 		class Object;
+		class Cube;
 
 		class Component
 		{
@@ -19,6 +20,9 @@ namespace Ion
 			virtual void Initialize();
 			virtual void Update(float) = 0;
 
+			void SetCube(Core::Cube* pCube);
+			Core::Cube* GetCube();
+
 			void SetIsActive(bool isActive);
 			const bool GetIsActive() const;
 			void SetObject(Core::Object* pObject);
@@ -27,6 +31,7 @@ namespace Ion
 			bool mIsInitialized;
 			bool mIsActive;
 			Core::Object* mpObject;
+			Core::Cube* mpCube;
 		};
 	}
 }

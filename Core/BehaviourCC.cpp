@@ -25,6 +25,9 @@ Core::BehaviourCC::~BehaviourCC()
 
 void Core::BehaviourCC::Update(float delta)
 {
+	if (mpCube == nullptr)
+		return;
+	Core::ControllerC::Update(delta);
 	if (mpSteeringRMC == nullptr)
 		return;
 	switch (mBehaviour)

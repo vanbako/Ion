@@ -71,21 +71,21 @@ void Core::Object::ModelCInitialize()
 		childObject.ModelCInitialize();
 }
 
-void Core::Object::ModelCUpdate(float delta)
-{
-	for (Core::ModelC* pModelC : mpModelCs)
-		pModelC->Update(delta);
-	for (auto& childObject : mChildObjects)
-		childObject.ModelCUpdate(delta);
-}
-
-void Core::Object::ModelCSwitch()
-{
-	for (Core::ModelC* pModelC : mpModelCs)
-		pModelC->Switch();
-	for (auto& childObject : mChildObjects)
-		childObject.ModelCSwitch();
-}
+//void Core::Object::ModelCUpdate(float delta)
+//{
+//	for (Core::ModelC* pModelC : mpModelCs)
+//		pModelC->Update(delta);
+//	for (auto& childObject : mChildObjects)
+//		childObject.ModelCUpdate(delta);
+//}
+//
+//void Core::Object::ModelCSwitch()
+//{
+//	for (Core::ModelC* pModelC : mpModelCs)
+//		pModelC->Switch();
+//	for (auto& childObject : mChildObjects)
+//		childObject.ModelCSwitch();
+//}
 
 void Core::Object::ControllerCInitialize()
 {
