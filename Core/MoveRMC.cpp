@@ -3,16 +3,13 @@
 
 using namespace Ion;
 
+const std::chrono::milliseconds Core::MoveRMC::mMoveActionsMutexDuration{ 1 };
+
 Core::MoveRMC::MoveRMC(bool isActive, Core::Object* pObject)
 	: Core::ReceiverMC(isActive, pObject)
-	, mMoveForward{ false, false }
-	, mMoveBack{ false, false }
-	, mMoveLeft{ false, false }
-	, mMoveRight{ false, false }
-	, mMoveUp{ false, false }
-	, mMoveDown{ false, false }
-	, mRotateLeft{ false, false }
-	, mRotateRight{ false, false }
+	, mMoveBool{ false }
+	, mMoveActionsMutex{}
+	, mMoveActions{}
 {
 }
 
@@ -20,108 +17,70 @@ void Core::MoveRMC::Switch()
 {
 	if (!mIsActive)
 		return;
-	if (!mHasChanged)
-		return;
-	mHasChanged = false;
-	int next{ 0 };
-	if (mCurrent == 0)
-		next = 1;
-	mMoveForward[next] = mMoveForward[mCurrent];
-	mMoveBack[next] = mMoveBack[mCurrent];
-	mMoveLeft[next] = mMoveLeft[mCurrent];
-	mMoveRight[next] = mMoveRight[mCurrent];
-	mMoveUp[next] = mMoveUp[mCurrent];
-	mMoveDown[next] = mMoveDown[mCurrent];
-	mRotateLeft[next] = mRotateLeft[mCurrent];
-	mRotateRight[next] = mRotateRight[mCurrent];
-	if (mMoveForward[mCurrent] || mMoveBack[mCurrent] || mMoveLeft[mCurrent] || mMoveRight[mCurrent] || mMoveUp[mCurrent] || mMoveDown[mCurrent] || mRotateLeft[mCurrent] || mRotateRight[mCurrent])
-		mHasChanged = true;
 }
 
 void Core::MoveRMC::MoveForward(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveForward[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveForward[mCurrent] = false;
+	SetMoveState(Core::MoveType::Forward, value);
 }
 
 void Core::MoveRMC::MoveBack(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveBack[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveBack[mCurrent] = false;
+	SetMoveState(Core::MoveType::Back, value);
 }
 
 void Core::MoveRMC::MoveLeft(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveLeft[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveLeft[mCurrent] = false;
+	SetMoveState(Core::MoveType::Left, value);
 }
 
 void Core::MoveRMC::MoveRight(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveRight[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveRight[mCurrent] = false;
+	SetMoveState(Core::MoveType::Right, value);
 }
 
 void Core::MoveRMC::MoveUp(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveUp[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveUp[mCurrent] = false;
+	SetMoveState(Core::MoveType::Up, value);
 }
 
 void Core::MoveRMC::MoveDown(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mMoveDown[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mMoveDown[mCurrent] = false;
+	SetMoveState(Core::MoveType::Down, value);
 }
 
 void Core::MoveRMC::RotateLeft(long long value)
 {
-	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mRotateLeft[mCurrent] = true;
-		mHasChanged = true;
-	}
-	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mRotateLeft[mCurrent] = false;
+	SetMoveState(Core::MoveType::RotateLeft, value);
 }
 
 void Core::MoveRMC::RotateRight(long long value)
 {
+	SetMoveState(Core::MoveType::RotateRight, value);
+}
+
+void Core::MoveRMC::CursorRotateLeftRight(int value)
+{
+	AddMoveAction(Core::MoveType::CursorRotateLeftRight, value);
+}
+
+void Core::MoveRMC::CursorUpDown(int value)
+{
+	AddMoveAction(Core::MoveType::CursorUpDown, value);
+}
+
+void Core::MoveRMC::SetMoveState(Core::MoveType moveType, long long value)
+{
 	if (KeyboardState(value) == KeyboardState::KeyDown)
-	{
-		mRotateRight[mCurrent] = true;
-		mHasChanged = true;
-	}
+		mMoveBool[std::size_t(moveType)] = true;
 	else if (KeyboardState(value) == KeyboardState::KeyUp)
-		mRotateRight[mCurrent] = false;
+		mMoveBool[std::size_t(moveType)] = false;
+}
+
+void Core::MoveRMC::AddMoveAction(Core::MoveType moveType, int value)
+{
+	if (!mMoveActionsMutex.try_lock_for(mMoveActionsMutexDuration))
+		return;
+	mMoveActions.emplace_back(moveType, value);
+	mMoveActionsMutex.unlock();
 }

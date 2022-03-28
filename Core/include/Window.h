@@ -20,6 +20,7 @@ namespace Ion
 			Core::Application* GetApplication();
 			HWND& GetHandle();
 			void AddCanvas(Core::Canvas* pCanvas);
+			POINT GetCursorPosition();
 		private:
 			Core::Application* mpApplication;
 			HWND mhWindow;

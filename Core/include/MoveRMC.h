@@ -10,6 +10,21 @@ namespace Ion
 	{
 		class Command;
 
+		enum class MoveType
+		{
+			Forward,
+			Back,
+			Left,
+			Right,
+			Up,
+			Down,
+			RotateLeft,
+			RotateRight,
+			CursorRotateLeftRight,
+			CursorUpDown,
+			Count
+		};
+
 		class MoveRMC
 			: public Core::ReceiverMC
 		{
@@ -33,18 +48,18 @@ namespace Ion
 			virtual void MoveDown(long long value);
 			virtual void RotateLeft(long long value);
 			virtual void RotateRight(long long value);
+			virtual void CursorRotateLeftRight(int value);
+			virtual void CursorUpDown(int value);
 		protected:
 			// My best guess is that boolean operations are thread-safe
 			// Implement std::atomic if needed
-			bool
-				mMoveForward[2],
-				mMoveBack[2],
-				mMoveLeft[2],
-				mMoveRight[2],
-				mMoveUp[2],
-				mMoveDown[2],
-				mRotateLeft[2],
-				mRotateRight[2];
+			bool mMoveBool[size_t(Core::MoveType::Count)];
+			static const std::chrono::milliseconds mMoveActionsMutexDuration;
+			std::timed_mutex mMoveActionsMutex;
+			std::vector<std::pair<Core::MoveType, int>> mMoveActions;
+
+			virtual void SetMoveState(Core::MoveType moveType, long long value);
+			virtual void AddMoveAction(Core::MoveType moveType, int value);
 		};
 	}
 }

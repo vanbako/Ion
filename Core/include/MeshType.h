@@ -18,7 +18,8 @@ namespace Ion
 			BlendIndices = 9,
 			BlendWeights = 10,
 			AnimationClips = 11,
-			Skeleton = 12
+			Skeleton = 12,
+			Count
 		};
 	}
 }

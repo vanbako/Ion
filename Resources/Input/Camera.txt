@@ -6,3 +6,5 @@ MoveUp VK_R
 MoveDown VK_F
 RotateLeft VK_Q
 RotateRight VK_E
+CursorUpDown CURSOR_UPDOWN
+CursorLeftRight CURSOR_LEFTRIGHT

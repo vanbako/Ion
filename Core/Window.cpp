@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Window.h"
 #include "Canvas.h"
+#include "Application.h"
 
 using namespace Ion;
 
@@ -45,4 +46,11 @@ void Core::Window::AddCanvas(Core::Canvas* pCanvas)
 {
 	pCanvas->SetWindow(this);
 	mpCanvases.emplace_back(pCanvas);
+}
+
+POINT Core::Window::GetCursorPosition()
+{
+	POINT pt{ mpApplication->GetCursorPosition() };
+	ScreenToClient(mhWindow, &pt);
+	return pt;
 }

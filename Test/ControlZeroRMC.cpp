@@ -6,6 +6,7 @@
 #include "../Core/include/Scene.h"
 #include "../Test/include/ToggleSceneOneCmd.h"
 #include "../Test/include/ToggleSceneTwoCmd.h"
+#include "../Test/include/ToggleRelativeCursorCmd.h"
 #include "../Core/include/InputCC.h"
 #include "../Core/include/KeyboardState.h"
 
@@ -17,10 +18,14 @@ Core::ControlZeroRMC::ControlZeroRMC(bool isActive, Core::Object* pObject)
 	: Core::ReceiverMC(isActive, pObject)
 	, mCommands{
 		{ "ToggleSceneOne", new Core::ToggleSceneOneCmd{ this } },
-		{ "ToggleSceneTwo", new Core::ToggleSceneTwoCmd{ this } } }
-	, mToggleSceneOne{ false, false }
-	, mToggleSceneTwo{ false, false }
+		{ "ToggleSceneTwo", new Core::ToggleSceneTwoCmd{ this } },
+		{ "ToggleRelativeCursor", new Core::ToggleRelativeCursorCmd{ this } } }
+	, mToggleSceneOne{ false }
+	, mToggleSceneTwo{ false }
+	, mCursorModeRelative{ false }
 {
+	if (mpObject->GetScene()->GetApplication()->GetCursorMode() == Core::CursorMode::Relative)
+		mCursorModeRelative = true;
 }
 
 Core::ControlZeroRMC::~ControlZeroRMC()
@@ -42,12 +47,12 @@ void Core::ControlZeroRMC::Update(float delta)
 	Core::ModelC::Update(delta);
 	if (!mHasChanged)
 		return;
-	if (mToggleSceneOne[mCurrent])
+	if (mToggleSceneOne)
 	{
 		Core::Scene* pScene{ mpObject->GetScene()->GetApplication()->GetScene(1) };
 		pScene->SetIsActive(!pScene->GetIsActive());
 	}
-	if (mToggleSceneTwo[mCurrent])
+	if (mToggleSceneTwo)
 	{
 		Core::Scene* pScene{ mpObject->GetScene()->GetApplication()->GetScene(2) };
 		pScene->SetIsActive(!pScene->GetIsActive());
@@ -58,16 +63,6 @@ void Core::ControlZeroRMC::Switch()
 {
 	if (!mIsActive)
 		return;
-	if (!mHasChanged)
-		return;
-	mHasChanged = false;
-	int next{ 0 };
-	if (mCurrent == 0)
-		next = 1;
-	mToggleSceneOne[next] = mToggleSceneOne[mCurrent];
-	mToggleSceneTwo[next] = mToggleSceneTwo[mCurrent];
-	mToggleSceneOne[mCurrent] = false;
-	mToggleSceneTwo[mCurrent] = false;
 }
 
 const std::vector<std::pair<std::string, Core::Command*>>& Core::ControlZeroRMC::GetCommands() const
@@ -84,14 +79,30 @@ void Core::ControlZeroRMC::ToggleSceneOne(long long value)
 {
 	if (KeyboardState(value) != KeyboardState::KeyDown)
 		return;
-	mToggleSceneOne[mCurrent] = true;
-	mHasChanged = true;
+	mToggleSceneOne = true;
 }
 
 void Core::ControlZeroRMC::ToggleSceneTwo(long long value)
 {
 	if (KeyboardState(value) != KeyboardState::KeyDown)
 		return;
-	mToggleSceneTwo[mCurrent] = true;
-	mHasChanged = true;
+	mToggleSceneTwo = true;
+}
+
+void Core::ControlZeroRMC::ToggleCursorMode(long long value)
+{
+	if (KeyboardState(value) == KeyboardState::KeyDown)
+	{
+		if (!mCursorModeRelative)
+		{
+			mCursorModeRelative = true;
+			mpObject->GetScene()->GetApplication()->SetCursorMode(Core::CursorMode::Relative);
+		}
+	}
+	else
+		if (mCursorModeRelative)
+		{
+			mCursorModeRelative = false;
+			mpObject->GetScene()->GetApplication()->SetCursorMode(Core::CursorMode::Absolute);
+		}
 }

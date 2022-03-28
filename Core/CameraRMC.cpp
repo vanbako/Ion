@@ -11,9 +11,13 @@
 #include "MoveDownCmd.h"
 #include "RotateLeftCmd.h"
 #include "RotateRightCmd.h"
+#include "CursorRotateLeftRightCmd.h"
+#include "CursorUpDownCmd.h"
 
 using namespace Ion;
 
+const float Core::CameraRMC::mMoveFactor{ 0.4f };
+const float Core::CameraRMC::mRotateFactor{ 0.2f };
 const std::string Core::CameraRMC::mName{ "Camera" };
 
 Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
@@ -26,8 +30,10 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 		{ "MoveUp", new Core::MoveUpCmd{ this } },
 		{ "MoveDown", new Core::MoveDownCmd{ this } },
 		{ "RotateLeft", new Core::RotateLeftCmd{ this } },
-		{ "RotateRight", new Core::RotateRightCmd{ this } } }
-	, mpCanvas{ nullptr }
+		{ "RotateRight", new Core::RotateRightCmd{ this } },
+		{ "CursorLeftRight", new Core::CursorRotateLeftRightCmd{ this } },
+		{ "CursorUpDown", new Core::CursorUpDownCmd{ this } } }
+		, mpCanvas{ nullptr }
 	, mFarPlane{ 2500.f }
 	, mNearPlane{ 0.1f }
 	, mFOV{ DirectX::XM_PIDIV4 }
@@ -35,6 +41,7 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 	, mViewProjection{}
 	, mViewInverse{}
 	, mpTransform{ nullptr }
+	, mFirst{ true }
 {
 }
 
@@ -46,6 +53,7 @@ Core::CameraRMC::~CameraRMC()
 
 void Core::CameraRMC::Initialize()
 {
+	using namespace DirectX;
 	Core::ModelC::Initialize();
 }
 
@@ -65,9 +73,10 @@ void Core::CameraRMC::Update(float delta)
 	}
 	if (mpTransform == nullptr)
 		return;
-	if (!mHasChanged)
-		return;
 
+	if (!mMoveActionsMutex.try_lock_for(mMoveActionsMutexDuration))
+		return;
+	bool hasChanged{ false };
 	{
 		DirectX::XMFLOAT4 pos{ mpTransform->GetWorldPosition() };
 		DirectX::XMFLOAT4 forward{ mpTransform->GetForward() };
@@ -77,40 +86,73 @@ void Core::CameraRMC::Update(float delta)
 		float rotateSpeed{ 2.f };
 		float moveDelta{ walkSpeed * delta };
 		float rotateDelta{ rotateSpeed * delta };
-		if (mMoveForward[mCurrent])
+		for (auto& moveAction : mMoveActions)
+		{
+			switch (moveAction.first)
+			{
+			case Core::MoveType::CursorRotateLeftRight:
+				DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(rotateDelta * float(moveAction.second) * mRotateFactor) };
+				DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
+				DirectX::XMStoreFloat4(&up, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&up), R));
+				DirectX::XMStoreFloat4(&forward, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&forward), R));
+				mpTransform->SetForward(forward);
+				mpTransform->SetUp(up);
+				mpTransform->SetRight(right);
+				hasChanged = true;
+				break;
+			case Core::MoveType::CursorUpDown:
+				pos.y += moveDelta * float(moveAction.second) * mMoveFactor;
+				hasChanged = true;
+				break;
+			}
+		}
+		mMoveActions.clear();
+		mMoveActionsMutex.unlock();
+
+		if (mMoveBool[std::size_t(Core::MoveType::Forward)])
 		{
 			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(moveDelta) };
 			DirectX::XMVECTOR l{ DirectX::XMLoadFloat4(&forward) };
 			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
 			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, l, p));
+			hasChanged = true;
 		}
-		if (mMoveBack[mCurrent])
+		if (mMoveBool[std::size_t(Core::MoveType::Back)])
 		{
 			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(-moveDelta) };
 			DirectX::XMVECTOR l{ DirectX::XMLoadFloat4(&forward) };
 			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
 			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, l, p));
+			hasChanged = true;
 		}
-		if (mMoveLeft[mCurrent])
+		if (mMoveBool[std::size_t(Core::MoveType::Left)])
 		{
 			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(-moveDelta) };
 			DirectX::XMVECTOR r{ DirectX::XMLoadFloat4(&right) };
 			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
 			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, r, p));
+			hasChanged = true;
 		}
-		if (mMoveRight[mCurrent])
+		if (mMoveBool[std::size_t(Core::MoveType::Right)])
 		{
 			DirectX::XMVECTOR s{ DirectX::XMVectorReplicate(moveDelta) };
 			DirectX::XMVECTOR r{ DirectX::XMLoadFloat4(&right) };
 			DirectX::XMVECTOR p{ DirectX::XMLoadFloat4(&pos) };
 			DirectX::XMStoreFloat4(&pos, DirectX::XMVectorMultiplyAdd(s, r, p));
+			hasChanged = true;
 		}
 		// MoveUp & Down can be quite simple, as long as the up vector aligns with the y-axis
-		if (mMoveUp[mCurrent])
+		if (mMoveBool[std::size_t(Core::MoveType::Up)])
+		{
 			pos.y += moveDelta;
-		if (mMoveDown[mCurrent])
+			hasChanged = true;
+		}
+		if (mMoveBool[std::size_t(Core::MoveType::Down)])
+		{
 			pos.y -= moveDelta;
-		if (mRotateLeft[mCurrent])
+			hasChanged = true;
+		}
+		if (mMoveBool[std::size_t(Core::MoveType::RotateLeft)])
 		{
 			DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(rotateDelta) };
 			DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
@@ -119,8 +161,9 @@ void Core::CameraRMC::Update(float delta)
 			mpTransform->SetForward(forward);
 			mpTransform->SetUp(up);
 			mpTransform->SetRight(right);
+			hasChanged = true;
 		}
-		if (mRotateRight[mCurrent])
+		if (mMoveBool[std::size_t(Core::MoveType::RotateRight)])
 		{
 			DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(-rotateDelta) };
 			DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
@@ -129,10 +172,13 @@ void Core::CameraRMC::Update(float delta)
 			mpTransform->SetForward(forward);
 			mpTransform->SetUp(up);
 			mpTransform->SetRight(right);
+			hasChanged = true;
 		}
 		mpTransform->SetPosition(pos);
 	}
+	if (hasChanged || mFirst)
 	{
+		mFirst = false;
 		DirectX::XMMATRIX projection{ DirectX::XMMatrixPerspectiveFovLH(mFOV, mpCanvas->GetRatio(), mNearPlane, mFarPlane) };
 		const DirectX::XMVECTOR worldPosition{ DirectX::XMLoadFloat4(&mpTransform->GetWorldPosition()) };
 		DirectX::XMFLOAT4 fw{ mpTransform->GetForward() };

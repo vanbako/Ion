@@ -40,7 +40,7 @@ namespace Ion
 			void MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::ViewCCube* pCurrCube);
 			void AddViewCToCube(std::multimap<long long, Core::ViewCCube>& cubes, Core::ViewC* pViewC);
 		private:
-			static Core::Vector<long long> mCubeSize;
+			static Core::Vector<long long> mViewCCubeSize;
 			static const UINT mMaxInputParam;
 			static const std::unordered_map<std::string, Core::SemanticInfo> mSemanticStrings;
 			static const std::unordered_map<std::string, Core::TextureType> mTextureTypeStrings;
@@ -60,8 +60,8 @@ namespace Ion
 			std::unordered_map<Core::Canvas*, std::multimap<long long, Core::ViewCCube>> mpCanvasCubes;
 			std::set<Core::TextureType> mTextureTypes;
 
-			Core::Vector<long long> GetCubePos(Core::ViewC* pViewC);
-			std::multimap<long long, Core::ViewCCube>::iterator GetCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes);
+			Core::Vector<long long> GetViewCCubePos(Core::ViewC* pViewC);
+			std::multimap<long long, Core::ViewCCube>::iterator GetViewCCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes);
 		};
 	}
 }

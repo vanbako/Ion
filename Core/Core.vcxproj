@@ -120,6 +120,9 @@
     <ClInclude Include="include\CoordSystem.h" />
     <ClInclude Include="include\Cube.h" />
     <ClInclude Include="include\CubeCanvasCamera.h" />
+    <ClInclude Include="include\CursorMode.h" />
+    <ClInclude Include="include\CursorRotateLeftRightCmd.h" />
+    <ClInclude Include="include\CursorUpDownCmd.h" />
     <ClInclude Include="include\d3dx12.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\FileLogger.h" />
@@ -223,6 +226,8 @@
     <ClCompile Include="ControllerCCube.cpp" />
     <ClCompile Include="ControllerST.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="CursorRotateLeftRightCmd.cpp" />
+    <ClCompile Include="CursorUpDownCmd.cpp" />
     <ClCompile Include="FileLogger.cpp" />
     <ClCompile Include="InputCC.cpp" />
     <ClCompile Include="InstancedAnimatedMVC.cpp" />

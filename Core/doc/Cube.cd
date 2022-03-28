@@ -1,14 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Ion::Core::Scene" Collapsed="true">
-    <Position X="0.5" Y="0.75" Width="1.5" />
+  <Class Name="Ion::Core::Scene">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="~Scene" Hidden="true" />
+      <Method Name="AddCanvas" Hidden="true" />
+      <Method Name="AddObject" Hidden="true" />
+      <Method Name="GetApplication" Hidden="true" />
+      <Method Name="GetControllerST" Hidden="true" />
+      <Method Name="GetIsActive" Hidden="true" />
+      <Method Name="GetIsEnd" Hidden="true" />
+      <Method Name="GetName" Hidden="true" />
+      <Method Name="GetObjects" Hidden="true" />
+      <Method Name="GetPxControllerManager" Hidden="true" />
+      <Method Name="GetPxScene" Hidden="true" />
+      <Method Name="GetSceneThreads" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Field Name="mControllerCMutex" Hidden="true" />
+      <Field Name="mControllerTime" Hidden="true" />
+      <Field Name="mIsActive" Hidden="true" />
+      <Field Name="mIsEnd" Hidden="true" />
+      <Field Name="mIsInitialized" Hidden="true" />
+      <Field Name="mModelCMutex" Hidden="true" />
+      <Field Name="mModelTime" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mObjects" Hidden="true" />
+      <Field Name="mObjectsMutex" Hidden="true" />
+      <Field Name="mObjectsMutexDuration" Hidden="true" />
+      <Field Name="mpApplication" Hidden="true" />
+      <Field Name="mpCanvases" Hidden="true" />
+      <Field Name="mpControllerST" Hidden="true" />
+      <Field Name="mPhysicsTime" Hidden="true" />
+      <Field Name="mpModelST" Hidden="true" />
+      <Field Name="mpPhysicsST" Hidden="true" />
+      <Field Name="mpPxControllerManager" Hidden="true" />
+      <Field Name="mpPxScene" Hidden="true" />
+      <Field Name="mpSceneThreads" Hidden="true" />
+      <Field Name="mpStatsST" Hidden="true" />
+      <Field Name="mpViewST" Hidden="true" />
+      <Field Name="mStatsTime" Hidden="true" />
+      <Field Name="mViewCMutex" Hidden="true" />
+      <Field Name="mViewTime" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+      <Method Name="Scene" Hidden="true" />
+      <Method Name="SetIsActive" Hidden="true" />
+      <Method Name="SetIsEnd" Hidden="true" />
+      <Method Name="TryLockExclusiveControllerCs" Hidden="true" />
+      <Method Name="TryLockExclusiveModelCs" Hidden="true" />
+      <Method Name="TryLockExclusiveObjects" Hidden="true" />
+      <Method Name="TryLockExclusiveViewCs" Hidden="true" />
+      <Method Name="TryLockSharedControllerCs" Hidden="true" />
+      <Method Name="TryLockSharedModelCs" Hidden="true" />
+      <Method Name="TryLockSharedObjects" Hidden="true" />
+      <Method Name="TryLockSharedViewCs" Hidden="true" />
+      <Method Name="UnlockExclusiveControllerCs" Hidden="true" />
+      <Method Name="UnlockExclusiveModelCs" Hidden="true" />
+      <Method Name="UnlockExclusiveObjects" Hidden="true" />
+      <Method Name="UnlockExclusiveViewCs" Hidden="true" />
+      <Method Name="UnlockSharedControllerCs" Hidden="true" />
+      <Method Name="UnlockSharedModelCs" Hidden="true" />
+      <Method Name="UnlockSharedObjects" Hidden="true" />
+      <Method Name="UnlockSharedViewCs" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>KcAA4GRMQREAA0AcyAWkIAjAdBQAFpAgKDygQRI0BAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::Cube">
-    <Position X="3.25" Y="0.5" Width="2" />
+    <Position X="6" Y="0.5" Width="1.5" />
     <Members>
       <Method Name="~Cube" Hidden="true" />
       <Method Name="Cube" Hidden="true" />
@@ -28,7 +88,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::ViewC">
-    <Position X="6.5" Y="4" Width="1.5" />
+    <Position X="9" Y="4" Width="1.5" />
     <Members>
       <Method Name="~ViewC" Hidden="true" />
       <Method Name="AddCanvas" Hidden="true" />
@@ -50,15 +110,42 @@
       <Field Name="mpMaterial3D" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Ion::Core::Material3D" Collapsed="true">
-    <Position X="9" Y="2.75" Width="1.5" />
+  <Class Name="Ion::Core::Material3D">
+    <Position X="11.75" Y="2.75" Width="2" />
+    <Members>
+      <Method Name="~Material3D" Hidden="true" />
+      <Method Name="GetInputElementCount" Hidden="true" />
+      <Method Name="GetInputElementDescs" Hidden="true" />
+      <Method Name="GetLayoutSize" Hidden="true" />
+      <Method Name="GetPipelineState" Hidden="true" />
+      <Method Name="GetRootSignature" Hidden="true" />
+      <Method Name="GetSemanticStrings" Hidden="true" />
+      <Method Name="GetTextureTypeSet" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="Material3D" Hidden="true" />
+      <Field Name="mConstantBufferCount" Hidden="true" />
+      <Field Name="mInputElementCount" Hidden="true" />
+      <Field Name="mLayoutSize" Hidden="true" />
+      <Field Name="mMaxInputParam" Hidden="true" />
+      <Field Name="mpInputElementDescs" Hidden="true" />
+      <Field Name="mpPipelineState" Hidden="true" />
+      <Field Name="mpRootSignature" Hidden="true" />
+      <Field Name="mPS" Hidden="true" />
+      <Field Name="mRS" Hidden="true" />
+      <Field Name="mSemanticStrings" Hidden="true" />
+      <Field Name="mSigParDescs" Hidden="true" />
+      <Field Name="mTextureTypes" Hidden="true" />
+      <Field Name="mTextureTypeStrings" Hidden="true" />
+      <Field Name="mVS" Hidden="true" />
+      <Method Name="operator=" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AgAAEEEAIAEABQAAAZACRAACCACAAAKAIBAgYBEiAQk=</HashCode>
+      <HashCode>AgAAEEEAIAEAFQAAAJCCQAACCACAAAqAIBAgYBEiAAk=</HashCode>
       <FileName>include\Material3D.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ViewCCube" Collapsed="true">
-    <Position X="6.5" Y="2.75" Width="1.5" />
+    <Position X="9" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BCAAMEABAAAAAAQAAAABAADAAAAABEAAABIgAAAAAAA=</HashCode>
       <FileName>include\ViewCCube.h</FileName>
@@ -68,7 +155,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::ModelC">
-    <Position X="3.5" Y="4" Width="1.5" />
+    <Position X="6" Y="4" Width="1.5" />
     <Members>
       <Method Name="~ModelC" Hidden="true" />
       <Method Name="ModelC" Hidden="true" />
@@ -80,14 +167,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ModelCCube" Collapsed="true">
-    <Position X="3.5" Y="2.75" Width="1.5" />
+    <Position X="6" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAUAAAABAAAAAAAAAAgAAAAAQBAAAAAgCAggAAAAAAA=</HashCode>
       <FileName>include\ModelCCube.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ControllerC">
-    <Position X="0.5" Y="4" Width="1.5" />
+    <Position X="3" Y="4" Width="1.5" />
     <Members>
       <Method Name="~ControllerC" Hidden="true" />
       <Method Name="ControllerC" Hidden="true" />
@@ -99,7 +186,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Ion::Core::ControllerCCube" Collapsed="true">
-    <Position X="0.5" Y="2.75" Width="1.5" />
+    <Position X="3" Y="2.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -110,7 +197,7 @@
     </TypeIdentifier>
   </Class>
   <Struct Name="Ion::Core::CubeViewC">
-    <Position X="6.5" Y="7" Width="1.5" />
+    <Position X="9" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>include\ViewCCube.h</FileName>
@@ -120,7 +207,7 @@
     </ShowAsAssociation>
   </Struct>
   <Struct Name="Ion::Core::CubeModelC">
-    <Position X="3.5" Y="7" Width="1.5" />
+    <Position X="6" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>include\ModelCCube.h</FileName>
@@ -130,7 +217,7 @@
     </ShowAsAssociation>
   </Struct>
   <Struct Name="Ion::Core::CubeControllerC">
-    <Position X="0.5" Y="7" Width="1.5" />
+    <Position X="3" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>include\ControllerCCube.h</FileName>

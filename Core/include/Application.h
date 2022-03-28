@@ -6,6 +6,7 @@
 #include "PxIonAllocatorCallback.h"
 #include "PxIonErrorCallback.h"
 #include "ServiceLocator.h"
+#include "CursorMode.h"
 
 namespace Ion
 {
@@ -28,9 +29,12 @@ namespace Ion
 			void Run();
 			const bool SetIsActive(bool isActive);
 			const bool GetIsActive() const;
+			Core::CursorMode GetCursorMode() const;
+			void SetCursorMode(Core::CursorMode cursorMode);
 			bool TryLockSharedKeyboard();
 			void UnlockSharedKeyboard();
 			PBYTE GetKeyboard();
+			POINT GetCursorPosition();
 
 			Core::Scene* AddScene(const std::string& name);
 			Core::Scene* GetScene(std::size_t num);
@@ -54,8 +58,11 @@ namespace Ion
 			bool
 				mIsInitialized,
 				mIsActive;
+			CursorMode mCursorMode;
 			BYTE mKeyboard[256];
 			std::shared_timed_mutex mKeyboardMutex;
+			HCURSOR mCursor;
+			POINT mCursorSavePos;
 			std::list<Core::Scene> mScenes;
 			std::list<Core::Window> mWindows;
 			// TODO: Add mutex for Canvas if you want to add/remove Canvases during gameplay

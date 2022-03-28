@@ -1,6 +1,10 @@
 #pragma once
 #include "SceneThread.h"
 
+// IC = IonCore
+#define IC_CURSOR_LEFTRIGHT -2
+#define IC_CURSOR_UPDOWN -1
+
 namespace Ion
 {
 	namespace Core
@@ -31,7 +35,7 @@ namespace Ion
 
 			void Input();
 
-			std::unordered_map<int, std::vector<std::pair<Core::Command*, Core::InputCC*>>> mCommands;
+			std::unordered_map<int, std::vector<std::pair<Core::Command*, Core::InputCC*>>> mKeyboardCommands;
 		};
 	}
 }

@@ -474,6 +474,15 @@
     <ClInclude Include="include\ControllerCCube.h">
       <Filter>Application\Scene\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="include\CursorMode.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CursorRotateLeftRightCmd.h">
+      <Filter>DesignPattern\Command\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CursorUpDownCmd.h">
+      <Filter>DesignPattern\Command\Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -709,6 +718,12 @@
     </ClCompile>
     <ClCompile Include="ControllerCCube.cpp">
       <Filter>Application\Scene\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorRotateLeftRightCmd.cpp">
+      <Filter>DesignPattern\Command\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorUpDownCmd.cpp">
+      <Filter>DesignPattern\Command\Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

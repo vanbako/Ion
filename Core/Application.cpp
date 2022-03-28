@@ -31,8 +31,11 @@ const std::chrono::milliseconds Core::Application::mKeyboardMutexDuration{ 1 };
 Core::Application::Application()
 	: mIsInitialized{ false }
 	, mIsActive{ false }
+	, mCursorMode{ CursorMode::Absolute }
 	, mKeyboard{}
 	, mKeyboardMutex{}
+	, mCursor{}
+	, mCursorSavePos{}
 	, mScenes{}
 	, mWindows{}
 	, mResourceManager{ this }
@@ -58,7 +61,8 @@ Core::Application::Application()
 	wndClass.cbWndExtra = 0;
 	wndClass.hInstance = GetModuleHandle(nullptr);
 	wndClass.hIcon = LoadIcon(0, IDI_APPLICATION);
-	wndClass.hCursor = LoadCursor(0, IDC_ARROW);
+	//wndClass.hCursor = LoadCursor(0, IDC_ARROW);
+	wndClass.hCursor = NULL;
 	wndClass.hbrBackground = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
 	wndClass.lpszMenuName = 0;
 	wndClass.lpszClassName = L"IonEngineWindowClass";
@@ -69,6 +73,9 @@ Core::Application::Application()
 	mpPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *pFoundation, mPxToleranceScale, false);
 	mpCooking = PxCreateCooking(PX_PHYSICS_VERSION, *pFoundation, physx::PxCookingParams{ mPxToleranceScale });
 	PxRegisterHeightFields(*mpPhysics);
+	POINT pos{ 0, 0 };
+	GetCursorPos(&pos);
+	mCursorSavePos = pos;
 }
 
 Core::Application::~Application()
@@ -144,6 +151,7 @@ void Core::Application::Run()
 	while (msg.message != WM_QUIT)
 	{
 		KeyboardState();
+		//CursorState();
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -167,6 +175,29 @@ const bool Core::Application::GetIsActive() const
 	return mIsActive;
 }
 
+Core::CursorMode Core::Application::GetCursorMode() const
+{
+	return mCursorMode;
+}
+
+void Core::Application::SetCursorMode(Core::CursorMode cursorMode)
+{
+	if (cursorMode == GetCursorMode())
+		return;
+	POINT pos{ 0, 0 };
+	switch (cursorMode)
+	{
+	case Core::CursorMode::Relative:
+		GetCursorPos(&pos);
+		mCursorSavePos = pos;
+		break;
+	case Core::CursorMode::Absolute:
+		SetCursorPos(mCursorSavePos.x, mCursorSavePos.y);
+		break;
+	}
+	mCursorMode = cursorMode;
+}
+
 bool Core::Application::TryLockSharedKeyboard()
 {
 	return mKeyboardMutex.try_lock_shared_for(mKeyboardMutexDuration);
@@ -180,6 +211,19 @@ void Core::Application::UnlockSharedKeyboard()
 PBYTE Core::Application::GetKeyboard()
 {
 	return mKeyboard;
+}
+
+POINT Core::Application::GetCursorPosition()
+{
+	POINT pos{ 0, 0 };
+	GetCursorPos(&pos);
+	if (mCursorMode == Core::CursorMode::Relative)
+	{
+		SetCursorPos(mCursorSavePos.x, mCursorSavePos.y);
+		pos.x = mCursorSavePos.x - pos.x;
+		pos.y = mCursorSavePos.y - pos.y;
+	}
+	return pos;
 }
 
 Core::Scene* Core::Application::AddScene(const std::string& name)
@@ -279,3 +323,12 @@ void Core::Application::KeyboardState()
 	}
 	(ret);
 }
+
+//void Core::Application::CursorState()
+//{
+//	BOOL ret{};
+//	POINT pt{};
+//	ret = GetCursorPos(&pt);
+//	if (ret != 0)
+//		mCursorPos.store(pt);
+//}

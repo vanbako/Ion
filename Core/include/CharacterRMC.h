@@ -25,14 +25,8 @@ namespace Ion
 			virtual const std::vector<std::pair<std::string, Core::Command*>>& GetCommands() const override;
 			virtual const std::string& GetName() const override;
 
-			virtual void MoveForward(long long value) override;
-			virtual void MoveBack(long long value) override;
-			virtual void MoveLeft(long long value) override;
-			virtual void MoveRight(long long value) override;
 			virtual void MoveUp(long long value) override { (value); };
 			virtual void MoveDown(long long value) override { (value); };
-			virtual void RotateLeft(long long value) override;
-			virtual void RotateRight(long long value) override;
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;

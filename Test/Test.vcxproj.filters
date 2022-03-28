@@ -126,6 +126,9 @@
     <ClCompile Include="Factory.cpp">
       <Filter>DesignPattern\Factory</Filter>
     </ClCompile>
+    <ClCompile Include="ToggleRelativeCursorCmd.cpp">
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="include\Factory.h">
       <Filter>DesignPattern\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToggleRelativeCursorCmd.h">
+      <Filter>DesignPattern\Command\Control\ControlZeroCommand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

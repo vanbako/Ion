@@ -29,6 +29,7 @@ namespace Ion
 
 			virtual void ToggleSceneOne(long long value);
 			virtual void ToggleSceneTwo(long long value);
+			virtual void ToggleCursorMode(long long value);
 		private:
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
@@ -36,8 +37,9 @@ namespace Ion
 			// My best guess is that boolean operations are thread-safe
 			// Implement std::atomic if needed
 			bool
-				mToggleSceneOne[2],
-				mToggleSceneTwo[2];
+				mToggleSceneOne,
+				mToggleSceneTwo,
+				mCursorModeRelative;
 		};
 	}
 }

@@ -8,7 +8,8 @@ namespace Ion
 		{
 			Degree,
 			Radian,
-			Gradian
+			Gradian,
+			Count
 		};
 	}
 }

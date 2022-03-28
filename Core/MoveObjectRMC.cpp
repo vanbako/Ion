@@ -55,45 +55,43 @@ void Core::MoveObjectRMC::Update(float delta)
 	}
 	if (mpTransform == nullptr)
 		return;
-	if (!mHasChanged)
-		return;
 
 	DirectX::XMFLOAT4 pos{ mpTransform->GetWorldPosition() };
 	float walkSpeed{ 50.f };
 	float rotateSpeed{ 1.f };
 	float moveDelta{ walkSpeed * delta };
 	float rotateDelta{ rotateSpeed * delta };
-	if (mMoveForward[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Forward)])
 	{
 		pos.z += moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mMoveBack[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Back)])
 	{
 		pos.z -= moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mMoveLeft[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Left)])
 	{
 		pos.x -= moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mMoveRight[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Right)])
 	{
 		pos.x += moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mMoveUp[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Up)])
 	{
 		pos.y += moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mMoveDown[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::Down)])
 	{
 		pos.y -= moveDelta;
 		mpTransform->SetPosition(pos);
 	}
-	if (mRotateLeft[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::RotateLeft)])
 	{
 		DirectX::XMFLOAT4 rot{ mpTransform->GetRotation() };
 		DirectX::XMVECTOR axis{ 0.f, 1.f, 0.f };
@@ -104,7 +102,7 @@ void Core::MoveObjectRMC::Update(float delta)
 		XMStoreFloat4(&rot, rotVec);
 		mpTransform->SetRotation(rot);
 	}
-	if (mRotateRight[mCurrent])
+	if (mMoveBool[std::size_t(Core::MoveType::RotateRight)])
 	{
 		DirectX::XMFLOAT4 rot{ mpTransform->GetRotation() };
 		DirectX::XMVECTOR axis{ 0.f, 1.f, 0.f };

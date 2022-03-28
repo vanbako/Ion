@@ -32,6 +32,10 @@ namespace Ion
 			const DirectX::XMFLOAT4X4& GetViewInverse() const;
 			Core::TransformMC* GetTransform();
 		private:
+			bool mFirst;
+			static const float
+				mMoveFactor,
+				mRotateFactor;
 			static const std::string mName;
 			std::vector<std::pair<std::string, Core::Command*>> mCommands;
 

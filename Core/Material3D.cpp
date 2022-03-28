@@ -7,7 +7,7 @@
 
 using namespace Ion;
 
-Core::Vector<long long> Core::Material3D::mCubeSize{ 100, 100, 100 };
+Core::Vector<long long> Core::Material3D::mViewCCubeSize{ 100, 100, 100 };
 const UINT Core::Material3D::mMaxInputParam{ 20 };
 const std::unordered_map<std::string, Core::SemanticInfo> Core::Material3D::mSemanticStrings
 {
@@ -231,8 +231,8 @@ const std::set<Core::TextureType>& Core::Material3D::GetTextureTypeSet() const
 void Core::Material3D::AddViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC)
 {
 	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
-	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
-	auto itCube{ GetCubeIterator(cubePos, cubes) };
+	Core::Vector<long long> cubePos{ GetViewCCubePos(pViewC) };
+	auto itCube{ GetViewCCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewC(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
 }
@@ -252,34 +252,34 @@ const std::unordered_map<std::string, Core::SemanticInfo>& Core::Material3D::Get
 
 void Core::Material3D::MoveViewC(Core::Canvas* pCanvas, Core::ViewC* pViewC, Core::ViewCCube* pCurrCube)
 {
-	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
+	Core::Vector<long long> cubePos{ GetViewCCubePos(pViewC) };
 	if (pCurrCube->GetLocation() == cubePos)
 		return;
 	pCurrCube->SetHasMoved(pViewC, true);
 	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
-	auto itCube{ GetCubeIterator(cubePos, cubes) };
+	auto itCube{ GetViewCCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewCCheckExistence(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
 }
 
 void Core::Material3D::AddViewCToCube(std::multimap<long long, Core::ViewCCube>& cubes, Core::ViewC* pViewC)
 {
-	Core::Vector<long long> cubePos{ GetCubePos(pViewC) };
-	auto itCube{ GetCubeIterator(cubePos, cubes) };
+	Core::Vector<long long> cubePos{ GetViewCCubePos(pViewC) };
+	auto itCube{ GetViewCCubeIterator(cubePos, cubes) };
 	(*itCube).second.AddViewC(false, pViewC);
 	pViewC->SetCube(&(*itCube).second);
 }
 
-Core::Vector<long long> Core::Material3D::GetCubePos(Core::ViewC* pViewC)
+Core::Vector<long long> Core::Material3D::GetViewCCubePos(Core::ViewC* pViewC)
 {
 	DirectX::XMFLOAT4 pos{ pViewC->GetObject()->GetModelC<TransformMC>()->GetWorldPosition() };
 	return Core::Vector<long long>{
-		long long(pos.x / mCubeSize.GetA()),
-		long long(pos.y / mCubeSize.GetB()),
-		long long(pos.z / mCubeSize.GetC()) };
+		long long(pos.x / mViewCCubeSize.GetA()),
+		long long(pos.y / mViewCCubeSize.GetB()),
+		long long(pos.z / mViewCCubeSize.GetC()) };
 }
 
-std::multimap<long long, Core::ViewCCube>::iterator Core::Material3D::GetCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes)
+std::multimap<long long, Core::ViewCCube>::iterator Core::Material3D::GetViewCCubeIterator(Core::Vector<long long>& cubePos, std::multimap<long long, Core::ViewCCube>& cubes)
 {
 	long long key{ cubePos.GetA() * cubePos.GetA() + cubePos.GetB() * cubePos.GetB() + cubePos.GetC() * cubePos.GetC() };
 	auto itCube{ cubes.end() };

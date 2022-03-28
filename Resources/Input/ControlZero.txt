@@ -1,2 +1,3 @@
+ToggleRelativeCursor VK_RBUTTON
 ToggleSceneOne VK_1
 ToggleSceneTwo VK_2

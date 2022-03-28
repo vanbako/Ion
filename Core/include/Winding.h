@@ -7,7 +7,8 @@ namespace Ion
 		enum class Winding
 		{
 			CW,
-			CCW
+			CCW,
+			Count
 		};
 	}
 }

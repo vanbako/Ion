@@ -101,7 +101,7 @@
       <Method Name="UnlockSharedViewCs" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>KcAA4GREAQAAA0AYyAEkIAjAdAQAFhAgIDygQAIkBAQ=</HashCode>
+      <HashCode>KcAA4GRMQREAA0AcyAWkIAjAdBQAFpAgKDygQRI0BAQ=</HashCode>
       <FileName>include\Scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -109,7 +109,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Canvas">
-    <Position X="0.5" Y="4.25" Width="2" />
+    <Position X="0.5" Y="6" Width="2" />
     <Members>
       <Method Name="~Canvas" Hidden="true" />
       <Method Name="AddMaterial" Hidden="true" />
@@ -211,23 +211,22 @@
       <Method Name="ViewC" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>DIQAAAAAAQAAIAACAMAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
+      <HashCode>DIQAAAAAAAAAAAAAAMAAAAAAAAIAAAAAABQgAAAAAAA=</HashCode>
       <FileName>include\ViewC.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mpMaterial3D" />
-      <Field Name="mpCube" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Ion::Core::Cube">
-    <Position X="7.25" Y="1.5" Width="2" />
+    <Position X="7.25" Y="0.5" Width="2" />
     <Members>
       <Method Name="~Cube" Hidden="true" />
       <Method Name="Cube" Hidden="true" />
       <Method Name="operator=" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAhAAAgCAAAAAA=</HashCode>
+      <HashCode>AAAAAAAiAAAAAAAQAAAAAAAAAAAAAABhCACgCAAACAA=</HashCode>
       <FileName>include\Cube.h</FileName>
     </TypeIdentifier>
   </Class>

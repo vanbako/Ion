@@ -121,6 +121,7 @@ xcopy "$(SolutionDir)DXCompiler\*.dll" "$(TargetDir)" /v /k /y</Command>
     <ClCompile Include="PrevObjectCmd.cpp" />
     <ClCompile Include="ShowControlsCmd.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="ToggleRelativeCursorCmd.cpp" />
     <ClCompile Include="ToggleSceneOneCmd.cpp" />
     <ClCompile Include="ToggleSceneTwoCmd.cpp" />
   </ItemGroup>
@@ -134,6 +135,7 @@ xcopy "$(SolutionDir)DXCompiler\*.dll" "$(TargetDir)" /v /k /y</Command>
     <ClInclude Include="include\NextObjectCmd.h" />
     <ClInclude Include="include\PrevObjectCmd.h" />
     <ClInclude Include="include\ShowControlsCmd.h" />
+    <ClInclude Include="include\ToggleRelativeCursorCmd.h" />
     <ClInclude Include="include\ToggleSceneOneCmd.h" />
     <ClInclude Include="include\ToggleSceneTwoCmd.h" />
     <ClInclude Include="pch.h" />

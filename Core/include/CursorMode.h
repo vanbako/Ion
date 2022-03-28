@@ -4,10 +4,10 @@ namespace Ion
 {
 	namespace Core
 	{
-		enum class CoordSystem
+		enum class CursorMode
 		{
-			LeftHanded,
-			RightHanded,
+			Absolute,
+			Relative,
 			Count
 		};
 	}

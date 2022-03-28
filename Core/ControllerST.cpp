@@ -8,6 +8,8 @@
 using namespace Ion;
 
 const std::unordered_map<std::string, int> Core::ControllerST::mKeyNames{
+	{ "CURSOR_LEFTRIGHT", IC_CURSOR_LEFTRIGHT },
+	{ "CURSOR_UPDOWN", IC_CURSOR_UPDOWN },
 	{ "VK_LBUTTON", VK_LBUTTON },
 	{ "VK_RBUTTON", VK_RBUTTON },
 	{ "VK_CANCEL", VK_CANCEL },
@@ -235,12 +237,12 @@ const std::unordered_map<std::string, int> Core::ControllerST::mKeyNames{
 Core::ControllerST::ControllerST(Core::Scene* pScene, std::chrono::milliseconds updateTime)
 	: Core::SceneThread(pScene, updateTime)
 	, mKeyboard{}
-	, mpCurrKeyboard{}
-	, mpLastKeyboard{}
-	, mCommands{}
+	, mpCurrKeyboard{ nullptr }
+	, mpLastKeyboard{ nullptr }
+	, mKeyboardCommands{}
 {
-	mpCurrKeyboard = mKeyboard;
-	mpLastKeyboard = mKeyboard + 256;
+	mpCurrKeyboard = &mKeyboard[0];
+	mpLastKeyboard = &mKeyboard[256];
 }
 
 // Do not call Register while Scene is active, because it is not thread-safe!
@@ -251,7 +253,7 @@ void Core::ControllerST::Register(Core::InputCC* pInvoker, const std::string& na
 	std::string
 		nm{},
 		vl{};
-	std::ifstream file{ "../Resources/Input/" + name + ".txt"};
+	std::ifstream file{ "../Resources/Input/" + name + ".txt" };
 	while (file >> nm >> vl)
 		nameValues[nm] = vl;
 	file.close();
@@ -263,11 +265,11 @@ void Core::ControllerST::Register(Core::InputCC* pInvoker, const std::string& na
 		auto it2{ mKeyNames.find(it1->second) };
 		if (it2 == mKeyNames.end())
 			continue;
-		if (mCommands.contains(it2->second))
-			mCommands[it2->second].emplace_back(pair.second, pInvoker);
+		if (mKeyboardCommands.contains(it2->second))
+			mKeyboardCommands[it2->second].emplace_back(pair.second, pInvoker);
 		else
-			mCommands[it2->second] = std::vector<std::pair<Core::Command*, Core::InputCC*>>{ { pair.second, pInvoker } };
- 	}
+			mKeyboardCommands[it2->second] = std::vector<std::pair<Core::Command*, Core::InputCC*>>{ { pair.second, pInvoker } };
+	}
 }
 
 void Core::ControllerST::Inner(float delta)
@@ -287,35 +289,78 @@ void Core::ControllerST::Inner(float delta)
 
 void Core::ControllerST::Input()
 {
-	if (!mpScene->GetApplication()->TryLockSharedKeyboard())
+	Core::Application* pApplication{ mpScene->GetApplication() };
+	if (!pApplication->TryLockSharedKeyboard())
 		return;
+	POINT cursorPos{ pApplication->GetCursorPosition() };
 	PBYTE pTemp{ mpCurrKeyboard };
 	mpCurrKeyboard = mpLastKeyboard;
 	mpLastKeyboard = pTemp;
-	std::memcpy(mpCurrKeyboard, mpScene->GetApplication()->GetKeyboard(), 256);
-	mpScene->GetApplication()->UnlockSharedKeyboard();
-	for (auto& outer : mCommands)
+	std::memcpy(mpCurrKeyboard, pApplication->GetKeyboard(), 256);
+	pApplication->UnlockSharedKeyboard();
+	for (auto& outer : mKeyboardCommands)
 	{
-		if (((mpCurrKeyboard[outer.first] & 0x80) == 0x80) &&
-			((mpLastKeyboard[outer.first] & 0x80) == 0x00)
-			)
-			for (auto& inner : outer.second)
-			{
-				auto pCommand{ inner.first->Duplicate() };
-				pCommand->SetValue(long long(KeyboardState::KeyDown));
-				inner.second->Queue(pCommand);
-			}
-		if (((mpCurrKeyboard[outer.first] & 0x80) == 0x00) &&
-			((mpLastKeyboard[outer.first] & 0x80) == 0x80)
-			)
-			for (auto& inner : outer.second)
-			{
-				auto pCommand{ inner.first->Duplicate() };
-				pCommand->SetValue(long long(KeyboardState::KeyUp));
-				inner.second->Queue(pCommand);
-			}
-		//if ((mKeyboard[outer.first] & 0x80) == 0x80)
-		//	for (auto& inner : outer.second)
-		//		inner.second->Queue(inner.first);
+		if (outer.first >= 0)
+		{
+			if (((mpCurrKeyboard[outer.first] & 0x80) == 0x80) &&
+				((mpLastKeyboard[outer.first] & 0x80) == 0x00)
+				)
+				for (auto& inner : outer.second)
+				{
+					auto pCommand{ inner.first->Duplicate() };
+					pCommand->SetValue(long long(KeyboardState::KeyDown));
+					inner.second->Queue(pCommand);
+				}
+			if (((mpCurrKeyboard[outer.first] & 0x80) == 0x00) &&
+				((mpLastKeyboard[outer.first] & 0x80) == 0x80)
+				)
+				for (auto& inner : outer.second)
+				{
+					auto pCommand{ inner.first->Duplicate() };
+					pCommand->SetValue(long long(KeyboardState::KeyUp));
+					inner.second->Queue(pCommand);
+				}
+		}
+		else
+			if (pApplication->GetCursorMode() == Core::CursorMode::Relative)
+				switch (outer.first)
+				{
+				case IC_CURSOR_LEFTRIGHT:
+					if (cursorPos.x != 0)
+						for (auto& inner : outer.second)
+						{
+							auto pCommand{ inner.first->Duplicate() };
+							pCommand->SetValue(int(cursorPos.x));
+							inner.second->Queue(pCommand);
+						}
+					break;
+				//case IC_CURSOR_RIGHT:
+				//	if (cursorPos.x > 0)
+				//		for (auto& inner : outer.second)
+				//		{
+				//			auto pCommand{ inner.first->Duplicate() };
+				//			pCommand->SetValue(int(cursorPos.x));
+				//			inner.second->Queue(pCommand);
+				//		}
+				//	break;
+				case IC_CURSOR_UPDOWN:
+					if (cursorPos.y != 0)
+						for (auto& inner : outer.second)
+						{
+							auto pCommand{ inner.first->Duplicate() };
+							pCommand->SetValue(int(cursorPos.y));
+							inner.second->Queue(pCommand);
+						}
+					break;
+				//case IC_CURSOR_DOWN:
+				//	if (cursorPos.y > 0)
+				//		for (auto& inner : outer.second)
+				//		{
+				//			auto pCommand{ inner.first->Duplicate() };
+				//			pCommand->SetValue(int(cursorPos.y));
+				//			inner.second->Queue(pCommand);
+				//		}
+				//	break;
+				}
 	}
 }
