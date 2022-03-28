@@ -213,6 +213,11 @@ void Core::Canvas::Initialize()
 	mIsInitialized = true;
 }
 
+Core::Window* Core::Canvas::GetWindow()
+{
+	return mpWindow;
+}
+
 void Core::Canvas::SetWindow(Core::Window* pWindow)
 {
 	mpWindow = pWindow;

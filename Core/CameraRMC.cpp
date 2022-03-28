@@ -42,7 +42,9 @@ Core::CameraRMC::CameraRMC(bool isActive, Core::Object* pObject)
 	, mViewInverse{}
 	, mpTransform{ nullptr }
 	, mFirst{ true }
+	, mWindowInfo{}
 {
+	mWindowInfo.cbSize = sizeof(WINDOWINFO);
 }
 
 Core::CameraRMC::~CameraRMC()
@@ -86,25 +88,29 @@ void Core::CameraRMC::Update(float delta)
 		float rotateSpeed{ 2.f };
 		float moveDelta{ walkSpeed * delta };
 		float rotateDelta{ rotateSpeed * delta };
-		for (auto& moveAction : mMoveActions)
+		Core::Window* pWindow{ mpCanvas->GetWindow() };
+		if (pWindow != nullptr)
 		{
-			switch (moveAction.first)
-			{
-			case Core::MoveType::CursorRotateLeftRight:
-				DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(rotateDelta * float(moveAction.second) * mRotateFactor) };
-				DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
-				DirectX::XMStoreFloat4(&up, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&up), R));
-				DirectX::XMStoreFloat4(&forward, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&forward), R));
-				mpTransform->SetForward(forward);
-				mpTransform->SetUp(up);
-				mpTransform->SetRight(right);
-				hasChanged = true;
-				break;
-			case Core::MoveType::CursorUpDown:
-				pos.y += moveDelta * float(moveAction.second) * mMoveFactor;
-				hasChanged = true;
-				break;
-			}
+			GetWindowInfo(pWindow->GetHandle(), &mWindowInfo);
+			if (mWindowInfo.dwWindowStatus == WS_ACTIVECAPTION)
+				for (auto& moveAction : mMoveActions)
+					switch (moveAction.first)
+					{
+					case Core::MoveType::CursorRotateLeftRight:
+						DirectX::XMMATRIX R{ DirectX::XMMatrixRotationY(rotateDelta * float(moveAction.second) * mRotateFactor) };
+						DirectX::XMStoreFloat4(&right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&right), R));
+						DirectX::XMStoreFloat4(&up, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&up), R));
+						DirectX::XMStoreFloat4(&forward, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat4(&forward), R));
+						mpTransform->SetForward(forward);
+						mpTransform->SetUp(up);
+						mpTransform->SetRight(right);
+						hasChanged = true;
+						break;
+					case Core::MoveType::CursorUpDown:
+						pos.y += moveDelta * float(moveAction.second) * mMoveFactor;
+						hasChanged = true;
+						break;
+					}
 		}
 		mMoveActions.clear();
 		mMoveActionsMutex.unlock();

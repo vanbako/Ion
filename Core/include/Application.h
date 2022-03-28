@@ -59,10 +59,13 @@ namespace Ion
 				mIsInitialized,
 				mIsActive;
 			CursorMode mCursorMode;
+			std::atomic<bool>
+				mHideCursor,
+				mShowCursor;
 			BYTE mKeyboard[256];
 			std::shared_timed_mutex mKeyboardMutex;
 			HCURSOR mCursor;
-			POINT mCursorSavePos;
+			std::atomic<POINT> mCursorSavePos;
 			std::list<Core::Scene> mScenes;
 			std::list<Core::Window> mWindows;
 			// TODO: Add mutex for Canvas if you want to add/remove Canvases during gameplay

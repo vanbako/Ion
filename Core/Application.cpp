@@ -49,6 +49,8 @@ Core::Application::Application()
 	, mIonErrorCallback{}
 	, mpCooking{ nullptr }
 	, mServiceLocator{}
+	, mHideCursor{ false }
+	, mShowCursor{ false }
 {
 	mResourceManager.AddResource<TextureResource>();
 	mResourceManager.AddResource<MeshModelResource>();
@@ -61,8 +63,7 @@ Core::Application::Application()
 	wndClass.cbWndExtra = 0;
 	wndClass.hInstance = GetModuleHandle(nullptr);
 	wndClass.hIcon = LoadIcon(0, IDI_APPLICATION);
-	//wndClass.hCursor = LoadCursor(0, IDC_ARROW);
-	wndClass.hCursor = NULL;
+	wndClass.hCursor = LoadCursor(0, IDC_ARROW);
 	wndClass.hbrBackground = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
 	wndClass.lpszMenuName = 0;
 	wndClass.lpszClassName = L"IonEngineWindowClass";
@@ -75,7 +76,7 @@ Core::Application::Application()
 	PxRegisterHeightFields(*mpPhysics);
 	POINT pos{ 0, 0 };
 	GetCursorPos(&pos);
-	mCursorSavePos = pos;
+	mCursorSavePos.store(pos);
 }
 
 Core::Application::~Application()
@@ -151,7 +152,16 @@ void Core::Application::Run()
 	while (msg.message != WM_QUIT)
 	{
 		KeyboardState();
-		//CursorState();
+		if (mHideCursor)
+		{
+			while (ShowCursor(FALSE) > 0);
+			mHideCursor.store(false);
+		}
+		if (mShowCursor)
+		{
+			ShowCursor(TRUE);
+			mShowCursor.store(false);
+		}
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -189,10 +199,13 @@ void Core::Application::SetCursorMode(Core::CursorMode cursorMode)
 	{
 	case Core::CursorMode::Relative:
 		GetCursorPos(&pos);
-		mCursorSavePos = pos;
+		mCursorSavePos.store(pos);
+		mHideCursor.store(true);
 		break;
 	case Core::CursorMode::Absolute:
-		SetCursorPos(mCursorSavePos.x, mCursorSavePos.y);
+		pos = mCursorSavePos.load();
+		SetCursorPos(pos.x, pos.y);
+		mShowCursor.store(true);
 		break;
 	}
 	mCursorMode = cursorMode;
@@ -219,9 +232,10 @@ POINT Core::Application::GetCursorPosition()
 	GetCursorPos(&pos);
 	if (mCursorMode == Core::CursorMode::Relative)
 	{
-		SetCursorPos(mCursorSavePos.x, mCursorSavePos.y);
-		pos.x = mCursorSavePos.x - pos.x;
-		pos.y = mCursorSavePos.y - pos.y;
+		POINT savePos{ mCursorSavePos.load() };
+		SetCursorPos(savePos.x, savePos.y);
+		pos.x = savePos.x - pos.x;
+		pos.y = savePos.y - pos.y;
 	}
 	return pos;
 }
@@ -323,12 +337,3 @@ void Core::Application::KeyboardState()
 	}
 	(ret);
 }
-
-//void Core::Application::CursorState()
-//{
-//	BOOL ret{};
-//	POINT pt{};
-//	ret = GetCursorPos(&pt);
-//	if (ret != 0)
-//		mCursorPos.store(pt);
-//}

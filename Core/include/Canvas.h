@@ -23,6 +23,7 @@ namespace Ion
 			Canvas& operator=(Canvas&& other) noexcept = delete;
 
 			void Initialize();
+			Core::Window* GetWindow();
 			void SetWindow(Core::Window* pWindow);
 			void SetCamera(Core::Object* pCamera);
 			Core::Object* GetCamera();

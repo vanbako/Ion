@@ -14,8 +14,13 @@
 
 using namespace Ion;
 
-int main()
+//int main()
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+	(hInstance);
+	(hPrevInstance);
+	(lpCmdLine);
+	(nShowCmd);
 #ifdef _DEBUG
 	std::cout << "Start" << std::endl;
 #endif

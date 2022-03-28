@@ -48,6 +48,7 @@ namespace Ion
 			DirectX::XMFLOAT4X4 mViewProjection;
 			DirectX::XMFLOAT4X4 mViewInverse;
 			Core::TransformMC* mpTransform;
+			WINDOWINFO mWindowInfo;
 		};
 	}
 }
