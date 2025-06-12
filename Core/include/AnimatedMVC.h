@@ -46,10 +46,9 @@ namespace Ion
 				mIsAnimating,
 				mIsClipSet;
 
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpBonesCbvHeap;
-			Microsoft::WRL::ComPtr<ID3D12Resource> mpBonesConstantBuffer;
-			Core::BonesConstantBuffer* mpBonesConstantBufferData;
-			UINT8* mpBonesCbvDataBegin;
-		};
+                        Microsoft::WRL::ComPtr<ID3D12Resource> mpBonesConstantBuffer;
+                        Core::BonesConstantBuffer* mpBonesConstantBufferData;
+                        UINT8* mpBonesCbvDataBegin;
+                };
 	}
 }
