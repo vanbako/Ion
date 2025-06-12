@@ -255,7 +255,22 @@ D3D12_CPU_DESCRIPTOR_HANDLE Core::Canvas::GetCurrentBackBufferView()
 
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& Core::Canvas::GetGraphicsCommandList()
 {
-	return mpGraphicsCommandList;
+        return mpGraphicsCommandList;
+}
+
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& Core::Canvas::GetCanvasCbvHeap()
+{
+        return mpCanvasCbvHeap;
+}
+
+UINT Core::Canvas::GetCbvDescriptorSize() const
+{
+        return mCbvDescriptorSize;
+}
+
+Microsoft::WRL::ComPtr<ID3D12Resource>& Core::Canvas::GetCanvasConstantBuffer()
+{
+        return mpCanvasConstantBuffer;
 }
 
 void Core::Canvas::AddMaterial(Core::Material3D* pMaterial)
@@ -270,9 +285,7 @@ void Core::Canvas::AddMaterial(Core::Material2D* pMaterial)
 
 void Core::Canvas::SetDescriptor()
 {
-	ID3D12DescriptorHeap* ppHeaps[]{ mpCanvasCbvHeap.Get() };
-	mpGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	mpGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCanvasCbvHeap->GetGPUDescriptorHandleForHeapStart());
+        // Descriptor heap is now bound by each ViewC during rendering
 }
 
 void Core::Canvas::Render()

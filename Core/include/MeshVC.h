@@ -45,10 +45,13 @@ namespace Ion
 			D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
 			UINT8* mpVertexDataBegin;
 
-			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpObjectCbvHeap;
-			Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
-			Core::MeshVCConstantBuffer mObjectConstantBufferData;
-			UINT8* mpObjectCbvDataBegin;
-		};
-	}
+                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpObjectCbvHeap;
+                       Microsoft::WRL::ComPtr<ID3D12Resource> mpObjectConstantBuffer;
+                       Core::MeshVCConstantBuffer mObjectConstantBufferData;
+                       UINT8* mpObjectCbvDataBegin;
+
+                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpCbvSrvHeap;
+                       UINT mCbvSrvDescriptorSize;
+                };
+        }
 }
