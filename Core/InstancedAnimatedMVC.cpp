@@ -203,18 +203,30 @@ bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
 	if (mpTextures.empty())
 		return false;
 
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	UINT dsTable{ 1 };
-	SetDescTableObjectConstants(pCanvas, dsTable);
-	memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpBonesCbvHeap->GetGPUDescriptorHandleForHeapStart());
-		++dsTable;
-	}
-	SetDescTableTextures(pCanvas, dsTable);
+        UINT dsTable{ 1 };
+        // Use main CBV/SRV heap before writing object constants
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        }
+        SetDescTableObjectConstants(pCanvas, dsTable);
+
+        // Switch to bones heap for skinning constants
+        memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+                pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpBonesCbvHeap->GetGPUDescriptorHandleForHeapStart());
+                ++dsTable;
+        }
+        // Restore main heap to bind textures
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        }
+        SetDescTableTextures(pCanvas, dsTable);
 	if (!mpInstancedTransform->GetIsStatic())
 		SetInstancedTransform(mpInstancedTransform);
 	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());

@@ -161,18 +161,30 @@ bool Core::AnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 	if (!mIsActive)
 		return false;
 
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	UINT dsTable{ 1 };
-	SetDescTableObjectConstants(pCanvas, dsTable);
-	memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpBonesCbvHeap->GetGPUDescriptorHandleForHeapStart());
-		++dsTable;
-	}
-	SetDescTableTextures(pCanvas, dsTable);
+        UINT dsTable{ 1 };
+        // Set the main CBV/SRV heap before using any of its handles
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        }
+        SetDescTableObjectConstants(pCanvas, dsTable);
+
+        // Switch to the bones descriptor heap to upload bone matrices
+        memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+                pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpBonesCbvHeap->GetGPUDescriptorHandleForHeapStart());
+                ++dsTable;
+        }
+        // Restore the main descriptor heap before setting texture tables
+        {
+                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        }
+        SetDescTableTextures(pCanvas, dsTable);
 
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
