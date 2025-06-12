@@ -31,6 +31,7 @@ Core::TerrainVC::TerrainVC(const std::string& filename, float width, float depth
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
         , mTextureNames{}
+        , mTextureTypeOrder{}
         , mpTextures{}
         , mpTextureSrvHeaps{}
        , mCbvSrvOffset{ 0 }
@@ -55,8 +56,9 @@ void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::strin
 		return;
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
-	mTextureNames.emplace_back(name);
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name)};
+       mTextureNames.emplace_back(name);
+       mTextureTypeOrder.push_back(textureType);
+       Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name)};
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -311,14 +313,15 @@ void Core::TerrainVC::Initialize()
                D3D12_CPU_DESCRIPTOR_HANDLE dest{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
                pDevice->CopyDescriptorsSimple(1, dest, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-               UINT offset{ 2 };
-               for (auto& pair : mpTextureSrvHeaps)
-               {
-                       D3D12_CPU_DESCRIPTOR_HANDLE dst{ pApplication->GetCpuHandle(mCbvSrvOffset + offset) };
-                       pDevice->CopyDescriptorsSimple(1, dst, pair.second->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-                       mTextureOffsets[pair.first] = mCbvSrvOffset + offset;
-                       ++offset;
-               }
+       UINT offset{ 2 };
+       for (auto textureType : mTextureTypeOrder)
+       {
+               auto& heap = mpTextureSrvHeaps[textureType];
+               D3D12_CPU_DESCRIPTOR_HANDLE dst{ pApplication->GetCpuHandle(mCbvSrvOffset + offset) };
+               pDevice->CopyDescriptorsSimple(1, dst, heap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+               mTextureOffsets[textureType] = mCbvSrvOffset + offset;
+               ++offset;
+       }
        }
 
        // PhysX
@@ -420,9 +423,9 @@ void Core::TerrainVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
         auto pApplication{ mpObject->GetScene()->GetApplication() };
 
-        for (auto& pair : mTextureOffsets)
+        for (auto textureType : mTextureTypeOrder)
         {
-                D3D12_GPU_DESCRIPTOR_HANDLE tex{ pApplication->GetGpuHandle(pair.second) };
+                D3D12_GPU_DESCRIPTOR_HANDLE tex{ pApplication->GetGpuHandle(mTextureOffsets[textureType]) };
                 pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
                 ++dsTable;
         }
