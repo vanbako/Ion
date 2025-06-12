@@ -268,6 +268,11 @@ UINT Core::Canvas::GetCbvDescriptorSize() const
         return mCbvDescriptorSize;
 }
 
+Microsoft::WRL::ComPtr<ID3D12Resource>& Core::Canvas::GetCanvasConstantBuffer()
+{
+        return mpCanvasConstantBuffer;
+}
+
 void Core::Canvas::AddMaterial(Core::Material3D* pMaterial)
 {
 	mpMaterials3D.emplace(pMaterial);

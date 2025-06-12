@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Scene.h"
 #include "CameraRMC.h"
+#include "Canvas.h"
 
 using namespace Ion;
 
@@ -165,9 +166,10 @@ bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, fl
 
         memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
 
-        D3D12_CPU_DESCRIPTOR_HANDLE canvasSrc{ pCanvas->GetCanvasCbvHeap()->GetCPUDescriptorHandleForHeapStart() };
-        D3D12_CPU_DESCRIPTOR_HANDLE canvasDst{ mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart() };
-        pDevice->CopyDescriptorsSimple(1, canvasDst, canvasSrc, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
+        canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
+        canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
+        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
 
         ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
         pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
