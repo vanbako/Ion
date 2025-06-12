@@ -29,11 +29,12 @@ namespace Ion
 			Core::Object* GetCamera();
 			float GetRatio();
 
-			D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView();
+                       D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView();
                        Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& GetGraphicsCommandList();
 
                        Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetCanvasCbvHeap();
                        UINT GetCbvDescriptorSize() const;
+                       Microsoft::WRL::ComPtr<ID3D12Resource>& GetCanvasConstantBuffer();
 
 			void AddMaterial(Core::Material3D* pMaterial);
 			void AddMaterial(Core::Material2D* pMaterial);

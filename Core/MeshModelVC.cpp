@@ -275,10 +275,11 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
         auto pDevice{ mpObject->GetScene()->GetApplication()->GetDevice() };
 
-        // Copy canvas descriptor to local heap and bind it
-        D3D12_CPU_DESCRIPTOR_HANDLE canvasSrc{ pCanvas->GetCanvasCbvHeap()->GetCPUDescriptorHandleForHeapStart() };
-        D3D12_CPU_DESCRIPTOR_HANDLE canvasDst{ mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart() };
-        pDevice->CopyDescriptorsSimple(1, canvasDst, canvasSrc, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        // Write canvas constant buffer view into local heap
+        D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
+        canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
+        canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
+        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
 
         ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
         pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
