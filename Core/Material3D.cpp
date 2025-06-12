@@ -202,9 +202,7 @@ void Core::Material3D::Render(Core::Canvas* pCanvas)
 	pGraphicsCommandList->SetPipelineState(mpPipelineState.Get());
 	pGraphicsCommandList->SetGraphicsRootSignature(mpRootSignature.Get());
 
-	pCanvas->SetDescriptor();
-
-	std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
+        std::multimap<long long, Core::ViewCCube>& cubes{ mpCanvasCubes[pCanvas] };
 	for (auto& cube : cubes)
 		cube.second.Render(pCanvas, this);
 }

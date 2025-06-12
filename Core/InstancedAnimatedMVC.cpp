@@ -192,14 +192,10 @@ bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
 
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
+        auto pApplication{ mpObject->GetScene()->GetApplication() };
         UINT dsTable{ 1 };
-        // Use main CBV/SRV heap before writing object constants
-        {
-                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
-                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-                // Bind canvas constant buffer descriptor table
-                pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
-        }
+        // Bind canvas constant buffer descriptor table
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, pApplication->GetGpuHandle(mCbvSrvOffset));
         SetDescTableObjectConstants(pCanvas, dsTable);
 
         // Upload bones and bind as root CBV

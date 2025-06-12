@@ -129,7 +129,6 @@
       <Field Name="mIsInitialized" Hidden="true" />
       <Field Name="mpCamera" Hidden="true" />
       <Field Name="mpCanvasCbvDataBegin" Hidden="true" />
-      <Field Name="mpCanvasCbvHeap" Hidden="true" />
       <Field Name="mpCanvasConstantBuffer" Hidden="true" />
       <Field Name="mpCommandAllocator" Hidden="true" />
       <Field Name="mpConditionVar" Hidden="true" />

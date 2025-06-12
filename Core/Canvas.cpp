@@ -17,23 +17,23 @@ Core::Canvas::Canvas(Core::Application* pApplication, RECT rectangle)
 	, mpSwapChain{}
 	, mpRenderTargets{}
 	, mpDepthStencilBuffer{}
-	, mpRtvHeap{}
-	, mpDsvHeap{}
-	, mpCanvasCbvHeap{}
+        , mpRtvHeap{}
+        , mpDsvHeap{}
 	, mpCommandAllocator{}
-	, mpGraphicsCommandList{}
-	, mCurrentBackBuffer{ 0 }
-	, mRtvDescriptorSize{ 0 }
-	, mDsvDescriptorSize{ 0 }
-	, mCbvDescriptorSize{ 0 }
+        , mpGraphicsCommandList{}
+        , mCurrentBackBuffer{ 0 }
+        , mRtvDescriptorSize{ 0 }
+        , mDsvDescriptorSize{ 0 }
+        , mCbvDescriptorSize{ 0 }
 	, mViewport{ 0.f, 0.f, float(rectangle.right - rectangle.left), float(rectangle.bottom - rectangle.top), 0.f, 1.f }
 	, mScissorRect{ 0, 0, rectangle.right - rectangle.left, rectangle.bottom - rectangle.top }
 	, mFenceEvent{}
 	, mpFence{}
 	, mFenceValue{ 0 }
-	, mpCanvasConstantBuffer{}
-	, mpCanvasCbvDataBegin{}
-	, mCanvasConstantBufferData{}
+        , mpCanvasConstantBuffer{}
+        , mpCanvasCbvDataBegin{}
+        , mCanvasCbvOffset{ 0 }
+        , mCanvasConstantBufferData{}
 	, mpMaterials3D{}
 	, mpMaterials2D{}
 	, mThread{}
@@ -104,14 +104,8 @@ void Core::Canvas::Initialize()
 		dsvHeapDesc.NodeMask = 0;
 		mpApplication->ThrowIfFailed(pDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mpDsvHeap)));
 	}
-	mCbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	{
-		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-		cbvHeapDesc.NumDescriptors = 1;
-		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		mpApplication->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpCanvasCbvHeap)));
-	}
+        mCbvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        mCanvasCbvOffset = mpApplication->AllocateDescriptors(1);
 	// Render Targets
 	{
 		UINT dpi{ GetDpiForWindow(mpWindow->GetHandle()) };
@@ -177,7 +171,7 @@ void Core::Canvas::Initialize()
 		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc{};
 		cbvDesc.BufferLocation = mpCanvasConstantBuffer->GetGPUVirtualAddress();
 		cbvDesc.SizeInBytes = canvasConstantBufferSize;
-		pDevice->CreateConstantBufferView(&cbvDesc, mpCanvasCbvHeap->GetCPUDescriptorHandleForHeapStart());
+                pDevice->CreateConstantBufferView(&cbvDesc, mpApplication->GetCpuHandle(mCanvasCbvOffset));
 
 		CD3DX12_RANGE readRange(0, 0);
 		mpApplication->ThrowIfFailed(mpCanvasConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpCanvasCbvDataBegin)));
@@ -258,10 +252,6 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& Core::Canvas::GetGraphicsCom
         return mpGraphicsCommandList;
 }
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& Core::Canvas::GetCanvasCbvHeap()
-{
-        return mpCanvasCbvHeap;
-}
 
 UINT Core::Canvas::GetCbvDescriptorSize() const
 {
@@ -283,10 +273,6 @@ void Core::Canvas::AddMaterial(Core::Material2D* pMaterial)
 	mpMaterials2D.emplace(pMaterial);
 }
 
-void Core::Canvas::SetDescriptor()
-{
-        // Descriptor heap is now bound by each ViewC during rendering
-}
 
 void Core::Canvas::Render()
 {
@@ -306,8 +292,13 @@ void Core::Canvas::Render()
 
 	mCurrentBackBuffer = mpSwapChain->GetCurrentBackBufferIndex();
 
-	mpApplication->ThrowIfFailed(mpCommandAllocator->Reset());
-	mpApplication->ThrowIfFailed(mpGraphicsCommandList->Reset(mpCommandAllocator.Get(), nullptr));
+        mpApplication->ThrowIfFailed(mpCommandAllocator->Reset());
+        mpApplication->ThrowIfFailed(mpGraphicsCommandList->Reset(mpCommandAllocator.Get(), nullptr));
+
+        {
+                ID3D12DescriptorHeap* heaps[]{ mpApplication->GetGlobalCbvSrvHeap().Get() };
+                mpGraphicsCommandList->SetDescriptorHeaps(_countof(heaps), heaps);
+        }
 
 	if (!mpMaterials3D.empty())
 	{

@@ -86,7 +86,8 @@ bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
 		return false;
 
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
-        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        auto pApplication{ mpObject->GetScene()->GetApplication() };
+        if (!pGraphicsCommandList || !mpObjectCbvDataBegin)
         {
 #ifdef ION_LOGGER
                 mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
@@ -102,13 +103,10 @@ bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
         D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
         canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
         canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
-        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
-
-        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
-        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        pDevice->CreateConstantBufferView(&canvasCbv, pApplication->GetCpuHandle(mCbvSrvOffset));
 
         // Bind canvas constant buffer descriptor table
-        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, pApplication->GetGpuHandle(mCbvSrvOffset));
 
         UINT dsTable{ 1 };
         SetDescTableObjectConstants(pCanvas, dsTable);

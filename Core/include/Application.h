@@ -44,8 +44,12 @@ namespace Ion
 			LRESULT WindowsProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 			const Microsoft::WRL::ComPtr<IDXGIFactory5>& GetDxgiFactory();
 			const Microsoft::WRL::ComPtr<ID3D12Device5>& GetDevice();
-			const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& GetCommandQueue();
-			physx::PxPhysics* GetPxPhysics();
+                        const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& GetCommandQueue();
+                        Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetGlobalCbvSrvHeap();
+                        UINT AllocateDescriptors(UINT count = 1);
+                        D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(UINT index);
+                        D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(UINT index);
+                        physx::PxPhysics* GetPxPhysics();
 			physx::PxCooking* GetPxCooking();
 			const physx::PxTolerancesScale& GetToleranceScale();
 			Core::ServiceLocator& GetServiceLocator();
@@ -74,8 +78,11 @@ namespace Ion
 			Microsoft::WRL::ComPtr<IDXGIFactory5> mpDxgiFactory;
 			Microsoft::WRL::ComPtr<ID3D12Device5> mpD3d12Device;
 			Microsoft::WRL::ComPtr<IDXGIDevice1> mpDxgiDevice;
-			Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
-			physx::PxPhysics* mpPhysics;
+                        Microsoft::WRL::ComPtr<ID3D12CommandQueue> mpCommandQueue;
+                        Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpGlobalCbvSrvHeap;
+                        UINT mGlobalCbvSrvDescriptorSize;
+                        UINT mNextDescriptorIndex;
+                        physx::PxPhysics* mpPhysics;
 			physx::PxTolerancesScale mPxToleranceScale;
 			physx::PxIonAllocatorCallback mIonAllocatorCallback;
 			physx::PxIonErrorCallback mIonErrorCallback;

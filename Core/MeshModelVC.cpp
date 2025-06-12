@@ -36,7 +36,7 @@ Core::MeshModelVC::MeshModelVC(const std::string& modelName, const std::string& 
 	, mObjectConstantBufferData{}
         , mpObjectCbvDataBegin{ nullptr }
         , mpTextureSrvHeaps{}
-        , mpCbvSrvHeap{}
+        , mCbvSrvOffset{ 0 }
         , mCbvSrvDescriptorSize{ 0 }
         , mTextureOffsets{}
 {
@@ -230,23 +230,17 @@ void Core::MeshModelVC::Initialize()
         }
 
         mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        mCbvSrvOffset = pApplication->AllocateDescriptors(1 + 1 + UINT(mpTextureSrvHeaps.size()));
         {
-                D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
-                heapDesc.NumDescriptors = 1 + 1 + UINT(mpTextureSrvHeaps.size());
-                heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-                heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-                mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mpCbvSrvHeap)));
-
-                D3D12_CPU_DESCRIPTOR_HANDLE destHandle{ mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart() };
-                destHandle.ptr += mCbvSrvDescriptorSize; // index 1 for object CBV
+                D3D12_CPU_DESCRIPTOR_HANDLE destHandle{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
                 pDevice->CopyDescriptorsSimple(1, destHandle, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
                 UINT offset{ 2 };
                 for (auto& pair : mpTextureSrvHeaps)
                 {
-                        D3D12_CPU_DESCRIPTOR_HANDLE dest{ CD3DX12_CPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), offset, mCbvSrvDescriptorSize) };
+                        D3D12_CPU_DESCRIPTOR_HANDLE dest{ pApplication->GetCpuHandle(mCbvSrvOffset + offset) };
                         pDevice->CopyDescriptorsSimple(1, dest, pair.second->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-                        mTextureOffsets[pair.first] = offset;
+                        mTextureOffsets[pair.first] = mCbvSrvOffset + offset;
                         ++offset;
                 }
         }
@@ -273,7 +267,8 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 		return false;
 
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
-        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        auto pApplication{ mpObject->GetScene()->GetApplication() };
+        if (!pGraphicsCommandList || !mpObjectCbvDataBegin)
         {
 #ifdef ION_LOGGER
                 mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
@@ -288,13 +283,10 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
         D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
         canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
         canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
-        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
-
-        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
-        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+        pDevice->CreateConstantBufferView(&canvasCbv, pApplication->GetCpuHandle(mCbvSrvOffset));
 
         // Bind canvas constant buffer descriptor table
-        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, pApplication->GetGpuHandle(mCbvSrvOffset));
 
         UINT dsTable{ 1 };
         SetDescTableObjectConstants(pCanvas, dsTable);
@@ -309,7 +301,7 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
 {
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
-        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        if (!pGraphicsCommandList || !mpObjectCbvDataBegin)
         {
 #ifdef ION_LOGGER
                 mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
@@ -335,7 +327,7 @@ void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT&
 
 	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
         {
-                D3D12_GPU_DESCRIPTOR_HANDLE handle{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+                D3D12_GPU_DESCRIPTOR_HANDLE handle{ pApplication->GetGpuHandle(mCbvSrvOffset + 1) };
                 pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, handle);
         }
         ++dsTable;
@@ -344,7 +336,8 @@ void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT&
 void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
 {
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
-        if (!pGraphicsCommandList || !mpCbvSrvHeap)
+        auto pApplication{ mpObject->GetScene()->GetApplication() };
+        if (!pGraphicsCommandList)
         {
 #ifdef ION_LOGGER
                 mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
@@ -356,7 +349,7 @@ void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTabl
 
         for (auto& pair : mTextureOffsets)
         {
-                D3D12_GPU_DESCRIPTOR_HANDLE tex{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), pair.second, mCbvSrvDescriptorSize) };
+                D3D12_GPU_DESCRIPTOR_HANDLE tex{ pApplication->GetGpuHandle(pair.second) };
                 pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
                 ++dsTable;
         }
