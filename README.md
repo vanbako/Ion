@@ -1,28 +1,36 @@
 # Ion
-Ion Render/Game Engine<br>
-It is meant as a learning tool for developing a game engine in C++20, multithreaded, ...<br>
-Using: Direct3D 12, <del>Direct2D</del>, DirectXTK12, NVidia Physx 4.1, FMOD 2.01.10<br>
-<br>
-Current Features:<br>
-Multiple Windows & Canvases with multithreaded rendering<br>
-Scenes - Objects - Components (Model, View, Controller)<br>
-Scene divided in ModelC, ViewC and ControllerC "Cubes" (ViewC's per material) for optimized updates and rendering and also LOD usage (LOD's not implemented yet)<br>
-Materials, Meshes, Textures<br>
-Input using command pattern: keyboard<br>
-Hardware Instancing<br>
-Animation (the artifacts you see in the demo animation is bad skinning, if someone likes to fix that ...)<br>
-Terrain (heightmap, physx) <br>
-Instanced physx<br>
-Audio, Logger using ServiceLocator pattern<br>
-Steering behaviour (Wander, Seek)<br>
-<del>Direct2D Text</del><br>
-Threads: ControllerComponents, ModelComponents, ViewComponents, Canvas, Physics<br>
-D2D removed permanently because it was interfering with texture loading in combination with multithreaded rendering<br>
-<br>
-You can upvote enhancements in the Github Issue Tracker<br>
-<br>
-https://discord.gg/72Xbv5Rwfa<br>
-<br>
-You'll need Windows SDK 10.0.22000.0 to build<br>
-<br>
-Let me know if you're interested in contributing<br>
+
+**Ion** is a render/game engine written in C++20. It was created as a learning tool for building a multithreaded engine from scratch.
+
+Ion currently uses:
+
+- Direct3D 12
+- ~~Direct2D~~
+- DirectXTK12
+- NVidia PhysX 4.1
+- FMOD 2.01.10
+
+## Features
+
+- Multiple windows and canvases with multithreaded rendering
+- Scenes, objects and components (Model, View, Controller)
+- Scene divided into ModelC, ViewC and ControllerC "Cubes" for optimized updates and rendering (LOD planned)
+- Materials, meshes and textures
+- Input using the command pattern (keyboard)
+- Hardware instancing
+- Animation *(demo contains artifacts due to bad skinning)*
+- Terrain (heightmap, PhysX)
+- Instanced PhysX
+- Audio and logging using the ServiceLocator pattern
+- Steering behaviour (Wander, Seek)
+- ~~Direct2D Text~~
+- Threads for controller components, model components, view components, canvas and physics
+- D2D removed permanently due to issues with multithreaded texture loading
+
+## Getting Started
+
+You can upvote enhancements in the GitHub issue tracker.
+
+You'll need **Windows SDK 10.0.22000.0** to build.
+
+Let me know if you're interested in contributing.
