@@ -273,6 +273,15 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 		return false;
 
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        {
+#ifdef ION_LOGGER
+                mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
+                        typeid(this).name(), Core::MsgType::Fatal,
+                        "ModelVC.Render() invalid command list or descriptor heap");
+#endif
+                return false;
+        }
         auto pDevice{ mpObject->GetScene()->GetApplication()->GetDevice() };
 
         // Write canvas constant buffer view into local heap
@@ -296,7 +305,16 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 
 void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
 {
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        {
+#ifdef ION_LOGGER
+                mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
+                        typeid(this).name(), Core::MsgType::Fatal,
+                        "ModelVC.SetDescTableObjectConstants invalid state");
+#endif
+                return;
+        }
 
 	DirectX::XMMATRIX world{ DirectX::XMMatrixIdentity() };
 	Core::InstancedTransformMC* pInstancedTransformMC{ mpObject->GetModelC<InstancedTransformMC>() };
@@ -322,7 +340,16 @@ void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT&
 
 void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
 {
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        if (!pGraphicsCommandList || !mpCbvSrvHeap)
+        {
+#ifdef ION_LOGGER
+                mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
+                        typeid(this).name(), Core::MsgType::Fatal,
+                        "ModelVC.SetDescTableTextures invalid state");
+#endif
+                return;
+        }
 
         for (auto& pair : mTextureOffsets)
         {

@@ -151,11 +151,21 @@ bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, fl
 	if (mVertexCount == 0)
 		return false;
 
-	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
-	auto pDxgiFactory{ pApplication->GetDxgiFactory() };
-	auto pDevice{ pApplication->GetDevice() };
-	auto pCmdQueue{ pApplication->GetCommandQueue() };
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
+        auto pDxgiFactory{ pApplication->GetDxgiFactory() };
+        auto pDevice{ pApplication->GetDevice() };
+        auto pCmdQueue{ pApplication->GetCommandQueue() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+
+        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        {
+#ifdef ION_LOGGER
+                mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
+                        typeid(this).name(), Core::MsgType::Fatal,
+                        "MeshVC.Render() invalid command list or descriptor heap");
+#endif
+                return false;
+        }
 
 	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<Core::TransformMC>()->GetWorld()) };
 	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<Core::CameraRMC>()->GetViewProjection()) };
