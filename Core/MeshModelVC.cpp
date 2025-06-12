@@ -293,6 +293,9 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
         ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
         pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
+        // Bind canvas constant buffer descriptor table
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
+
         UINT dsTable{ 1 };
         SetDescTableObjectConstants(pCanvas, dsTable);
         SetDescTableTextures(pCanvas, dsTable);

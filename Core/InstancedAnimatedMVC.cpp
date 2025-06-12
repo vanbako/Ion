@@ -197,6 +197,8 @@ bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
         {
                 ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
                 pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+                // Bind canvas constant buffer descriptor table
+                pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
         }
         SetDescTableObjectConstants(pCanvas, dsTable);
 
