@@ -301,6 +301,7 @@ bool Core::MeshModelVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateria
 void Core::MeshModelVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
 {
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+       auto pApplication{ mpObject->GetScene()->GetApplication() };
         if (!pGraphicsCommandList || !mpObjectCbvDataBegin)
         {
 #ifdef ION_LOGGER
