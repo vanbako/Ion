@@ -23,10 +23,9 @@ Core::InstancedAnimatedMVC::InstancedAnimatedMVC(const std::string& modelName, c
 	, mAnimationSpeed{ 1.f }
 	, mIsAnimating{ false }
 	, mIsClipSet{ false }
-	, mpBonesCbvHeap{}
-	, mpBonesConstantBuffer{}
-	, mpBonesConstantBufferData{}
-	, mpBonesCbvDataBegin{ nullptr }
+        , mpBonesConstantBuffer{}
+        , mpBonesConstantBufferData{}
+        , mpBonesCbvDataBegin{ nullptr }
 {
 	mBoneTransforms.reserve(128);
 	DirectX::XMFLOAT4X4 identity{ 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f };
@@ -96,15 +95,8 @@ void Core::InstancedAnimatedMVC::Initialize()
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpInstanceBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpInstanceDataBegin)));
 		//memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
 	}
-	{
-		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-		cbvHeapDesc.NumDescriptors = 1;
-		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpBonesCbvHeap)));
-	}
-	{
-		const UINT bonesConstantBufferSize{ sizeof(Core::BonesConstantBuffer) };
+        {
+                const UINT bonesConstantBufferSize{ sizeof(Core::BonesConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(bonesConstantBufferSize) };
@@ -116,15 +108,10 @@ void Core::InstancedAnimatedMVC::Initialize()
 			nullptr,
 			IID_PPV_ARGS(&mpBonesConstantBuffer)));
 
-		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc{};
-		cbvDesc.BufferLocation = mpBonesConstantBuffer->GetGPUVirtualAddress();
-		cbvDesc.SizeInBytes = bonesConstantBufferSize;
-		pDevice->CreateConstantBufferView(&cbvDesc, mpBonesCbvHeap->GetCPUDescriptorHandleForHeapStart());
-
-		CD3DX12_RANGE readRange(0, 0);
-		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpBonesConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpBonesCbvDataBegin)));
-		memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
-	}
+                CD3DX12_RANGE readRange(0, 0);
+                mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpBonesConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpBonesCbvDataBegin)));
+                memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
+        }
 	mIsInitialized = true;
 }
 
@@ -213,19 +200,11 @@ bool Core::InstancedAnimatedMVC::Render(Core::Canvas* pCanvas, Core::Material3D*
         }
         SetDescTableObjectConstants(pCanvas, dsTable);
 
-        // Switch to bones heap for skinning constants
+        // Upload bones and bind as root CBV
         memcpy(mpBonesCbvDataBegin, mpBonesConstantBufferData, sizeof(Core::BonesConstantBuffer));
-        {
-                ID3D12DescriptorHeap* ppHeaps[]{ mpBonesCbvHeap.Get() };
-                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-                pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpBonesCbvHeap->GetGPUDescriptorHandleForHeapStart());
-                ++dsTable;
-        }
-        // Restore main heap to bind textures
-        {
-                ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
-                pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-        }
+        pGraphicsCommandList->SetGraphicsRootConstantBufferView(dsTable, mpBonesConstantBuffer->GetGPUVirtualAddress());
+        ++dsTable;
+
         SetDescTableTextures(pCanvas, dsTable);
 	if (!mpInstancedTransform->GetIsStatic())
 		SetInstancedTransform(mpInstancedTransform);
