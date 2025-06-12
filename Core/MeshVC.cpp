@@ -82,8 +82,8 @@ void Core::MeshVC::Initialize()
 		mVertexBufferView.StrideInBytes = sizeof(Core::VertexPNC);
 		mVertexBufferView.SizeInBytes = mMaxVertices * sizeof(Core::VertexPNC);
 	}
-	{
-		const UINT objectConstantBufferSize{ sizeof(Core::MeshVCConstantBuffer) };
+        {
+                const UINT objectConstantBufferSize{ sizeof(Core::MeshVCConstantBuffer) };
 
 		D3D12_HEAP_PROPERTIES heapProp{ CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD) };
 		D3D12_RESOURCE_DESC resDesc{ CD3DX12_RESOURCE_DESC::Buffer(objectConstantBufferSize) };
@@ -101,10 +101,22 @@ void Core::MeshVC::Initialize()
 		pDevice->CreateConstantBufferView(&cbvDesc, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart());
 
 		CD3DX12_RANGE readRange(0, 0);
-		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpObjectConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpObjectCbvDataBegin)));
-		memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	}
-	mIsInitialized = true;
+                mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpObjectConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpObjectCbvDataBegin)));
+                memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+        }
+
+        mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        {
+                D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
+                heapDesc.NumDescriptors = 2; // canvas + object
+                heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+                heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+                mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mpCbvSrvHeap)));
+
+                D3D12_CPU_DESCRIPTOR_HANDLE dest{ CD3DX12_CPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+                pDevice->CopyDescriptorsSimple(1, dest, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        }
+        mIsInitialized = true;
 }
 
 void Core::MeshVC::Update(float delta)
@@ -151,12 +163,18 @@ bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, fl
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld , world);
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorldViewProj, wvp);
 
-	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
-	}
+        memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+
+        D3D12_CPU_DESCRIPTOR_HANDLE canvasSrc{ pCanvas->GetCanvasCbvHeap()->GetCPUDescriptorHandleForHeapStart() };
+        D3D12_CPU_DESCRIPTOR_HANDLE canvasDst{ mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart() };
+        pDevice->CopyDescriptorsSimple(1, canvasDst, canvasSrc, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+        D3D12_GPU_DESCRIPTOR_HANDLE cbvHandle{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, cbvHandle);
 
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
