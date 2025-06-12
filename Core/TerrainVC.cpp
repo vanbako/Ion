@@ -7,6 +7,7 @@
 #include "CameraRMC.h"
 #include "TextureResource.h"
 #include "Texture.h"
+#include <algorithm>
 
 using namespace Ion;
 
@@ -310,6 +311,7 @@ void Core::TerrainVC::Initialize()
        mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
        mCbvSrvOffset = pApplication->AllocateDescriptors(1 + 1 + UINT(mpTextureSrvHeaps.size()));
        {
+               std::sort(mTextureTypeOrder.begin(), mTextureTypeOrder.end(), [](Core::TextureType a, Core::TextureType b) { return int(a) < int(b); });
                D3D12_CPU_DESCRIPTOR_HANDLE dest{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
                pDevice->CopyDescriptorsSimple(1, dest, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 

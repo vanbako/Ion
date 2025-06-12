@@ -12,6 +12,7 @@
 #include "MeshModelResource.h"
 #include "TextureResource.h"
 #include "Texture.h"
+#include <algorithm>
 #include "Model.h"
 
 using namespace Ion;
@@ -234,8 +235,9 @@ void Core::MeshModelVC::Initialize()
         mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         mCbvSrvOffset = pApplication->AllocateDescriptors(1 + 1 + UINT(mpTextureSrvHeaps.size()));
         {
-                D3D12_CPU_DESCRIPTOR_HANDLE destHandle{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
-                pDevice->CopyDescriptorsSimple(1, destHandle, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+               std::sort(mTextureTypeOrder.begin(), mTextureTypeOrder.end(), [](Core::TextureType a, Core::TextureType b) { return int(a) < int(b); });
+               D3D12_CPU_DESCRIPTOR_HANDLE destHandle{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
+               pDevice->CopyDescriptorsSimple(1, destHandle, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
                 UINT offset{ 2 };
                 for (auto textureType : mTextureTypeOrder)
