@@ -160,9 +160,9 @@ void Core::Material3D::Initialize()
 
 	// Build Pipeline State
 	{
-		D3D12_RASTERIZER_DESC rasDesc{};
-		rasDesc.FillMode = D3D12_FILL_MODE_SOLID;
-		rasDesc.CullMode = D3D12_CULL_MODE_BACK;
+            D3D12_RASTERIZER_DESC rasDesc{ CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT) };
+            rasDesc.FillMode = D3D12_FILL_MODE_SOLID;
+            rasDesc.CullMode = D3D12_CULL_MODE_BACK;
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 		psoDesc.InputLayout = { mpInputElementDescs, mInputElementCount };
 		psoDesc.pRootSignature = mpRootSignature.Get();
