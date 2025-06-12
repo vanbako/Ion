@@ -30,9 +30,12 @@ Core::TerrainVC::TerrainVC(const std::string& filename, float width, float depth
 	, mpObjectConstantBuffer{}
 	, mObjectConstantBufferData{}
 	, mpObjectCbvDataBegin{ nullptr }
-	, mTextureNames{}
-	, mpTextures{}
-	, mpTextureSrvHeaps{}
+        , mTextureNames{}
+        , mpTextures{}
+        , mpTextureSrvHeaps{}
+       , mpCbvSrvHeap{}
+       , mCbvSrvDescriptorSize{ 0 }
+       , mTextureOffsets{}
 {
 	mObjectConstantBufferData.mShininess = 40.f;
 }
@@ -57,10 +60,10 @@ void Core::TerrainVC::AddTexture(Core::TextureType textureType, const std::strin
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
-		D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
-		srvHeapDesc.NumDescriptors = 1;
-		srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+               D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+               srvHeapDesc.NumDescriptors = 1;
+               srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+               srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mpTextureSrvHeaps[textureType])));
 
 		auto& texture{ pTexture->GetTexture() };
@@ -233,10 +236,10 @@ void Core::TerrainVC::Initialize()
 	}
 
 	{
-		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-		cbvHeapDesc.NumDescriptors = 1;
-		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+               D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
+               cbvHeapDesc.NumDescriptors = 1;
+               cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+               cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpObjectCbvHeap)));
 	}
 	{
@@ -297,11 +300,33 @@ void Core::TerrainVC::Initialize()
 		cbvDesc.SizeInBytes = objectConstantBufferSize;
 		pDevice->CreateConstantBufferView(&cbvDesc, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart());
 
-		CD3DX12_RANGE readRange(0, 0);
-		mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpObjectConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpObjectCbvDataBegin)));
-		memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	}
-	// PhysX
+               CD3DX12_RANGE readRange(0, 0);
+               mpObject->GetScene()->GetApplication()->ThrowIfFailed(mpObjectConstantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&mpObjectCbvDataBegin)));
+               memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+       }
+
+       mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+       {
+               D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
+               heapDesc.NumDescriptors = 1 + 1 + UINT(mpTextureSrvHeaps.size());
+               heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+               heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+               mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mpCbvSrvHeap)));
+
+               D3D12_CPU_DESCRIPTOR_HANDLE dest{ CD3DX12_CPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+               pDevice->CopyDescriptorsSimple(1, dest, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+               UINT offset{ 2 };
+               for (auto& pair : mpTextureSrvHeaps)
+               {
+                       D3D12_CPU_DESCRIPTOR_HANDLE dst{ CD3DX12_CPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), offset, mCbvSrvDescriptorSize) };
+                       pDevice->CopyDescriptorsSimple(1, dst, pair.second->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+                       mTextureOffsets[pair.first] = offset;
+                       ++offset;
+               }
+       }
+
+       // PhysX
 	{
 		physx::PxPhysics* physX{ pApplication->GetPxPhysics() };
 		physx::PxCooking* pCooking{ pApplication->GetPxCooking() };
@@ -356,11 +381,20 @@ bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial,
 	if (!mIsActive)
 		return false;
 
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pDevice{ mpObject->GetScene()->GetApplication()->GetDevice() };
 
-	UINT dsTable{ 1 };
-	SetDescTableObjectConstants(pCanvas, dsTable);
-	SetDescTableTextures(pCanvas, dsTable);
+        D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
+        canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
+        canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
+        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
+
+        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+        UINT dsTable{ 1 };
+        SetDescTableObjectConstants(pCanvas, dsTable);
+        SetDescTableTextures(pCanvas, dsTable);
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pGraphicsCommandList->IASetIndexBuffer(&mIndexBufferView);
 	pGraphicsCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
@@ -370,34 +404,31 @@ bool Core::TerrainVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial,
 
 void Core::TerrainVC::SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable)
 {
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
-	const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
-	DirectX::XMMATRIX wvp{ world * viewProjection };
+        DirectX::XMMATRIX world{ DirectX::XMLoadFloat4x4(&mpObject->GetModelC<TransformMC>()->GetWorld()) };
+        const DirectX::XMMATRIX viewProjection{ DirectX::XMLoadFloat4x4(&pCanvas->GetCamera()->GetModelC<CameraRMC>()->GetViewProjection()) };
+        DirectX::XMMATRIX wvp{ world * viewProjection };
 
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorld, world);
 	DirectX::XMStoreFloat4x4(&mObjectConstantBufferData.mWorldViewProj, wvp);
 
-	memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ mpObjectCbvHeap.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, mpObjectCbvHeap->GetGPUDescriptorHandleForHeapStart());
-	}
-	++dsTable;
+        memcpy(mpObjectCbvDataBegin, &mObjectConstantBufferData, sizeof(mObjectConstantBufferData));
+        {
+                D3D12_GPU_DESCRIPTOR_HANDLE handle{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+                pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, handle);
+        }
+        ++dsTable;
 }
 
 void Core::TerrainVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable)
 {
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-	for (auto& pair : mpTextureSrvHeaps)
-	{
-		ID3D12DescriptorHeap* ppHeaps[]{ pair.second.Get() };
-		pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		CD3DX12_GPU_DESCRIPTOR_HANDLE tex{ pair.second->GetGPUDescriptorHandleForHeapStart() };
-		pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
-		++dsTable;
-	}
+        for (auto& pair : mTextureOffsets)
+        {
+                D3D12_GPU_DESCRIPTOR_HANDLE tex{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), pair.second, mCbvSrvDescriptorSize) };
+                pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
+                ++dsTable;
+        }
 }

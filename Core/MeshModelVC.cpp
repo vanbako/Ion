@@ -66,10 +66,10 @@ void Core::MeshModelVC::AddTexture(Core::TextureType textureType, const std::str
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
-		D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
-		srvHeapDesc.NumDescriptors = 1;
-		srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+               D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+               srvHeapDesc.NumDescriptors = 1;
+               srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+               srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mpTextureSrvHeaps[textureType])));
 
 		auto& texture{ pTexture->GetTexture() };
@@ -158,10 +158,10 @@ void Core::MeshModelVC::Initialize()
 	delete[] pInputSemantics;
 
 	{
-		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-		cbvHeapDesc.NumDescriptors = 1;
-		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+               D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
+               cbvHeapDesc.NumDescriptors = 1;
+               cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+               cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mpObjectCbvHeap)));
 	}
 
