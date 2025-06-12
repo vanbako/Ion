@@ -107,14 +107,9 @@ void Core::MeshVC::Initialize()
         }
 
         mCbvSrvDescriptorSize = pDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        mCbvSrvOffset = pApplication->AllocateDescriptors(2); // canvas + object
         {
-                D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
-                heapDesc.NumDescriptors = 2; // canvas + object
-                heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-                heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-                mpObject->GetScene()->GetApplication()->ThrowIfFailed(pDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mpCbvSrvHeap)));
-
-                D3D12_CPU_DESCRIPTOR_HANDLE dest{ CD3DX12_CPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
+                D3D12_CPU_DESCRIPTOR_HANDLE dest{ pApplication->GetCpuHandle(mCbvSrvOffset + 1) };
                 pDevice->CopyDescriptorsSimple(1, dest, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         }
         mIsInitialized = true;
@@ -157,7 +152,7 @@ bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, fl
         auto pCmdQueue{ pApplication->GetCommandQueue() };
         auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
 
-        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        if (!pGraphicsCommandList || !mpObjectCbvDataBegin)
         {
 #ifdef ION_LOGGER
                 mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
@@ -179,13 +174,10 @@ bool Core::MeshVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMaterial, fl
         D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
         canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
         canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
-        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
+        pDevice->CreateConstantBufferView(&canvasCbv, pApplication->GetCpuHandle(mCbvSrvOffset));
 
-        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
-        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-        D3D12_GPU_DESCRIPTOR_HANDLE cbvHandle{ CD3DX12_GPU_DESCRIPTOR_HANDLE(mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), 1, mCbvSrvDescriptorSize) };
-        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, mpCbvSrvHeap->GetGPUDescriptorHandleForHeapStart());
+        D3D12_GPU_DESCRIPTOR_HANDLE cbvHandle{ pApplication->GetGpuHandle(mCbvSrvOffset + 1) };
+        pGraphicsCommandList->SetGraphicsRootDescriptorTable(0, pApplication->GetGpuHandle(mCbvSrvOffset));
         pGraphicsCommandList->SetGraphicsRootDescriptorTable(1, cbvHandle);
 
 	pGraphicsCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

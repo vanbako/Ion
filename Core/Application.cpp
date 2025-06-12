@@ -123,13 +123,23 @@ bool Core::Application::Initialize()
 	}
 #endif
 	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mpDxgiFactory)));
-	// Device
-	{
-		ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&mpD3d12Device)));
-	}
-	// CommandQueue
-	{
-		D3D12_COMMAND_QUEUE_DESC queueDesc{};
+        // Device
+        {
+                ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&mpD3d12Device)));
+        }
+        // Global descriptor heap
+        {
+                mGlobalCbvSrvDescriptorSize = mpD3d12Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+                D3D12_DESCRIPTOR_HEAP_DESC desc{};
+                desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+                desc.NumDescriptors = 100000;
+                desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+                ThrowIfFailed(mpD3d12Device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&mpGlobalCbvSrvHeap)));
+                mNextDescriptorIndex = 0;
+        }
+        // CommandQueue
+        {
+                D3D12_COMMAND_QUEUE_DESC queueDesc{};
 		queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 		queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 		queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
@@ -299,7 +309,29 @@ const Microsoft::WRL::ComPtr<ID3D12Device5>& Core::Application::GetDevice()
 
 const Microsoft::WRL::ComPtr<ID3D12CommandQueue>& Core::Application::GetCommandQueue()
 {
-	return mpCommandQueue;
+        return mpCommandQueue;
+}
+
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& Core::Application::GetGlobalCbvSrvHeap()
+{
+        return mpGlobalCbvSrvHeap;
+}
+
+UINT Core::Application::AllocateDescriptors(UINT count)
+{
+        UINT index{ mNextDescriptorIndex };
+        mNextDescriptorIndex += count;
+        return index;
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE Core::Application::GetCpuHandle(UINT index)
+{
+        return CD3DX12_CPU_DESCRIPTOR_HANDLE(mpGlobalCbvSrvHeap->GetCPUDescriptorHandleForHeapStart(), index, mGlobalCbvSrvDescriptorSize);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE Core::Application::GetGpuHandle(UINT index)
+{
+        return CD3DX12_GPU_DESCRIPTOR_HANDLE(mpGlobalCbvSrvHeap->GetGPUDescriptorHandleForHeapStart(), index, mGlobalCbvSrvDescriptorSize);
 }
 
 physx::PxPhysics* Core::Application::GetPxPhysics()

@@ -64,7 +64,7 @@ namespace Ion
                        std::unordered_map<Core::TextureType, Core::Texture*> mpTextures;
                        std::unordered_map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 
-                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpCbvSrvHeap;
+                       UINT mCbvSrvOffset;
                        UINT mCbvSrvDescriptorSize;
                        std::unordered_map<Core::TextureType, UINT> mTextureOffsets;
 

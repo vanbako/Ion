@@ -32,13 +32,11 @@ namespace Ion
                        D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferView();
                        Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5>& GetGraphicsCommandList();
 
-                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& GetCanvasCbvHeap();
                        UINT GetCbvDescriptorSize() const;
                        Microsoft::WRL::ComPtr<ID3D12Resource>& GetCanvasConstantBuffer();
 
 			void AddMaterial(Core::Material3D* pMaterial);
 			void AddMaterial(Core::Material2D* pMaterial);
-			void SetDescriptor();
 			void WaitForPreviousFrame();
 
 			void RunThread(std::condition_variable* pConditionVar, std::mutex* pMutex);
@@ -58,9 +56,8 @@ namespace Ion
 				mpRenderTargets[mBackBufferCount],
 				mpDepthStencilBuffer;
 			Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>
-				mpRtvHeap,
-				mpDsvHeap,
-				mpCanvasCbvHeap;
+                                mpRtvHeap,
+                                mpDsvHeap;
 			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mpCommandAllocator;
 			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList5> mpGraphicsCommandList;
 			int mCurrentBackBuffer;
@@ -74,7 +71,8 @@ namespace Ion
 			Microsoft::WRL::ComPtr<ID3D12Fence> mpFence;
 			UINT64 mFenceValue;
 			Microsoft::WRL::ComPtr<ID3D12Resource> mpCanvasConstantBuffer;
-			UINT8* mpCanvasCbvDataBegin;
+                        UINT8* mpCanvasCbvDataBegin;
+                        UINT mCanvasCbvOffset;
 			Core::CanvasConstantBuffer mCanvasConstantBufferData;
 			std::set<Core::Material3D*> mpMaterials3D;
 			std::set<Core::Material2D*> mpMaterials2D;

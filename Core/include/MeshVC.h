@@ -50,7 +50,7 @@ namespace Ion
                        Core::MeshVCConstantBuffer mObjectConstantBufferData;
                        UINT8* mpObjectCbvDataBegin;
 
-                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpCbvSrvHeap;
+                       UINT mCbvSrvOffset;
                        UINT mCbvSrvDescriptorSize;
                 };
         }
