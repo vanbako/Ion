@@ -18,11 +18,17 @@ Core::Logger::Logger(const std::string& location)
 
 void Core::Logger::Message(const char* pThisName, Core::MsgType msgType, const std::string& msg)
 {
-	if (msgType == Core::MsgType::Fatal)
-		if (pThisName == nullptr)
-			throw std::runtime_error{ msg };
-		else
-			throw std::runtime_error{ pThisName + ' ' + msg };
+        if (msgType == Core::MsgType::Fatal)
+        {
+                if (pThisName == nullptr)
+                {
+                        throw std::runtime_error{ msg };
+                }
+                else
+                {
+                        throw std::runtime_error{ std::string{ pThisName } + " " + msg };
+                }
+        }
 }
 
 #endif
