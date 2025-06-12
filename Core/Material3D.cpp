@@ -76,22 +76,29 @@ Core::Material3D::Material3D(Core::Application* pApplication, const std::string&
 		mpApplication->ThrowIfFailed(D3DReadFileToBlob(wstr.c_str(), &mPS));
 	}
 
-	IDxcContainerReflection* pContainerReflection{ nullptr };
-	HMODULE dxcDll{ LoadLibraryW(L"dxcompiler.dll") };
-	auto dxcCreateInstanceProc{ (DxcCreateInstanceProc)GetProcAddress(dxcDll, "DxcCreateInstance") };
-	dxcCreateInstanceProc(CLSID_DxcContainerReflection, IID_PPV_ARGS(&pContainerReflection));
+        ATL::CComPtr<IDxcContainerReflection> pContainerReflection{};
+        HMODULE dxcDll{ LoadLibraryW(L"dxcompiler.dll") };
+        if (!dxcDll)
+                mpApplication->ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+        auto dxcCreateInstanceProc{ (DxcCreateInstanceProc)GetProcAddress(dxcDll, "DxcCreateInstance") };
+        if (!dxcCreateInstanceProc)
+        {
+                FreeLibrary(dxcDll);
+                mpApplication->ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+        }
+        mpApplication->ThrowIfFailed(dxcCreateInstanceProc(CLSID_DxcContainerReflection, IID_PPV_ARGS(&pContainerReflection)));
 
-	ID3D12ShaderReflection* pVSReflector{ nullptr };
-	ATL::CComPtr<IDxcBlob> pVS{};
-	mVS->QueryInterface(&pVS);
-	pContainerReflection->Load(pVS);
-	UINT32 shaderIdx{};
-	pContainerReflection->FindFirstPartKind(DXC_PART_DXIL, &shaderIdx);
-	pContainerReflection->GetPartReflection(shaderIdx, IID_PPV_ARGS(&pVSReflector));
+        ATL::CComPtr<ID3D12ShaderReflection> pVSReflector{};
+        ATL::CComPtr<IDxcBlob> pVS{};
+        mVS->QueryInterface(&pVS);
+        pContainerReflection->Load(pVS);
+        UINT32 shaderIdx{};
+        pContainerReflection->FindFirstPartKind(DXC_PART_DXIL, &shaderIdx);
+        pContainerReflection->GetPartReflection(shaderIdx, IID_PPV_ARGS(&pVSReflector));
 
 	// Build texture types set supported by shader
-	ID3D12ShaderReflection* pPSReflector{ nullptr };
-	ATL::CComPtr<IDxcBlob> pPS{};
+        ATL::CComPtr<ID3D12ShaderReflection> pPSReflector{};
+        ATL::CComPtr<IDxcBlob> pPS{};
 	mPS->QueryInterface(&pPS);
 	pContainerReflection->Load(pPS);
 	D3D12_SHADER_INPUT_BIND_DESC shaderBindDesc{};
@@ -126,7 +133,9 @@ Core::Material3D::Material3D(Core::Application* pApplication, const std::string&
 			0 };
 		mLayoutSize += semanticInfo.offset;
 	}
-	mInputElementCount -= svInstanceID;
+        mInputElementCount -= svInstanceID;
+        if (dxcDll)
+                FreeLibrary(dxcDll);
 }
 
 Core::Material3D::~Material3D()
