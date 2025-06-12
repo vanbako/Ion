@@ -48,7 +48,12 @@ Core::Canvas::Canvas(Core::Application* pApplication, RECT rectangle)
 
 Core::Canvas::~Canvas()
 {
-	WaitThreadEnd();
+       WaitThreadEnd();
+       if (mFenceEvent != nullptr)
+       {
+               CloseHandle(mFenceEvent);
+               mFenceEvent = nullptr;
+       }
 }
 
 void Core::Canvas::Initialize()
