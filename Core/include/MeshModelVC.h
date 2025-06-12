@@ -57,8 +57,9 @@ namespace Ion
 			Core::MeshVCConstantBuffer mObjectConstantBufferData;
 			UINT8* mpObjectCbvDataBegin;
 
-			std::vector<std::string> mTextureNames;
-			std::unordered_map<Core::TextureType, Core::Texture*> mpTextures;
+                       std::vector<std::string> mTextureNames;
+                       std::vector<Core::TextureType> mTextureTypeOrder;
+                       std::unordered_map<Core::TextureType, Core::Texture*> mpTextures;
                        std::unordered_map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
 
                        UINT mCbvSrvOffset;

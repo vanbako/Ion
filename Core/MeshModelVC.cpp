@@ -20,8 +20,9 @@ Core::MeshModelVC::MeshModelVC(const std::string& modelName, const std::string& 
 	: Core::ViewC(isActive, pObject, materialName, "")
 	, mName{ modelName }
 	, mpMeshModel{ pObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<MeshModelResource>()->AddMeshModel(modelName, modelExtension, winding, coordSystem) }
-	, mTextureNames{}
-	, mpTextures{}
+        , mTextureNames{}
+        , mTextureTypeOrder{}
+        , mpTextures{}
 	, mpVertices{ nullptr }
 	, mIndexBuffer{}
 	, mIndexBufferView{}
@@ -61,8 +62,9 @@ void Core::MeshModelVC::AddTexture(Core::TextureType textureType, const std::str
 		return;
 	Core::Application* pApplication{ mpObject->GetScene()->GetApplication() };
 	auto pDevice{ pApplication->GetDevice() };
-	mTextureNames.emplace_back(name);
-	Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name) };
+       mTextureNames.emplace_back(name);
+       mTextureTypeOrder.push_back(textureType);
+       Core::Texture* pTexture{ mpObject->GetScene()->GetApplication()->GetResourceManager()->GetResource<TextureResource>()->AddTexture(name) };
 	mpTextures[textureType] = pTexture;
 	mpTextureSrvHeaps[textureType] = Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>{};
 	{
@@ -236,11 +238,12 @@ void Core::MeshModelVC::Initialize()
                 pDevice->CopyDescriptorsSimple(1, destHandle, mpObjectCbvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
                 UINT offset{ 2 };
-                for (auto& pair : mpTextureSrvHeaps)
+                for (auto textureType : mTextureTypeOrder)
                 {
+                        auto& heap = mpTextureSrvHeaps[textureType];
                         D3D12_CPU_DESCRIPTOR_HANDLE dest{ pApplication->GetCpuHandle(mCbvSrvOffset + offset) };
-                        pDevice->CopyDescriptorsSimple(1, dest, pair.second->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-                        mTextureOffsets[pair.first] = mCbvSrvOffset + offset;
+                        pDevice->CopyDescriptorsSimple(1, dest, heap->GetCPUDescriptorHandleForHeapStart(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+                        mTextureOffsets[textureType] = mCbvSrvOffset + offset;
                         ++offset;
                 }
         }
@@ -348,9 +351,9 @@ void Core::MeshModelVC::SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTabl
                 return;
         }
 
-        for (auto& pair : mTextureOffsets)
+        for (auto textureType : mTextureTypeOrder)
         {
-                D3D12_GPU_DESCRIPTOR_HANDLE tex{ pApplication->GetGpuHandle(pair.second) };
+                D3D12_GPU_DESCRIPTOR_HANDLE tex{ pApplication->GetGpuHandle(mTextureOffsets[textureType]) };
                 pGraphicsCommandList->SetGraphicsRootDescriptorTable(dsTable, tex);
                 ++dsTable;
         }
