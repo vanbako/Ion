@@ -59,7 +59,11 @@ namespace Ion
 
 			std::vector<std::string> mTextureNames;
 			std::unordered_map<Core::TextureType, Core::Texture*> mpTextures;
-			std::unordered_map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
+                       std::unordered_map<Core::TextureType, Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>> mpTextureSrvHeaps;
+
+                       Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mpCbvSrvHeap;
+                       UINT mCbvSrvDescriptorSize;
+                       std::unordered_map<Core::TextureType, UINT> mTextureOffsets;
 
 			void SetDescTableObjectConstants(Core::Canvas* pCanvas, UINT& dsTable);
 			void SetDescTableTextures(Core::Canvas* pCanvas, UINT& dsTable);
