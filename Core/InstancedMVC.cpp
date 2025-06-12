@@ -85,11 +85,31 @@ bool Core::InstancedMVC::Render(Core::Canvas* pCanvas, Core::Material3D* pMateri
 	if (mpTextures.empty())
 		return false;
 
-	auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        auto pGraphicsCommandList{ pCanvas->GetGraphicsCommandList() };
+        if (!pGraphicsCommandList || !mpCbvSrvHeap || !mpObjectCbvDataBegin)
+        {
+#ifdef ION_LOGGER
+                mpObject->GetScene()->GetApplication()->GetServiceLocator().GetLogger()->Message(
+                        typeid(this).name(), Core::MsgType::Fatal,
+                        "InstancedMVC.Render() invalid command list or descriptor heap");
+#endif
+                return false;
+        }
 
-	UINT dsTable{ 1 };
-	SetDescTableObjectConstants(pCanvas, dsTable);
-	SetDescTableTextures(pCanvas, dsTable);
+        auto pDevice{ mpObject->GetScene()->GetApplication()->GetDevice() };
+
+        // Write canvas constant buffer view into local heap
+        D3D12_CONSTANT_BUFFER_VIEW_DESC canvasCbv{};
+        canvasCbv.BufferLocation = pCanvas->GetCanvasConstantBuffer()->GetGPUVirtualAddress();
+        canvasCbv.SizeInBytes = sizeof(Core::CanvasConstantBuffer);
+        pDevice->CreateConstantBufferView(&canvasCbv, mpCbvSrvHeap->GetCPUDescriptorHandleForHeapStart());
+
+        ID3D12DescriptorHeap* ppHeaps[]{ mpCbvSrvHeap.Get() };
+        pGraphicsCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+        UINT dsTable{ 1 };
+        SetDescTableObjectConstants(pCanvas, dsTable);
+        SetDescTableTextures(pCanvas, dsTable);
 	if (!mpInstancedTransform->GetIsStatic())
 		SetInstancedTransform(mpInstancedTransform);
 	memcpy(mpInstanceDataBegin, mInstanceBufferData.data(), sizeof(Core::InstanceBuffer) * mInstanceBufferData.size());
